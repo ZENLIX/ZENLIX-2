@@ -39,8 +39,8 @@ if ($type == "ticket_create") {
 				foreach($delivers_ids as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_create', ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_create', ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -51,16 +51,16 @@ if ($type == "ticket_create") {
 				 
 				 
 				 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$user_init_id, 
 				 					  ':target_user'=>$res_str,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 
 				 
 		
-				 $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				 $stmt->execute(array(':delivers_id'=>$res_str, ':type_op'=>$type, ':tid'=>$ticket_id));
+				 $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				 $stmt->execute(array(':delivers_id'=>$res_str, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 	
 	}
 	else if ( $user_to_id <> 0) {
@@ -100,8 +100,8 @@ if ($type == "ticket_create") {
 				foreach($nr as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_create', ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_create', ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -115,16 +115,16 @@ if ($type == "ticket_create") {
 				 if ($su) {
 				 
 				 				 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$user_init_id, 
 				 					  ':target_user'=>$su,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 					  
 				 					  
 				 
-				 $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				 $stmt->execute(array(':delivers_id'=>$su, ':type_op'=>$type, ':tid'=>$ticket_id));
+				 $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				 $stmt->execute(array(':delivers_id'=>$su, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 }
 				 
 
@@ -151,8 +151,8 @@ else if ($type == "ticket_refer") {
 									foreach($delivers_ids as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_refer', ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_refer', ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -168,17 +168,17 @@ else if ($type == "ticket_refer") {
         
         
 						 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$who_init, 
 				 					  ':target_user'=>$res_str,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 	
 				 					  
 				 					  
 					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) 
-													VALUES (:delivers_id, :type_op, :tid, now())');
-					$stmt->execute(array(':delivers_id'=>$res_str, ':type_op'=>$type, ':tid'=>$ticket_id));
+													VALUES (:delivers_id, :type_op, :tid, :n)');
+					$stmt->execute(array(':delivers_id'=>$res_str, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 
 				 
 	}
@@ -214,8 +214,8 @@ else if ($type == "ticket_refer") {
 								foreach($nr as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>$type, ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -232,14 +232,14 @@ else if ($type == "ticket_refer") {
         
         
 				 				 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$who_init, 
 				 					  ':target_user'=>$su,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 					  
-				 $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				 $stmt->execute(array(':delivers_id'=>$su, ':type_op'=>$type, ':tid'=>$ticket_id));
+				 $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				 $stmt->execute(array(':delivers_id'=>$su, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 }
 	}
 }
@@ -309,8 +309,8 @@ else if ($type == "ticket_comment") {
 									foreach($delivers_ids as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_comment', ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_comment', ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -326,16 +326,16 @@ else if ($type == "ticket_comment") {
         
         
 									 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$who_init, 
 				 					  ':target_user'=>$delivers_ids,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 					  
 				 					  
 					
-					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id));
+					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 					
 }
 
@@ -388,8 +388,8 @@ else if ($type == "ticket_lock") {
 									foreach($delivers_ids as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_lock', ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_lock', ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -404,16 +404,16 @@ else if ($type == "ticket_lock") {
         
         
 									 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$who_init, 
 				 					  ':target_user'=>$delivers_ids,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 					  
 				 					  
 					
-					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id));
+					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 					
 					
 }
@@ -462,8 +462,8 @@ else if ($type == "ticket_unlock") {
 									foreach($delivers_ids as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_unlock', ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_unlock', ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -478,16 +478,16 @@ else if ($type == "ticket_unlock") {
         
         
 									 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$who_init, 
 				 					  ':target_user'=>$delivers_ids,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 					  
 				 					  
 					
-					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id));
+					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 					
 
 }
@@ -538,8 +538,8 @@ else if ($type == "ticket_ok") {
 				foreach($delivers_ids as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_ok', ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_ok', ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -553,16 +553,16 @@ else if ($type == "ticket_ok") {
         $who_init=$ticket_log_res['init_user_id'];
         
 									 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$who_init, 
 				 					  ':target_user'=>$delivers_ids,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				 					  
 				 					  
 					
-					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id));
+					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 					
 
 }
@@ -610,8 +610,8 @@ else if ($type == "ticket_no_ok") {
 									foreach($delivers_ids as $uniq_id_row) {
 				
 				$u_hash=get_user_hash_by_id($uniq_id_row);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_no_ok', ':tid'=>$ticket_id));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$u_hash, ':type_op'=>'ticket_no_ok', ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 				
 				
 				}
@@ -626,14 +626,14 @@ else if ($type == "ticket_no_ok") {
         
         
 									 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>$type, 
 				 					  ':init_user_id'=>$who_init, 
 				 					  ':target_user'=>$delivers_ids,
-				 					  ':ticket_id'=>$ticket_id));
+				 					  ':ticket_id'=>$ticket_id, ':n'=>$CONF['now_dt']));
 					
-					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, now())');
-					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id));
+					$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+					$stmt->execute(array(':delivers_id'=>$delivers_ids, ':type_op'=>$type, ':tid'=>$ticket_id, ':n'=>$CONF['now_dt']));
 }
 }
 ////////////////////////////////////////////////////////////////////////

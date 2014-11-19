@@ -8,12 +8,67 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
    include("inc/navbar.inc.php");
    $rp=realpath(dirname(__FILE__));
   
-  
-  
+    function rrmdir($dir) {
+   if (is_dir($dir)) {
+     $objects = scandir($dir);
+     foreach ($objects as $object) {
+       if ($object != "." && $object != "..") {
+         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
+       }
+     }
+     reset($objects);
+     rmdir($dir);
+   }
+ }
+
+  function Zip($source, $destination)
+{
+    if (!extension_loaded('zip') || !file_exists($source)) {
+        return false;
+    }
+
+    $zip = new ZipArchive();
+    if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {
+        return false;
+    }
+
+    $source = str_replace('\\', '/', realpath($source));
+
+    if (is_dir($source) === true)
+    {
+        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
+
+        foreach ($files as $file)
+        {
+            $file = str_replace('\\', '/', $file);
+
+            // Ignore "." and ".." folders
+            if( in_array(substr($file, strrpos($file, '/')+1), array('.', '..')) )
+                continue;
+
+            $file = realpath($file);
+
+            if (is_dir($file) === true)
+            {
+                $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
+            }
+            else if (is_file($file) === true)
+            {
+                $zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
+            }
+        }
+    }
+    else if (is_file($source) === true)
+    {
+        $zip->addFromString(basename($source), file_get_contents($source));
+    }
+
+    return $zip->close();
+}
   
   $myversion=get_conf_param('version');
 //echo $myversion;
-$content=file_get_contents("http://update.zenlix.com/up.php");
+$content=file_get_contents($CONF['update_server']."/up.php");
 $data=json_decode($content,true);
 $getver=$data['version'];
 
@@ -78,29 +133,43 @@ if ($_GET['update_now']) {
                                
 <?php
 $error_tag=false;
-	$content=file_get_contents("http://update.zenlix.com/up.php");
+	$content=file_get_contents($CONF['update_server']."/up.php");
 	$data=json_decode($content,true);
 
-	$fl=explode('|', $data['files_list']);
 	
 	$rp=realpath(dirname(__FILE__));
 	
 	
-	function rrmdir($dir) {
-   if (is_dir($dir)) {
-     $objects = scandir($dir);
-     foreach ($objects as $object) {
-       if ($object != "." && $object != "..") {
-         if (filetype($dir."/".$object) == "dir") rrmdir($dir."/".$object); else unlink($dir."/".$object);
-       }
-     }
-     reset($objects);
-     rmdir($dir);
-   }
- }
+
  
+
+
+
+
+
+
+ //////create DB backup
+$db = new DBBackup(array( 
+    'driver' => 'mysql', 
+    'host' => $CONF_DB['host'], 
+    'user' => $CONF_DB['username'], 
+    'password' => $CONF_DB['password'], 
+    'database' => $CONF_DB['db_name'] 
+)); 
+$backup = $db->backup(); 
+if(!$backup['error']){ 
+    $fpp=$rp."/updates/backup/DB.sql";
+    $fp = fopen($fpp, 'a+');
+    fwrite($fp, $backup['msg']);
+    fclose($fp);
+///////////////////////
+
+
+////create files backup///////////
+Zip($rp."/", $rp."/updates/backup/file_zenlix_backup.zip");
+//////////////////////////////////
  
-$url = "http://update.zenlix.com/updates/".$data['version']."/zenlix.zip";
+$url = $CONF['update_server']."/zenlix.zip";
 $zipFile = $rp."/updates/zenlix.zip"; // Local Zip File Path
 $zipResource = fopen($zipFile, "w");
 // Get The Zip File From Server
@@ -132,27 +201,28 @@ if($zip->open($zipFile) != "true"){
  echo "Error :- Unable to open the Zip File";
 } 
 /* Extract Zip File */
-$zip->extractTo($extractPath);
-$zip->close();	
-	
 
-$db = new DBBackup(array( 
-    'driver' => 'mysql', 
-    'host' => $CONF_DB['host'], 
-    'user' => $CONF_DB['username'], 
-    'password' => $CONF_DB['password'], 
-    'database' => $CONF_DB['db_name'] 
-)); 
-$backup = $db->backup(); 
-if(!$backup['error']){ 
-    // If there isn't errors, show the content 
-    // The backup will be at $var['msg'] 
-    // You can do everything you want to. Like save in a file. 
-     
-    $fpp=$rp."/updates/backup/DB.sql";
-    $fp = fopen($fpp, 'a+');
-    fwrite($fp, $backup['msg']);
-    fclose($fp); 
+
+$zip->extractTo($rp."/");
+
+$sql_file = file_get_contents($dir_ver.'/DB.sql');
+$qr = $dbConnection->exec($sql_file);
+
+
+
+
+
+$zip->close();	
+
+unlink($zipFile);
+rrmdir($dir_ver);
+
+
+
+
+
+
+
    ?>
    <table class="table table-bordered">
                                         <tbody><tr>
@@ -177,27 +247,7 @@ if(!$backup['error']){
 	?>
 	 <table class="table table-bordered">
                                         <tbody>
-	<?php
-	
-	foreach ($fl as $flr) {
-	
-	$nw=$dir_ver.$flr; // file version
-	$ov=$rp.$flr;//old version
-	?>
-	<tr><td><?=$nw;?></td><td>==></td><td><?=$ov;?></td></tr>
-	<?php
-	//echo $nw." to ".$ov."<br>";
-	try {
-	copy($nw, $ov);
-	}
-	 catch (Exception $e) {
-	 $error_tag=true;
-	 }
-	
-	}
-	
-
-	?></tbody></table><br>
+                  </tbody></table><br>
 	<?php 
 	
 		if ($error_tag == true) {
@@ -228,7 +278,7 @@ if(!$backup['error']){
 </div></div></section>
 	<?php
 }
-else if (!$_GET['update_now']) {
+else if (!$_GET['update_n-ow']) {
 ?>
 <section class="content-header">
                     <h1>
@@ -249,10 +299,9 @@ else if (!$_GET['update_now']) {
 <div class="row">
 <div class="col-md-12">
 <?php 
-$content=file_get_contents("http://localhost/web/xcode.php");
+$content=file_get_contents($CONF['update_server']."/up.php");
 $data=json_decode($content,true);
 $cl=explode('|', $data['change_log']);
-$fl=explode('|', $data['files_list']);
 ?>
 <div class="alert alert-success alert-dismissable">
                                         <i class="fa fa-check"></i>
@@ -264,7 +313,7 @@ $fl=explode('|', $data['files_list']);
 
 <br>
 </div>
-<div class="col-md-6"><div class="box box-danger">
+<div class="col-md-12"><div class="box box-danger">
                                 <div class="box-header">
                                     <i class="fa fa-warning"></i>
                                     <h3 class="box-title"><?=lang('UPGRADE_list');?></h3>
@@ -281,7 +330,7 @@ $fl=explode('|', $data['files_list']);
                                 </ul>
                                            </div><!-- /.box-body -->
                             </div></div>
-<div class="col-md-6"><div class="box box-danger">
+<div class="col-md-12"><div class="box box-danger">
                                 <div class="box-header">
                                     <i class="fa fa-warning"></i>
                                     <h3 class="box-title"><?=lang('UPGRADE_files');?></h3>
@@ -291,25 +340,93 @@ $fl=explode('|', $data['files_list']);
                                 <table class="table table-bordered">
                                         <tbody>
                                             <?php
+//
+                                            
+$files_def=array(
+'/actions.php',
+'/functions.inc.php',
+'/index.php',
+'/update.php');
+
+$directory_def=array (
+'/css/', //subdirs
+'/img/',
+'/inc/',
+'/integration/',
+'/js/', //subdirs
+'/lang/',
+'/sys/');
+//проверка файлов и директорий/субдиректорий/файлов на запись и
+//разархив зипа в директорию
+
+//если всё норм то ок иначе - вывести список проблемных файлов и сообщение
+                                                  
+                                            
                                            $r=true;
-                                           foreach ($fl as $rfl) {
+                                           foreach ($files_def as $rfl) {
                                            
-                                           
-                                           
-                                           if (file_exists($rp.$rfl)) {
-	                                           if (is_writable($rp.$rfl)) {$w="<small class=\"label label-success\">ok</small>"; } else if (!is_writable($rp.$rfl)) {$w="<small class=\"label label-danger\">not writable</small>";
-	                                           $r=false;
-	                                            }
-                                           }
-                                           else if (!file_exists($rp.$rfl)) {$w="<small class=\"label label-warning\">will be created</small>";}
-                                           
-                                           
-                                           
-                                           
-                                           
-	                                           echo "<tr><td>".$rfl."</td><td>".$w."</td></tr>";
-	                                           
-                                           }
+                                       
+
+///files base
+if (file_exists($rp.$rfl)) {
+
+	 if (is_writable($rp.$rfl)) {$w="<small class=\"label label-success\">ok</small>"; }
+   else if (!is_writable($rp.$rfl)) {$w="<small class=\"label label-danger\">not writable</small>";
+	 $r=false;
+	  }
+}
+else if (!file_exists($rp.$rfl)) {$w="<small class=\"label label-warning\">will be created</small>";}
+  echo "<tr><td>".$rfl."</td><td>".$w."</td></tr>"; }
+///end files
+
+
+
+
+
+
+
+$all_subfiles=array();
+foreach ($directory_def as $dfl) {
+  //echo $rp.$dfl."<br>"; 
+
+
+
+$dirs = array_filter(glob($rp.$dfl."*"));
+$all_subfiles=array_merge($all_subfiles,$dirs);
+
+
+
+//base dirs////
+if (file_exists($rp.$dfl)) {
+
+   if (is_writable($rp.$dfl)) {$w="<small class=\"label label-success\">ok</small>"; }
+   else if (!is_writable($rp.$dfl)) {$w="<small class=\"label label-danger\">not writable</small>";
+   $r=false;
+    }
+}
+else if (!file_exists($rp.$dfl)) {$w="<small class=\"label label-warning\">will be created</small>";}
+  echo "<tr><td>".$dfl."</td><td>".$w."</td></tr>"; 
+////end base dirs
+
+}
+
+foreach ($all_subfiles as $key) {
+  # code...
+  # echo $key."<br>";
+
+if (file_exists($key)) {
+
+   if (is_writable($key)) {$w="<small class=\"label label-success\">ok</small>"; }
+   else if (!is_writable($key)) {$w="<small class=\"label label-danger\">not writable</small>";echo "<tr><td>".$key."</td><td>".$w."</td></tr>";
+   $r=false;
+    }
+}
+else if (!file_exists($key)) {$w="<small class=\"label label-warning\">will be created</small>"; echo "<tr><td>".$key."</td><td>".$w."</td></tr>";}
+   
+
+}
+//print_r($all_subfiles);
+
                                            if ($r == false) {$s="disabled";} else if ($r == true) {$s="";}
                                             ?> 
                                         
@@ -318,9 +435,26 @@ $fl=explode('|', $data['files_list']);
                                     </tbody></table>
                                 <p>
                                 <br>
+
+
+                                <?php if ($r == false) { ?>
                                 <strong>
 	                                <?=lang('UPGRADE_att');?>
                                 </strong>
+                                <table class="table table-bordered">
+                                        <tbody>
+                                          <?php foreach ($files_def as $f_value) {
+                                            echo "<tr><td>".$f_value."</td><td><small class=\"label label-default\">read/write</small></td></tr>";
+                                          } 
+                                    foreach ($directory_def as $d_value) {
+                                            echo "<tr><td>".$d_value."* <small class=\"text-muted\">and all subdirs</small></td><td><small class=\"label label-default\">read/write</small></td></tr>";
+                                          }
+                                          ?>
+                                          
+                                        </tbody>
+                                </table>
+
+                                <?php } ?>
                                 </p>
                                 
                                 
@@ -329,7 +463,7 @@ $fl=explode('|', $data['files_list']);
                             <div class="col-md-12"><hr></div>
                             <div class="col-md-6 col-md-offset-3">
 	                            <div class="box">
-	                            <div class="box-body"><a href="update.php?update_now=true" class="btn btn-success btn-block btn-sm " ><?=lang('UPGRADE_now');?></a></div>
+	                            <div class="box-body"><a href="update.php?update_now=true" class="btn btn-success btn-block btn-sm " <?=$s;?>><?=lang('UPGRADE_now');?></a></div>
 	                            </div>
 	                            
                             </div>

@@ -214,7 +214,7 @@ if ($row['is_read'] <> "0") { $style=""; }
                         <td style=" vertical-align: middle; "><small><center><?=$prio?></center></small></td>
                         <td style=" vertical-align: middle; "><a class="<?=$muclass;?> pops"  
                     title="<?=make_html($row['subj'], 'no');?>"
-                    data-content="<small><?=make_html(strip_tags($row['msg']), 'no')?></small>" 
+                    data-content="<small><?=str_replace('"', "", make_html(strip_tags($row['msg']), 'no'));?></small>" 
                     
                     
                     href="ticket?<?php echo $row['hash_name']; ?>"><?php cutstr(make_html($row['subj'], 'no')); ?></a></td>
@@ -536,7 +536,7 @@ $lock_st=""; $muclass="";
                     <td style=" vertical-align: middle; "><small class="<?=$muclass;?>"><center><?=$prio?></center></small></td>
                     <td style=" vertical-align: middle; "><a class="<?=$muclass;?> pops"  
                     title="<?=make_html($row['subj'], 'no');?>"
-                    data-content="<small><?=make_html(strip_tags($row['msg']), 'no')?></small>" 
+                    data-content="<small><?=str_replace('"', "", make_html(strip_tags($row['msg']), 'no'));?></small>" 
                     
                     
                     href="ticket?<?php echo $row['hash_name']; ?>"><?php cutstr(make_html($row['subj'], 'no')); ?></a></td>
@@ -1015,7 +1015,7 @@ $lock_st=""; $muclass="";
                     <td style=" vertical-align: middle; "><small class="<?=$muclass;?>"><center><?=$prio?></center></small></td>
                     <td style=" vertical-align: middle; "><a class="<?=$muclass;?> pops"  
                     title="<?=make_html($row['subj'], 'no');?>"
-                    data-content="<small><?=make_html(strip_tags($row['msg']), 'no')?></small>" 
+                    data-content="<small><?=str_replace('"', "", make_html(strip_tags($row['msg']), 'no'));?></small>" 
                     
                     
                     href="ticket?<?php echo $row['hash_name']; ?>"><?php cutstr(make_html($row['subj'], 'no')); ?></a></td>
@@ -1222,7 +1222,7 @@ $res1 = $stmt->fetchAll();
                         <td style=" vertical-align: middle; "><small><center><?php echo $row['id']; ?></center></small></td>
                         <td style=" vertical-align: middle; "><a class="<?=$muclass;?> pops"  
                     title="<?=make_html($row['subj'], 'no');?>"
-                    data-content="<small><?=make_html(strip_tags($row['msg']), 'no')?></small>" 
+                    data-content="<small><?=str_replace('"', "", make_html(strip_tags($row['msg']), 'no'));?></small>" 
                     
                     
                     href="ticket?<?php echo $row['hash_name']; ?>"><?php cutstr(make_html($row['subj'], 'no')); ?></a></td>

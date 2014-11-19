@@ -260,8 +260,8 @@ EOBODY;
 
 
 
-            $stmt = $dbConnection->prepare('update notes set message=:message, dt=now() where hashname=:noteid');
-            $stmt->execute(array(':message' => $message, ':noteid' => $noteid));
+            $stmt = $dbConnection->prepare('update notes set message=:message, dt=:n where hashname=:noteid');
+            $stmt->execute(array(':message' => $message, ':noteid' => $noteid, ':n'=>$CONF['now_dt']));
 
 
             print_r ($_POST['msg']);
@@ -339,14 +339,14 @@ EOBODY;
             
 ///comment
             $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
-											values (:tid_comment, :user_comment, :text_comment, now())');
-            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>$user_comment,':text_comment'=>'[file:'.$fhash.']'));
+											values (:tid_comment, :user_comment, :text_comment, :n)');
+            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>$user_comment,':text_comment'=>'[file:'.$fhash.']', ':n'=>$CONF['now_dt']));
 ///comment end
 
 ///add log////
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:comment, now(), :user_comment, :tid_comment)');
-            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>$user_comment,':comment'=>'comment'));
+values (:comment, :n, :user_comment, :tid_comment)');
+            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>$user_comment,':comment'=>'comment', ':n'=>$CONF['now_dt']));
 ////add log end///
 
 
@@ -354,8 +354,8 @@ values (:comment, now(), :user_comment, :tid_comment)');
 			send_notification('ticket_comment', $tid_comment);
 	        
 	        
-            $stmt = $dbConnection->prepare('update tickets set last_update=now() where id=:tid_comment');
-            $stmt->execute(array(':tid_comment'=>$tid_comment));
+            $stmt = $dbConnection->prepare('update tickets set last_update=:n where id=:tid_comment');
+            $stmt->execute(array(':tid_comment'=>$tid_comment, ':n'=>$CONF['now_dt']));
             view_comment($tid_comment);
 
 }
@@ -550,7 +550,7 @@ if ($mode == "check_version") {
 
 $myversion=get_conf_param('version');
 //echo $myversion;
-$content=file_get_contents("http://update.zenlix.com/up.php");
+$content=file_get_contents($CONF['update_server']."/up.php");
 $data=json_decode($content,true);
 $getver=$data['version'];
 
@@ -591,8 +591,8 @@ else if ($myversion < $getver) {echo "<br><center>".$data['msg']."</center><br>"
         if ($mode == "create_notes") {
             $uid=$_SESSION['helpdesk_user_id'];
             $hn=md5(time());
-            $stmt = $dbConnection->prepare('insert into notes (message, hashname, user_id, dt) values (:nr, :hn, :uid, now())');
-            $stmt->execute(array(':nr' => 'new record', ':hn'=> $hn, ':uid'=>$uid));
+            $stmt = $dbConnection->prepare('insert into notes (message, hashname, user_id, dt) values (:nr, :hn, :uid, :n)');
+            $stmt->execute(array(':nr' => 'new record', ':hn'=> $hn, ':uid'=>$uid, ':n'=>$CONF['now_dt']));
 
 
             echo $hn;
@@ -858,8 +858,8 @@ if ($mode == "count_online_users") {
 
 if ($mode == "show_online_users") {
 	
-                                    $stmt = $dbConnection->prepare('select fio,id,uniq_id from users where last_time >= DATE_SUB(NOW(),INTERVAL 2 MINUTE)');
-    $stmt->execute();
+                                    $stmt = $dbConnection->prepare('select fio,id,uniq_id from users where last_time >= DATE_SUB(:n,INTERVAL 2 MINUTE)');
+    $stmt->execute(array(':n'=>$CONF['now_dt']));
     $re = $stmt->fetchAll();
                                     
                                     foreach ($re as $rews) {
@@ -1639,8 +1639,8 @@ else if ($is_client == "0") {
             $message = str_replace("\r", "\n", $message);
             $message = str_replace("&nbsp;", " ", $message);
 
-            $stmt = $dbConnection->prepare('update helper set user_init_id=:user_id_z, unit_to_id=:beats, dt=now(), title=:t, message=:message, client_flag=:cf where hashname=:hn');
-            $stmt->execute(array(':hn' => $hn, ':user_id_z'=>$user_id_z, ':beats'=>$beats, ':t'=>$t, ':message'=>$message, ':cf'=>$is_client));
+            $stmt = $dbConnection->prepare('update helper set user_init_id=:user_id_z, unit_to_id=:beats, dt=:n, title=:t, message=:message, client_flag=:cf where hashname=:hn');
+            $stmt->execute(array(':hn' => $hn, ':user_id_z'=>$user_id_z, ':beats'=>$beats, ':t'=>$t, ':message'=>$message, ':cf'=>$is_client, ':n'=>$CONF['now_dt']));
 
 
         }
@@ -1661,8 +1661,8 @@ else if ($is_client == "0") {
             $message = str_replace("&nbsp;", " ", $message);
             
             $stmt = $dbConnection->prepare('insert into helper (hashname, user_init_id,unit_to_id, dt, title,message,client_flag) values 
-		(:hn,:user_id_z,:beats, now(), :t,:message, :cf)');
-            $stmt->execute(array(':hn' => $hn, ':user_id_z'=>$user_id_z, ':beats'=>$beats, ':t'=>$t, ':message'=>$message, ':cf'=>$is_client));
+		(:hn,:user_id_z,:beats, :n, :t,:message, :cf)');
+            $stmt->execute(array(':hn' => $hn, ':user_id_z'=>$user_id_z, ':beats'=>$beats, ':t'=>$t, ':message'=>$message, ':cf'=>$is_client, ':n'=>$CONF['now_dt']));
 
 
 
@@ -1971,7 +1971,7 @@ $lock_st=""; $muclass="";
                         
                         <td style=" vertical-align: middle; "><a class="<?=$muclass;?> pops"  
                     title="<?=make_html($row['subj'], 'no');?>"
-                    data-content="<small><?=make_html(strip_tags($row['msg']), 'no')?></small>" 
+                    data-content="<small><?=str_replace('"', "", make_html(strip_tags($row['msg']), 'no'));?></small>" 
                     
                     
                     href="ticket?<?php echo $row['hash_name']; ?>"><?php cutstr(make_html($row['subj'], 'no')); ?></a></td>
@@ -2224,8 +2224,8 @@ else if ($u_type == "1") {
 
         if ($mode == "update_status_time") {
             $uid=$_SESSION['helpdesk_user_id'];
- $stmt = $dbConnection->prepare('update users set last_time=now() where id=:cid');
- $stmt->execute(array(':cid' => $uid));
+ $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
+ $stmt->execute(array(':cid' => $uid, ':n'=>$CONF['now_dt']));
             
         }
         
@@ -2243,8 +2243,8 @@ else if ($u_type == "1") {
             if (strtotime($current_ticket_update) > strtotime($lu)) {echo $current_ticket_update;}
             if (strtotime($current_ticket_update) <= strtotime($lu)) {echo "no";}
 //update
- $stmt = $dbConnection->prepare('update users set last_time=now() where id=:cid');
- $stmt->execute(array(':cid' => $uid));
+ $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
+ $stmt->execute(array(':cid' => $uid, ':n'=>$CONF['now_dt']));
             
         }
 
@@ -2550,7 +2550,7 @@ if ($mode == "conf_edit_pb") {
         update_val_by_key("fix_subj", $_POST['fix_subj']);
         update_val_by_key("file_uploads", $_POST['file_uploads']);
         update_val_by_key("node_port", $_POST['node_port']);
-        
+        update_val_by_key("time_zone", $_POST['time_zone']);
         $bodytag = str_replace(",", "|", $_POST['file_types']);
         
         update_val_by_key("file_types", $bodytag);
@@ -3211,7 +3211,7 @@ $cl="";
         
             $stmt = $dbConnection->prepare('insert into approved_info
 (fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, date_app)
-VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from,  now())');
+VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from,  :n)');
             
             $stmt->execute(array(
             ':fio' => $fio,
@@ -3223,7 +3223,8 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             ':posada' => $posada, 
             ':skype'=>$skype,
             ':type_op'=>'add',
-            ':user_from'=>$uf));
+            ':user_from'=>$uf, 
+            ':n'=>$CONF['now_dt']));
 
 
             ?>
@@ -3249,7 +3250,7 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
         
             $stmt = $dbConnection->prepare('insert into approved_info
 (fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, client_id, date_app)
-VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from, :cid,  now())');
+VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from, :cid,  :n)');
             
             $stmt->execute(array(
             ':fio' => $fio,
@@ -3262,7 +3263,8 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             ':skype'=>$skype,
             ':type_op'=>'edit',
             ':user_from'=>$uf,
-            ':cid'=>$cid));
+            ':cid'=>$cid, 
+            ':n'=>$CONF['now_dt']));
 
 
             ?>
@@ -3286,12 +3288,12 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
 
             if ($s == "0") {
 
-                $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=now() where id=:tid');
-                $stmt->execute(array(':tid' => $tid,':n1' => '1'));
+                $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=:n where id=:tid');
+                $stmt->execute(array(':tid' => $tid,':n1' => '1', ':n'=>$CONF['now_dt']));
             }
             if ($s == "1") {
-                $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=now() where id=:tid');
-                $stmt->execute(array(':tid' => $tid,':n1' => '0'));
+                $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=:n where id=:tid');
+                $stmt->execute(array(':tid' => $tid,':n1' => '0', ':n'=>$CONF['now_dt']));
             }
 
 
@@ -3300,8 +3302,8 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             $unow=$_SESSION['helpdesk_user_id'];
 
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:ar, now(), :unow, :tid)');
-            $stmt->execute(array(':tid' => $tid,':unow' => $unow, ':ar'=>'arch'));
+values (:ar, :n, :unow, :tid)');
+            $stmt->execute(array(':tid' => $tid,':unow' => $unow, ':ar'=>'arch', ':n'=>$CONF['now_dt']));
 
 
         }
@@ -3325,8 +3327,8 @@ values (:ar, now(), :unow, :tid)');
 
 
             if ($st == "0") {
-                $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=now(), last_update=now() where id=:tid');
-                $stmt->execute(array(':s'=>'1',':tid' => $tid,':user'=>$user));
+                $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=:n, last_update=:nz where id=:tid');
+                $stmt->execute(array(':s'=>'1',':tid' => $tid,':user'=>$user, ':n'=>$CONF['now_dt'], ':nz'=>$CONF['now_dt']));
 
 
                 $unow=$_SESSION['helpdesk_user_id'];
@@ -3336,8 +3338,8 @@ values (:ar, now(), :unow, :tid)');
 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log 
             (msg, date_op, init_user_id, ticket_id)
-			values (:ok, now(), :unow, :tid)');
-                $stmt->execute(array(':ok'=>'ok',':tid' => $tid,':unow'=>$unow));
+			values (:ok, :n, :unow, :tid)');
+                $stmt->execute(array(':ok'=>'ok',':tid' => $tid,':unow'=>$unow, ':n'=>$CONF['now_dt']));
  send_notification('ticket_ok',$tid);
                 ?>
 
@@ -3384,8 +3386,8 @@ values (:ar, now(), :unow, :tid)');
 
 
 
-                    $stmt = $dbConnection->prepare('update tickets set ok_by=:n, status=:n1, last_update=now() where id=:tid');
-                    $stmt->execute(array(':tid' => $tid, ':n'=>'0',':n1'=>'0'));
+                    $stmt = $dbConnection->prepare('update tickets set ok_by=:n, status=:n1, last_update=:nz where id=:tid');
+                    $stmt->execute(array(':tid' => $tid, ':n'=>'0',':n1'=>'0', ':nz'=>$CONF['now_dt']));
 
 
 
@@ -3394,8 +3396,8 @@ values (:ar, now(), :unow, :tid)');
 
 
                     $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:no_ok, now(), :unow, :tid)');
-                    $stmt->execute(array(':tid' => $tid, ':unow'=>$unow,':no_ok'=>'no_ok'));
+values (:no_ok, :n, :unow, :tid)');
+                    $stmt->execute(array(':tid' => $tid, ':unow'=>$unow,':no_ok'=>'no_ok', ':n'=>$CONF['now_dt']));
                     
                     send_notification('ticket_no_ok',$tid);
                     ?>
@@ -3433,15 +3435,15 @@ values (:no_ok, now(), :unow, :tid)');
             if ($lb == "0") {
 
 
-                $stmt = $dbConnection->prepare('update tickets set lock_by=:user, last_update=now() where id=:tid');
-                $stmt->execute(array(':tid' => $tid, ':user'=>$user));
+                $stmt = $dbConnection->prepare('update tickets set lock_by=:user, last_update=:n where id=:tid');
+                $stmt->execute(array(':tid' => $tid, ':user'=>$user, ':n'=>$CONF['now_dt']));
 
                 $unow=$_SESSION['helpdesk_user_id'];
 
 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:lock, now(), :unow, :tid)');
-                $stmt->execute(array(':tid' => $tid, ':unow'=>$unow, ':lock'=>'lock'));
+values (:lock, :n, :unow, :tid)');
+                $stmt->execute(array(':tid' => $tid, ':unow'=>$unow, ':lock'=>'lock', ':n'=>$CONF['now_dt']));
                 
                 send_notification('ticket_lock',$tid);
                 
@@ -3471,8 +3473,8 @@ values (:lock, now(), :unow, :tid)');
 
 
 
-            $stmt = $dbConnection->prepare('update tickets set lock_by=:n, last_update=now() where id=:tid');
-            $stmt->execute(array(':tid' => $tid, ':n'=>'0'));
+            $stmt = $dbConnection->prepare('update tickets set lock_by=:n, last_update=:nz where id=:tid');
+            $stmt->execute(array(':tid' => $tid, ':n'=>'0', ':nz'=>$CONF['now_dt']));
 
 
             $unow=$_SESSION['helpdesk_user_id'];
@@ -3481,8 +3483,8 @@ values (:lock, now(), :unow, :tid)');
 
 
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:unlock, now(), :unow, :tid)');
-            $stmt->execute(array(':tid' => $tid, ':unow'=>$unow, ':unlock'=>'unlock'));
+values (:unlock, :n, :unow, :tid)');
+            $stmt->execute(array(':tid' => $tid, ':unow'=>$unow, ':unlock'=>'unlock', ':n'=>$CONF['now_dt']));
                 send_notification('ticket_unlock',$tid);
             ?>
 
@@ -3511,14 +3513,15 @@ values (:unlock, now(), :unow, :tid)');
             user_to_id=:tou, 
             msg=concat(msg,:br,:x_refer_comment), 
             lock_by=:n, 
-            last_update=now() where id=:tid');
+            last_update=:nz where id=:tid');
                 $stmt->execute(array(
                     ':to'=>$to,
                     ':tou'=>$tou,
                     ':br'=>'<br>',
                     ':x_refer_comment'=>$x_refer_comment,
                     ':tid' => $tid,
-                    ':n'=>'0'));
+                    ':n'=>'0', 
+                    ':nz'=>$CONF['now_dt']));
             }
             else if (strlen($tom) <= 2) {
 
@@ -3526,12 +3529,13 @@ values (:unlock, now(), :unow, :tid)');
             unit_id=:to, 
             user_to_id=:tou, 
             lock_by=:n, 
-            last_update=now() where id=:tid');
+            last_update=:nz where id=:tid');
                 $stmt->execute(array(
                     ':to'=>$to,
                     ':tou'=>$tou,
                     ':tid' => $tid,
-                    ':n'=>'0'));
+                    ':n'=>'0', 
+                    ':nz'=>$CONF['now_dt']));
             }
 
 
@@ -3539,8 +3543,8 @@ values (:unlock, now(), :unow, :tid)');
             $unow=$_SESSION['helpdesk_user_id'];
 
 
-            $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, to_user_id, ticket_id, to_unit_id) values (:refer, now(), :unow, :tou, :tid, :to)');
-            $stmt->execute(array(':to'=>$to,':tou'=>$tou,':refer'=>'refer',':tid' => $tid, ':unow'=>$unow));
+            $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, to_user_id, ticket_id, to_unit_id) values (:refer, :n, :unow, :tou, :tid, :to)');
+            $stmt->execute(array(':to'=>$to,':tou'=>$tou,':refer'=>'refer',':tid' => $tid, ':unow'=>$unow, ':n'=>$CONF['now_dt']));
 
 
 
@@ -3897,12 +3901,12 @@ $stmt = $dbConnection->prepare('SELECT id, subj, msg, prio FROM tickets where ha
 	$pk = $fio['id'];
 	
 if ($prio != $fio['prio']) {
-	            $stmt = $dbConnection->prepare('update tickets set prio=:v, last_edit=now(), last_update=now() where hash_name=:pk');
-            $stmt->execute(array(':v'=>$prio, ':pk'=>$t_hash));
+	            $stmt = $dbConnection->prepare('update tickets set prio=:v, last_edit=:n, last_update=:nz where hash_name=:pk');
+            $stmt->execute(array(':v'=>$prio, ':pk'=>$t_hash, ':n'=>$CONF['now_dt'], ':nz'=>$CONF['now_dt']));
             $unow=$_SESSION['helpdesk_user_id'];
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:edit_subj, now(), :unow, :pk)');
-            $stmt->execute(array(':edit_subj'=>'edit_prio', ':pk'=>$pk,':unow'=>$unow));
+values (:edit_subj, :n, :unow, :pk)');
+            $stmt->execute(array(':edit_subj'=>'edit_prio', ':pk'=>$pk,':unow'=>$unow, ':n'=>$CONF['now_dt']));
             
             
 
@@ -3910,8 +3914,8 @@ values (:edit_subj, now(), :unow, :pk)');
 	
 	
 if ($subj != $fio['subj']) {
-	            $stmt = $dbConnection->prepare('update tickets set subj=:v, last_edit=now(), last_update=now() where hash_name=:pk');
-            $stmt->execute(array(':v'=>$subj, ':pk'=>$t_hash));
+	            $stmt = $dbConnection->prepare('update tickets set subj=:v, last_edit=:n, last_update=:nz where hash_name=:pk');
+            $stmt->execute(array(':v'=>$subj, ':pk'=>$t_hash, ':n'=>$CONF['now_dt'], ':nz'=>$CONF['now_dt']));
 
 
             $unow=$_SESSION['helpdesk_user_id'];
@@ -3919,22 +3923,22 @@ if ($subj != $fio['subj']) {
 
 
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:edit_subj, now(), :unow, :pk)');
-            $stmt->execute(array(':edit_subj'=>'edit_subj', ':pk'=>$pk,':unow'=>$unow));
+values (:edit_subj, :n, :unow, :pk)');
+            $stmt->execute(array(':edit_subj'=>'edit_subj', ':pk'=>$pk,':unow'=>$unow, ':n'=>$CONF['now_dt']));
 }
 
 
 
 if ($msg != $fio['msg']) {
 
- 			$stmt = $dbConnection->prepare('update tickets set msg=:v, last_edit=now(), last_update=now() where hash_name=:pk');
-            $stmt->execute(array(':v'=>$msg, ':pk'=>$t_hash));
+ 			$stmt = $dbConnection->prepare('update tickets set msg=:v, last_edit=:n, last_update=:nz where hash_name=:pk');
+            $stmt->execute(array(':v'=>$msg, ':pk'=>$t_hash, ':n'=>$CONF['now_dt'], ':nz'=>$CONF['now_dt']));
 
             $unow=$_SESSION['helpdesk_user_id'];
 
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:edit_msg, now(), :unow, :pk)');
-            $stmt->execute(array(':edit_msg'=>'edit_msg', ':pk'=>$pk,':unow'=>$unow));
+values (:edit_msg, :n, :unow, :pk)');
+            $stmt->execute(array(':edit_msg'=>'edit_msg', ':pk'=>$pk,':unow'=>$unow, ':n'=>$CONF['now_dt']));
             
 
 }
@@ -4188,8 +4192,8 @@ $tt=$stmt->fetch(PDO::FETCH_ASSOC);
 	        
 	        
 	        $stmt = $dbConnection->prepare('INSERT INTO notification_msg_pool (delivers_id,type_op,ticket_id,dt,chat_msg_id)
-					values (:delivers_id,:type_op,:ticket_id,now(),:chat_msg_id)');
-            $stmt->execute(array(':delivers_id'=>$unid, ':type_op'=>'message_send', ':ticket_id'=>$user_comment,':chat_msg_id'=>$max_id_res_msgs));
+					values (:delivers_id,:type_op,:ticket_id,:n,:chat_msg_id)');
+            $stmt->execute(array(':delivers_id'=>$unid, ':type_op'=>'message_send', ':ticket_id'=>$user_comment,':chat_msg_id'=>$max_id_res_msgs, ':n'=>$CONF['now_dt']));
             
             
 	        
@@ -4198,8 +4202,8 @@ $tt=$stmt->fetch(PDO::FETCH_ASSOC);
         
         
                     $stmt = $dbConnection->prepare('INSERT INTO messages (id, user_from,user_to,date_op,msg,type_msg,is_read)
-					values (:ida, :user_from, :user_to, now(), :msg, :type_msg, :is_read)');
-            $stmt->execute(array(':ida'=>$max_id_res_msgs,':user_from'=>$user_comment, ':user_to'=>$a, ':msg'=>$text_comment, ':type_msg'=>$b, ':is_read'=>'0'));
+					values (:ida, :user_from, :user_to, :n, :msg, :type_msg, :is_read)');
+            $stmt->execute(array(':ida'=>$max_id_res_msgs,':user_from'=>$user_comment, ':user_to'=>$a, ':msg'=>$text_comment, ':type_msg'=>$b, ':is_read'=>'0', ':n'=>$CONF['now_dt']));
         
         
         view_messages($target);
@@ -4236,12 +4240,12 @@ $tt=$stmt->fetch(PDO::FETCH_ASSOC);
 //if ($_SESSION['helpdesk_user_type'] == "user") {
 
             $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
-values (:tid_comment, :user_comment, :text_comment, now())');
-            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>$user_comment,':text_comment'=>$text_comment));
+values (:tid_comment, :user_comment, :text_comment, :n)');
+            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>$user_comment,':text_comment'=>$text_comment, ':n'=>$CONF['now_dt']));
 
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:comment, now(), :user_comment, :tid_comment)');
-            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>$user_comment,':comment'=>'comment'));
+values (:comment, :n, :user_comment, :tid_comment)');
+            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>$user_comment,':comment'=>'comment', ':n'=>$CONF['now_dt']));
 
 
 send_notification('ticket_comment', $tid_comment);
@@ -4249,25 +4253,11 @@ send_notification('ticket_comment', $tid_comment);
 
 //}
 
-/*
-else if ($_SESSION['helpdesk_user_type'] == "client") {
-
-            $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
-values (:tid_comment, :user_comment, :text_comment, now())');
-            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>'0',':text_comment'=>$text_comment));
-
-            $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
-values (:comment, now(), :user_comment, :tid_comment)');
-            $stmt->execute(array(':tid_comment'=>$tid_comment, ':user_comment'=>'0',':comment'=>'comment'));
-
-}
 
 
-*/
 
-
-            $stmt = $dbConnection->prepare('update tickets set last_update=now() where id=:tid_comment');
-            $stmt->execute(array(':tid_comment'=>$tid_comment));
+            $stmt = $dbConnection->prepare('update tickets set last_update=:n where id=:tid_comment');
+            $stmt->execute(array(':tid_comment'=>$tid_comment, ':n'=>$CONF['now_dt']));
 
 
             view_comment($tid_comment);
@@ -4479,8 +4469,8 @@ $hn=md5(time());
 
 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-								(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, now(),:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, now())');
-                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$max_id,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio));
+								(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
+                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$max_id,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio, ':n'=>$CONF['now_dt'], ':nz'=>$CONF['now_dt']));
 
 
 
@@ -4489,9 +4479,9 @@ $hn=md5(time());
 
 
 
-                $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, now(), :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
+                $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
 
-                $stmt->execute(array(':create'=>'create', ':unow'=>$unow,':max_id_res_ticket'=>$max_id_res_ticket,':user_to_id'=>$user_to_id,':unit_id'=>$unit_id));
+                $stmt->execute(array(':create'=>'create', ':unow'=>$unow,':max_id_res_ticket'=>$max_id_res_ticket,':user_to_id'=>$user_to_id,':unit_id'=>$unit_id, ':n'=>$CONF['now_dt']));
 
 
 //if ($CONF_MAIL['active'] == "true") {
@@ -4529,8 +4519,8 @@ if ($if_cl == "1") {
 
 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-								(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, now(),:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, now())');
-                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$client_id_param,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio));
+								(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
+                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$client_id_param,':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio, ':n'=>$CONF['now_dt'], ':nz'=>$CONF['now_dt']));
 
 
                 $unow=$_SESSION['helpdesk_user_id'];
@@ -4538,9 +4528,9 @@ if ($if_cl == "1") {
 
 
 
-                $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, now(), :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
+                $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
 
-                $stmt->execute(array(':create'=>'create', ':unow'=>$unow,':max_id_res_ticket'=>$max_id_res_ticket,':user_to_id'=>$user_to_id,':unit_id'=>$unit_id));
+                $stmt->execute(array(':create'=>'create', ':unow'=>$unow,':max_id_res_ticket'=>$max_id_res_ticket,':user_to_id'=>$user_to_id,':unit_id'=>$unit_id, ':n'=>$CONF['now_dt']));
 
 
 //echo("dd");
@@ -4565,9 +4555,9 @@ $user_init_id=$_SESSION['helpdesk_user_id'];
 
 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-								(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, now(),:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, now())');
+								(id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
 								
-                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$_SESSION['helpdesk_user_id'],':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio));
+                $stmt->execute(array(':max_id_res_ticket'=>$max_id_res_ticket,':user_init_id'=>$user_init_id,':user_to_id'=>$user_to_id,':subj'=>$subj,':msg'=>$msg,':max_id'=>$_SESSION['helpdesk_user_id'],':unit_id'=>$unit_id,':status'=>$status,':hashname'=>$hashname,':prio'=>$prio, ':n'=>$CONF['now_dt'], ':nz'=>$CONF['now_dt']));
 
 
                 $unow=$_SESSION['helpdesk_user_id'];
@@ -4575,9 +4565,9 @@ $user_init_id=$_SESSION['helpdesk_user_id'];
 
 
 
-                $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, now(), :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
+                $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
 
-                $stmt->execute(array(':create'=>'create', ':unow'=>$unow,':max_id_res_ticket'=>$max_id_res_ticket,':user_to_id'=>$user_to_id,':unit_id'=>$unit_id));
+                $stmt->execute(array(':create'=>'create', ':unow'=>$unow,':max_id_res_ticket'=>$max_id_res_ticket,':user_to_id'=>$user_to_id,':unit_id'=>$unit_id, ':n'=>$CONF['now_dt']));
 //??????????????????????????????????????????????????????????????
 
 //echo("dd");

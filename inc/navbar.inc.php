@@ -83,8 +83,8 @@ else if ($tm == 0) {
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu" id="online_users_content">
                                     <?php
-                                    $stmt = $dbConnection->prepare('select fio,id,uniq_id from users where last_time >= DATE_SUB(NOW(),INTERVAL 2 MINUTE)');
-    $stmt->execute();
+                                    $stmt = $dbConnection->prepare('select fio,id,uniq_id from users where last_time >= DATE_SUB(:n,INTERVAL 2 MINUTE)');
+    $stmt->execute(array(':n'=>$CONF['now_dt']));
     $re = $stmt->fetchAll();
                                     
                                     foreach ($re as $rews) {

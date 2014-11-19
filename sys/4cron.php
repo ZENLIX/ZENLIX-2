@@ -29,10 +29,11 @@ return $con['value'];
 }
 
 $CONF = array (
-'days2arch'   => get_conf_param('days2arch')
+'days2arch'   => get_conf_param('days2arch'),
+'time_zone'   => get_conf_param('time_zone')
 );
 
-
+$time_zone=$CONF['time_zone'];
 
 
 
@@ -57,16 +58,16 @@ $CONF = array (
 
     if ($td > $CONF['days2arch'] ) {
 
-                $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=now() where id=:m');
-		$stmt->execute(array(':n1' => '1',':m' => $m));
+                $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=:n where id=:m');
+		$stmt->execute(array(':n1' => '1',':m' => $m, ':n'=>$time_zone));
         
         
         
                 
                 
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, ticket_id)
-values (:arch, now(), :m)');
-			$stmt->execute(array(':arch' => 'arch',':m' => $m));
+values (:arch, :n, :m)');
+			$stmt->execute(array(':arch' => 'arch',':m' => $m,':n'=>$time_zone));
 			
 			
 
@@ -126,11 +127,12 @@ values (:arch, now(), :m)');
 					$delivers_ids=implode(",", array_unique($delivers_ids));
 					
 									 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (now(), :msg, :init_user_id, :target_user,:ticket_id)');
+				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
 				 $stmt->execute(array(':msg'=>'ticket_arch', 
 				 					  ':init_user_id'=>$user_init_id, 
 				 					  ':target_user'=>$delivers_ids,
-				 					  ':ticket_id'=>$m));
+				 					  ':ticket_id'=>$m,
+				 					  ':n'=>$time_zone));
 
 			
 			

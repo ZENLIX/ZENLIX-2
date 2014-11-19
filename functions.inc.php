@@ -6,7 +6,13 @@ include_once('sys/class.phpmailer.php');
 include_once('sys/Parsedown.php');
 require 'library/HTMLPurifier.auto.php';
 //include_once('integration/PushBullet.class.php');
-date_default_timezone_set('Europe/Kiev');
+
+
+
+
+
+
+
 $dbConnection = new PDO(
     'mysql:host='.$CONF_DB['host'].';dbname='.$CONF_DB['db_name'],
     $CONF_DB['username'],
@@ -23,6 +29,12 @@ function site_proto()
     return $protocol;
 }
 
+$def_timezone=get_conf_param('time_zone');
+
+date_default_timezone_set($def_timezone);
+$date_tz = new DateTime();
+$date_tz->setTimezone(new DateTimeZone($def_timezone));
+$now_date_time = $date_tz->format('Y-m-d H:i:s');
 
 
 $CONF = array (
@@ -35,7 +47,10 @@ $CONF = array (
 	'first_login'	=> get_conf_param('first_login'),
 	'file_uploads'	=> get_conf_param('file_uploads'),
 	'file_types'	=> '('.get_conf_param('file_types').')',
-	'file_size'		=> get_conf_param('file_size')
+	'file_size'		=> get_conf_param('file_size'),
+    'update_server' => 'http://update.zenlix.com/',
+    'timezone'      => get_conf_param('time_zone'),
+    'now_dt'        => $now_date_time
 	);
 $CONF_MAIL = array (
 	'active'	=> get_conf_param('mail_active'),
@@ -48,6 +63,10 @@ $CONF_MAIL = array (
 	'from'		=> get_conf_param('mail_from'),
 	'debug'		=> 'false'
 );
+
+
+
+
 
 
 if ($CONF_HD['debug_mode'] == false) {
@@ -402,6 +421,8 @@ function get_file_icon($in) {
 	
 	return $icon;
 }
+
+
 
 
 function validate_admin($user_id) {
@@ -960,7 +981,7 @@ return $r;
 
 function validate_user($user_id, $input) {
 
-    global $dbConnection;
+    global $dbConnection, $CONF;
 $result=false;
 
 
@@ -992,8 +1013,8 @@ if (get_user_authtype($ul)) {
         
         $_SESSION['helpdesk_user_login'] = $row['login'];
         $_SESSION['helpdesk_user_fio'] = $row['fio'];
-        $stmt = $dbConnection->prepare('update users set last_time=now() where id=:cid');
-		$stmt->execute(array(':cid' => $user_id));
+        $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
+		$stmt->execute(array(':cid' => $user_id, ':n'=>$CONF['now_dt']));
         return true;
         
     }
@@ -1021,8 +1042,8 @@ else if (get_user_authtype($ul) == false) {
         $_SESSION['helpdesk_user_fio'] = $row['fio'];
         //$_SESSION['helpdesk_sort_prio'] == "none";
         if ($dbpass == $input) { 
-        $stmt = $dbConnection->prepare('update users set last_time=now() where id=:cid');
-		$stmt->execute(array(':cid' => $user_id));
+        $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
+		$stmt->execute(array(':cid' => $user_id, ':n'=>$CONF['now_dt']));
         return true;
 	        
 
@@ -1056,9 +1077,9 @@ function get_user_status($in) {
 
 
 function get_total_users_online() {
-		    global $dbConnection;
-	$stmt = $dbConnection->prepare('select count(id) as cou from users where last_time >= DATE_SUB(NOW(),INTERVAL 2 MINUTE)');
-    $stmt->execute();
+		    global $dbConnection, $CONF;
+	$stmt = $dbConnection->prepare('select count(id) as cou from users where last_time >= DATE_SUB(:n,INTERVAL 2 MINUTE)');
+    $stmt->execute(array(':n'=>$CONF['now_dt']));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
 	$lt=$total_ticket['cou'];
 
@@ -2537,11 +2558,11 @@ foreach ($ee as $key=>$value) { $vv[":val_" . $key]=$value;}
 
 
 function push_msg_action2user($deliver,$type_op) {
-		global $dbConnection;
+		global $dbConnection,$CONF;
 	
 $u_hash=get_user_hash_by_id($deliver);
-				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, dt) VALUES (:delivers_id, :type_op, now())');
-				$stmt_n->execute(array(':delivers_id'=>$deliver, ':type_op'=>$type_op));
+				$stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, dt) VALUES (:delivers_id, :type_op, :n)');
+				$stmt_n->execute(array(':delivers_id'=>$deliver, ':type_op'=>$type_op, ':n'=>$CONF['now_dt']));
 }
 
 
@@ -3307,9 +3328,10 @@ function name_of_client_ret($input) {
 
 
 function time_ago($in) {
+    global $CONF;
     $time = $in;
     $datetime1 = date_create($time);
-    $datetime2 = date_create('now',new DateTimeZone('Europe/Kiev'));
+    $datetime2 = date_create('now',new DateTimeZone($CONF['timezone']));
     $interval = date_diff($datetime1, $datetime2);
     echo $interval->format('%d д %h:%I');
 

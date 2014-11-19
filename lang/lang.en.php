@@ -30,7 +30,7 @@ function lang($phrase){
 'EXT_stats_main_todo'=>'To display statistics about user, specify the user and the period.',
 
 'EXT_stat_title'=>'Register of user actions with ',
-
+'CONF_timezone'=>'Time zone',
 'CONF_2noty_info'=>'For e-mail notifications, add a cron string ',
 'UPGRADE_title'=>'system Update',
 'UPGRADE_title_ext'=>'update Wizard version',
@@ -41,7 +41,7 @@ function lang($phrase){
 'UPGRADE_new'=>'new version is Available',
 'UPGRADE_list'=>'List',
 'UPGRADE_files'=>'Files which are subject to change',
-'UPGRADE_att'=>'make Sure that all of the above files have write permissions.',
+'UPGRADE_att'=>'make Sure that all of the above files have permissions:',
 'UPGRADE_now'=>'Update now!',
 'EXT_do_write_message'=>'Compose message', 
 'EXT_no_unread_msg'=>'No unread messages',
