@@ -1,6 +1,6 @@
 <?php
 session_start();
-//dr
+//d r
 include ("functions.inc.php");
 include ("sys/dbu.class.php");
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
