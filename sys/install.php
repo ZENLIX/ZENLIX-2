@@ -117,14 +117,14 @@ if (isset($_POST['mode'])) {
 
 		<div class="container" id="content">
 		<div class="page-header">
-  <h1>ZENLIX <small>установка системы</small></h1>
+  <h1>ZENLIX <small>system installation</small></h1>
 </div>
 		<div class="row">
 		
 		<div class="col-md-12">
 		<div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Результат установки</h3>
+    <h3 class="panel-title">Installation result</h3>
   </div>
   <div class="panel-body">
 
@@ -132,6 +132,7 @@ if (isset($_POST['mode'])) {
 // Name of the file
 $filename = realpath(dirname(dirname(__FILE__))).'/DB/HD.db.sql';
 $fileconf = realpath(dirname(dirname(__FILE__))).'/conf.php';
+$nodeserver = realpath(dirname(dirname(__FILE__))).'/nodejs/server.js';
 // MySQL host
 $mysql_host = $_POST['host'];
 // MySQL username
@@ -193,13 +194,26 @@ $current .= ");\n";
 $current .= "?>\n";
 file_put_contents($fileconf, $current);
 
+
+$node_params.="var db = mysql.createConnection({\n";
+$node_params.="host: '".$mysql_host."',\n";
+$node_params.="user: '".$mysql_username."',\n";
+$node_params.="password: '".$mysql_password."',\n";
+$node_params.="database: '".$mysql_database."'})\n";
+$node_params.=file_get_contents($nodeserver);
+file_put_contents($nodeserver, $node_params);
+
+
+
+
+
 $pos = strrpos($_SERVER['REQUEST_URI'], '/');
 $sys_url= $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
       
 mysql_query("update perf set value='$sys_url' where param='hostname'")or die("Invalid query: " . mysql_error());
 ?>
-<h2>Поздравляем Вас с успешной установкой!</h2>
-Вы можете войти в систему по адресу: <a href="http://<?=$sys_url;?>"><?=$sys_url;?></a>,<br> используя логин: <strong>system</strong> и пароль: <strong>1234</strong>.<br>
+<h2>Congratulations on the successful installation!</h2>
+You can log in at: <a href="http://<?=$sys_url;?>"><?=$sys_url;?></a>,<br> login: <strong>system</strong> & password: <strong>1234</strong>.<br>
 
 
 <hr>
@@ -219,21 +233,21 @@ if (isset($_GET['mode'])) {
 		
 		<div class="container" id="content">
 		<div class="page-header">
-  <h1>ZENLIX <small>подготовка к установке</small></h1>
+  <h1>ZENLIX <small>prepare to install</small></h1>
 </div>
 		<div class="row">
 		
 		<div class="col-md-12">
 		<div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Подключение к БД</h3>
+    <h3 class="panel-title">DB connection preferences</h3>
   </div>
   <div class="panel-body">
 
 <form class="form-horizontal" role="form" action="index.php" method="post">
     
     <div class="form-group">
-    <label for="host" class="col-sm-4 control-label"><small>Адрес MySQL-сервера</small></label>
+    <label for="host" class="col-sm-4 control-label"><small>Host MySQL-server</small></label>
     <div class="col-sm-8">
 <input type="text" class="form-control input-sm" id="host" name="host" placeholder="localhost" value="">
 
@@ -241,9 +255,9 @@ if (isset($_GET['mode'])) {
   </div>
 
     <div class="form-group">
-    <label for="username" class="col-sm-4 control-label"><small>Логин</small></label>
+    <label for="username" class="col-sm-4 control-label"><small>Login</small></label>
     <div class="col-sm-8">
-<input type="text" class="form-control input-sm" id="username" name="username" placeholder="root" value="">
+<input type="text" class="form-control input-sm" id="username" name="username" placeholder="zenlix_user" value="">
 
    </div>
   </div>
@@ -251,7 +265,7 @@ if (isset($_GET['mode'])) {
   
   
       <div class="form-group">
-    <label for="password" class="col-sm-4 control-label"><small>Пароль</small></label>
+    <label for="password" class="col-sm-4 control-label"><small>Password</small></label>
     <div class="col-sm-8">
 <input type="password" class="form-control input-sm" id="password" name="password" placeholder="pass" value="">
 
@@ -260,9 +274,9 @@ if (isset($_GET['mode'])) {
   
   
         <div class="form-group">
-    <label for="db" class="col-sm-4 control-label"><small>Имя БД</small></label>
+    <label for="db" class="col-sm-4 control-label"><small>DB name</small></label>
     <div class="col-sm-8">
-<input type="password" class="form-control input-sm" id="db" name="db" placeholder="hd.rustem" value="">
+<input type="text" class="form-control input-sm" id="db" name="db" placeholder="zenlix_db" value="">
 
    </div>
   </div>
@@ -270,7 +284,7 @@ if (isset($_GET['mode'])) {
 
 <center>
 <input type="hidden" name="mode" value="1">
-<button class="btn btn-lg btn-success" href="" role="button"><i class="fa fa-chevron-circle-right"></i>  Установить</button>
+<button class="btn btn-lg btn-success" href="" role="button"><i class="fa fa-chevron-circle-right"></i> Install</button>
 </center>
 </form>
 
@@ -291,14 +305,14 @@ if (isset($_GET['mode'])) {
 		?>
 		<div class="container" id="content">
 		<div class="page-header">
-  <h1>ZENLIX <small>подготовка к установке</small></h1>
+  <h1>ZENLIX <small>prepare to install</small></h1>
 </div>
 		<div class="row">
 		
 		<div class="col-md-12">
 		<div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Проверка...</h3>
+    <h3 class="panel-title">Checking...</h3>
   </div>
   <div class="panel-body">
     <table class="table">
@@ -310,7 +324,7 @@ if (isset($_GET['mode'])) {
                 <td width="100px;">
 	                
 	                <?php if(ini_get('short_open_tag') == false) {?> 
-	                <span class="label label-danger">Не активно</span>
+	                <span class="label label-danger">not active</span>
 	                <div class="alert alert-danger" role="alert">PHP-error: <em>short_open_tag</em> must be enable in your php configuration. <br> Details: <a href="http://php.net//manual/ru/language.basic-syntax.phptags.php">http://php.net//manual/ru/language.basic-syntax.phptags.php</a></div>
 	                 <?php  } ?>
 	                <?php if(ini_get('short_open_tag') == true) {?><span class="label label-success">Success</span> <?php } ?>
@@ -323,10 +337,10 @@ if (isset($_GET['mode'])) {
 	                <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/.htaccess";
     if (!file_exists($filename)) { ?>
-    <span class="label label-danger">Файл отсутствует</span>
+    <span class="label label-danger">file not found</span>
     <div class="alert alert-danger" role="alert">
     
-    В каталоге <?=realpath(dirname(dirname(__FILE__)))?> нужно создать файл .htaccess с таким содержанием:
+    В каталоге <?=realpath(dirname(dirname(__FILE__)))?> must create .htaccess with content:
     <code>
 RewriteEngine on
 RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?page=$1  [QSA,L]
@@ -351,7 +365,7 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
 	                <?php if (defined('PDO::ATTR_DRIVER_NAME')) {?>
 <span class="label label-success">Success</span>
 <?php } if (!defined('PDO::ATTR_DRIVER_NAME')) {?>
-    <span class="label label-danger">Не автивно</span>
+    <span class="label label-danger">not active</span>
 	        <?php } ?>            
 	                
                 </td>
@@ -362,7 +376,7 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
 	                <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/conf.php";
     if (!is_writable($filename)) { ?>
-    <span class="label label-danger">Не автивно</span>
+    <span class="label label-danger">not active</span>
     <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
     <?php } if (is_writable($filename)) {?>
     <span class="label label-success">Success</span>
@@ -377,7 +391,7 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
 	                <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/upload_files/";
     if (!is_writable($filename)) { ?>
-    <span class="label label-danger">Не автивно</span>
+    <span class="label label-danger">not active</span>
     <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
     <?php } if (is_writable($filename)) {?>
     <span class="label label-success">Success</span>
@@ -391,7 +405,7 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
 	                <?php
     $filename=realpath(dirname(dirname(__FILE__)))."/upload_files/user_content";
     if (!is_writable($filename)) { ?>
-    <span class="label label-danger">Не автивно</span>
+    <span class="label label-danger">not active</span>
     <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
     <?php } if (is_writable($filename)) {?>
     <span class="label label-success">Success</span>
@@ -431,13 +445,13 @@ else if (!isset($_GET['mode'])) {
 
       <div class="jumbotron">
         <h1>ZENLIX </h1>
-        <p class="lead">ZENLIX веб-система учёта выполняемых заявок </p>
-        <p><a class="btn btn-lg btn-success" href="index.php?mode=check_install" role="button">Приступить к установке!</a></p>
+        <p class="lead">ZENLIX web ticket system for accounting tasks </p>
+        <p><a class="btn btn-lg btn-success" href="index.php?mode=check_install" role="button">Start install!</a></p>
       </div>
 
       <div class="row marketing">
-      <p class="text-center"><strong>Идеология системы</strong></p>
-        <p class="text-center">Очень часто в организации возникает необходимость вести контроль выполняемых задач. Наша система помогает принимать заявки от клиентов, обрабатывать их, а так же создавать задачи (заявки) своим подчинённым и мониторить их выполнение. Благодаря этому рабочий процесс прекрасно оптимизируется.     </p>
+      <p class="text-center"><strong>About system</strong></p>
+        <p class="text-center">Very often, the organization needs to watch the performed tasks. Our system helps to receive requests from clients, process them, and also to create tasks (tickets) to his subordinates and monitor their implementation. With this workflow perfectly optimized.     </p>
         
         
          </div>

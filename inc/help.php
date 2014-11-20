@@ -1,23 +1,21 @@
 <?php
 session_start();
-include("../functions.inc.php");
+include ("../functions.inc.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
-//if (validate_admin($_SESSION['helpdesk_user_id'])) {
-    include("head.inc.php");
-    include("navbar.inc.php");
-
-
-
-    ?>
+    
+    //if (validate_admin($_SESSION['helpdesk_user_id'])) {
+    include ("head.inc.php");
+    include ("navbar.inc.php");
+?>
     <section class="content-header">
                     <h1>
-                        <i class="fa fa-life-ring"></i> <?=lang('HELP_title');?>
-                        <small><?=lang('HELP_title');?></small>
+                        <i class="fa fa-life-ring"></i> <?php echo lang('HELP_title'); ?>
+                        <small><?php echo lang('HELP_title'); ?></small>
                     </h1>
                     <ol class="breadcrumb">
-                       <li><a href="<?=$CONF['hostname']?>index.php"><span class="icon-svg"></span> <?=$CONF['name_of_firm']?></a></li>
-                        <li class="active"><?=lang('HELP_title');?></li>
+                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
+                        <li class="active"><?php echo lang('HELP_title'); ?></li>
                     </ol>
                 </section>
 
@@ -62,9 +60,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#home" data-toggle="tab">1. <?=lang('HELP_new');?></a></li>
-                    <li><a href="#profile" data-toggle="tab">2. <?=lang('HELP_review');?></a></li>
-                    <li><a href="#messages" data-toggle="tab">3. <?=lang('HELP_edit_user');?></a></li>
+                    <li class="active"><a href="#home" data-toggle="tab">1. <?php echo lang('HELP_new'); ?></a></li>
+                    <li><a href="#profile" data-toggle="tab">2. <?php echo lang('HELP_review'); ?></a></li>
+                    <li><a href="#messages" data-toggle="tab">3. <?php echo lang('HELP_edit_user'); ?></a></li>
 
                 </ul>
 
@@ -75,7 +73,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             <div class="panel-body">
 
                                 <img src="img/75e07fbdbf9d19760d4f365b9a2fe2b6.gif" class="img-responsive img-thumbnail"><br>
-                                <?=lang('HELP_new_text');?>
+                                <?php echo lang('HELP_new_text'); ?>
 
                             </div>
 
@@ -93,14 +91,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
                                 <img src="img/t.png" class="img-responsive img-thumbnail">
                                 <br>
-                                <?=lang('HELP_review_text');?>
+                                <?php echo lang('HELP_review_text'); ?>
 
                             </div>
                         </div></div>
                     <div class="tab-pane" id="messages"><div class="panel panel-default">
-                            <div class="panel-heading"><?=lang('HELP_edit_user');?></div>
+                            <div class="panel-heading"><?php echo lang('HELP_edit_user'); ?></div>
                             <div class="panel-body">
-                                <?=lang('HELP_edit_user_text');?>
+                                <?php echo lang('HELP_edit_user_text'); ?>
                             </div></div></div>
                 </div>
             </div>
@@ -121,13 +119,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 </div>
     </section>
     <?php
-    include("inc/footer.inc.php");
-    ?>
+    include ("inc/footer.inc.php");
+?>
 
     <?php
+    
     //}
-}
-else {
+    
+} else {
     include 'auth.php';
 }
 ?>

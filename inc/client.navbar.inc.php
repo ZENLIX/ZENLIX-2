@@ -1,40 +1,34 @@
 <?php
-function echoActiveClassIfRequestMatches($requestUri)
-{
+function echoActiveClassIfRequestMatches($requestUri) {
     $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
     $file = $_SERVER['REQUEST_URI'];
     $file = explode("?", basename($file));
-    $current_file_name=$file[0];
-
-//$file = $_SERVER['REQUEST_URI'];
-//$file = explode("?", basename($file));
-
-    if ($current_file_name == $requestUri)
-        echo 'class="active"';
+    $current_file_name = $file[0];
+    
+    //$file = $_SERVER['REQUEST_URI'];
+    //$file = explode("?", basename($file));
+    
+    if ($current_file_name == $requestUri) echo 'class="active"';
 }
 
-
-$newt=get_total_client_tickets_out();
-$newt2=get_total_client_tickets_ok();
-$newt=$newt-$newt2;
-
-
+$newt = get_total_client_tickets_out();
+$newt2 = get_total_client_tickets_ok();
+$newt = $newt - $newt2;
 
 if ($newt != 0) {
-	$newtickets=" <small class=\"badge pull-right bg-red\">".$newt."</small>";
+    $newtickets = " <small class=\"badge pull-right bg-red\">" . $newt . "</small>";
 }
 if ($newt <= 0) {
-	$newtickets="";
+    $newtickets = "";
 }
 
-$ap=get_approve();
+$ap = get_approve();
 if ($ap != 0) {
-	$apr="
-	<small class=\"badge pull-right bg-yellow\">".$ap."</small>";
-	
+    $apr = "
+    <small class=\"badge pull-right bg-yellow\">" . $ap . "</small>";
 }
 if ($ap == 0) {
-	$apr="";
+    $apr = "";
 }
 ?>
 
@@ -42,9 +36,9 @@ if ($ap == 0) {
 
 
                <header class="header">
-            <a href="<?=$CONF['hostname']?>index.php" class="logo">
+            <a href="<?php echo $CONF['hostname'] ?>index.php" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
-                <img src="<?=$CONF['hostname']?>/img/logo-small.png"> <?=$CONF['name_of_firm']?>
+                <img src="<?php echo $CONF['hostname'] ?>/img/logo-small.png"> <?php echo $CONF['name_of_firm'] ?>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -57,7 +51,8 @@ if ($ap == 0) {
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
-                    <?php if (1==0) { ?> 
+                    <?php
+if (1 == 0) { ?> 
                         <!-- Messages: style can be found in dropdown.less-->
                         <li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -246,7 +241,8 @@ if ($ap == 0) {
                                 </li>
                             </ul>
                         </li>
-                        <?php } ?>
+                        <?php
+} ?>
                         
                         
                         
@@ -254,22 +250,22 @@ if ($ap == 0) {
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="glyphicon glyphicon-user"></i>
-                                <span><?=nameshort(get_user_val('fio'));?> <i class="caret"></i></span>
+                                <span><?php echo nameshort(get_user_val('fio')); ?> <i class="caret"></i></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
-                                    <img src="<?=get_user_img();?>" class="img-circle" alt="User Image" />
+                                    <img src="<?php echo get_user_img(); ?>" class="img-circle" alt="User Image" />
                                     <p>
-                                        <?=get_user_val('fio');?>
-                                        <small><?=get_user_val('posada');?></small>
+                                        <?php echo get_user_val('fio'); ?>
+                                        <small><?php echo get_user_val('posada'); ?></small>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
                                 <li class="user-body">
  
                                     <div class="col-xs-12 text-center">
-                                        <a href="<?=$CONF['hostname']?>help"><?=lang('NAVBAR_help');?></a>
+                                        <a href="<?php echo $CONF['hostname'] ?>help"><?php echo lang('NAVBAR_help'); ?></a>
                                     </div>
                                     
                                 </li>
@@ -277,11 +273,11 @@ if ($ap == 0) {
                                 <li class="user-footer">
                                     <div class="pull-left">
                                     
-                                        <a href="<?=$CONF['hostname']?>profile" class="btn btn-default btn-flat"> <i class="fa fa-user"></i> <?=lang('NAVBAR_profile');?></a>
+                                        <a href="<?php echo $CONF['hostname'] ?>profile" class="btn btn-default btn-flat"> <i class="fa fa-user"></i> <?php echo lang('NAVBAR_profile'); ?></a>
                                     </div>
                                     <div class="pull-right">
                                     
-                                        <a href="<?=$CONF['hostname']?>index.php?logout" class="btn btn-default btn-flat"> <i class="fa fa-sign-out"></i> <?=lang('NAVBAR_logout');?></a>
+                                        <a href="<?php echo $CONF['hostname'] ?>index.php?logout" class="btn btn-default btn-flat"> <i class="fa fa-sign-out"></i> <?php echo lang('NAVBAR_logout'); ?></a>
                                     </div>
                                 </li>
                             </ul>
@@ -300,18 +296,18 @@ if ($ap == 0) {
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="<?=get_user_img();?>" class="img-circle" alt="User Image" />
+                            <img src="<?php echo get_user_img(); ?>" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p><?=lang('EXT_hello');?>, <?=get_user_name(get_user_val('fio'));?></p>
+                            <p><?php echo lang('EXT_hello'); ?>, <?php echo get_user_name(get_user_val('fio')); ?></p>
 
                             <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                         </div>
                     </div>
                     <!-- search form -->
-                    <form action="<?=$CONF['hostname'];?>list" method="get" class="sidebar-form">
+                    <form action="<?php echo $CONF['hostname']; ?>list" method="get" class="sidebar-form">
                         <div class="input-group">
-                            <input name="t" type="text" class="form-control" placeholder="<?=lang('LIST_find_button');?>" data-toggle="tooltip" data-placement="bottom" title="<?= lang('LIST_find_ph'); ?>"/>
+                            <input name="t" type="text" class="form-control" placeholder="<?php echo lang('LIST_find_button'); ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('LIST_find_ph'); ?>"/>
                             <span class="input-group-btn">
                                 <button type='submit' name='find' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                             </span>
@@ -324,20 +320,20 @@ if ($ap == 0) {
                     
                     
                     <ul class="sidebar-menu">
-                        <li <?=echoActiveClassIfRequestMatches("index.php")?> >
-                            <a  href="<?=$CONF['hostname']?>index.php">
-                                <i class="fa fa-dashboard"></i> <span><?= lang('DASHBOARD_TITLE'); ?></span>
+                        <li <?php echo echoActiveClassIfRequestMatches("index.php") ?> >
+                            <a  href="<?php echo $CONF['hostname'] ?>index.php">
+                                <i class="fa fa-dashboard"></i> <span><?php echo lang('DASHBOARD_TITLE'); ?></span>
                             </a>
                         </li>
                         
-                        <li <?=echoActiveClassIfRequestMatches("create")?>><a href="<?=$CONF['hostname']?>create"><i class="fa fa-tag"></i> <?=lang('NAVBAR_create_ticket');?></a></li>
+                        <li <?php echo echoActiveClassIfRequestMatches("create") ?>><a href="<?php echo $CONF['hostname'] ?>create"><i class="fa fa-tag"></i> <?php echo lang('NAVBAR_create_ticket'); ?></a></li>
                         
                  
                         
                                                
                         
                         
-            <li <?=echoActiveClassIfRequestMatches("list")?>><a href="<?=$CONF['hostname']?>list"><i class="fa fa-list-alt"></i> <?=lang('NAVBAR_list_ticket');?> <?=$newtickets?></a></li>
+            <li <?php echo echoActiveClassIfRequestMatches("list") ?>><a href="<?php echo $CONF['hostname'] ?>list"><i class="fa fa-list-alt"></i> <?php echo lang('NAVBAR_list_ticket'); ?> <?php echo $newtickets ?></a></li>
             
             
             
@@ -347,7 +343,7 @@ if ($ap == 0) {
             
             
             
-            <li <?=echoActiveClassIfRequestMatches("helper")?>><a href="<?=$CONF['hostname']?>helper"><i class="fa fa-globe"></i> <?=lang('NAVBAR_helper');?></a></li>
+            <li <?php echo echoActiveClassIfRequestMatches("helper") ?>><a href="<?php echo $CONF['hostname'] ?>helper"><i class="fa fa-globe"></i> <?php echo lang('NAVBAR_helper'); ?></a></li>
             
                                                 
                         

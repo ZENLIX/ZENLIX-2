@@ -1,25 +1,23 @@
 <?php
 session_start();
-include("../functions.inc.php");
+include ("../functions.inc.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
-if ($_SESSION['helpdesk_user_id']) {
-   include("head.inc.php");
-   include("navbar.inc.php");
-   
-  
+    if ($_SESSION['helpdesk_user_id']) {
+        include ("head.inc.php");
+        include ("navbar.inc.php");
 ?>
-	
+    
 
 
 <section class="content-header">
                     <h1>
-                        <i class="fa fa-bar-chart-o"></i>  <?=lang('STATS_TITLE');?>
-                        <small><?=lang('STATS_TITLE_ext');?></small>
+                        <i class="fa fa-bar-chart-o"></i>  <?php echo lang('STATS_TITLE'); ?>
+                        <small><?php echo lang('STATS_TITLE_ext'); ?></small>
                     </h1>
                     <ol class="breadcrumb">
-                       <li><a href="<?=$CONF['hostname']?>index.php"><span class="icon-svg"></span> <?=$CONF['name_of_firm']?></a></li>
-                        <li class="active"><?=lang('STATS_TITLE');?></li>
+                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
+                        <li class="active"><?php echo lang('STATS_TITLE'); ?></li>
                     </ol>
                 </section>
                 
@@ -39,26 +37,26 @@ if ($_SESSION['helpdesk_user_id']) {
                                 <div class="box-body">
                                     <table class="table table-bordered">
 <tr>
-<td colspan="3" style="width:50%"><strong><center><?=lang('STATS_in');?></center></strong></td>
-<td colspan="4"><strong><center><?=lang('STATS_out');?></center></strong></td>
+<td colspan="3" style="width:50%"><strong><center><?php echo lang('STATS_in'); ?></center></strong></td>
+<td colspan="4"><strong><center><?php echo lang('STATS_out'); ?></center></strong></td>
 </tr>
 <tr>
-<td><center><?=lang('STATS_new');?>			</center></td>
-<td><center><?=lang('STATS_lock');?>  </center></td>
-<td><center><?=lang('STATS_ok');?>	</center></td>
-<td><center><?=lang('STATS_nook');?>			</center></td>  
-<td><center><?=lang('STATS_create');?>	</center></td>
-<td><center><?=lang('STATS_lock_o');?>		</center></td>
-<td><center><?=lang('STATS_ok_o');?>		</center></td>
+<td><center><?php echo lang('STATS_new'); ?>            </center></td>
+<td><center><?php echo lang('STATS_lock'); ?>  </center></td>
+<td><center><?php echo lang('STATS_ok'); ?> </center></td>
+<td><center><?php echo lang('STATS_nook'); ?>           </center></td>  
+<td><center><?php echo lang('STATS_create'); ?> </center></td>
+<td><center><?php echo lang('STATS_lock_o'); ?>     </center></td>
+<td><center><?php echo lang('STATS_ok_o'); ?>       </center></td>
 </tr>
 <tr>
-<td><center><span class="text-danger"> <h4><?=get_total_tickets_free();?>			</h4></span>	</center></td>
-<td><center><span class="text-warning"><h4><?=get_total_tickets_lock();?>			</h4></span>	</center></td>
-<td><center><span class="text-success"><h4><?=get_total_tickets_ok();?>				</h4></span></center></td>  
-<td><center><span class="text-danger"> <h4><?=get_total_tickets_out_and_success();?></h4></span>	</center></td>
-<td><center><span class="">			   <h4><?=get_total_tickets_out();?>			</h4></span>	</center></td>
-<td><center><span class="text-warning"><h4><?=get_total_tickets_out_and_lock();?>	</h4></span>	</center></td>
-<td><center><span class="text-success"><h4><?=get_total_tickets_out_and_ok();?>		</h4></span></center></td>
+<td><center><span class="text-danger"> <h4><?php echo get_total_tickets_free(); ?>          </h4></span>    </center></td>
+<td><center><span class="text-warning"><h4><?php echo get_total_tickets_lock(); ?>          </h4></span>    </center></td>
+<td><center><span class="text-success"><h4><?php echo get_total_tickets_ok(); ?>                </h4></span></center></td>  
+<td><center><span class="text-danger"> <h4><?php echo get_total_tickets_out_and_success(); ?></h4></span>   </center></td>
+<td><center><span class="">            <h4><?php echo get_total_tickets_out(); ?>           </h4></span>    </center></td>
+<td><center><span class="text-warning"><h4><?php echo get_total_tickets_out_and_lock(); ?>  </h4></span>    </center></td>
+<td><center><span class="text-success"><h4><?php echo get_total_tickets_out_and_ok(); ?>        </h4></span></center></td>
 </tr>
 <tr>
 <td colspan="3"><center><div class="col-md-12" id="chart_in">
@@ -68,17 +66,17 @@ if ($_SESSION['helpdesk_user_id']) {
 <tr>
 <td colspan="3"><small>
 <ul>
-	<?=lang('STATS_help1');?>
+    <?php echo lang('STATS_help1'); ?>
 </ul>
 </small></td>
 <td colspan="4">
-	
-	<small>
+    
+    <small>
 <ul>
-	<?=lang('STATS_help2');?>
+    <?php echo lang('STATS_help2'); ?>
 </ul>
 </small>
-	
+    
 </td>
 </tr>
 </table>
@@ -99,7 +97,7 @@ if ($_SESSION['helpdesk_user_id']) {
                     
                     
                     
-	                    
+                        
                     </div>
                     
                     </div>
@@ -113,23 +111,22 @@ if ($_SESSION['helpdesk_user_id']) {
 
 
 <?php
-
- include("footer.inc.php");
+        include ("footer.inc.php");
 ?>
 
 <script>
-	$(function () {
-	$('#chart_in').highcharts({
+    $(function () {
+    $('#chart_in').highcharts({
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
             plotShadow: false
         },
         title: {
-            text: '<?=lang('STATS_in_now');?>'
+            text: '<?php echo lang('STATS_in_now'); ?>'
         },
         tooltip: {
-    	    pointFormat: '{series.name}: <b>{point.y}</b>'
+            pointFormat: '{series.name}: <b>{point.y}</b>'
         },
         plotOptions: {
             pie: {
@@ -146,21 +143,21 @@ if ($_SESSION['helpdesk_user_id']) {
         },
         series: [{
             type: 'pie',
-            name: '<?=lang('STATS_t');?>',
+            name: '<?php echo lang('STATS_t'); ?>',
             data: [
                 {
-                    name: '<?=lang('STATS_lock');?>',
-                    y: <?=get_total_tickets_lock();?>,
+                    name: '<?php echo lang('STATS_lock'); ?>',
+                    y: <?php echo get_total_tickets_lock(); ?>,
                     color: '#F0AD4E'
                 },
                 {
-                    name: '<?=lang('STATS_t_ok');?>',
-                    y: <?=get_total_tickets_ok();?>,
+                    name: '<?php echo lang('STATS_t_ok'); ?>',
+                    y: <?php echo get_total_tickets_ok(); ?>,
                     color: '#aaff99'
                 },
                 {
-                    name: '<?=lang('STATS_t_free');?>',
-                    y: <?=get_total_tickets_free();?>,
+                    name: '<?php echo lang('STATS_t_free'); ?>',
+                    y: <?php echo get_total_tickets_free(); ?>,
                     color: '#FF2D46'
                 }
             ]
@@ -178,10 +175,10 @@ $('#chart_out').highcharts({
             plotShadow: false
         },
         title: {
-            text: '<?=lang('STATS_out_all');?>'
+            text: '<?php echo lang('STATS_out_all'); ?>'
         },
         tooltip: {
-    	    pointFormat: '{series.name}: <b>{point.y}</b>'
+            pointFormat: '{series.name}: <b>{point.y}</b>'
         },
         plotOptions: {
             pie: {
@@ -198,34 +195,32 @@ $('#chart_out').highcharts({
         },
         series: [{
             type: 'pie',
-            name: '<?=lang('STATS_t');?>',
+            name: '<?php echo lang('STATS_t'); ?>',
             data: [
                 {
-                    name: '<?=lang('STATS_t_lock');?>',
-                    y: <?=get_total_tickets_out_and_lock();?>,
+                    name: '<?php echo lang('STATS_t_lock'); ?>',
+                    y: <?php echo get_total_tickets_out_and_lock(); ?>,
                     color: '#F0AD4E'
                 },
                 {
-                    name: '<?=lang('STATS_t_ok');?>',
-                    y: <?=get_total_tickets_out_and_ok();?>,
+                    name: '<?php echo lang('STATS_t_ok'); ?>',
+                    y: <?php echo get_total_tickets_out_and_ok(); ?>,
                     color: '#aaff99'
                 },
                 {
-                    name: '<?=lang('STATS_t_free');?>',
-                    y: <?=get_total_tickets_out_and_success();?>,
+                    name: '<?php echo lang('STATS_t_free'); ?>',
+                    y: <?php echo get_total_tickets_out_and_success(); ?>,
                     color: '#FF2D46'
                 }
             ]
         }]
     });
 
-	});
+    });
 </script>
 <?php
-	
-	}
-else {
-    include 'auth.php';
-}
+    } else {
+        include 'auth.php';
+    }
 }
 ?>
