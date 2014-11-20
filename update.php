@@ -1,5 +1,6 @@
 <?php
 session_start();
+//update script
 include ("functions.inc.php");
 include ("sys/dbu.class.php");
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
@@ -294,7 +295,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                             <?php
                 
                 //
-                
+                 
                 $files_def = array('/actions.php', '/functions.inc.php', '/index.php', '/update.php');
                 
                 $directory_def = array('/css/',
