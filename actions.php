@@ -2353,6 +2353,7 @@ values
             update_val_by_key("file_uploads", $_POST['file_uploads']);
             update_val_by_key("node_port", $_POST['node_port']);
             update_val_by_key("time_zone", $_POST['time_zone']);
+            update_val_by_key("allow_register", $_POST['allow_register']);
             $bodytag = str_replace(",", "|", $_POST['file_types']);
             
             update_val_by_key("file_types", $bodytag);

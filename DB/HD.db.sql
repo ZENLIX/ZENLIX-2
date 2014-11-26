@@ -260,7 +260,8 @@ VALUES
 	(24,'ldap_domain','ldap.local'),
 	(25,'version','2.0'),
 	(26,'node_port','8080'),
-  (27,'time_zone','Europe/Kiev');
+    (27,'time_zone','Europe/Kiev'),
+    (28,'allow_register','true');
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -193,6 +193,33 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 </div>
   </div>
   
+  
+  
+  
+  <div class="form-group">
+    <label for="allow_register" class="col-sm-4 control-label"><small><?=lang('REG_new');?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="allow_register">
+  <option value="true" <?php
+        if (get_conf_param('allow_register') == "true") {
+            echo "selected";
+        } ?>><?php echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('allow_register') == "false") {
+            echo "selected";
+        } ?>><?php echo lang('CONF_false'); ?></option>
+</select>    
+</div>
+  </div>
+
+
+
+
+
+  
+  
+  
+  
           <div class="form-group">
     <label for="file_uploads" class="col-sm-4 control-label"><small><?php echo lang('CONF_fup'); ?></small></label>
     <div class="col-sm-8">
