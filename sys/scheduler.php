@@ -1,4 +1,4 @@
-<?
+<?php
 	
 	function get_user_hash_by_id($in) {
     global $dbConnection;
