@@ -105,6 +105,7 @@ function get_user_lang() {
 }
 
 $lang = get_user_lang();
+/*
 switch ($lang) {
     case 'ua':
         $lang_file = 'lang.ua.php';
@@ -123,6 +124,33 @@ switch ($lang) {
 }
 
 include_once 'lang/' . $lang_file;
+*/
+include_once 'lang/' . 'lang.ua.php';
+include_once 'lang/' . 'lang.ru.php';
+include_once 'lang/' . 'lang.en.php';
+
+function lang($in) {
+	$lang = get_user_lang();
+	
+	switch ($lang) {
+    case 'ua':
+        $res=lang_ua($in);
+        break;
+
+    case 'ru':
+        $res=lang_ru($in);
+        break;
+
+    case 'en':
+        $res=lang_en($in);
+        break;
+
+    default:
+        $res=lang_en($in);
+}
+	
+	return $res;
+}
 
 function get_conf_param($in) {
     global $dbConnection;

@@ -5,6 +5,13 @@ include($base ."/conf.php");
 date_default_timezone_set('Europe/Kiev');
 include($base .'/sys/class.phpmailer.php');
 include($base .'/integration/PushBullet.class.php');
+
+include_once $base.'/lang/lang.ua.php';
+include_once $base.'/lang/lang.ru.php';
+include_once $base.'/lang/lang.en.php';
+
+//include_once($base .'/inc/notification.inc.php');
+
 $dbConnection = new PDO(
     'mysql:host='.$CONF_DB['host'].';dbname='.$CONF_DB['db_name'],
     $CONF_DB['username'],
@@ -19,42 +26,24 @@ $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 function send_pushbullet($type_op, $lang, $user_mail, $ticket_id) {
 	global $dbConnection,$base,$CONF;
 	
-switch ($lang) {
-    case 'ua':
-        $lang_file = 'lang.ua.php';
-        break;
 
-    case 'ru':
-        $lang_file = 'lang.ru.php';
-        break;
+$MAIL_new=lang($lang,'MAIL_new');
+$MAIL_refer=lang($lang,'mail_msg_ticket_refer');
+$MAIL_refer_ext=lang($lang,'mail_msg_ticket_refer_ext');
+$MAIL_to_w=lang($lang,'mail_msg_ticket_to_ext');
 
-    case 'en':
-        $lang_file = 'lang.en.php';
-        break;
-
-    default:
-        $lang_file = 'lang.ru.php';
-
-}
-
-include_once $base.'/lang/'.$lang_file;
-$MAIL_new=lang('MAIL_new');
-$MAIL_refer=lang('mail_msg_ticket_refer');
-$MAIL_refer_ext=lang('mail_msg_ticket_refer_ext');
-$MAIL_to_w=lang('mail_msg_ticket_to_ext');
-
-$MAIL_msg_comment=lang('mail_msg_ticket_comment');
-$MAIL_msg_comment_ext=lang('mail_msg_ticket_comment_ext');
+$MAIL_msg_comment=lang($lang,'mail_msg_ticket_comment');
+$MAIL_msg_comment_ext=lang($lang,'mail_msg_ticket_comment_ext');
 
 
-$MAIL_msg_lock=lang('mail_msg_ticket_lock');
-$MAIL_msg_lock_ext=lang('mail_msg_ticket_lock_ext');
-$MAIL_msg_unlock=lang('mail_msg_ticket_unlock');
-$MAIL_msg_unlock_ext=lang('mail_msg_ticket_unlock_ext');
-$MAIL_msg_ok=lang('mail_msg_ticket_ok');
-$MAIL_msg_ok_ext=lang('mail_msg_ticket_ok_ext');
-$MAIL_msg_no_ok=lang('mail_msg_ticket_no_ok');
-$MAIL_msg_no_ok_ext=lang('mail_msg_ticket_no_ok_ext');
+$MAIL_msg_lock=lang($lang,'mail_msg_ticket_lock');
+$MAIL_msg_lock_ext=lang($lang,'mail_msg_ticket_lock_ext');
+$MAIL_msg_unlock=lang($lang,'mail_msg_ticket_unlock');
+$MAIL_msg_unlock_ext=lang($lang,'mail_msg_ticket_unlock_ext');
+$MAIL_msg_ok=lang($lang,'mail_msg_ticket_ok');
+$MAIL_msg_ok_ext=lang($lang,'mail_msg_ticket_ok_ext');
+$MAIL_msg_no_ok=lang($lang,'mail_msg_ticket_no_ok');
+$MAIL_msg_no_ok_ext=lang($lang,'mail_msg_ticket_no_ok_ext');
 
         $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
@@ -82,12 +71,12 @@ $MAIL_msg_no_ok_ext=lang('mail_msg_ticket_no_ok_ext');
         
 
 if ($type_op == "ticket_create") {
-$tn=lang('TICKET_name').' #'.$ticket_id." (".$MAIL_new.")";
-$msg=lang('MAIL_subj').": ".$s."\r\n";
-$msg.=lang('MAIL_created').": ".$uin."\r\n";
-$msg.=lang('MAIL_to').": ".$to_text."\r\n";
-$msg.=lang('MAIL_worker').": ".$nou."\r\n";
-$msg.=lang('MAIL_msg').": ".$m."\r\n";
+$tn=lang($lang,'TICKET_name').' #'.$ticket_id." (".$MAIL_new.")";
+$msg=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
+$msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
+$msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 	try {
   $p = new PushBullet(get_conf_param('pb_api'));
@@ -100,12 +89,12 @@ $msg.=lang('MAIL_msg').": ".$m."\r\n";
 
  }
 else if ($type_op == "ticket_refer") {
-$tn=lang('TICKET_name').' #'.$ticket_id." (".$MAIL_refer.")";
-$msg=lang('MAIL_subj').": ".$s."\r\n";
-$msg.=lang('MAIL_created').": ".$uin."\r\n";
-$msg.=lang('MAIL_to').": ".$to_text."\r\n";
-$msg.=lang('MAIL_worker').": ".$nou."\r\n";
-$msg.=lang('MAIL_msg').": ".$m."\r\n";
+$tn=lang($lang,'TICKET_name').' #'.$ticket_id." (".$MAIL_refer.")";
+$msg=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
+$msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
+$msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 	try {
   $p = new PushBullet(get_conf_param('pb_api'));
@@ -117,12 +106,12 @@ $msg.=lang('MAIL_msg').": ".$m."\r\n";
 
  }
 else if ($type_op == "ticket_comment") {
-$tn=lang('TICKET_name').' #'.$ticket_id." (".$MAIL_msg_comment.")";
-$msg=lang('MAIL_subj').": ".$s."\r\n";
-$msg.=lang('MAIL_created').": ".$uin."\r\n";
-$msg.=lang('MAIL_to').": ".$to_text."\r\n";
-$msg.=lang('MAIL_worker').": ".$nou."\r\n";
-$msg.=lang('MAIL_msg').": ".$m."\r\n";
+$tn=lang($lang,'TICKET_name').' #'.$ticket_id." (".$MAIL_msg_comment.")";
+$msg=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
+$msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
+$msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 	try {
   $p = new PushBullet(get_conf_param('pb_api'));
@@ -135,12 +124,12 @@ $msg.=lang('MAIL_msg').": ".$m."\r\n";
  }
 else if ($type_op == "ticket_lock") {
 
-$tn=lang('TICKET_name').' #'.$ticket_id." (".$MAIL_msg_lock.")";
-$msg=lang('MAIL_subj').": ".$s."\r\n";
-$msg.=lang('MAIL_created').": ".$uin."\r\n";
-$msg.=lang('MAIL_to').": ".$to_text."\r\n";
-$msg.=lang('MAIL_worker').": ".$nou."\r\n";
-$msg.=lang('MAIL_msg').": ".$m."\r\n";
+$tn=lang($lang,'TICKET_name').' #'.$ticket_id." (".$MAIL_msg_lock.")";
+$msg=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
+$msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
+$msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 	try {
   $p = new PushBullet(get_conf_param('pb_api'));
@@ -153,12 +142,12 @@ $msg.=lang('MAIL_msg').": ".$m."\r\n";
 
  }
 else if ($type_op == "ticket_unlock") {
-$tn=lang('TICKET_name').' #'.$ticket_id." (".$MAIL_msg_unlock.")";
-$msg=lang('MAIL_subj').": ".$s."\r\n";
-$msg.=lang('MAIL_created').": ".$uin."\r\n";
-$msg.=lang('MAIL_to').": ".$to_text."\r\n";
-$msg.=lang('MAIL_worker').": ".$nou."\r\n";
-$msg.=lang('MAIL_msg').": ".$m."\r\n";
+$tn=lang($lang,'TICKET_name').' #'.$ticket_id." (".$MAIL_msg_unlock.")";
+$msg=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
+$msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
+$msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 	try {
   $p = new PushBullet(get_conf_param('pb_api'));
@@ -172,12 +161,12 @@ $msg.=lang('MAIL_msg').": ".$m."\r\n";
 
  }
 else if ($type_op == "ticket_ok") {
-$tn=lang('TICKET_name').' #'.$ticket_id." (".$MAIL_msg_ok.")";
-$msg=lang('MAIL_subj').": ".$s."\r\n";
-$msg.=lang('MAIL_created').": ".$uin."\r\n";
-$msg.=lang('MAIL_to').": ".$to_text."\r\n";
-$msg.=lang('MAIL_worker').": ".$nou."\r\n";
-$msg.=lang('MAIL_msg').": ".$m."\r\n";
+$tn=lang($lang,'TICKET_name').' #'.$ticket_id." (".$MAIL_msg_ok.")";
+$msg=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
+$msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
+$msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 	try {
   $p = new PushBullet(get_conf_param('pb_api'));
@@ -190,12 +179,12 @@ $msg.=lang('MAIL_msg').": ".$m."\r\n";
 
  }
 else if ($type_op == "ticket_no_ok") {
-$tn=lang('TICKET_name').' #'.$ticket_id." (".$MAIL_msg_no_ok.")";
-$msg=lang('MAIL_subj').": ".$s."\r\n";
-$msg.=lang('MAIL_created').": ".$uin."\r\n";
-$msg.=lang('MAIL_to').": ".$to_text."\r\n";
-$msg.=lang('MAIL_worker').": ".$nou."\r\n";
-$msg.=lang('MAIL_msg').": ".$m."\r\n";
+$tn=lang($lang,'TICKET_name').' #'.$ticket_id." (".$MAIL_msg_no_ok.")";
+$msg=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
+$msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
+$msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 	try {
   $p = new PushBullet(get_conf_param('pb_api'));
@@ -260,6 +249,16 @@ function get_unit_name_return($input) {
 
     return $res;
 }
+
+
+$def_timezone = get_conf_param('time_zone');
+
+date_default_timezone_set($def_timezone);
+$date_tz = new DateTime();
+$date_tz->setTimezone(new DateTimeZone($def_timezone));
+$now_date_time = $date_tz->format('Y-m-d H:i:s');
+
+
 $CONF = array (
 	'title_header'	=> get_conf_param('title_header'),
 	'hostname'		=> 'http://'.get_conf_param('hostname'),
@@ -270,7 +269,8 @@ $CONF = array (
 	'first_login'	=> get_conf_param('first_login'),
 	'file_uploads'	=> get_conf_param('file_uploads'),
 	'file_types'	=> '('.get_conf_param('file_types').')',
-	'file_size'		=> get_conf_param('file_size')
+	'file_size'		=> get_conf_param('file_size'),
+	'now_dt' => $now_date_time
 	);
 $CONF_MAIL = array (
 	'active'	=> get_conf_param('mail_active'),
@@ -344,6 +344,7 @@ $u=explode(",", $input);
 $u_count=count($u);
 
 if ($u_count > 1) {
+	$res="";
 foreach ($u as $val) {
     $stmt = $dbConnection->prepare('SELECT fio FROM users where id=:input');
     $stmt->execute(array(':input' => $val));
@@ -363,8 +364,34 @@ else if ($u_count <= 1) {
     return($res);
 }
 
+
+function lang($lang, $in) {
+	
+	
+	switch ($lang) {
+    case 'ua':
+        $res=lang_ua($in);
+        break;
+
+    case 'ru':
+        $res=lang_ru($in);
+        break;
+
+    case 'en':
+        $res=lang_en($in);
+        break;
+
+    default:
+        $res=lang_en($in);
+}
+	
+	return $res;
+}
+
+
 function view_array($in) {
 $end_element = array_pop($in);
+$res="";
 foreach ($in as $value) {
    // делаем что-либо с каждым элементом
         $res.=$value;
@@ -388,25 +415,9 @@ function name_of_client_ret($input) {
 function make_mail($type_op, $lang, $user_mail, $ticket_id) {
 	global $dbConnection,$base,$CONF;
 	
-switch ($lang) {
-    case 'ua':
-        $lang_file = 'lang.ua.php';
-        break;
 
-    case 'ru':
-        $lang_file = 'lang.ru.php';
-        break;
 
-    case 'en':
-        $lang_file = 'lang.en.php';
-        break;
 
-    default:
-        $lang_file = 'lang.ru.php';
-
-}
-
-include_once $base.'/lang/'.$lang_file;
 
 /*
 ticket_create
@@ -417,34 +428,34 @@ ticket_unlock
 ticket_ok
 ticket_no_ok
 */
-$MAIL_new=lang('MAIL_new');
-$MAIL_code=lang('MAIL_code');
-$MAIL_2link=lang('MAIL_2link');
-$MAIL_info=lang('MAIL_info');
-$MAIL_created=lang('MAIL_created');
-$MAIL_to=lang('MAIL_to');
-$MAIL_prio=lang('MAIL_prio');
-$MAIL_worker=lang('MAIL_worker');
-$MAIL_msg=lang('MAIL_msg');
-$MAIL_subj=lang('MAIL_subj');
-$MAIL_text=lang('MAIL_text');
+$MAIL_new=lang($lang,'MAIL_new');
+$MAIL_code=lang($lang,'MAIL_code');
+$MAIL_2link=lang($lang,'MAIL_2link');
+$MAIL_info=lang($lang,'MAIL_info');
+$MAIL_created=lang($lang,'MAIL_created');
+$MAIL_to=lang($lang,'MAIL_to');
+$MAIL_prio=lang($lang,'MAIL_prio');
+$MAIL_worker=lang($lang,'MAIL_worker');
+$MAIL_msg=lang($lang,'MAIL_msg');
+$MAIL_subj=lang($lang,'MAIL_subj');
+$MAIL_text=lang($lang,'MAIL_text');
 
-$MAIL_refer=lang('mail_msg_ticket_refer');
-$MAIL_refer_ext=lang('mail_msg_ticket_refer_ext');
-$MAIL_to_w=lang('mail_msg_ticket_to_ext');
+$MAIL_refer=lang($lang,'mail_msg_ticket_refer');
+$MAIL_refer_ext=lang($lang,'mail_msg_ticket_refer_ext');
+$MAIL_to_w=lang($lang,'mail_msg_ticket_to_ext');
 
-$MAIL_msg_comment=lang('mail_msg_ticket_comment');
-$MAIL_msg_comment_ext=lang('mail_msg_ticket_comment_ext');
+$MAIL_msg_comment=lang($lang,'mail_msg_ticket_comment');
+$MAIL_msg_comment_ext=lang($lang,'mail_msg_ticket_comment_ext');
 
 
-$MAIL_msg_lock=lang('mail_msg_ticket_lock');
-$MAIL_msg_lock_ext=lang('mail_msg_ticket_lock_ext');
-$MAIL_msg_unlock=lang('mail_msg_ticket_unlock');
-$MAIL_msg_unlock_ext=lang('mail_msg_ticket_unlock_ext');
-$MAIL_msg_ok=lang('mail_msg_ticket_ok');
-$MAIL_msg_ok_ext=lang('mail_msg_ticket_ok_ext');
-$MAIL_msg_no_ok=lang('mail_msg_ticket_no_ok');
-$MAIL_msg_no_ok_ext=lang('mail_msg_ticket_no_ok_ext');
+$MAIL_msg_lock=lang($lang,'mail_msg_ticket_lock');
+$MAIL_msg_lock_ext=lang($lang,'mail_msg_ticket_lock_ext');
+$MAIL_msg_unlock=lang($lang,'mail_msg_ticket_unlock');
+$MAIL_msg_unlock_ext=lang($lang,'mail_msg_ticket_unlock_ext');
+$MAIL_msg_ok=lang($lang,'mail_msg_ticket_ok');
+$MAIL_msg_ok_ext=lang($lang,'mail_msg_ticket_ok_ext');
+$MAIL_msg_no_ok=lang($lang,'mail_msg_ticket_no_ok');
+$MAIL_msg_no_ok_ext=lang($lang,'mail_msg_ticket_no_ok_ext');
 
 /*
 
@@ -537,9 +548,9 @@ ticket_no_ok
         $user_init_id=$ticket_res['user_init_id'];
         $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
                 
-        $prio=lang('t_list_a_p_norm');
-        if ($ticket_res['prio'] == "0") {$prio= lang('t_list_a_p_low'); }
-        else if ($ticket_res['prio'] == "2") {$prio= lang('t_list_a_p_high'); }
+        $prio=lang($lang,'t_list_a_p_norm');
+        if ($ticket_res['prio'] == "0") {$prio= lang($lang,'t_list_a_p_low'); }
+        else if ($ticket_res['prio'] == "2") {$prio= lang($lang,'t_list_a_p_high'); }
         $nou=name_of_client_ret($ticket_res['client_id']);
         $to_id=$ticket_res['user_to_id'];
         $s=$ticket_res['subj'];
@@ -556,7 +567,7 @@ ticket_no_ok
 
 
 	 
-$subject = lang('TICKET_name').' #'.$ticket_id.' - '.$MAIL_new;
+$subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_new;
 $message =<<<EOBODY
 <div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
 <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_new}!</p>
@@ -661,9 +672,9 @@ else if ($type_op == "ticket_refer") {
         $user_init_id=$ticket_res['user_init_id'];
         $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
                 
-        $prio=lang('t_list_a_p_norm');
-        if ($ticket_res['prio'] == "0") {$prio= lang('t_list_a_p_low'); }
-        else if ($ticket_res['prio'] == "2") {$prio= lang('t_list_a_p_high'); }
+        $prio=lang($lang,'t_list_a_p_norm');
+        if ($ticket_res['prio'] == "0") {$prio= lang($lang,'t_list_a_p_low'); }
+        else if ($ticket_res['prio'] == "2") {$prio= lang($lang,'t_list_a_p_high'); }
         $nou=name_of_client_ret($ticket_res['client_id']);
         $to_id=$ticket_res['user_to_id'];
         $s=$ticket_res['subj'];
@@ -680,7 +691,7 @@ else if ($type_op == "ticket_refer") {
 
 
 	 
-$subject = lang('TICKET_name').' #'.$ticket_id.' - '.$MAIL_refer;
+$subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_refer;
 $message =<<<EOBODY
 <div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
 <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_refer}!</p>
@@ -788,9 +799,9 @@ else if ($type_op == "ticket_comment") {
         $user_init_id=$ticket_res['user_init_id'];
         $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
                 
-        $prio=lang('t_list_a_p_norm');
-        if ($ticket_res['prio'] == "0") {$prio= lang('t_list_a_p_low'); }
-        else if ($ticket_res['prio'] == "2") {$prio= lang('t_list_a_p_high'); }
+        $prio=lang($lang,'t_list_a_p_norm');
+        if ($ticket_res['prio'] == "0") {$prio= lang($lang,'t_list_a_p_low'); }
+        else if ($ticket_res['prio'] == "2") {$prio= lang($lang,'t_list_a_p_high'); }
         $nou=name_of_client_ret($ticket_res['client_id']);
         $to_id=$ticket_res['user_to_id'];
         $s=$ticket_res['subj'];
@@ -807,7 +818,7 @@ else if ($type_op == "ticket_comment") {
 
 
 	 
-$subject = lang('TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_comment;
+$subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_comment;
 $message =<<<EOBODY
 <div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
 <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_comment}!</p>
@@ -910,9 +921,9 @@ else if ($type_op == "ticket_lock") {
         $user_init_id=$ticket_res['user_init_id'];
         $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
                 
-        $prio=lang('t_list_a_p_norm');
-        if ($ticket_res['prio'] == "0") {$prio= lang('t_list_a_p_low'); }
-        else if ($ticket_res['prio'] == "2") {$prio= lang('t_list_a_p_high'); }
+        $prio=lang($lang,'t_list_a_p_norm');
+        if ($ticket_res['prio'] == "0") {$prio= lang($lang,'t_list_a_p_low'); }
+        else if ($ticket_res['prio'] == "2") {$prio= lang($lang,'t_list_a_p_high'); }
         $nou=name_of_client_ret($ticket_res['client_id']);
         $to_id=$ticket_res['user_to_id'];
         $s=$ticket_res['subj'];
@@ -929,7 +940,7 @@ else if ($type_op == "ticket_lock") {
 
 
 	 
-$subject = lang('TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_lock;
+$subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_lock;
 $message =<<<EOBODY
 <div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
 <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_lock}!</p>
@@ -1031,9 +1042,9 @@ else if ($type_op == "ticket_unlock") {
         $user_init_id=$ticket_res['user_init_id'];
         $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
                 
-        $prio=lang('t_list_a_p_norm');
-        if ($ticket_res['prio'] == "0") {$prio= lang('t_list_a_p_low'); }
-        else if ($ticket_res['prio'] == "2") {$prio= lang('t_list_a_p_high'); }
+        $prio=lang($lang,'t_list_a_p_norm');
+        if ($ticket_res['prio'] == "0") {$prio= lang($lang,'t_list_a_p_low'); }
+        else if ($ticket_res['prio'] == "2") {$prio= lang($lang,'t_list_a_p_high'); }
         $nou=name_of_client_ret($ticket_res['client_id']);
         $to_id=$ticket_res['user_to_id'];
         $s=$ticket_res['subj'];
@@ -1050,7 +1061,7 @@ else if ($type_op == "ticket_unlock") {
 
 
 	 
-$subject = lang('TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_unlock;
+$subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_unlock;
 $message =<<<EOBODY
 <div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
 <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_unlock}!</p>
@@ -1152,9 +1163,9 @@ else if ($type_op == "ticket_ok") {
         $user_init_id=$ticket_res['user_init_id'];
         $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
                 
-        $prio=lang('t_list_a_p_norm');
-        if ($ticket_res['prio'] == "0") {$prio= lang('t_list_a_p_low'); }
-        else if ($ticket_res['prio'] == "2") {$prio= lang('t_list_a_p_high'); }
+        $prio=lang($lang,'t_list_a_p_norm');
+        if ($ticket_res['prio'] == "0") {$prio= lang($lang,'t_list_a_p_low'); }
+        else if ($ticket_res['prio'] == "2") {$prio= lang($lang,'t_list_a_p_high'); }
         $nou=name_of_client_ret($ticket_res['client_id']);
         $to_id=$ticket_res['user_to_id'];
         $s=$ticket_res['subj'];
@@ -1171,7 +1182,7 @@ else if ($type_op == "ticket_ok") {
 
 
 	 
-$subject = lang('TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_ok;
+$subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_ok;
 $message =<<<EOBODY
 <div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
 <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_ok}!</p>
@@ -1273,9 +1284,9 @@ else if ($type_op == "ticket_no_ok") {
         $user_init_id=$ticket_res['user_init_id'];
         $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
                 
-        $prio=lang('t_list_a_p_norm');
-        if ($ticket_res['prio'] == "0") {$prio= lang('t_list_a_p_low'); }
-        else if ($ticket_res['prio'] == "2") {$prio= lang('t_list_a_p_high'); }
+        $prio=lang($lang,'t_list_a_p_norm');
+        if ($ticket_res['prio'] == "0") {$prio= lang($lang,'t_list_a_p_low'); }
+        else if ($ticket_res['prio'] == "2") {$prio= lang($lang,'t_list_a_p_high'); }
         $nou=name_of_client_ret($ticket_res['client_id']);
         $to_id=$ticket_res['user_to_id'];
         $s=$ticket_res['subj'];
@@ -1292,7 +1303,7 @@ else if ($type_op == "ticket_no_ok") {
 
 
 	 
-$subject = lang('TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_no_ok;
+$subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_no_ok;
 $message =<<<EOBODY
 <div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
 <p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_no_ok}!</p>
@@ -1435,6 +1446,10 @@ $ticket_id=$qrow['ticket_id'];
 }
 //make_mail('ticket_no_ok','ru', 'info@rustem.com.ua', '288');
 //send_mail('info@rustem.com.ua','hello','eeee');
+/*
+	
+*/
+include($base .'/sys/scheduler.php');
 
 
 ?>

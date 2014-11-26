@@ -219,6 +219,10 @@ if (isset($CONF_DB)) {
                         case 'user_stats':
                             include ('inc/user_stats.php');
                             break;
+                            
+                        case 'scheduler':
+                            include ('inc/scheduler.php');
+                            break;
 
                         case 'messages':
                             include ('inc/messages.php');

@@ -1,5 +1,11 @@
 //var my_errors = {fio: false, login: false, pass: false};
 $(document).ready(function() {
+	$.ajaxSetup ({
+    // Disable caching of AJAX responses
+    cache: false
+});
+
+
     var socket = io.connect(location.protocol + '//' + show_hostname(MyHOSTNAME) + ':' + NODE_PORT, {
         secure: true
     });
@@ -303,15 +309,26 @@ git deploy
     };
 
     function makemytime(s) {
-        var now = moment();
-        $('time#a').each(function(i, e) {
+        var now = moment().zone("+04:00");
+        //.zone("+08:00")
+
+
+
+
+        
+               $('time#a').each(function(i, e) {
             var time = moment($(e).attr('datetime'));
-            $(e).html('<span>' + time.from(now, true) + '</span>');
+            
+            
+            $(e).html('<span>' + time.from(now) + '</span>');
         });
+        
         $('time#b').each(function(i, e) {
             var time = moment($(e).attr('datetime'));
             $(e).html('<span>' + time.from(now) + '</span>');
         });
+        
+        
         $('time#c').each(function(i, e) {
             var time = moment($(e).attr('datetime'));
             $(e).html('<span>' + time.format("ddd, Do MMM, H:mm:ss") + '</span>');
@@ -757,6 +774,507 @@ git deploy
 ###############################################
 */
     //
+    
+    if (ispath('scheduler')) {
+	    
+	    
+	    
+	    
+	            $('body').on('click', 'button#cron_delete', function(event) {
+            event.preventDefault();
+            var ids = $(this).attr('value');
+            bootbox.confirm(get_lang_param('JS_del'), function(result) {
+                if (result == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=cron_del" + "&id=" + ids,
+                        success: function(html) {
+                            //$("#content_deps").html(html);
+								window.location = MyHOSTNAME + "scheduler";
+                        }
+                    });
+                }
+                if (result == false) {
+                    console.log('false');
+                }
+            });
+            /*
+        $.ajax({
+            type: "POST",
+            url: ACTIONPATH,
+            data: "mode=deps_del"+
+                "&id="+$(this).attr('value'),
+            success: function(html) {
+                $("#content_deps").html(html);
+
+            }
+        });
+        */
+        });
+        
+        
+        
+	    
+	    //add_scheduler
+	    $('body').on('click', 'button#add_scheduler', function(event) {
+            event.preventDefault();
+            
+            
+            
+            $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=add_cron"+
+                        "&client_id_param="+$("#client_id_param").val()+
+                        "&to="+$("#to").val()+
+                        "&s2id_users_do="+$("#users_do").val()+
+                        "&prio="+$("#prio").val()+
+                        "&subj="+$("#subj").val()+
+                        "&msg="+$("#msg").val()+
+                        "&period="+$("#period").val()+
+                        "&day_field="+$("#day_field").val()+
+                        "&week_select="+$("#week_select").val()+
+                        "&month_select="+$("#month_select").val()+
+                        "&time_action="+$("#time_action").val()+
+                        "&action_start="+$("#action_start").val()+
+                        "&action_stop="+$("#action_stop").val()+
+                        "&status_action="+$("#status_action").val()
+                        
+                        ,
+                        success: function(html) {
+                            //console.log(html);
+                            window.location = MyHOSTNAME + "scheduler";
+                        }
+                    });
+            
+            
+            });
+	    
+	    
+	    $('.timepicker').timepicker({
+                    showInputs: false,
+                    minuteStep: 1,
+                showSeconds: true,
+                showMeridian: false
+                });
+	    
+	    
+	            $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+            $("#action_start").val( picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
+            $("#action_stop").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
+            
+            
+        });
+        $('#reservation').daterangepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',timePicker: true,timePicker12Hour: false
+        });
+	   
+	    //$('button#btn_period_day').addClass('active');
+	            $("#period_week").hide();
+            	$("#period_month").hide();
+            	
+            	
+	    $('body').on('click', 'button#btn_period_day', function(event) {
+            event.preventDefault();
+            $('button#btn_period_day').addClass('active');
+            $('button#btn_period_week').removeClass('active');
+            $('button#btn_period_month').removeClass('active');
+            	$("#period_day").show();
+            	$("#period_week").hide();
+            	$("#period_month").hide();
+            	
+            	$("#period").val('day');
+            });
+            
+            	    $('body').on('click', 'button#btn_period_week', function(event) {
+            event.preventDefault();
+            $('button#btn_period_day').removeClass('active');
+            $('button#btn_period_week').addClass('active');
+            $('button#btn_period_month').removeClass('active');
+            	$("#period_day").hide();
+            	$("#period_week").show();
+            	$("#period_month").hide();
+            	$("#period").val('week');
+            });
+            
+            	    $('body').on('click', 'button#btn_period_month', function(event) {
+            event.preventDefault();
+            $('button#btn_period_day').removeClass('active');
+            $('button#btn_period_week').removeClass('active');
+            $('button#btn_period_month').addClass('active');
+            	$("#period_day").hide();
+            	$("#period_week").hide();
+            	$("#period_month").show();
+            	$("#period").val('month');
+            });
+            
+            
+            
+            
+            
+            
+            
+	    
+        $("select#users_do").change(function() {
+            var p = $('select#users_do').val();
+            var t = $('select#to').val();
+            //console.log(p);
+            if (t == 0) {
+                if (p != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=get_unit_id" + "&uid=" + p,
+                        success: function(html) {
+                            //console.log(html);
+                            $("select#to [value='" + html + "']").attr("selected", "selected");
+                            $('select#to').trigger('chosen:updated');
+                            $('#for_to').popover('hide');
+                            $('#for_to').removeClass('has-error');
+                            $('#for_to').addClass('has-success');
+                        }
+                    });
+                }
+                if (p == 0) {
+                    $("select#to").find('option:selected').removeAttr("selected");
+                    $('select#to').trigger('chosen:updated');
+                }
+            }
+        });
+        $("select#to").on('change', function() {
+            if ($('select#to').val() != 0) {
+                $('#for_to').popover('hide');
+                $('#for_to').removeClass('has-error');
+                $('#for_to').addClass('has-success');
+                $('#dsd').popover('hide');
+            } else {
+                $('#dsd').popover('show');
+                $('#for_to').popover('show');
+                $('#for_to').addClass('has-error');
+                setTimeout(function() {
+                    $("#dsd").popover('hide');
+                }, 2000);
+            }
+        });
+        $("select#to").change(function() {
+            var i = $('select#to').val();
+            if ($('select#to').val() != 0) {
+                $('#for_to').popover('hide');
+                $('#for_to').removeClass('has-error');
+                $('#for_to').addClass('has-success');
+                createuserslist(i, 'users_do');
+            } else {
+                createuserslist(i, 'users_do');
+                $('#for_to').popover('show');
+                $('#for_to').addClass('has-error');
+                setTimeout(function() {
+                    $("#for_to").popover('hide');
+                }, 2000);
+            }
+        });
+        //select_init_user
+        $('body').on('click', 'a#select_init_user', function(event) {
+            event.preventDefault();
+            console.log($(this).attr('param-hash'));
+            var ulogin = $('#user_name_login').val();
+            var uinitid = $('#user_init_id').val();
+            //$("#fio").val(ui.item.label);
+            //$('#fio').val('system');
+            $('#fio').popover('hide');
+            $('#for_fio').removeClass('has-error').addClass('has-success');
+            $("#user_info").hide().fadeIn(500);
+            $("#alert_add").hide();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=get_client_from_new_t&get_my_info=0",
+                success: function(html) {
+                    $('#client_id_param').val(uinitid);
+                    $('#fio').val(ulogin);
+                    $("#user_info").hide().html(html).fadeIn(500);
+                    $('#for_fio').addClass('has-success');
+                    $("#status_action").val('edit');
+                    makemytime(true);
+                }
+            });
+        });
+
+        $('body').on('click', 'button#prio_low', function(event) {
+            event.preventDefault();
+            $('button#prio_low').addClass('active');
+            $('button#prio_normal').removeClass('active');
+            $('button#prio_high').removeClass('active');
+            $('i#lprio_low').addClass('fa fa-check');
+            $("i#lprio_norm").removeClass("fa fa-check");
+            $("i#lprio_high").removeClass("fa fa-check");
+            $("#prio").val('0');
+        });
+        $('body').on('click', 'button#prio_normal', function(event) {
+            event.preventDefault();
+            $('button#prio_low').removeClass('active');
+            $('button#prio_normal').addClass('active');
+            $('button#prio_high').removeClass('active');
+            $('i#lprio_low').removeClass('fa fa-check');
+            $("i#lprio_norm").addClass("fa fa-check");
+            $("i#lprio_high").removeClass("fa fa-check");
+            $("#prio").val('1');
+        });
+        $('body').on('click', 'button#prio_high', function(event) {
+            event.preventDefault();
+            $('button#prio_low').removeClass('active');
+            $('button#prio_normal').removeClass('active');
+            $('button#prio_high').addClass('active');
+            $('i#lprio_low').removeClass('fa fa-check');
+            $("i#lprio_norm").removeClass("fa fa-check");
+            $("i#lprio_high").addClass("fa fa-check");
+            $("#prio").val('2');
+        });
+        $('body').on('click', 'button#reset_cron', function(event) {
+            event.preventDefault();
+            window.location = MyHOSTNAME + "scheduler?plus";
+        });
+        
+$("#user_info").hide();
+        $("#alert_add").hide();
+        $("#users_do").select2({
+            formatResult: format,
+            formatSelection: format,
+            allowClear: true,
+            maximumSelectionSize: 5,
+            width: '100%',
+            formatNoMatches: get_lang_param('JS_not_found'),
+            escapeMarkup: function(m) {
+                return m;
+            }
+        });
+        $('textarea').autosize({
+            append: "\n"
+        });
+
+	   $("#fio").autocomplete({
+            max: 10,
+            minLength: 2,
+            source: MyHOSTNAME + "/inc/json.php?fio",
+            focus: function(event, ui) {
+                $("#fio").val(ui.item.label);
+                return false;
+            },
+            select: function(event, ui) {
+                $("#fio").val(ui.item.label);
+                $("#client_id_param").val(ui.item.value);
+                $('#fio').popover('hide');
+                $('#for_fio').removeClass('has-error').addClass('has-success');
+                $("#user_info").hide().fadeIn(500);
+                $("#alert_add").hide();
+                $.ajax({
+                    type: "POST",
+                    url: ACTIONPATH,
+                    data: "mode=get_client_from_new_t&get_client_info=" + ui.item.value,
+                    success: function(html) {
+                        $("#user_info").hide().html(html).fadeIn(500);
+                        $('#edit_login').editable({
+                            inputclass: 'input-sm',
+                            emptytext: 'пусто'
+                        });
+                        $('#edit_posada').editable({
+                            inputclass: 'input-sm',
+                            emptytext: 'пусто',
+                            mode: 'popup',
+                            showbuttons: false
+                        });
+                        $('#edit_unit').editable({
+                            inputclass: 'input-sm',
+                            emptytext: 'пусто',
+                            mode: 'popup',
+                            showbuttons: false
+                        });
+                        $('#edit_tel').editable({
+                            inputclass: 'input-sm',
+                            emptytext: 'пусто'
+                        });
+                        $('#edit_adr').editable({
+                            inputclass: 'input-sm',
+                            emptytext: 'пусто'
+                        });
+                        $('#edit_mail').editable({
+                            inputclass: 'input-sm',
+                            emptytext: 'пусто'
+                        });
+                        $('#for_fio').addClass('has-success');
+                        $("#status_action").val('edit');
+                        makemytime(true);
+                    }
+                });
+                return false;
+            },
+            change: function(event, ui) {
+                //console.log(this.value);
+                if ($('input#fio').val().length != 0) {
+                    if (ui.item == null) {
+                        /*
+ajax запрос с фио или логин или номер тел человека
+
+php:
+если найдена 1 запись, то выдать найденого
+если не найдено то
+                    1. разрешено добавление клиентов - выдать новый пользователь
+                    2. не разрешено добавление клиентов - выдать - не найден пользователь и поле фио очистить
+
+*/
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: ACTIONPATH,
+                            data: "mode=find_client&cron=true&name=" + encodeURIComponent($("#fio").val()),
+                            success: function(html) {
+                                $.each(html, function(i, item) {
+                                    if (item.res == true) {
+                                        ///////////
+                                        $("#client_id_param").val(item.p);
+                                        $('#fio').popover('hide');
+                                        $('#for_fio').removeClass('has-error').addClass('has-success');
+                                        $("#user_info").hide().fadeIn(500);
+                                        $("#alert_add").hide();
+                                        $.ajax({
+                                            type: "POST",
+                                            url: ACTIONPATH,
+                                            data: "mode=get_client_from_new_t&get_client_info=" + encodeURIComponent(item.p),
+                                            success: function(html) {
+                                                $("#user_info").hide().html(html).fadeIn(500);
+                                                $('#edit_login').editable({
+                                                    type: 'text',
+                                                    pk: 1,
+                                                    url: MyHOSTNAME + 'actions.php',
+                                                    inputclass: 'input-sm',
+                                                    emptytext: 'пусто',
+                                                    params: {
+                                                        mode: 'verify_login_nt'
+                                                    }
+                                                });
+                                                $('#edit_posada').editable({
+                                                    inputclass: 'input-sm',
+                                                    emptytext: 'пусто',
+                                                    mode: 'popup',
+                                                    showbuttons: false
+                                                });
+                                                $('#edit_unit').editable({
+                                                    inputclass: 'input-sm',
+                                                    emptytext: 'пусто',
+                                                    mode: 'popup',
+                                                    showbuttons: false
+                                                });
+                                                $('#edit_tel').editable({
+                                                    inputclass: 'input-sm',
+                                                    emptytext: 'пусто'
+                                                });
+                                                $('#edit_adr').editable({
+                                                    inputclass: 'input-sm',
+                                                    emptytext: 'пусто'
+                                                });
+                                                $('#edit_mail').editable({
+                                                    inputclass: 'input-sm',
+                                                    emptytext: 'пусто'
+                                                });
+                                                $('#for_fio').addClass('has-success');
+                                                $("#status_action").val('edit');
+                                                makemytime(true);
+                                            }
+                                        });
+                                        ///////////
+                                        //console.log(item.p);
+                                    }
+                                    if (item.res == false) {
+                                        if (item.priv == true) { //console.log('add');
+                                            $("#user_info").hide();
+                                            $('#fio').popover('hide');
+                                            $('#for_fio').removeClass('has-error');
+                                            $('#for_fio').addClass('has-success');
+                                            $("#status_action").val('add');
+                                            $.ajax({
+                                                type: "POST",
+                                                url: ACTIONPATH,
+                                                data: "mode=get_client_from_new_t&new_client_info=" + encodeURIComponent($("#fio").val()),
+                                                success: function(html) {
+                                                    $("#user_info").hide().html(html).fadeIn(500);
+                                                    $('#username').editable({
+                                                        inputclass: 'input-sm',
+                                                        emptytext: 'пусто'
+                                                    });
+                                                    $('#new_login').editable({
+                                                        type: 'text',
+                                                        pk: 1,
+                                                        url: MyHOSTNAME + 'actions.php',
+                                                        inputclass: 'input-sm',
+                                                        emptytext: 'пусто',
+                                                        params: {
+                                                            mode: 'verify_login_nt'
+                                                        }
+                                                    });
+                                                    $('#new_posada').editable({
+                                                        inputclass: 'input-sm posada_class',
+                                                        emptytext: 'пусто',
+                                                        mode: 'popup',
+                                                        showbuttons: false
+                                                    });
+                                                    $('#new_unit').editable({
+                                                        inputclass: 'input-sm',
+                                                        emptytext: 'пусто',
+                                                        mode: 'popup',
+                                                        showbuttons: false
+                                                    });
+                                                    $('#new_tel').editable({
+                                                        inputclass: 'input-sm',
+                                                        emptytext: 'пусто'
+                                                    });
+                                                    $('#new_adr').editable({
+                                                        inputclass: 'input-sm',
+                                                        emptytext: 'пусто'
+                                                    });
+                                                    $('#new_mail').editable({
+                                                        inputclass: 'input-sm',
+                                                        emptytext: 'пусто'
+                                                    });
+                                                    makemytime(true);
+                                                }
+                                            });
+                                        }
+                                        if (item.priv == false) { //console.log('not add');
+                                            $("#user_info").hide();
+                                            $("#user_info").hide().html(item.msg_error).fadeIn(500);
+                                            $("#status_action").val('');
+                                            $("#fio").val('');
+                                            makemytime(true);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        /*
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=get_client_from_new_t&new_client_info="+$("#fio").val(),
+                        success: function(html) {
+                            $("#alert_add").hide().html(html).fadeIn(500);
+                            
+                            $('#username').editable({inputclass: 'input-sm',emptytext: 'пусто'});
+                            $('#new_login').editable({inputclass: 'input-sm', emptytext: 'пусто'});
+                            $('#new_posada').editable({inputclass: 'input-sm posada_class',emptytext: 'пусто',mode: 'popup',showbuttons: false});
+                            $('#new_unit').editable({inputclass: 'input-sm',emptytext: 'пусто',mode: 'popup',showbuttons: false});
+                            $('#new_tel').editable({inputclass: 'input-sm',emptytext: 'пусто'});
+                            $('#new_adr').editable({inputclass: 'input-sm',emptytext: 'пусто'});
+                            $('#new_mail').editable({inputclass: 'input-sm', emptytext: 'пусто'});
+                        }
+                    });
+                    */
+                    } else {}
+                }
+            }
+        });
+	    
+	     };
+    
     if (ispath('user_stats')) {
         $("#user_list").select2({
             formatResult: format,
@@ -787,7 +1305,7 @@ git deploy
         $('#reservation').daterangepicker({
             format: 'YYYY-MM-DD'
         });
-    }
+    };
     if (ispath('messages')) {
         //check_main_msgs()
         //setInterval(check_main_msgs(),2000);

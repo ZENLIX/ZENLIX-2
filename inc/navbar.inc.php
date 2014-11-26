@@ -304,6 +304,9 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
                     <li <?php echo echoActiveClassIfRequestMatches("deps") ?>><a href="<?php echo $CONF['hostname'] ?>deps"><i class="fa fa-sitemap"></i> <?php echo lang('NAVBAR_deps'); ?></a></li>
                     
                     <li <?php echo echoActiveClassIfRequestMatches("files") ?>><a href="<?php echo $CONF['hostname'] ?>files"><i class="fa fa-files-o"></i>  <?php echo lang('NAVBAR_files'); ?></a></li>
+                    
+                    <li <?php echo echoActiveClassIfRequestMatches("scheduler") ?>><a href="<?php echo $CONF['hostname'] ?>scheduler"><i class="fa fa-clock-o"></i>  <?=lang('cron_navbar');?></a></li>
+                    
                                         
                     <li <?php echo echoActiveClassIfRequestMatches("approve") ?>><a href="<?php echo $CONF['hostname'] ?>approve"><i class="fa fa-check-square-o"></i> <?php echo lang('NAVBAR_approve'); ?> <?php echo $apr; ?></a></li>
                             

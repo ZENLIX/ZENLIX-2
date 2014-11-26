@@ -1,5 +1,7 @@
 <?php
-include_once ('sys/class.phpmailer.php');
+	//$base = dirname(dirname(__FILE__)); 
+	
+//include_once ($base .'/sys/class.phpmailer.php');
 
 function send_notification($type, $ticket_id) {
     global $CONF, $CONF_MAIL, $dbConnection;
@@ -50,7 +52,8 @@ function send_notification($type, $ticket_id) {
             
             $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
             $stmt->execute(array(':delivers_id' => $res_str, ':type_op' => $type, ':tid' => $ticket_id, ':n' => $CONF['now_dt']));
-        } else if ($user_to_id <> 0) {
+        } 
+        else if ($user_to_id <> 0) {
             
             $su = array();
             $users = explode(",", $user_to_id);

@@ -24,7 +24,7 @@
 
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('deps')) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('deps') || get_current_URL_name('scheduler')) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css">
 <?php
 } ?>
@@ -33,7 +33,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('deps')) { ?>
 
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats')) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler')) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2.css?v2">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2-bootstrap.css">
 <?php
@@ -59,8 +59,9 @@ if (get_current_URL_name('create')) { ?>
 } ?>
 
 <?php
-if (get_current_URL_name('user_stats')) { ?>
+if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler')) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/daterangepicker-bs3.css">
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/bootstrap-timepicker.min.css">
 <?php
 } ?>
 

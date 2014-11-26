@@ -34,7 +34,14 @@ echo $lang; ?>";
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.titlealert.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.noty.packaged.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/ion.sound.min.js"></script>
+
+<!--script src="<?php echo $CONF['hostname'] ?>js/moment-with-locales.min.js"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/moment-timezone-with-data-2010-2020.min.js"></script-->
+
 <script src="<?php echo $CONF['hostname'] ?>js/moment.min.js"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/moment-timezone-with-data-2010-2020.min.js"></script>
+
+
 <script src="<?php echo $CONF['hostname'] ?>js/moment-with-langs.js"></script>
 
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-ui-1.10.4.custom.min.js"></script>
@@ -43,13 +50,13 @@ echo $lang; ?>";
 
 
 <?php
-if (get_current_URL_name('create')) { ?>
+if (get_current_URL_name('create') || get_current_URL_name('scheduler') ) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.ui.autocomplete.js"></script>
 <?php
 } ?>
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('deps')) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('deps') || get_current_URL_name('scheduler')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 <?php
 } ?>
@@ -79,7 +86,7 @@ if (get_current_URL_name('ticket')) { ?>
 } ?>
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('users')) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_current_URL_name('scheduler')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/s2/select2.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.autosize.min.js"></script>
 
@@ -122,10 +129,12 @@ if (get_current_URL_name('view_user')) { ?>
 } ?>
 
 <?php
-if (get_current_URL_name('user_stats')) { ?>
+if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') ) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/daterangepicker.js?v5"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/s2/select2.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jqueryKnob/jquery.knob.js"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/bootstrap-timepicker.min.js"></script>
+
 <?php
 } ?>
 

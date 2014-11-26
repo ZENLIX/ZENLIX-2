@@ -217,6 +217,71 @@ EOBODY;
             echo json_encode($row_set);
         }
         
+        if ($mode == "add_cron") {
+	        /*
+        $user_to_id 	= $_POST['s2id_users_do'];
+        $subj 			= $_POST['subj'];
+        $msg			= $_POST['msg'];
+        $client_id		= $_POST['client_id_param'];
+        $unit_id 		= $_POST['to'];
+        $period 		= $_POST['period'];
+        $action_time 	= $_POST['time_action'];
+        $dt_start 		= $_POST['action_start'];
+        $dt_stop 		= $_POST['action_stop'];
+        $prio			= $_POST['prio'];
+                        */
+                        
+                        $status_action=$_POST['status_action'];
+                        
+                        
+                        $errors=false;
+                        
+                                                
+                        if ($_POST['period'] == "day") {$p_arr=$_POST['day_field']; }
+                        else if ($_POST['period'] == "week") {$p_arr=$_POST['week_select']; }
+                        else if ($_POST['period'] == "month") {$p_arr=$_POST['month_select']; }
+                        
+        $stmt = $dbConnection->prepare('insert into scheduler_ticket
+        (user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, period, period_arr, action_time, dt_start, dt_stop, prio) values (
+        :user_init_id, 
+        :user_to_id, 
+        :date_create, 
+        :subj, 
+        :msg, 
+        :client_id, 
+        :unit_id, 
+        :period, 
+        :period_arr, 
+        :action_time, 
+        :dt_start, 
+        :dt_stop,  
+        :prio)');
+        
+        $stmt->execute(array(
+        ':user_init_id' => '1', 
+        ':user_to_id' 	=> $_POST['s2id_users_do'],
+        ':date_create' 	=> $CONF['now_dt'],
+        ':subj' 		=> $_POST['subj'],
+        ':msg' 			=> $_POST['msg'],
+        ':client_id' 	=> $_POST['client_id_param'],
+        ':unit_id' 		=> $_POST['to'],
+        ':period' 		=> $_POST['period'],
+        ':period_arr' 	=> $p_arr,
+        ':action_time' 	=> $_POST['time_action'],
+        ':dt_start' 	=> $_POST['action_start'],
+        ':dt_stop' 		=> $_POST['action_stop'],
+        ':prio'			=> $_POST['prio']
+        ));
+
+	        ?>
+	        
+	        
+	        
+	        <?php
+	        
+	        
+        }
+        
         if ($mode == "save_notes") {
             $noteid = ($_POST['hn']);
             $message = ($_POST['msg']);
@@ -558,18 +623,31 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 
                 //user priv to add client in new ticket
                 $pa = get_user_val('priv_add_client');
+                
+                
+                if (isset($_POST['cron'])) {
+	                $r['priv'] = false;
+	                $r['msg_error'] = "<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">
+  <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>
+  User must be created.
+</div>";
+                }
+                else if (!isset($_POST['cron'])) {
                 if ($pa == 1) {
                     $r['priv'] = true;
+                    $r['msg_error'] = "";
+
                 }
                 if ($pa == 0) {
                     $r['priv'] = false;
-                }
-                
-                $r['msg_error'] = "<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">
+                    $r['msg_error'] = "<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">
   <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>
   " . lang('TICKET_error_msg') . "
 </div>";
-            }
+
+                }
+                }
+                            }
             
             $row_set[] = $r;
             echo json_encode($row_set);
@@ -2729,6 +2807,13 @@ values
             <br>
         <?php
         }
+        
+                if ($mode == "cron_del") {
+            $id = ($_POST['id']);
+            
+            $stmt = $dbConnection->prepare('delete from scheduler_ticket where id=:id');
+            $stmt->execute(array(':id' => $id));
+            }
         
         if ($mode == "posada_del") {
             $id = ($_POST['id']);

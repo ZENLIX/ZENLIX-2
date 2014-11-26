@@ -195,7 +195,7 @@ $current .= "?>\n";
 file_put_contents($fileconf, $current);
 
 
-$node_params.="var db = mysql.createConnection({\n";
+$node_params.="var mysql = require('mysql'); var db = mysql.createConnection({\n";
 $node_params.="host: '".$mysql_host."',\n";
 $node_params.="user: '".$mysql_username."',\n";
 $node_params.="password: '".$mysql_password."',\n";

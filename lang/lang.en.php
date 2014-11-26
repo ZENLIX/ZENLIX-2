@@ -1,6 +1,39 @@
 <?php
-function lang($phrase){
+function lang_en($phrase){
     static $lang = array(
+	    
+	    
+'cron_navbar' => 'Planner',
+'cron_title' => 'Task Scheduler',
+'cron_view' => 'View information about the task',
+'cron_period' => 'Frequency',
+'cron_day' => 'Day',
+'cron_week' => 'Week',
+'cron_month' => 'Month',
+'cron_tab' => 'Schedule',
+'cron_do_every' => 'Perform each',
+'cron_do_day' => 'day',
+'cron_1' => 'Monday',
+'cron_2' => 'Tuesday',
+'cron_3' => 'Wednesday',
+'cron_4' => 'Thursday',
+'cron_5' => 'Friday',
+'cron_6' => 'Saturday',
+'cron_7' => 'Sunday',
+'cron_do_week' => 'weekday',
+'cron_do_month' => 'of each month',
+'cron_ta' => 'Time',
+'cron_active' => 'Activate',
+'cron_del' => 'Delete the task',
+'cron_t_create' => 'Create a task',
+'cron_add' => 'Add to Planner',
+'cron_info' => 'In this section, you can create a task that will be performed on the selected schedule.',
+'cron_title_list' => 'Problems',
+
+
+
+
+
     
 'mail_msg_ticket_refer'=>'TICKED WAS REDIRECTED',
 'mail_msg_ticket_refer_ext'=>'You received this message because the ticket was redirected by the user',
