@@ -1,5 +1,5 @@
 
-CREATE TABLE `scheduler_ticket` (
+CREATE TABLE IF NOT EXISTS `scheduler_ticket` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_init_id` int(11) DEFAULT NULL,
   `user_to_id` varchar(512) DEFAULT NULL,
