@@ -1,6 +1,6 @@
 <?php
 session_start();
-//ok! 
+//ok!
 include ("functions.inc.php");
 include ("sys/dbu.class.php");
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
@@ -127,9 +127,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 $rp = realpath(dirname(__FILE__));
                 
                 //////create DB backup
+                /*
                 $db = new DBBackup(array('driver' => 'mysql', 'host' => $CONF_DB['host'], 'user' => $CONF_DB['username'], 'password' => $CONF_DB['password'], 'database' => $CONF_DB['db_name']));
                 $backup = $db->backup();
                 if (!$backup['error']) {
+	                
+	                
                     $fpp = $rp . "/updates/backup/DB.sql";
                     $fp = fopen($fpp, 'a+');
                     fwrite($fp, $backup['msg']);
@@ -141,13 +144,23 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     Zip($rp . "/", $rp . "/updates/backup/file_zenlix_backup.zip");
                     
                     //////////////////////////////////
-                    
+                    }
+                    else {
+                    echo 'An error has ocurred.';
+                    $error_tag = true;
+                }
+                */
                     $url = $CONF['update_server'] . "/zenlix.zip";
                     $zipFile = $rp . "/updates/zenlix.zip";
                      // Local Zip File Path
+                     
+                     if (file_exists($zipFile)) { unlink($zipFile); }
+                     else if (!file_exists($zipFile)) {
+                     
                     $zipResource = fopen($zipFile, "w");
                     
                     // Get The Zip File From Server
+                    
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
                     curl_setopt($ch, CURLOPT_FAILONERROR, true);
@@ -166,6 +179,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     }
                     curl_close($ch);
                     
+                   }
+					
+/*
+
                     $dir_ver = $rp . "/updates/" . $data['version'];
                     rrmdir($dir_ver);
                     mkdir($dir_ver, 0755);
@@ -175,18 +192,27 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     if ($zip->open($zipFile) != "true") {
                         echo "Error :- Unable to open the Zip File";
                     }
+                    */
+                    
                     
                     /* Extract Zip File */
+                    $zip = new ZipArchive;
+if ($zip->open($zipFile) === TRUE) {
+    $zip->extractTo($rp . "/");
+    $zip->close();
+    echo 'ok';
+} else {
+    echo 'ошибка';
+}
+
                     
-                    $zip->extractTo($rp . "/");
+                    //$sql_file = file_get_contents($rp . 'sys/DB.sql');
+                    //$qr = $dbConnection->exec($sql_file);
                     
-                    $sql_file = file_get_contents($dir_ver . '/DB.sql');
-                    $qr = $dbConnection->exec($sql_file);
                     
-                    $zip->close();
                     
                     unlink($zipFile);
-                    rrmdir($dir_ver);
+                    //rrmdir($dir_ver);
 ?>
    <table class="table table-bordered">
                                         <tbody><tr>
@@ -197,10 +223,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
                                     </tbody></table>
    <?php
-                } else {
-                    echo 'An error has ocurred.';
-                    $error_tag = true;
-                }
+                 
                 
                 //file_backup
                 
