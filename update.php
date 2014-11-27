@@ -127,13 +127,17 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 $rp = realpath(dirname(__FILE__));
                 
                 //////create DB backup
-                /*
+               
+                $date = new DateTime($CONF['now_dt']);
+				$dform=$date->format('Ymd_His');
+
+
                 $db = new DBBackup(array('driver' => 'mysql', 'host' => $CONF_DB['host'], 'user' => $CONF_DB['username'], 'password' => $CONF_DB['password'], 'database' => $CONF_DB['db_name']));
                 $backup = $db->backup();
                 if (!$backup['error']) {
 	                
 	                
-                    $fpp = $rp . "/updates/backup/DB.sql";
+                    $fpp = $rp . "/updates/backup/DB_zenlix_backup_".$dform.".sql";
                     $fp = fopen($fpp, 'a+');
                     fwrite($fp, $backup['msg']);
                     fclose($fp);
@@ -141,21 +145,21 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     ///////////////////////
                     
                     ////create files backup///////////
-                    Zip($rp . "/", $rp . "/updates/backup/file_zenlix_backup.zip");
-                    
+                    Zip($rp . "/", $rp . "/updates/backup/file_zenlix_backup_".$dform.".zip");
+                    $fpp2=$rp . "/updates/backup/file_zenlix_backup_".$dform.".zip";
                     //////////////////////////////////
                     }
                     else {
                     echo 'An error has ocurred.';
                     $error_tag = true;
                 }
-                */
+                ////////////////
                     $url = $CONF['update_server'] . "/zenlix.zip";
                     $zipFile = $rp . "/updates/zenlix.zip";
                      // Local Zip File Path
                      
                      if (file_exists($zipFile)) { unlink($zipFile); }
-                     else if (!file_exists($zipFile)) {
+                     
                      
                     $zipResource = fopen($zipFile, "w");
                     
@@ -179,40 +183,29 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     }
                     curl_close($ch);
                     
-                   }
+                   
 					
-/*
 
-                    $dir_ver = $rp . "/updates/" . $data['version'];
-                    rrmdir($dir_ver);
-                    mkdir($dir_ver, 0755);
-                    
-                    $zip = new ZipArchive;
-                    $extractPath = $dir_ver;
-                    if ($zip->open($zipFile) != "true") {
-                        echo "Error :- Unable to open the Zip File";
-                    }
-                    */
                     
                     
                     /* Extract Zip File */
                     $zip = new ZipArchive;
-if ($zip->open($zipFile) === TRUE) {
-    $zip->extractTo($rp . "/");
-    $zip->close();
-    echo 'ok';
-} else {
-    echo 'ошибка';
-}
+					if ($zip->open($zipFile) === TRUE) {
+					    $zip->extractTo($rp . "/");
+					    $zip->close();
+					    echo 'ok';
+					} else {
+					    echo 'error, please restart update';$error_tag = true;
+					}
 
-                    
-                    //$sql_file = file_get_contents($rp . 'sys/DB.sql');
-                    //$qr = $dbConnection->exec($sql_file);
+                    /* execute sql */
+                    $sql_file = file_get_contents($rp . '/sys/DB.sql');
+                    $qr = $dbConnection->exec($sql_file);
                     
                     
                     
                     unlink($zipFile);
-                    //rrmdir($dir_ver);
+                    
 ?>
    <table class="table table-bordered">
                                         <tbody><tr>
@@ -220,7 +213,11 @@ if ($zip->open($zipFile) === TRUE) {
 <td><?php echo $fpp; ?></td>
 
                                         </tr>
+<tr>
+<td>Files backup</td>
+<td><?php echo $fpp2; ?></td>
 
+                                        </tr>
                                     </tbody></table>
    <?php
                  
@@ -319,7 +316,7 @@ if ($zip->open($zipFile) === TRUE) {
                 
                 //
                  
-                $files_def = array('/actions.php', '/functions.inc.php', '/index.php', '/update.php');
+                $files_def = array('/actions.php', '/functions.inc.php', '/index.php');
                 
                 $directory_def = array('/css/',
                  //subdirs
