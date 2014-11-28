@@ -32,7 +32,7 @@ echo $lang; ?>";
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/app.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.titlealert.js"></script>
-<script src="<?php echo $CONF['hostname'] ?>js/jquery.noty.packaged.min.js"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/noty/packaged/jquery.noty.packaged.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/ion.sound.min.js"></script>
 
 <!--script src="<?php echo $CONF['hostname'] ?>js/moment-with-locales.min.js"></script>

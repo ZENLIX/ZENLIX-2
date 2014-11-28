@@ -234,13 +234,21 @@ EOBODY;
                         $status_action=$_POST['status_action'];
                         
                         
-                        $errors=false;
-                        
+                        $check_error=true;
+                    $msg="Please fill fields: ";
+                    if (empty($_POST['subj'])) {$check_error=false; $msg.="subject "; }
+                    if (empty($_POST['msg'])) {$check_error=false; $msg.="msg ";}
+                    if (empty($_POST['client_id_param'])) {$check_error=false; $msg.="client ";}
+                    if (empty($_POST['to'])) {$check_error=false; $msg.="to user ";}
+                    if (empty($_POST['period'])) {$check_error=false; $msg.="period ";}
+                    if (empty($_POST['time_action'])) {$check_error=false; $msg.="actiontime ";}
+                    if (empty($_POST['action_start'])) {$check_error=false; $msg.="period ";}
                                                 
                         if ($_POST['period'] == "day") {$p_arr=$_POST['day_field']; }
                         else if ($_POST['period'] == "week") {$p_arr=$_POST['week_select']; }
                         else if ($_POST['period'] == "month") {$p_arr=$_POST['month_select']; }
                         
+                        if ($check_error == true) {
         $stmt = $dbConnection->prepare('insert into scheduler_ticket
         (user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, period, period_arr, action_time, dt_start, dt_stop, prio) values (
         :user_init_id, 
@@ -272,7 +280,11 @@ EOBODY;
         ':dt_stop' 		=> $_POST['action_stop'],
         ':prio'			=> $_POST['prio']
         ));
+}
 
+
+		$results[] = array('check_error' => $check_error, 'msg' => $msg);
+        print json_encode($results);
 	        ?>
 	        
 	        
@@ -2064,6 +2076,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     $results[] = array('name' => $rews['id'], 'at' => $at, 'hash' => $rews['hash_name'], 'time' => $rews['last_update']);
                 }
             }
+            
         }
         
         if ($mode == "update_status_time") {

@@ -716,11 +716,13 @@ git deploy
     var def_filename = def_p[def_p.length - 1];
     $.noty.defaults = {
         layout: 'top',
-        theme: 'defaultTheme',
+        theme: 'relax',
         type: 'information',
         text: '',
+        closeButton: true,
         dismissQueue: true,
-        template: '<div class="noty_message"><button type="button" class="close" style="padding-left: 2px;margin-top: -5px;" aria-hidden="true">&times;</button><span class="noty_text"></span></div>',
+        template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"><i class="fa fa-times"></i></div></div>',
+        
         animation: {
             open: {
                 height: 'toggle'
@@ -736,7 +738,7 @@ git deploy
         modal: false,
         maxVisible: 5,
         killer: false,
-        closeWith: ['click'],
+        closeWith: ['button'],
         callback: {
             onShow: function() {},
             afterShow: function() {},
@@ -825,6 +827,7 @@ git deploy
             $.ajax({
                         type: "POST",
                         url: ACTIONPATH,
+                        dataType: "json",
                         data: "mode=add_cron"+
                         "&client_id_param="+$("#client_id_param").val()+
                         "&to="+$("#to").val()+
@@ -844,7 +847,16 @@ git deploy
                         ,
                         success: function(html) {
                             //console.log(html);
-                            window.location = MyHOSTNAME + "scheduler";
+                            $.each(html, function(i, item) {
+                            if (item.check_error == true) {
+	                            window.location = MyHOSTNAME + "scheduler";
+	                           }
+	                        else if (item.check_error == false) {
+		                        $("#error_content").html(item.msg);
+	                           }   
+	                           });
+	                            
+                            
                         }
                     });
             

@@ -791,7 +791,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                             
                                          
                                         <span class="input-group-addon"><small><?=lang('cron_do_every');?> </small></span>
-                                            <select multiple="" class="chosen-select form-control input-sm " id="week_select">
+                                            <select multiple="" class="chosen-select form-control input-sm " id="week_select" data-placeholder=" ">
                                                 <option value="1"><?=lang('cron_1');?></option>
                                                 <option value="2"><?=lang('cron_2');?></option>
                                                 <option value="3"><?=lang('cron_3');?></option>
@@ -811,7 +811,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                         <span class="input-group-addon"><small><?=lang('cron_do_every');?> </small></span>
                                         
                                             
-                                            <select multiple="" class="chosen-select form-control input-sm " id="month_select">
+                                            <select multiple="" class="chosen-select form-control input-sm " id="month_select" data-placeholder=" ">
                                                 <?php for ($i = 1; $i <= 30; $i++) { ?>
     <option value="<?=$i;?>"><?=$i;?></option>
 <?php } ?>
@@ -827,7 +827,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                             
                                         </div></div>
     </div>
-  </div></div>
+  </div>
   
   
   
@@ -839,13 +839,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     <div class="col-sm-10">
      
      <div class="bootstrap-timepicker">
-                                        <div class="form-group">
+                                        <div class="">
           
                                             <div class="input-group">
-                                                <input type="text" class="form-control timepicker input-sm" id="time_action"/>
+                                                
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-clock-o"></i>
                                                 </div>
+                                                <input type="text" class="form-control timepicker input-sm" id="time_action"/>
                                             </div><!-- /.input group -->
                                         </div><!-- /.form group -->
                                     </div>
@@ -872,7 +873,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
           <div class="form-group">
     <label for="period" class="col-sm-2 control-label"><small><?=lang('cron_active');?>: </small></label>
     <div class="col-sm-10">
-     <div class="form-group">
+     <div class="">
 
     <div class="input-group ">
       <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm active">
@@ -926,7 +927,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 
-</div>
+</div><div id="error_content"></div>
 </div>
 
 </div>
@@ -940,7 +941,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             </div>
 
 
-</div>
+</div> </div>
 <div id="alert_add">
     </div>
 <div class="col-md-4" id="user_info">
