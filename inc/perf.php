@@ -41,7 +41,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 
-<div class="box box-solid bg-maroon">
+<div class="box box-solid bg-blue">
                                 <div class="box-header">
                                     <h3 class="box-title">ZENLIX v.<?php echo get_conf_param('version'); ?></h3>
                                 </div>
@@ -56,7 +56,20 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                 </div><!-- /.box-body -->
                             </div>
 
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title">CRON</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+ <p class="help-block"><small><?php echo lang('CONF_2arch_info'); ?> <br>
+<pre>5 0 * * * /usr/bin/php5 -f <?php echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron.php" ?> > <?php echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p>
 
+<p class="help-block"><small><?php echo lang('CONF_2noty_info'); ?> <br>
+      <pre>* * * * * /usr/bin/php5 -f <?php echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron_notify.php" ?> > <?php echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p> 
+
+
+                                </div><!-- /.box-body -->
+                            </div>
 
 
 
@@ -164,8 +177,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     <label for="days2arch" class="col-sm-4 control-label"><small><?php echo lang('CONF_2arch'); ?></small></label>
     <div class="col-sm-8">
       <input type="text" class="form-control input-sm" id="days2arch" placeholder="<?php echo lang('CONF_2arch'); ?>" value="<?php echo get_conf_param('days2arch'); ?>">
-      <p class="help-block"><small><?php echo lang('CONF_2arch_info'); ?> <br>
-<pre>5 0 * * * /usr/bin/php5 -f <?php echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron.php" ?> > <?php echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p>
+     
     </div>
   </div>
   
@@ -306,8 +318,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         if (get_conf_param('mail_active') == "false") {
             echo "selected";
         } ?>><?php echo lang('CONF_false'); ?></option>
-</select>   <p class="help-block"><small><?php echo lang('CONF_2noty_info'); ?> <br>
-      <pre>* * * * * /usr/bin/php5 -f <?php echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron_notify.php" ?> > <?php echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p> </div>
+</select>   </div>
   </div>
   
   <div class="form-group">

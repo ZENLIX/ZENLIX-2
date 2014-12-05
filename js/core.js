@@ -12,34 +12,10 @@ $(document).ready(function() {
     socket.emit('join', {
         uniq_id: USER_HASH
     });
-    /*
-console.log('check 1', socket.connected);
-socket.on('connect', function() {
-  console.log('check 2', socket.connected);
-});
-*/
-    /*
-ticket_create
-Вы получили новую заявку! (#N)
 
-номер заявки
-
-ajax - получить всю инфу и выдать сообщение
-
-
-ticket_create, ticket_Refer, other
-какие страницы?
-dashboard, news, list, ticket?, panel label
-
-npm????
-git deploy
-*/
     //push_msg_action2user
     socket.on("new_msg", function(data) {
-        //alert(data.msg);
-        //console.log(data.msg);
-        //data.type_op  
-        //data.ticket_id
+
         switch (data.type_op) {
             case 'ticket_create':
                 active_noty_msg('ticket_create', data.t_id);
@@ -164,33 +140,7 @@ git deploy
                 window.location = MyHOSTNAME + "index.php?logout";
                 break;
         };
-        /*
-                    
-                    if (data.type_op == "ticket_create") { 
-                        
-                        
-                        active_noty_msg(data.type_op, data.t_id);
-                        
-                        
-                    }
-                    else if (data.type_op == "ticket_refer") { console.log('refer'); }
-                    else if (data.type_op == "logout") { window.location = MyHOSTNAME+"index.php?logout"; }
-                    */
-        /*  noty({
-                                            text: data.type_op,
-                                            layout: 'bottomRight',
-                                            timeout: false
-                                        });
-                                    
-                                    $.ionSound.play("button_tiny");
-                                    
-                                
-                                
-                                
-                                
-                                
-                                */
-    });
+            });
     moment.lang(MyLANG);
     var my_errors = {
         fio: false,
@@ -229,11 +179,7 @@ git deploy
     };
 
     function noty_message(msg_id) {
-        //FROM_user_uniq_hash
-        //Новое сообщение
-        //time
-        //from_short_name
-        //message?
+
         $.ajax({
             type: "POST",
             url: ACTIONPATH,
@@ -3522,6 +3468,11 @@ php:
     }
     if (ispath('users')) {
         //push_msg_action2user
+        $('[data-toggle="tooltip"]').tooltip({
+                                container: 'body',
+                                html: true
+                            });
+        
         $('body').on('click', 'button#make_logout_user', function(event) {
             event.preventDefault();
             var usid = $(this).attr('value');
@@ -3544,6 +3495,10 @@ php:
                 data: "menu=list" + "&page=1" + "&t=" + t,
                 success: function(html) {
                     $("#content_users").html(html);
+                    $('[data-toggle="tooltip"]').tooltip({
+                                container: 'body',
+                                html: true
+                            });
                 }
             });
         });

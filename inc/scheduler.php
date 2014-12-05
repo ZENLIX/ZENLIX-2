@@ -1047,7 +1047,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <thead>
           <tr>
             
-            <th><center>id</center></th>
+            
             <th><center><?=lang('NEW_subj');?></center></th>
             <th><center><?=lang('t_LIST_worker');?></center></th>
             
@@ -1074,7 +1074,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         
         
         
-        <td><small><?=$row['id']; ?></small></td>
+        
         <td><small><?=cutstr(make_html($row['subj'], 'no')); ?></small></td>
         <td><small><?=$to_text; ?></small></td>
         

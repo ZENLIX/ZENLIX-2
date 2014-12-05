@@ -275,27 +275,39 @@ if (isset($_POST['menu'])) {
                                          <img style="max-height: 105px;" src="<?php echo get_user_img_by_id($row['id']); ?>" alt="user image" class="<?php echo get_user_status_text($row['id']); ?>"/>
                                     </div>
                                     <div class="col-md-3">
+                                        <div class="row">
+
+                                            <?php if ($row['login']) { ?>
+                                            <div class="col-md-6"> <small class="text-muted"> <?php echo lang('USERS_login'); ?>: </small></div>
+                                            <div class="col-md-6"> <small><?=$row['login']; ?></small></div>
+                                            <?php } ?>
+
+                                            <?php if ($adr) { ?>
+                                            <div class="col-md-6"> <small class="text-muted"> <?=lang('APPROVE_adr');?>: </small></div>
+                                            <div class="col-md-6"> <small><?=$adr; ?></small></div>
+                                            <?php } ?>
+
+                                            <?php if ($skype) { ?>
+                                            <div class="col-md-6"> <small class="text-muted"> Skype: </small></div>
+                                            <div class="col-md-6"> <small><?=$skype; ?></small></div>
+                                            <?php } ?>
+
+                                            <?php if ($tel) { ?>
+                                            <div class="col-md-6"> <small class="text-muted"> <?=lang('APPROVE_tel');?>: </small></div>
+                                            <div class="col-md-6"> <small><?=$tel; ?></small></div>          
+                                            <?php } ?>
+
+                                            <?php if ($mail) { ?>
+                                            <div class="col-md-6"> <small class="text-muted"> <?=lang('APPROVE_mail');?>: </small></div>
+                                            <div class="col-md-6"> <small><?=$mail; ?></small></div>        
+                                            <?php } ?>                                                                                                                                                               
+
+                                        </div>
+                                        
+                                       
                                         
                                         
-                                       <small> <?php echo lang('USERS_login'); ?>: <?php
-            echo $row['login']; ?></small>
-                                    <p>
-                                        <?php
-            if ($adr) { ?>  <small><i class="fa fa-building-o"></i> <?php echo $adr; ?>     </small><br>  <?php
-            } ?>
-                                        
-                                        <?php
-            if ($skype) { ?>    <small><i class="fa fa-skype"></i> <?php echo $skype; ?>    </small>    <br><?php
-            } ?>
-                                        <?php
-            if ($tel) { ?>  <small><i class="fa fa-phone-square"></i> <?php echo $tel; ?></small>   <br><?php
-            } ?>
-                                        <?php
-            if ($mail) { ?> <small><i class="fa fa-envelope-o"></i> <?php echo $mail; ?>    </small><br><?php
-            } ?>
-                                        
-                                        
-                                    </p>
+                                    
                                        
                                         
                                     </div>
@@ -312,7 +324,7 @@ if (isset($_POST['menu'])) {
                 echo $CONF['hostname']; ?>clients?edit=<?php echo $row['uniq_id']; ?>" class="btn btn-default btn-xs btn-block" ><i class="fa fa-pencil"></i> <?php echo lang('CONF_act_edit'); ?></a><?php
             } ?>
                                                                                 
-                                                                                 <a href="messages?to=<?php echo $uniq_id; ?>" class="btn btn-warning btn-block btn-xs"><i class="fa fa-comments"></i> <?php echo lang('EXT_do_write_message'); ?></a>
+                                                                                 <a href="messages?to=<?php echo $uniq_id; ?>" class="btn btn-primary btn-block btn-xs"><i class="fa fa-comments"></i> <?php echo lang('EXT_do_write_message'); ?></a>
        
 
                                     </div>

@@ -19,7 +19,7 @@ include_once ("head.inc.php");
             <form class="form-signin" action="<?php echo $CONF['hostname'] ?>index.php" method="POST" autocomplete="off">
                 <div class="body bg-gray">
                     <div class="form-group">
-                        <input type="text" name="login" autocomplete="off" class="form-control" placeholder="<?php echo lang('login'); ?>"/>
+                        <input type="text" name="login" autocomplete="off" autocapitalize="off" autocorrect="off" class="form-control" placeholder="<?php echo lang('login'); ?>"/>
                     </div>
                     <div class="form-group">
                         <input type="password" name="password" class="form-control" placeholder="<?php echo lang('pass'); ?>"/>

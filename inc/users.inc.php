@@ -365,7 +365,7 @@ if (isset($_POST['menu'])) {
             
             //$results = mysql_query("SELECT id, fio, login, tel, unit_desc, adr, email, posada from clients where ((fio like '%" . $t . "%') or (login like '%" . $t . "%')) limit $start_pos, $perpage;");
             
-            $stmt = $dbConnection->prepare('SELECT id, fio, login, tel, unit, adr, email, posada, uniq_id, is_client,status from users where ((fio like :t) or (login like :t2)) limit :start_pos, :perpage');
+            $stmt = $dbConnection->prepare('SELECT id, fio, login, priv, tel, unit, adr, email, posada, uniq_id, is_client,status from users where ((fio like :t) or (login like :t2)) limit :start_pos, :perpage');
             $stmt->execute(array(':t' => '%' . $t . '%', ':t2' => '%' . $t . '%', ':start_pos' => $start_pos, ':perpage' => $perpage));
             $res1 = $stmt->fetchAll();
             
@@ -416,7 +416,7 @@ if (isset($_POST['menu'])) {
             echo $row['email']; ?></small></td>
             <td><small><?php
             echo $priv; ?></small></td>
-            <td><small><span data-toggle="tooltip" data-placement="right" title="<?php echo $unit; ?>"><?php echo lang('LIST_pin') ?> <?php echo count(get_unit_name_return($row['unit'])); ?> </span></small></td>
+            <td><small><span data-toggle="tooltip" data-html="true" data-placement="right" title="<?php echo $unit; ?>"><?php echo lang('LIST_pin') ?> <?php echo count(get_unit_name_return($row['unit'])); ?> </span></small></td>
             <td><small><center><?php echo $r; ?></center></small></td>
             <td><small><center><button id="make_logout_user" value="<?php echo $row['uniq_id']; ?>" class="btn btn-warning btn-xs">logout</button></center></small></td>
           </tr>

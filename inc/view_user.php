@@ -141,28 +141,25 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
           
           
           <div class="row">
-              <div class="col-md-2"><i class="fa fa-building-o"></i></div>
-              <div class="col-md-10"><?php
-    if ($user_adr) { ?> <dd><strong><?php echo $user_adr; ?></strong></dd><?php
-    } ?>
-          <?php
-    if ($user_unit) { ?><dd><?php echo $user_unit; ?></dd> <br> <?php
-    } ?> </div>
+              <div class="col-md-3"><small class="text-muted"><?=lang('APPROVE_adr');?>:</small></div>
+              <div class="col-md-9">
+                <?php if ($user_adr) { ?> <small><?php echo $user_adr; ?></small><?php } ?>
+                <?php if ($user_unit) { ?><small><?php echo $user_unit; ?></small><?php } ?> </div>
               
                           <?php
-    if ($user_skype) { ?><div class="col-md-2"><i class="fa fa-skype"></i></div>
-              <div class="col-md-10"><?php echo $user_skype; ?></div> <?php
+    if ($user_skype) { ?><div class="col-md-3"><small class="text-muted">Skype:</small></div>
+              <div class="col-md-9"><small><?php echo $user_skype; ?></small></div> <?php
     } ?> 
               
                           <?php
-    if ($user_tel) { ?><div class="col-md-2"><i class="fa fa-phone-square"></i></div>
-              <div class="col-md-10"><?php echo $user_tel; ?></div><?php
+    if ($user_tel) { ?><div class="col-md-3"><small class="text-muted"><?=lang('APPROVE_tel');?>:</small></div>
+              <div class="col-md-9"><small><?php echo $user_tel; ?></small></div><?php
     } ?>
               
               <?php
     if ($user_mail) { ?>
-                          <div class="col-md-2"><i class="fa fa-envelope-o"></i></div>
-              <div class="col-md-10"><?php echo $user_mail; ?></div><?php
+                          <div class="col-md-3"><small class="text-muted"><?=lang('APPROVE_mail');?>:</small></div>
+              <div class="col-md-9"><small><?php echo $user_mail; ?></small></div><?php
     } ?> 
               
               
@@ -260,7 +257,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <?php
         } else if (!empty($result)) {
 ?>
-            <div class="box-body no-padding">
+            <div class="box-body ">
                                     <table class="table table-condensed">
                                         <tbody><tr>
                                             <th style="width: 50px">#</th>
@@ -317,7 +314,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <?php
         } else if (!empty($result)) { ?>
         
-        <div class="box-body no-padding">
+        <div class="box-body">
                                     <table class="table table-condensed">
                                         <tbody><tr>
                                             <th style="width: 50px">#</th>

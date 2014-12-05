@@ -172,21 +172,21 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                 
                                 </div>
                                 <div class="box-body">
-                                <table class="table table-bordered">
+                                <table class="table ">
                 <tbody>
-                <tr>
-                    <td style="width:50px;"><small><strong><?php echo lang('TICKET_t_from'); ?> </strong></small></td>
+                <tr style="width:50%">
+                    <td ><small class="text-muted"><?php echo lang('TICKET_t_from'); ?>: </small></td>
                     <td><small><?php echo name_of_user_ret($row['user_init_id']) ?> </small></td>
                     
-                    <td><small><strong><?php echo lang('TICKET_t_prio'); ?></strong></small>
+                    <td><small class="text-muted"><?php echo lang('TICKET_t_prio'); ?>:</small>
                     </td>
                     <td><small><?php echo $prio; ?></small>
                     </td>
                 </tr>
                 <tr>
-                    <td style="width:50px;"><small><strong><?php echo lang('TICKET_t_to'); ?> </strong></small></td>
+                    <td ><small class="text-muted"><?php echo lang('TICKET_t_to'); ?>: </small></td>
                     <td><small><?php echo $to_text; ?> </small></td>
-                    <td><small><strong><?php echo lang('TICKET_t_status'); ?></strong></small>
+                    <td><small class="text-muted" ><?php echo lang('TICKET_t_status'); ?>:</small>
                     </td>
                     <td><small><?php echo $st; ?></small></td>
                 </tr>
