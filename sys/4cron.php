@@ -32,8 +32,15 @@ $CONF = array (
 'days2arch'   => get_conf_param('days2arch'),
 'time_zone'   => get_conf_param('time_zone')
 );
+$def_timezone = get_conf_param('time_zone');
 
-$time_zone=$CONF['time_zone'];
+date_default_timezone_set($def_timezone);
+$date_tz = new DateTime();
+$date_tz->setTimezone(new DateTimeZone($def_timezone));
+$now_date_time = $date_tz->format('Y-m-d H:i:s');
+
+
+//$time_zone=$CONF['now_dt'];
 
 
 
@@ -59,7 +66,7 @@ $time_zone=$CONF['time_zone'];
     if ($td > $CONF['days2arch'] ) {
 
                 $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=:n where id=:m');
-		$stmt->execute(array(':n1' => '1',':m' => $m, ':n'=>$time_zone));
+		$stmt->execute(array(':n1' => '1',':m' => $m, ':n'=>$now_date_time));
         
         
         
@@ -67,7 +74,7 @@ $time_zone=$CONF['time_zone'];
                 
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, ticket_id)
 values (:arch, :n, :m)');
-			$stmt->execute(array(':arch' => 'arch',':m' => $m,':n'=>$time_zone));
+			$stmt->execute(array(':arch' => 'arch',':m' => $m,':n'=>$now_date_time));
 			
 			
 
@@ -132,7 +139,7 @@ values (:arch, :n, :m)');
 				 					  ':init_user_id'=>$user_init_id, 
 				 					  ':target_user'=>$delivers_ids,
 				 					  ':ticket_id'=>$m,
-				 					  ':n'=>$time_zone));
+				 					  ':n'=>$now_date_time));
 
 			
 			
