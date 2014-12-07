@@ -89,22 +89,7 @@ if (isset($CONF_DB)) {
                         setcookie('authhash_code', $_SESSION['code'], time() + 60 * 60 * 24 * 7);
                     }
                 }
-                
-                /* else if ($stmt_cli -> rowCount() == 1) {
-                $rowcli = $stmt_cli->fetch(PDO::FETCH_ASSOC);
-                
-                $_SESSION['helpdesk_user_id'] = $rowcli['id'];
-                $_SESSION['helpdesk_user_login'] = $rowcli['login'];
-                $_SESSION['helpdesk_user_fio'] = $rowcli['fio'];
-                $_SESSION['helpdesk_user_type'] = "client";
-                $_SESSION['code'] = md5($password);
-                if ($rm == "1") {
-                
-                setcookie('authhash_uid', $_SESSION['helpdesk_user_id'], time()+60*60*24*7);
-                setcookie('authhash_code', $_SESSION['code'], time()+60*60*24*7);
-                }
-                
-                }*/
+
                 
                 else {
                     $va = 'error';
@@ -233,7 +218,7 @@ if (isset($CONF_DB)) {
                             break;
 
                         default:
-                            include ('404.php');
+                            include ('inc/404.inc.php');
                     }
                 }
             }
@@ -279,7 +264,7 @@ if (isset($CONF_DB)) {
                             break;
 
                         default:
-                            include ('404.php');
+                            include ('inc/404.inc.php');
                     }
                 }
             }

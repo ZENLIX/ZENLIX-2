@@ -67,10 +67,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 <option value="0"></option>
                 <?php
         
-        /*$qstring = "SELECT name as label, id as value FROM deps where id !='0' ;";
-                        $result = mysql_query($qstring);//query the database for entries containing the 
-                        while ($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
-        */
+
         
         $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
         $stmt->execute(array(':n' => '0', ':s' => '1'));
@@ -114,9 +111,9 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             $row['label'] = $row['label'];
             $row['value'] = (int)$row['value'];
             if (get_user_status_text($row['value']) == "online") {
-                $s = "status-online-icon";
+                $s = "online";
             } else if (get_user_status_text($row['value']) == "offline") {
-                $s = "status-offline-icon";
+                $s = "offline";
             }
 ?>
 

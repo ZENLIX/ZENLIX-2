@@ -257,7 +257,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
       <form class="form-horizontal" role="form">
       
           <div class="form-group">
-    <label for="fio" class="col-sm-4 control-label">fio</label>
+    <label for="fio" class="col-sm-4 control-label"><small><?php echo lang('WORKER_fio'); ?></small></label>
         <div class="col-sm-8">
     <input autocomplete="off" name="fio" type="text" class="form-control input-sm" id="fio" placeholder="fio" value="<?php echo $fio; ?>">
         </div>
@@ -267,7 +267,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
   
   
     <div class="form-group">
-    <label for="mail" class="col-sm-4 control-label"><?php echo lang('P_mail'); ?></label>
+    <label for="mail" class="col-sm-4 control-label"><small><?php echo lang('P_mail'); ?></small></label>
         <div class="col-sm-8">
     <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="<?php echo lang('P_mail'); ?>" value="<?php echo $email; ?>">
     <p class="help-block"><small><?php echo lang('P_mail_desc'); ?></small></p>
@@ -275,7 +275,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
   </div>
   
       <div class="form-group">
-    <label for="tel" class="col-sm-4 control-label"><?php echo lang('WORKER_tel_full'); ?></label>
+    <label for="tel" class="col-sm-4 control-label"><small><?php echo lang('WORKER_tel_full'); ?></small></label>
         <div class="col-sm-8">
     <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="<?php echo lang('WORKER_tel_full'); ?>" value="<?php echo $tel; ?>">
     
@@ -283,7 +283,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
   </div>
   
         <div class="form-group">
-    <label for="skype" class="col-sm-4 control-label">Skype</label>
+    <label for="skype" class="col-sm-4 control-label"><small>Skype</small></label>
         <div class="col-sm-8">
     <input autocomplete="off" name="skype" type="text" class="form-control input-sm" id="skype" placeholder="skype" value="<?php echo $skype; ?>">
     
@@ -291,7 +291,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
   </div>
   
             <div class="form-group">
-    <label for="adr" class="col-sm-4 control-label">Adress</label>
+    <label for="adr" class="col-sm-4 control-label"><small><?php echo lang('APPROVE_adr'); ?></small></label>
         <div class="col-sm-8">
     <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="adr" value="<?php echo $adr; ?>">
     
@@ -301,7 +301,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
   
   
           <div class="form-group">
-    <label for="lang" class="col-sm-4 control-label"><?php echo lang('SYSTEM_lang'); ?></label>
+    <label for="lang" class="col-sm-4 control-label"><small><?php echo lang('SYSTEM_lang'); ?></small></label>
         <div class="col-sm-8">
     <select data-placeholder="<?php echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
                     <option value="0"></option>
@@ -353,7 +353,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
       <form class="form-horizontal" role="form">
       
               <div class="form-group">
-    <label for="old_pass" class="col-sm-4 control-label"><?php echo lang('P_pass_old'); ?></label>
+    <label for="old_pass" class="col-sm-4 control-label"><small><?php echo lang('P_pass_old'); ?></small></label>
         <div class="col-sm-8">
     <input autocomplete="off" name="old_pass" type="password" class="form-control input-sm" id="old_pass" placeholder="<?php echo lang('P_pass_old2'); ?>">
         </div>
@@ -361,14 +361,14 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
       
       
         <div class="form-group">
-    <label for="new_pass" class="col-sm-4 control-label"><?php echo lang('P_pass_new'); ?></label>
+    <label for="new_pass" class="col-sm-4 control-label"><small><?php echo lang('P_pass_new'); ?></small></label>
         <div class="col-sm-8">
     <input autocomplete="off" name="new_pass" type="password" class="form-control input-sm" id="new_pass" placeholder="<?php echo lang('P_pass_new2'); ?>">
         </div>
   </div>
   
           <div class="form-group">
-    <label for="new_pass2" class="col-sm-4 control-label"><?php echo lang('P_pass_new_re'); ?></label>
+    <label for="new_pass2" class="col-sm-4 control-label"><small><?php echo lang('P_pass_new_re'); ?></small></label>
         <div class="col-sm-8">
     <input autocomplete="off" name="new_pass2" type="password" class="form-control input-sm" id="new_pass2" placeholder="<?php echo lang('P_pass_new_re2'); ?>">
         </div>

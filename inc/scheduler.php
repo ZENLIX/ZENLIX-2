@@ -1039,6 +1039,17 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $stmt->execute();
         $res1 = $stmt->fetchAll();
         // start NOW stop
+        if (empty($res1)) {
+            ?>
+            <div id="" class="well well-large well-transparent lead">
+                <center>
+                    <?php echo lang('MSG_no_records'); ?>
+                </center>
+            </div>
+        <?php
+        }
+        else if (!empty($res1)) {
+        
 ?>      
       
       
@@ -1101,7 +1112,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             
         </tbody>
 </table>
-
+<?php } ?>
       <br>
       </div>
                                 </div>

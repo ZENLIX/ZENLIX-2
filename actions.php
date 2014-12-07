@@ -2076,7 +2076,27 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     $results[] = array('name' => $rews['id'], 'at' => $at, 'hash' => $rews['hash_name'], 'time' => $rews['last_update']);
                 }
             }
-            
+                        if (empty($results)) {
+                ?>
+                <div id="" class="well well-large well-transparent lead">
+                    <center>
+                        <?=lang('MSG_no_records');?>
+                    </center>
+                </div>
+            <?php
+            }
+            else {
+                ?><table class="table table-hover" style="margin-bottom: 0px;" id=""> <?php
+                foreach ($results as $arr) {
+                    ?>
+
+                    <tr><td style=" width: 100px; vertical-align: inherit;"><small><i class="fa fa-tag"></i> </small><a href="ticket?<?=$arr['hash'];?>"><small><?=lang('TICKET_name');?> #<?=$arr['name'];?></small></a></td><td><small><?=$arr['at'];?></small></td>
+                    <td style=" width: 110px; vertical-align: inherit;"><small style="float:right;" class="text-muted "> <time id="b" datetime="<?=$arr['time'];?>"></time></small></td></tr>
+
+                <?php
+                }
+                ?></table><small><center><a id="more_news" value="<?=$start?>" class="btn btn-default btn-xs"><?=lang('last_more');?></a></center></small><?php
+            }
         }
         
         if ($mode == "update_status_time") {
