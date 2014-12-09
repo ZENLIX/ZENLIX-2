@@ -335,6 +335,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             <button id="reset_ticket" class="btn btn-default" type="submit"><i class="fa fa-eraser"></i> <?php echo lang('NEW_button_reset'); ?></button>
         </div>
     </div>
+    <div id="res"></div>
     <input type="hidden" id="file_array" value="">
     <input type="hidden" id="client_id_param" value="">
     <input type="hidden" id="hashname" value="<?php echo md5(time()); ?>">

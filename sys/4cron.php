@@ -1,7 +1,7 @@
 <?php
 $base = dirname(dirname(__FILE__)); 
 include($base ."/conf.php");
-date_default_timezone_set('Europe/Kiev');
+//date_default_timezone_set('Europe/Kiev');
 function humanTiming_old ($time)
 {
 

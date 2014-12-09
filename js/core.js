@@ -358,7 +358,8 @@ $(document).ready(function() {
                         $('select#' + target_id).append($("<option></option>").attr("value", item.co).attr("data-foo", item.stat).text(item.name));
                     });
                 }
-                //$('select#'+target_id).trigger('change');
+
+                $('select#'+target_id).trigger('change');
                 //$('select#'+target_id).trigger('chosen:updated');
             }
         });
@@ -1464,7 +1465,7 @@ php:
         socket.on('connect_error', function() {
             //console.log('Socket is not connected.');
             var tt_id = $('#ticket_id').val();
-            get_comments(tt_id);
+            //get_comments(tt_id);
             /*
    $.ajax({
                 type: "POST",
@@ -2071,6 +2072,8 @@ console.log(height);
             if (check_form_ticket() == 0) {
                 enter_ticket();
             }
+            
+            //console.log($("#users_do").val());
             //alert(u_do);
         });
         $("#fio").autocomplete({
@@ -3271,11 +3274,26 @@ php:
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&days2arch=" + encodeURIComponent($("input#days2arch").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&fix_subj=" + encodeURIComponent($("#fix_subj").val()) + "&file_uploads=" + encodeURIComponent($("#file_uploads").val()) + "&file_types=" + encodeURIComponent($("#file_types").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) + "&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024)+"&allow_register=" + encodeURIComponent($("#allow_register").val()),
+                dataType: "json",
                 success: function(html) {
-                    $("#conf_edit_main_res").hide().html(html).fadeIn(500);
+
+ $.each(html, function(i, item) {
+                        
+                        if (item.res == true) { $("#conf_edit_main_res").hide().html(item.msg).fadeIn(500);
                     setTimeout(function() {
                         $('#conf_edit_main_res').children('.alert').fadeOut(500);
-                    }, 3000);
+                    }, 3000); }
+                        else if (item.res == false) { 
+                            //$('#res').html(item.msg); 
+                            $("#conf_edit_main_res").hide().html(item.msg).fadeIn(500);
+                           
+                            }
+                            //console.log(item.msg);
+                        
+                    });
+
+
+                    
                 }
             });
         });
@@ -3731,13 +3749,25 @@ php:
         $('body').on('click', 'button#create_user_approve', function(event) {
             event.preventDefault();
             //var er=$("#errors").val();
+            $('#res').html('');
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=add_user_approve" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&mail=" + encodeURIComponent($("#mail").val()),
+                dataType: "json",
                 success: function(html) {
                     //$("#res").hide().html(html).fadeIn(500);
-                    window.location = MyHOSTNAME + "clients?add&ok";
+                    $.each(html, function(i, item) {
+                        
+                        if (item.res == true) { window.location = MyHOSTNAME + "clients?add&ok"; }
+                        else if (item.res == false) { 
+                            $('#res').html(item.msg); 
+                           
+                            }
+                            //console.log(item.msg);
+                        
+                    });
+                    //window.location = MyHOSTNAME + "clients?add&ok";
                 }
             });
         });
@@ -3748,9 +3778,22 @@ php:
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=edit_user_approve" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user2").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&cid=" + encodeURIComponent(usrid) + "&mail=" + encodeURIComponent($("#mail").val()),
+                dataType: "json",
                 success: function(html) {
                     //$("#res").hide().html(html).fadeIn(500);
-                    window.location = MyHOSTNAME + "clients?edit=" + usrid + "&ok";
+                    
+                                        $.each(html, function(i, item) {
+                        
+                        if (item.res == true) { window.location = MyHOSTNAME + "clients?edit=" + usrid + "&ok"; }
+                        else if (item.res == false) { 
+                            $('#res').html(item.msg); 
+                           
+                            }
+                            //console.log(item.msg);
+                        
+                    });
+
+
                 }
             });
         });

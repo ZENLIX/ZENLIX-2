@@ -322,7 +322,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                  //subdirs
                 '/img/', '/inc/', '/integration/', '/js/',
                  //subdirs
-                '/lang/', '/sys/');
+                '/lang/', '/sys/', '/library/', '/static/');
                 
                 //проверка файлов и директорий/субдиректорий/файлов на запись и
                 //разархив зипа в директорию

@@ -927,9 +927,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 
-</div><div id="error_content"></div>
 </div>
 
+</div><div id="error_content"></div>
 </div>
 </div>
 

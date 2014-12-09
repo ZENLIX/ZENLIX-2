@@ -1,13 +1,15 @@
 <?php
-
 include_once ('conf.php');
 include_once ('sys/class.phpmailer.php');
 include_once ('sys/Parsedown.php');
 require 'library/HTMLPurifier.auto.php';
+include_once ('library/gump.class.php');
 
 //include_once('integration/PushBullet.class.php');
 
-$dbConnection = new PDO('mysql:host=' . $CONF_DB['host'] . ';dbname=' . $CONF_DB['db_name'], $CONF_DB['username'], $CONF_DB['password'], array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+$dbConnection = new PDO('mysql:host=' . $CONF_DB['host'] . ';dbname=' . $CONF_DB['db_name'], $CONF_DB['username'], $CONF_DB['password'], array(
+    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+));
 $dbConnection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -24,8 +26,32 @@ $date_tz = new DateTime();
 $date_tz->setTimezone(new DateTimeZone($def_timezone));
 $now_date_time = $date_tz->format('Y-m-d H:i:s');
 
-$CONF = array('title_header' => get_conf_param('title_header'), 'hostname' => site_proto() . get_conf_param('hostname'), 'mail' => get_conf_param('mail'), 'days2arch' => get_conf_param('days2arch'), 'name_of_firm' => get_conf_param('name_of_firm'), 'fix_subj' => get_conf_param('fix_subj'), 'first_login' => get_conf_param('first_login'), 'file_uploads' => get_conf_param('file_uploads'), 'file_types' => '(' . get_conf_param('file_types') . ')', 'file_size' => get_conf_param('file_size'), 'update_server' => 'http://update.zenlix.com/', 'timezone' => get_conf_param('time_zone'), 'now_dt' => $now_date_time);
-$CONF_MAIL = array('active' => get_conf_param('mail_active'), 'host' => get_conf_param('mail_host'), 'port' => get_conf_param('mail_port'), 'auth' => get_conf_param('mail_auth'), 'auth_type' => get_conf_param('mail_auth_type'), 'username' => get_conf_param('mail_username'), 'password' => get_conf_param('mail_password'), 'from' => get_conf_param('mail_from'), 'debug' => 'false');
+$CONF = array(
+    'title_header' => get_conf_param('title_header') ,
+    'hostname' => site_proto() . get_conf_param('hostname') ,
+    'mail' => get_conf_param('mail') ,
+    'days2arch' => get_conf_param('days2arch') ,
+    'name_of_firm' => get_conf_param('name_of_firm') ,
+    'fix_subj' => get_conf_param('fix_subj') ,
+    'first_login' => get_conf_param('first_login') ,
+    'file_uploads' => get_conf_param('file_uploads') ,
+    'file_types' => '(' . get_conf_param('file_types') . ')',
+    'file_size' => get_conf_param('file_size') ,
+    'update_server' => 'http://update.zenlix.com/',
+    'timezone' => get_conf_param('time_zone') ,
+    'now_dt' => $now_date_time
+);
+$CONF_MAIL = array(
+    'active' => get_conf_param('mail_active') ,
+    'host' => get_conf_param('mail_host') ,
+    'port' => get_conf_param('mail_port') ,
+    'auth' => get_conf_param('mail_auth') ,
+    'auth_type' => get_conf_param('mail_auth_type') ,
+    'username' => get_conf_param('mail_username') ,
+    'password' => get_conf_param('mail_password') ,
+    'from' => get_conf_param('mail_from') ,
+    'debug' => 'false'
+);
 
 if ($CONF_HD['debug_mode'] == false) {
     error_reporting(E_ALL ^ E_NOTICE);
@@ -57,7 +83,8 @@ function send_mail_reg($to, $subj, $msg) {
         $mail->CharSet = 'UTF-8';
         $mail->IsSMTP();
         $mail->SMTPAuth = $CONF_MAIL['auth'];
-         // enable SMTP authentication
+        
+        // enable SMTP authentication
         if (get_conf_param('mail_auth_type') != "none") {
             $mail->SMTPSecure = $CONF_MAIL['auth_type'];
         }
@@ -71,7 +98,8 @@ function send_mail_reg($to, $subj, $msg) {
         $mail->SetFrom($CONF_MAIL['from'], $CONF['name_of_firm']);
         $mail->Subject = $subj;
         $mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
-         // optional - MsgHTML will create an alternate automatically
+        
+        // optional - MsgHTML will create an alternate automatically
         $mail->MsgHTML($msg);
         $mail->Send();
     }
@@ -91,7 +119,9 @@ function get_user_lang() {
     
     $mid = $_SESSION['helpdesk_user_id'];
     $stmt = $dbConnection->prepare('SELECT lang from users where id=:mid');
-    $stmt->execute(array(':mid' => $mid));
+    $stmt->execute(array(
+        ':mid' => $mid
+    ));
     $max = $stmt->fetch(PDO::FETCH_NUM);
     
     $max_id = $max[0];
@@ -105,6 +135,7 @@ function get_user_lang() {
 }
 
 $lang = get_user_lang();
+
 /*
 switch ($lang) {
     case 'ua':
@@ -130,57 +161,81 @@ include_once 'lang/' . 'lang.ru.php';
 include_once 'lang/' . 'lang.en.php';
 
 function lang($in) {
-	$lang = get_user_lang();
-	
-	switch ($lang) {
-    case 'ua':
-        $res=lang_ua($in);
-        break;
+    $lang = get_user_lang();
+    
+    switch ($lang) {
+        case 'ua':
+            $res = lang_ua($in);
+            break;
 
-    case 'ru':
-        $res=lang_ru($in);
-        break;
+        case 'ru':
+            $res = lang_ru($in);
+            break;
 
-    case 'en':
-        $res=lang_en($in);
-        break;
+        case 'en':
+            $res = lang_en($in);
+            break;
 
-    default:
-        $res=lang_en($in);
-}
-	
-	return $res;
+        default:
+            $res = lang_en($in);
+    }
+    
+    return $res;
 }
 
 function get_last_action_ticket($ticket_id) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('select date_op, msg, init_user_id, to_user_id, to_unit_id from ticket_log where ticket_id=:ticket_id order by date_op DESC limit 1');
-    $stmt->execute(array(':ticket_id' => $ticket_id));
+    $stmt->execute(array(
+        ':ticket_id' => $ticket_id
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-    $r=$fio['msg'];
-    $uss=nameshort(name_of_user_ret($fio['init_user_id']));
-    $uss_to=nameshort(name_of_user_ret($fio['to_user_id']));
-    $unit_to=get_unit_name_return4news($fio['to_unit_id']);
-    if ($r=='refer') {$red='<i class=\'fa fa-long-arrow-right\'></i> '.lang('TICKET_ACTION_refer').' <em>'.$uss.'</em> '.lang('TICKET_ACTION_refer_to').' '.$unit_to.' '.$uss_to;}
-    if ($r=='ok') {$red='<i class=\'fa fa-check-circle-o\'></i> '.lang('TICKET_ACTION_ok').' <em>'.$uss.'</em>';}
-    if ($r=='no_ok') {$red='<i class=\'fa fa-circle-o\'></i> '.lang('TICKET_ACTION_nook').' <em>'.$uss.'</em>';}
-    if ($r=='lock') {$red='<i class=\'fa fa-lock\'></i> '.lang('TICKET_ACTION_lock').' <em>'.$uss.'</em>';}
-    if ($r=='unlock') {$red='<i class=\'fa fa-unlock\'></i> '.lang('TICKET_ACTION_unlock').' <em>'.$uss.'</em>';}
-    if ($r=='create') {$red='<i class=\'fa fa-star-o\'></i> '.lang('TICKET_ACTION_create').' <em>'.$uss.'</em>';}
-    if ($r=='edit_msg') {$red='<i class=\'fa fa-pencil-square\'></i> '.lang('TICKET_ACTION_edit').' <em>'.$uss.'</em>';}
-    if ($r=='edit_prio') {$red='<i class=\'fa fa-pencil-square\'></i> '.lang('TICKET_ACTION_edit').' <em>'.$uss.'</em>';}
-    if ($r=='edit_subj') {$red='<i class=\'fa fa-pencil-square\'></i> '.lang('TICKET_ACTION_edit').' <em>'.$uss.'</em>';}
-    if ($r=='comment') {$red='<i class=\'fa fa-comment\'></i> '.lang('TICKET_ACTION_comment'). ' <em>'.$uss.'</em>';}
-    if ($r == 'arch') {$red='<i class=\'fa fa-archive\'></i> '.lang('TICKET_ACTION_arch').'';}
+    $r = $fio['msg'];
+    $uss = nameshort(name_of_user_ret($fio['init_user_id']));
+    $uss_to = nameshort(name_of_user_ret($fio['to_user_id']));
+    $unit_to = get_unit_name_return4news($fio['to_unit_id']);
+    if ($r == 'refer') {
+        $red = '<i class=\'fa fa-long-arrow-right\'></i> ' . lang('TICKET_ACTION_refer') . ' <em>' . $uss . '</em> ' . lang('TICKET_ACTION_refer_to') . ' ' . $unit_to . ' ' . $uss_to;
+    }
+    if ($r == 'ok') {
+        $red = '<i class=\'fa fa-check-circle-o\'></i> ' . lang('TICKET_ACTION_ok') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'no_ok') {
+        $red = '<i class=\'fa fa-circle-o\'></i> ' . lang('TICKET_ACTION_nook') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'lock') {
+        $red = '<i class=\'fa fa-lock\'></i> ' . lang('TICKET_ACTION_lock') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'unlock') {
+        $red = '<i class=\'fa fa-unlock\'></i> ' . lang('TICKET_ACTION_unlock') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'create') {
+        $red = '<i class=\'fa fa-star-o\'></i> ' . lang('TICKET_ACTION_create') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'edit_msg') {
+        $red = '<i class=\'fa fa-pencil-square\'></i> ' . lang('TICKET_ACTION_edit') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'edit_prio') {
+        $red = '<i class=\'fa fa-pencil-square\'></i> ' . lang('TICKET_ACTION_edit') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'edit_subj') {
+        $red = '<i class=\'fa fa-pencil-square\'></i> ' . lang('TICKET_ACTION_edit') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'comment') {
+        $red = '<i class=\'fa fa-comment\'></i> ' . lang('TICKET_ACTION_comment') . ' <em>' . $uss . '</em>';
+    }
+    if ($r == 'arch') {
+        $red = '<i class=\'fa fa-archive\'></i> ' . lang('TICKET_ACTION_arch') . '';
+    }
     return $red;
 }
-
-
 
 function get_conf_param($in) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('SELECT value FROM perf where param=:in');
-    $stmt->execute(array(':in' => $in));
+    $stmt->execute(array(
+        ':in' => $in
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     return $fio['value'];
@@ -229,7 +284,9 @@ function validate_exist_login($str) {
     $uid = $_SESSION['helpdesk_user_id'];
     
     $stmt = $dbConnection->prepare('SELECT count(login) as n from users where login=:str');
-    $stmt->execute(array(':str' => $str));
+    $stmt->execute(array(
+        ':str' => $str
+    ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['n'] > 0) {
         $r = false;
@@ -245,7 +302,10 @@ function validate_exist_login_ex($str, $ex) {
     $uid = $_SESSION['helpdesk_user_id'];
     
     $stmt = $dbConnection->prepare('SELECT count(login) as n from users where login=:str and login!=:ex');
-    $stmt->execute(array(':str' => $str, ':ex' => $ex));
+    $stmt->execute(array(
+        ':str' => $str,
+        ':ex' => $ex
+    ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['n'] > 0) {
         $r = false;
@@ -260,7 +320,9 @@ function validate_exist_mail_not_auth($str) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email=:str');
-    $stmt->execute(array(':str' => $str));
+    $stmt->execute(array(
+        ':str' => $str
+    ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['n'] > 0) {
         $r = false;
@@ -276,7 +338,10 @@ function validate_exist_mail($str) {
     $uid = $_SESSION['helpdesk_user_id'];
     
     $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email=:str and id != :uid');
-    $stmt->execute(array(':str' => $str, ':uid' => $uid));
+    $stmt->execute(array(
+        ':str' => $str,
+        ':uid' => $uid
+    ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['n'] > 0) {
         $r = false;
@@ -298,7 +363,10 @@ function validate_alphanumeric_underscore($str) {
 function update_val_by_key($key, $val) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('update perf set value=:value where param=:param');
-    $stmt->execute(array(':value' => $val, ':param' => $key));
+    $stmt->execute(array(
+        ':value' => $val,
+        ':param' => $key
+    ));
     
     return true;
 }
@@ -318,7 +386,9 @@ function check_admin_user_priv($in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT id, unit from users where id=:in');
-    $stmt->execute(array(':in' => $in));
+    $stmt->execute(array(
+        ':in' => $in
+    ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $users_units = $row['unit'];
     $admin_units = get_user_val_by_id($_SESSION['helpdesk_user_id'], 'unit');
@@ -351,7 +421,15 @@ function nameshort($name) {
 
 function xss_clean($data) {
     
-    $data = str_replace(array('&amp;', '&lt;', '&gt;'), array('&amp;amp;', '&amp;lt;', '&amp;gt;'), $data);
+    $data = str_replace(array(
+        '&amp;',
+        '&lt;',
+        '&gt;'
+    ) , array(
+        '&amp;amp;',
+        '&amp;lt;',
+        '&amp;gt;'
+    ) , $data);
     $data = preg_replace('/(&#*\w+)[\x00-\x20]+;/u', '$1;', $data);
     $data = preg_replace('/(&#x*[0-9A-F]+);*/iu', '$1;', $data);
     $data = html_entity_decode($data, ENT_COMPAT, 'UTF-8');
@@ -380,7 +458,9 @@ function xss_clean($data) {
 function get_file_icon($in) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('SELECT file_type FROM files where file_hash=:file_hash');
-    $stmt->execute(array(':file_hash' => $in));
+    $stmt->execute(array(
+        ':file_hash' => $in
+    ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $ftype = $row['file_type'];
     
@@ -444,7 +524,9 @@ function validate_admin($user_id) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT is_admin from users where id=:user_id LIMIT 1');
-    $stmt->execute(array(':user_id' => $user_id));
+    $stmt->execute(array(
+        ':user_id' => $user_id
+    ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $admin = $row['is_admin'];
     
@@ -459,7 +541,9 @@ function get_user_authtype($login) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT ldap_key from users where login=:user_login LIMIT 1');
-    $stmt->execute(array(':user_login' => $login));
+    $stmt->execute(array(
+        ':user_login' => $login
+    ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     $lkey = $row['ldap_key'];
     if ($lkey == "1") {
@@ -470,9 +554,11 @@ function get_user_authtype($login) {
 
 function ldap_auth($login, $pass) {
     $ldaprdn = $login . '@' . get_conf_param('ldap_domain');
-     // ldap rdn or dn
+    
+    // ldap rdn or dn
     $ldappass = $pass;
-     // associated password
+    
+    // associated password
     
     // connect to ldap server
     $ldapconn = ldap_connect(get_conf_param('ldap_ip')) or die("Could not connect to LDAP server.");
@@ -497,7 +583,9 @@ function get_posada_by_id($id) {
     global $dbConnection;
     if ($id) {
         $stmt = $dbConnection->prepare('SELECT name from posada where id=:user_id LIMIT 1');
-        $stmt->execute(array(':user_id' => $id));
+        $stmt->execute(array(
+            ':user_id' => $id
+        ));
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $admin = $row['name'];
     } else {
@@ -512,7 +600,9 @@ function view_log($tid) {
     $stmt = $dbConnection->prepare('SELECT msg,
                             date_op, init_user_id, to_user_id, to_unit_id from ticket_log where
                             ticket_id=:tid order by date_op DESC');
-    $stmt->execute(array(':tid' => $tid));
+    $stmt->execute(array(
+        ':tid' => $tid
+    ));
     $re = $stmt->fetchAll();
     
     if (!empty($re)) {
@@ -541,10 +631,14 @@ function view_log($tid) {
                                         <table class="table table-hover">
                                             <thead>
                                             <tr>
-                                                <th><center><small><?php echo lang('TICKET_t_date'); ?></small></center>    </th>
-                                                <th><center><small><?php echo lang('TICKET_t_init'); ?> </small></center></th>
-                                                <th><center><small><?php echo lang('TICKET_t_action'); ?>   </small></center></th>
-                                                <th><center><small><?php echo lang('TICKET_t_desc'); ?> </small></center></th>
+                                                <th><center><small><?php
+        echo lang('TICKET_t_date'); ?></small></center>    </th>
+                                                <th><center><small><?php
+        echo lang('TICKET_t_init'); ?> </small></center></th>
+                                                <th><center><small><?php
+        echo lang('TICKET_t_action'); ?>   </small></center></th>
+                                                <th><center><small><?php
+        echo lang('TICKET_t_desc'); ?> </small></center></th>
 
 
                                             </tr>
@@ -607,15 +701,22 @@ function view_log($tid) {
                                                 <tr>
                                                     <td style="width: 100px; vertical-align: inherit;"><small><center>
                                                     
-                                                    <time id="c" datetime="<?php echo $row['date_op'] ?>"></time>
+                                                    <time id="c" datetime="<?php
+            echo $row['date_op'] ?>"></time>
                                                     
                                                     </center></small></td>
                                                     <td style=" width: 200px; vertical-align: inherit;"><small><center>
-                                                    <a href="view_user?<?php echo get_user_hash_by_id($row['init_user_id']); ?>"><?php echo $ru ?>
+                                                    <a href="view_user?<?php
+            echo get_user_hash_by_id($row['init_user_id']); ?>"><?php
+            echo $ru
+?>
                                                     </a>
                                                     </center></small></td>
-                                                    <td style=" width: 50px; vertical-align: inherit;"><small><center><i class="<?php echo $icon_action; ?>"></i>  </center></small></td>
-                                                    <td style=" width: 200px; vertical-align: inherit;"><small><?php echo $text_action ?></small></td>
+                                                    <td style=" width: 50px; vertical-align: inherit;"><small><center><i class="<?php
+            echo $icon_action; ?>"></i>  </center></small></td>
+                                                    <td style=" width: 200px; vertical-align: inherit;"><small><?php
+            echo $text_action
+?></small></td>
 
 
                                                 </tr>
@@ -648,7 +749,9 @@ function make_html($in, $type) {
     
     //$config->set('URI.DisableExternal', true);
     if ($type == "no") {
-        $config->set('HTML.ForbiddenElements', array('p'));
+        $config->set('HTML.ForbiddenElements', array(
+            'p'
+        ));
     }
     
     $purifier = new HTMLPurifier($config);
@@ -678,9 +781,13 @@ FROM
          where
         (type_msg=:tm)
          ORDER BY id');
-        $stmt->execute(array(':tm' => 'main'));
+        $stmt->execute(array(
+            ':tm' => 'main'
+        ));
         $stmt2 = $dbConnection->prepare('UPDATE messages set is_read=1 where type_msg=:tm');
-        $stmt2->execute(array(':tm' => 'main'));
+        $stmt2->execute(array(
+            ':tm' => 'main'
+        ));
     } else if ($in != "main") {
         
         $stmt = $dbConnection->prepare('SELECT id, user_from,user_to,date_op,msg,type_msg,is_read
@@ -694,10 +801,18 @@ FROM
          where
         (user_from=:ufrom and user_to=:uto) or (user_from=:uto2 and user_to=:ufrom2)
          ORDER BY id');
-        $stmt->execute(array(':ufrom' => $in, ':uto' => $_SESSION['helpdesk_user_id'], ':ufrom2' => $in, ':uto2' => $_SESSION['helpdesk_user_id']));
+        $stmt->execute(array(
+            ':ufrom' => $in,
+            ':uto' => $_SESSION['helpdesk_user_id'],
+            ':ufrom2' => $in,
+            ':uto2' => $_SESSION['helpdesk_user_id']
+        ));
         
         $stmt2 = $dbConnection->prepare('UPDATE messages set is_read=1 where user_from=:user_from and user_to=:user_to');
-        $stmt2->execute(array(':user_from' => $in, ':user_to' => $_SESSION['helpdesk_user_id']));
+        $stmt2->execute(array(
+            ':user_from' => $in,
+            ':user_to' => $_SESSION['helpdesk_user_id']
+        ));
     }
     
     while ($rews = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -713,17 +828,25 @@ FROM
         $ct = make_html($rews['msg'], true);
 ?>
                                             <!-- chat item -->
-                                    <div class="item" style=" min-height: 35px; <?php echo $s; ?>">
-                                        <img src="<?php echo get_user_img_by_id($rews['user_from']); ?>" alt="user image" class="<?php echo get_user_status_text($rews['user_from']); ?>"/>
+                                    <div class="item" style=" min-height: 35px; <?php
+        echo $s; ?>">
+                                        <img src="<?php
+        echo get_user_img_by_id($rews['user_from']); ?>" alt="user image" class="<?php
+        echo get_user_status_text($rews['user_from']); ?>"/>
                                         <div class="message">
                                         <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 
-                                                <time id="b" datetime="<?php echo $rews['date_op']; ?>"></time> <time id="c" datetime="<?php echo $rews['date_op']; ?>"></time>
+                                                <time id="b" datetime="<?php
+        echo $rews['date_op']; ?>"></time> <time id="c" datetime="<?php
+        echo $rews['date_op']; ?>"></time>
                                                 </small>
-                                            <a href="view_user?<?php echo get_user_hash_by_id($rews['user_from']); ?>" class="name">
+                                            <a href="view_user?<?php
+        echo get_user_hash_by_id($rews['user_from']); ?>" class="name">
                                                 
-                                                <?php echo $ru; ?>
+                                                <?php
+        echo $ru; ?>
                                             </a><br>
-                                            <?php echo $ct; ?>
+                                            <?php
+        echo $ct; ?>
                                         </div>
                                     </div><!-- /.item -->
                                     
@@ -747,6 +870,7 @@ FROM
     
     //echo "ok";
     
+    
 }
 
 function view_comment($tid) {
@@ -763,7 +887,9 @@ function view_comment($tid) {
         
         <?php
     $stmt = $dbConnection->prepare('SELECT user_id, comment_text, dt from comments where t_id=:tid order by dt ASC');
-    $stmt->execute(array(':tid' => $tid));
+    $stmt->execute(array(
+        ':tid' => $tid
+    ));
     while ($rews = $stmt->fetch(PDO::FETCH_ASSOC)) {
         
         $ru = nameshort(name_of_user_ret($rews['user_id']));
@@ -777,18 +903,24 @@ function view_comment($tid) {
             
             //$hn=get_ticket_id_by_hash($f_hash);
             $stmt2 = $dbConnection->prepare('SELECT original_name, file_size,file_type,file_ext FROM files where file_hash=:tid');
-            $stmt2->execute(array(':tid' => $f_hash));
+            $stmt2->execute(array(
+                ':tid' => $f_hash
+            ));
             $file_arr = $stmt2->fetch(PDO::FETCH_ASSOC);
             
             $ct = '<div class=\'text-muted well well-sm no-shadow\' style=\'margin-bottom: 5px;\'><em><small>' . lang('EXT_attach_file') . '</small> <br></em>';
             
-            $fts = array('image/jpeg', 'image/gif', 'image/png');
+            $fts = array(
+                'image/jpeg',
+                'image/gif',
+                'image/png'
+            );
             
             if (in_array($file_arr['file_type'], $fts)) {
                 
                 $ct.= ' <small><a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $f_hash . '\'><img style=\'max-height:100px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'></a>  </small>';
             } else {
-                $ct.= get_file_icon($f_hash) . ' <small><a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $f_hash . '\'>' . $file_arr['original_name'] . '</a> ' . round(($file_arr['file_size'] / (1024 * 1024)), 2) . ' Mb </small>';
+                $ct.= get_file_icon($f_hash) . ' <small><a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $f_hash . '\'>' . $file_arr['original_name'] . '</a> ' . round(($file_arr['file_size'] / (1024 * 1024)) , 2) . ' Mb </small>';
             }
             
             $ct.= '</div>';
@@ -798,16 +930,23 @@ function view_comment($tid) {
 ?>
                                             <!-- chat item -->
                                     <div class="item" style=" min-height: 35px; ">
-                                        <img src="<?php echo get_user_img_by_id($rews['user_id']); ?>" alt="user image" class="<?php echo get_user_status_text($rews['user_id']); ?>"/>
+                                        <img src="<?php
+        echo get_user_img_by_id($rews['user_id']); ?>" alt="user image" class="<?php
+        echo get_user_status_text($rews['user_id']); ?>"/>
                                         <div class="message">
                                         <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 
-                                                <time id="b" datetime="<?php echo $rews['dt']; ?>"></time> <time id="c" datetime="<?php echo $rews['dt']; ?>"></time>
+                                                <time id="b" datetime="<?php
+        echo $rews['dt']; ?>"></time> <time id="c" datetime="<?php
+        echo $rews['dt']; ?>"></time>
                                                 </small>
-                                            <a href="view_user?<?php echo get_user_hash_by_id($rews['user_id']); ?>" class="name">
+                                            <a href="view_user?<?php
+        echo get_user_hash_by_id($rews['user_id']); ?>" class="name">
                                                 
-                                                <?php echo $ru; ?>
+                                                <?php
+        echo $ru; ?>
                                             </a><br>
-                                            <?php echo $ct; ?>
+                                            <?php
+        echo $ct; ?>
                                         </div>
                                     </div><!-- /.item -->
                                     
@@ -842,7 +981,9 @@ function view_comment($tid) {
 function get_total_msgs_main() {
     global $dbConnection;
     $stmt = $dbConnection->prepare('SELECT count(id) as cou from messages where type_msg=:tm');
-    $stmt->execute(array(':tm' => 'main'));
+    $stmt->execute(array(
+        ':tm' => 'main'
+    ));
     
     $tt = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -852,7 +993,9 @@ function get_total_msgs_main() {
 function get_total_unread_messages() {
     global $dbConnection;
     $stmt = $dbConnection->prepare('SELECT count(id) as cou from messages where user_to=:uto and is_read=0');
-    $stmt->execute(array(':uto' => $_SESSION['helpdesk_user_id']));
+    $stmt->execute(array(
+        ':uto' => $_SESSION['helpdesk_user_id']
+    ));
     
     $tt = $stmt->fetch(PDO::FETCH_ASSOC);
     
@@ -872,7 +1015,9 @@ function check_unlinked_file() {
         foreach ($result as $row) {
             
             $stmt = $dbConnection->prepare("delete FROM files where ticket_hash=:id");
-            $stmt->execute(array(':id' => $row['ticket_hash']));
+            $stmt->execute(array(
+                ':id' => $row['ticket_hash']
+            ));
             unlink(realpath(dirname(__FILE__)) . "/upload_files/" . $row['file_hash'] . "." . $row['file_ext']);
         }
     }
@@ -900,7 +1045,10 @@ function validate_client($user_id, $input) {
         if (ldap_auth($ul, $input)) {
             
             $stmt = $dbConnection->prepare('SELECT login, fio from users where id=:user_id and status=:ls LIMIT 1');
-            $stmt->execute(array(':user_id' => $user_id, ':ls' => '1'));
+            $stmt->execute(array(
+                ':user_id' => $user_id,
+                ':ls' => '1'
+            ));
             
             if ($stmt->rowCount() == 1) {
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -916,7 +1064,11 @@ function validate_client($user_id, $input) {
     } else if (get_user_authtype($ul) == false) {
         
         $stmt = $dbConnection->prepare('SELECT pass,login,fio from users where id=:user_id and status=:ls and is_client=:ic LIMIT 1');
-        $stmt->execute(array(':user_id' => $user_id, ':ls' => '1', ':ic' => '1'));
+        $stmt->execute(array(
+            ':user_id' => $user_id,
+            ':ls' => '1',
+            ':ic' => '1'
+        ));
         
         if ($stmt->rowCount() == 1) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -937,13 +1089,39 @@ function validate_client($user_id, $input) {
 function get_userlogin_byid($in) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('SELECT login from users where id=:user_id LIMIT 1');
-    $stmt->execute(array(':user_id' => $in));
+    $stmt->execute(array(
+        ':user_id' => $in
+    ));
     if ($stmt->rowCount() == 1) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $r = $row['login'];
     }
     return $r;
 }
+
+function validate_user_by_api($input) {
+    
+    global $dbConnection, $CONF;
+    $result = false;
+
+    $stmt = $dbConnection->prepare('SELECT login, fio from users where uniq_id=:ls LIMIT 1');
+            $stmt->execute(array(
+                ':ls' => $input
+            ));
+            
+            if ($stmt->rowCount() == 1) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $result = true;
+    }
+    else {
+        $result = false;
+    }
+    
+    
+    return $result;
+}
+
+
 
 function validate_user($user_id, $input) {
     
@@ -967,7 +1145,10 @@ function validate_user($user_id, $input) {
         if (ldap_auth($ul, $input)) {
             
             $stmt = $dbConnection->prepare('SELECT login, fio from users where id=:user_id and status=:ls LIMIT 1');
-            $stmt->execute(array(':user_id' => $user_id, ':ls' => '1'));
+            $stmt->execute(array(
+                ':user_id' => $user_id,
+                ':ls' => '1'
+            ));
             
             if ($stmt->rowCount() == 1) {
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -975,7 +1156,10 @@ function validate_user($user_id, $input) {
                 $_SESSION['helpdesk_user_login'] = $row['login'];
                 $_SESSION['helpdesk_user_fio'] = $row['fio'];
                 $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
-                $stmt->execute(array(':cid' => $user_id, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':cid' => $user_id,
+                    ':n' => $CONF['now_dt']
+                ));
                 return true;
             }
         } else if (ldap_auth($ul, $input) == false) {
@@ -984,7 +1168,11 @@ function validate_user($user_id, $input) {
     } else if (get_user_authtype($ul) == false) {
         
         $stmt = $dbConnection->prepare('SELECT pass,login,fio from users where id=:user_id and status=:ls and is_client=:ic LIMIT 1');
-        $stmt->execute(array(':user_id' => $user_id, ':ls' => '1', ':ic' => '0'));
+        $stmt->execute(array(
+            ':user_id' => $user_id,
+            ':ls' => '1',
+            ':ic' => '0'
+        ));
         
         if ($stmt->rowCount() == 1) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -995,7 +1183,10 @@ function validate_user($user_id, $input) {
             //$_SESSION['helpdesk_sort_prio'] == "none";
             if ($dbpass == $input) {
                 $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
-                $stmt->execute(array(':cid' => $user_id, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':cid' => $user_id,
+                    ':n' => $CONF['now_dt']
+                ));
                 return true;
             } else {
                 return false;
@@ -1008,7 +1199,9 @@ function get_user_status($in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('select last_time from users where id=:in');
-    $stmt->execute(array(':in' => $in));
+    $stmt->execute(array(
+        ':in' => $in
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     $lt = $total_ticket['last_time'];
     $d = time() - strtotime($lt);
@@ -1029,7 +1222,9 @@ function get_user_status($in) {
 function get_total_users_online() {
     global $dbConnection, $CONF;
     $stmt = $dbConnection->prepare('select count(id) as cou from users where last_time >= DATE_SUB(:n,INTERVAL 2 MINUTE)');
-    $stmt->execute(array(':n' => $CONF['now_dt']));
+    $stmt->execute(array(
+        ':n' => $CONF['now_dt']
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     $lt = $total_ticket['cou'];
     
@@ -1040,7 +1235,9 @@ function get_user_status_text($in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('select last_time from users where id=:in');
-    $stmt->execute(array(':in' => $in));
+    $stmt->execute(array(
+        ':in' => $in
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     $lt = $total_ticket['last_time'];
     $d = time() - strtotime($lt);
@@ -1058,7 +1255,9 @@ function get_ticket_id_by_hash($in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('select id from tickets where hash_name=:in');
-    $stmt->execute(array(':in' => $in));
+    $stmt->execute(array(
+        ':in' => $in
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $tt = $total_ticket['id'];
@@ -1069,7 +1268,9 @@ function get_ticket_hash_by_id($in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('select hash_name from tickets where id=:in');
-    $stmt->execute(array(':in' => $in));
+    $stmt->execute(array(
+        ':in' => $in
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $tt = $total_ticket['hash_name'];
@@ -1081,7 +1282,9 @@ function get_ticket_val_by_hash($what, $in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT ' . $what . ' FROM tickets where hash_name=:in');
-    $stmt->execute(array(':in' => $in));
+    $stmt->execute(array(
+        ':in' => $in
+    ));
     
     $fior = $stmt->fetch(PDO::FETCH_NUM);
     
@@ -1092,7 +1295,9 @@ function get_user_hash_by_id($in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('select uniq_id from users where id=:in');
-    $stmt->execute(array(':in' => $in));
+    $stmt->execute(array(
+        ':in' => $in
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $tt = $total_ticket['uniq_id'];
@@ -1116,14 +1321,19 @@ function get_client_helper() {
 ?>
             <div id="" class="well well-large well-transparent lead">
                 <center>
-                    <?php echo lang('MSG_no_records'); ?>
+                    <?php
+        echo lang('MSG_no_records'); ?>
                 </center>
             </div>
         <?php
     } else if (!empty($result)) {
         foreach ($result as $row) {
 ?>
-                    <tr><td><small><i class="fa fa-file-text-o"></i> </small><a href="helper?h=<?php echo $row['hashname']; ?>"><small><?php echo cutstr_help2_ret($row['title']); ?></small></a></td><td><small style="float:right;" class="text-muted">(<?php echo lang('DASHBOARD_author'); ?>: <?php echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)</small></td></tr>
+                    <tr><td><small><i class="fa fa-file-text-o"></i> </small><a href="helper?h=<?php
+            echo $row['hashname']; ?>"><small><?php
+            echo cutstr_help2_ret($row['title']); ?></small></a></td><td><small style="float:right;" class="text-muted">(<?php
+            echo lang('DASHBOARD_author'); ?>: <?php
+            echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)</small></td></tr>
 
                 <?php
         }
@@ -1157,7 +1367,8 @@ function get_helper() {
 ?>
             <div id="" class="well well-large well-transparent lead">
                 <center>
-                    <?php echo lang('MSG_no_records'); ?>
+                    <?php
+        echo lang('MSG_no_records'); ?>
                 </center>
             </div>
         <?php
@@ -1186,9 +1397,14 @@ function get_helper() {
             
             if ($ac == "ok") {
 ?>
-                    <tr><td><small><i class="fa fa-file-text-o"></i> </small><a href="helper?h=<?php echo $row['hashname']; ?>"><small><?php echo cutstr_help2_ret($row['title']); ?></small></a></td><td><small style="float:right;" class="text-muted">(<?php echo lang('DASHBOARD_author'); ?>: 
-                    <a href="view_user?<?php echo get_user_hash_by_id($row['user_init_id']); ?>">
-                    <?php echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)
+                    <tr><td><small><i class="fa fa-file-text-o"></i> </small><a href="helper?h=<?php
+                echo $row['hashname']; ?>"><small><?php
+                echo cutstr_help2_ret($row['title']); ?></small></a></td><td><small style="float:right;" class="text-muted">(<?php
+                echo lang('DASHBOARD_author'); ?>: 
+                    <a href="view_user?<?php
+                echo get_user_hash_by_id($row['user_init_id']); ?>">
+                    <?php
+                echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)
                     </a>
                     
                     </small></td></tr>
@@ -1205,7 +1421,9 @@ function get_helper() {
 function get_client_info_client_ticket($id) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,tel_ext,email,login,posada FROM users where id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $fio_user = $fio['fio'];
@@ -1219,13 +1437,17 @@ function get_client_info_client_ticket($id) {
     $email = $fio['email'];
     
     $stmt = $dbConnection->prepare('select count(id) as t1 from tickets where client_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $tt = $total_ticket['t1'];
     
     $stmt = $dbConnection->prepare('select max(date_create) as dc from tickets where client_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $last_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $lt = $last_ticket['dc'];
@@ -1239,7 +1461,8 @@ function get_client_info_client_ticket($id) {
 <div class="box box-info">
                                 <div class="box-header">
                                     <i class="fa fa-user"></i>
-                                    <h3 class="box-title"><?php echo lang('WORKER_TITLE'); ?></h3>
+                                    <h3 class="box-title"><?php
+    echo lang('WORKER_TITLE'); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
         <h4><center><strong><?php
@@ -1250,14 +1473,18 @@ function get_client_info_client_ticket($id) {
             <?php
     if ($loginf) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_login'); ?>:</small></td>
-                    <td><small><?php echo $loginf ?></small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_login'); ?>:</small></td>
+                    <td><small><?php
+        echo $loginf
+?></small></td>
                 </tr>
             <?php
     }
     if ($posada) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_posada'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_posada'); ?>:</small></td>
                     <td><small><?php
         echo $posada; ?></small></td>
                 </tr>
@@ -1265,7 +1492,8 @@ function get_client_info_client_ticket($id) {
     }
     if ($pod) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_unit'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_unit'); ?>:</small></td>
                     <td><small><?php
         echo $pod; ?></small></td>
                 </tr>
@@ -1273,7 +1501,8 @@ function get_client_info_client_ticket($id) {
     }
     if ($tel_user) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_tel'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_tel'); ?>:</small></td>
                     <td><small><?php
         echo $tel_user . " " . $tel_ext; ?></small></td>
                 </tr>
@@ -1281,7 +1510,8 @@ function get_client_info_client_ticket($id) {
     }
     if ($adr) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_room'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_room'); ?>:</small></td>
                     <td><small><?php
         echo $adr; ?></small></td>
                 </tr>
@@ -1289,14 +1519,16 @@ function get_client_info_client_ticket($id) {
     }
     if ($email) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_mail'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_mail'); ?>:</small></td>
                     <td><small><?php
         echo $email; ?></small></td>
                 </tr>
             <?php
     } ?>
             <tr>
-                <td style=" width: 30px; "><small class="text-muted"><?php echo lang('WORKER_total'); ?>:</small></td>
+                <td style=" width: 30px; "><small class="text-muted"><?php
+    echo lang('WORKER_total'); ?>:</small></td>
                 <td><small>
 
                             <?php
@@ -1307,11 +1539,14 @@ function get_client_info_client_ticket($id) {
 <?php
     if ($tt <> 0) { ?>
             <tr>
-                <td style=" width: 30px; "><small class="text-muted"><?php echo lang('WORKER_last'); ?>:</small></td>
+                <td style=" width: 30px; "><small class="text-muted"><?php
+        echo lang('WORKER_last'); ?>:</small></td>
                 <td><small>
                 
-                <time id="b" datetime="<?php echo $lt; ?>"></time>
-                <time id="c" datetime="<?php echo $lt; ?>"></time>
+                <time id="b" datetime="<?php
+        echo $lt; ?>"></time>
+                <time id="c" datetime="<?php
+        echo $lt; ?>"></time>
                 
                 </small></td>
             </tr>
@@ -1330,7 +1565,9 @@ function get_client_info_client_ticket($id) {
 function get_client_info_ticket($id) {
     global $dbConnection, $CONF;
     $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,email,login,posada,usr_img FROM users where id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $fio_user = $fio['fio'];
@@ -1349,13 +1586,17 @@ function get_client_info_ticket($id) {
     }
     
     $stmt = $dbConnection->prepare('select count(id) as t1 from tickets where client_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $tt = $total_ticket['t1'];
     
     $stmt = $dbConnection->prepare('select max(date_create) as dc from tickets where client_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $last_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $lt = $last_ticket['dc'];
@@ -1366,12 +1607,14 @@ function get_client_info_ticket($id) {
 <div class="box box-info">
                                 <div class="box-header">
                                     <i class="fa fa-user"></i>
-                                    <h3 class="box-title"><?php echo lang('WORKER_TITLE'); ?></h3>
+                                    <h3 class="box-title"><?php
+    echo lang('WORKER_TITLE'); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
                                     
                                     <div class="row">
-                                <div class="col-md-5"><img class="img-rounded" src="<?php echo $user_img; ?>" height="120"></div>
+                                <div class="col-md-5"><img class="img-rounded" src="<?php
+    echo $user_img; ?>" height="120"></div>
                                 <div class="col-md-7">
                                 <h4><center><strong><?php
     echo $fio_user; ?></strong></center></h4>
@@ -1380,11 +1623,13 @@ function get_client_info_ticket($id) {
                                 
                                 
                                 
-                                 <small class="text-muted"><?php echo lang('WORKER_total'); ?>:</small>
+                                 <small class="text-muted"><?php
+    echo lang('WORKER_total'); ?>:</small>
                                  <small>
                         <?php
     if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo?user=<?php echo $id
+                        <a target="_blank" href="userinfo?user=<?php
+        echo $id
 ?>">
                             <?php
     } ?>
@@ -1399,13 +1644,18 @@ function get_client_info_ticket($id) {
 <?php
     if ($tt <> 0) { ?>
             
-            <small class="text-muted"><?php echo lang('WORKER_last'); ?>:</small>
+            <small class="text-muted"><?php
+        echo lang('WORKER_last'); ?>:</small>
                <small><?php
-        if ($priv_val <> "1") { ?><a target="_blank" href="userinfo?user=<?php echo $id ?>"><?php
+        if ($priv_val <> "1") { ?><a target="_blank" href="userinfo?user=<?php
+            echo $id
+?>"><?php
         } ?>
                 
-                <time id="b" datetime="<?php echo $lt; ?>"></time>
-                <time id="c" datetime="<?php echo $lt; ?>"></time>
+                <time id="b" datetime="<?php
+        echo $lt; ?>"></time>
+                <time id="c" datetime="<?php
+        echo $lt; ?>"></time>
                 
                 <?php
         if ($priv_val <> "1") { ?></a><?php
@@ -1431,14 +1681,18 @@ function get_client_info_ticket($id) {
             <?php
     if ($loginf) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_login'); ?>:</small></td>
-                    <td><small><?php echo $loginf ?></small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_login'); ?>:</small></td>
+                    <td><small><?php
+        echo $loginf
+?></small></td>
                 </tr>
             <?php
     }
     if ($posada) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_posada'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_posada'); ?>:</small></td>
                     <td><small><?php
         echo $posada; ?></small></td>
                 </tr>
@@ -1446,7 +1700,8 @@ function get_client_info_ticket($id) {
     }
     if ($pod) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_unit'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_unit'); ?>:</small></td>
                     <td><small><?php
         echo $pod; ?></small></td>
                 </tr>
@@ -1454,7 +1709,8 @@ function get_client_info_ticket($id) {
     }
     if ($tel_user) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_tel'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_tel'); ?>:</small></td>
                     <td><small><?php
         echo $tel_user . " " . $tel_ext; ?></small></td>
                 </tr>
@@ -1462,7 +1718,8 @@ function get_client_info_ticket($id) {
     }
     if ($adr) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_room'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_room'); ?>:</small></td>
                     <td><small><?php
         echo $adr; ?></small></td>
                 </tr>
@@ -1470,7 +1727,8 @@ function get_client_info_ticket($id) {
     }
     if ($email) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php echo lang('WORKER_mail'); ?>:</small></td>
+                    <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_mail'); ?>:</small></td>
                     <td><small><?php
         echo $email; ?></small></td>
                 </tr>
@@ -1499,7 +1757,9 @@ function get_unit_name_return4news($input) {
     foreach ($u as $val) {
         
         $stmt = $dbConnection->prepare('SELECT name FROM deps where id=:val');
-        $stmt->execute(array(':val' => $val));
+        $stmt->execute(array(
+            ':val' => $val
+        ));
         $dep = $stmt->fetch(PDO::FETCH_ASSOC);
         
         $res = $dep['name'];
@@ -1515,13 +1775,16 @@ function get_unit_name_return($input) {
     foreach ($u as $val) {
         
         $stmt = $dbConnection->prepare('SELECT name FROM deps where id=:val');
-        $stmt->execute(array(':val' => $val));
+        $stmt->execute(array(
+            ':val' => $val
+        ));
         $dep = $stmt->fetch(PDO::FETCH_ASSOC);
         
         array_push($res, $dep['name']);
         
         //$res.=$dep['name'];
         //$res.="<br>";
+        
         
     }
     
@@ -1550,12 +1813,16 @@ function get_user_val_by_hash($id, $in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT ' . $in . ' FROM users where uniq_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     
     $fior = $stmt->fetch(PDO::FETCH_NUM);
     
     return $fior[0];
 }
+
+
 
 function get_user_val_by_id($id, $in) {
     
@@ -1564,7 +1831,9 @@ function get_user_val_by_id($id, $in) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT ' . $in . ' FROM users where id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     
     $fior = $stmt->fetch(PDO::FETCH_NUM);
     
@@ -1581,7 +1850,9 @@ function get_user_val($in) {
     global $dbConnection;
     $i = $_SESSION['helpdesk_user_id'];
     $stmt = $dbConnection->prepare('SELECT ' . $in . ' FROM users where id=:id');
-    $stmt->execute(array(':id' => $i));
+    $stmt->execute(array(
+        ':id' => $i
+    ));
     
     $fior = $stmt->fetch(PDO::FETCH_NUM);
     
@@ -1615,7 +1886,9 @@ function get_my_info() {
     global $dbConnection;
     $id = $_SESSION['helpdesk_user_id'];
     $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,email,login, posada, email, usr_img FROM users where id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $priv_edit_client = get_user_val('priv_edit_client');
@@ -1635,12 +1908,16 @@ function get_my_info() {
     }
     
     $stmt = $dbConnection->prepare('select count(id) as t1 from tickets where client_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     $tt = $total_ticket['t1'];
     
     $stmt = $dbConnection->prepare('select max(date_create) as dc from tickets where client_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $last_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $lt = $last_ticket['dc'];
@@ -1653,12 +1930,14 @@ function get_my_info() {
    <div class="box box-info">
                                 <div class="box-header">
                                     <i class="fa fa-user"></i>
-                                    <h3 class="box-title"> <?php echo lang('WORKER_TITLE'); ?></h3>
+                                    <h3 class="box-title"> <?php
+    echo lang('WORKER_TITLE'); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body" >
                                 
                                 <div class="row">
-                                <div class="col-md-5"><img class="img-rounded" src="<?php echo $user_img; ?>" height="120"></div>
+                                <div class="col-md-5"><img class="img-rounded" src="<?php
+    echo $user_img; ?>" height="120"></div>
                                 <div class="col-md-7">
                                 <h4><center><strong><?php
     echo $fio_user; ?></strong></center></h4></div>
@@ -1674,39 +1953,53 @@ function get_my_info() {
             <tbody>
 
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_login'); ?>:</small></td>
-                <td><small><?php echo $loginf ?></small></td>
+                <td style=" width: 30px; "><small><?php
+    echo lang('WORKER_login'); ?>:</small></td>
+                <td><small><?php
+    echo $loginf
+?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_posada'); ?>:</small></td>
-                <td><small><?php echo $posada ?></small></td>
+                <td style=" width: 30px; "><small><?php
+    echo lang('WORKER_posada'); ?>:</small></td>
+                <td><small><?php
+    echo $posada
+?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_unit'); ?>:</small></td>
+                <td style=" width: 30px; "><small><?php
+    echo lang('WORKER_unit'); ?>:</small></td>
                 <td><small><?php
     echo $pod; ?></small></td>
             </tr>
 
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_tel'); ?>:</small></td>
+                <td style=" width: 30px; "><small><?php
+    echo lang('WORKER_tel'); ?>:</small></td>
                 <td><small><?php
     echo $tel_user . " " . $tel_ext; ?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_room'); ?>:</small></td>
+                <td style=" width: 30px; "><small><?php
+    echo lang('WORKER_room'); ?>:</small></td>
                 <td><small><?php
     echo $adr; ?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_mail'); ?>:</small></td>
-                <td><small><?php echo $mails ?></small></td>
+                <td style=" width: 30px; "><small><?php
+    echo lang('WORKER_mail'); ?>:</small></td>
+                <td><small><?php
+    echo $mails
+?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small class="text-muted"><?php echo lang('WORKER_total'); ?>:</small></td>
+                <td style=" width: 30px; "><small class="text-muted"><?php
+    echo lang('WORKER_total'); ?>:</small></td>
                 <td><small class="text-muted">
                         <?php
     if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo?user=<?php echo $id
+                        <a target="_blank" href="userinfo?user=<?php
+        echo $id
 ?>"><?php
     } ?><?php
     echo $tt; ?><?php
@@ -1716,16 +2009,20 @@ function get_my_info() {
 <?php
     if ($tt <> 0) { ?>
             <tr>
-                <td style=" width: 30px; "><small class="text-muted"><?php echo lang('WORKER_last'); ?>:</small></td>
+                <td style=" width: 30px; "><small class="text-muted"><?php
+        echo lang('WORKER_last'); ?>:</small></td>
                 <td><small class="text-muted">
                         <?php
         if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo?user=<?php echo $id
+                        <a target="_blank" href="userinfo?user=<?php
+            echo $id
 ?>">
                             <?php
         } ?>
-                <time id="b" datetime="<?php echo $lt; ?>"></time>
-                <time id="c" datetime="<?php echo $lt; ?>"></time>
+                <time id="b" datetime="<?php
+        echo $lt; ?>"></time>
+                <time id="c" datetime="<?php
+        echo $lt; ?>"></time>
                             
                             <?php
         if ($priv_val <> "1") { ?></a><?php
@@ -1746,7 +2043,9 @@ function get_client_info($id) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,email,login, posada, email, usr_img FROM users where id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $priv_edit_client = get_user_val('priv_edit_client');
@@ -1766,12 +2065,16 @@ function get_client_info($id) {
     }
     
     $stmt = $dbConnection->prepare('select count(id) as t1 from tickets where client_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     $tt = $total_ticket['t1'];
     
     $stmt = $dbConnection->prepare('select max(date_create) as dc from tickets where client_id=:id');
-    $stmt->execute(array(':id' => $id));
+    $stmt->execute(array(
+        ':id' => $id
+    ));
     $last_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $lt = $last_ticket['dc'];
@@ -1792,12 +2095,14 @@ function get_client_info($id) {
 <div class="box box-info">
                                 <div class="box-header">
                                     <i class="fa fa-user"></i>
-                                    <h3 class="box-title"> <?php echo lang('WORKER_TITLE'); ?></h3>
+                                    <h3 class="box-title"> <?php
+        echo lang('WORKER_TITLE'); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body" >
                                 
                                 <div class="row">
-                                <div class="col-md-5"><img class="img-rounded" src="<?php echo $user_img; ?>" height="120"></div>
+                                <div class="col-md-5"><img class="img-rounded" src="<?php
+        echo $user_img; ?>" height="120"></div>
                                 <div class="col-md-7">
                                 <h4><center><strong><?php
         echo $fio_user; ?></strong></center></h4>
@@ -1806,11 +2111,13 @@ function get_client_info($id) {
                                 
                                 
                                 
-                          <small class="text-muted"><?php echo lang('WORKER_total'); ?>:</small>
+                          <small class="text-muted"><?php
+        echo lang('WORKER_total'); ?>:</small>
                <small class="text-muted">
                         <?php
         if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo?user=<?php echo $id
+                        <a target="_blank" href="userinfo?user=<?php
+            echo $id
 ?>"><?php
         } ?><?php
         echo $tt; ?><?php
@@ -1818,16 +2125,20 @@ function get_client_info($id) {
         } ?></small><br>
 <?php
         if ($tt <> 0) { ?>
-           <small class="text-muted"><?php echo lang('WORKER_last'); ?>:</small>
+           <small class="text-muted"><?php
+            echo lang('WORKER_last'); ?>:</small>
                 <td><small class="text-muted">
                         <?php
             if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo?user=<?php echo $id
+                        <a target="_blank" href="userinfo?user=<?php
+                echo $id
 ?>">
                             <?php
             } ?>
-                <time id="b" datetime="<?php echo $lt; ?>"></time>
-                <time id="c" datetime="<?php echo $lt; ?>"></time>
+                <time id="b" datetime="<?php
+            echo $lt; ?>"></time>
+                <time id="c" datetime="<?php
+            echo $lt; ?>"></time>
                             
                             <?php
             if ($priv_val <> "1") { ?></a><?php
@@ -1858,32 +2169,48 @@ function get_client_info($id) {
             <tbody>
 
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_login'); ?>:</small></td>
-                <td><small><a href="#" id="edit_login" data-type="text"><?php echo $loginf ?></a></small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_login'); ?>:</small></td>
+                <td><small><a href="#" id="edit_login" data-type="text"><?php
+        echo $loginf
+?></a></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_posada'); ?>:</small></td>
-                <td><small><a href="#" id="edit_posada" data-type="select" data-source="<?php echo $CONF['hostname']; ?>/inc/json.php?posada" data-pk="1" data-title="<?php echo lang('WORKER_posada'); ?>"><?php echo $posada ?></a></small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_posada'); ?>:</small></td>
+                <td><small><a href="#" id="edit_posada" data-type="select" data-source="<?php
+        echo $CONF['hostname']; ?>/inc/json.php?posada" data-pk="1" data-title="<?php
+        echo lang('WORKER_posada'); ?>"><?php
+        echo $posada
+?></a></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_unit'); ?>:</small></td>
-                <td><small><a href="#" id="edit_unit" data-type="select" data-source="<?php echo $CONF['hostname']; ?>/inc/json.php?units" data-pk="1" data-title="<?php echo lang('NEW_to_unit'); ?>"><?php
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_unit'); ?>:</small></td>
+                <td><small><a href="#" id="edit_unit" data-type="select" data-source="<?php
+        echo $CONF['hostname']; ?>/inc/json.php?units" data-pk="1" data-title="<?php
+        echo lang('NEW_to_unit'); ?>"><?php
         echo $pod; ?></a></small></td>
             </tr>
 
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_tel'); ?>:</small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_tel'); ?>:</small></td>
                 <td><small><a href="#" id="edit_tel" data-type="text"><?php
         echo $tel_user . " " . $tel_ext; ?></a></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_room'); ?>:</small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_room'); ?>:</small></td>
                 <td><small><a href="#" id="edit_adr" data-type="text"><?php
         echo $adr; ?></a></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_mail'); ?>:</small></td>
-                <td><small><a href="#" id="edit_mail" data-type="text"><?php echo $mails ?></a></small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_mail'); ?>:</small></td>
+                <td><small><a href="#" id="edit_mail" data-type="text"><?php
+        echo $mails
+?></a></small></td>
             </tr>
                         </tbody>
         </table>
@@ -1908,12 +2235,14 @@ function get_client_info($id) {
    <div class="box box-info">
                                 <div class="box-header">
                                     <i class="fa fa-user"></i>
-                                    <h3 class="box-title"> <?php echo lang('WORKER_TITLE'); ?></h3>
+                                    <h3 class="box-title"> <?php
+        echo lang('WORKER_TITLE'); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body" >
                                 
                                 <div class="row">
-                                <div class="col-md-5"><img class="img-rounded" src="<?php echo $user_img; ?>" height="120"></div>
+                                <div class="col-md-5"><img class="img-rounded" src="<?php
+        echo $user_img; ?>" height="120"></div>
                                 <div class="col-md-7">
                                 <h4><center><strong><?php
         echo $fio_user; ?></strong></center></h4>
@@ -1925,11 +2254,13 @@ function get_client_info($id) {
                                 
                                 
                                 
-                               <small class="text-muted"><?php echo lang('WORKER_total'); ?>:</small>
+                               <small class="text-muted"><?php
+        echo lang('WORKER_total'); ?>:</small>
                                <small class="text-muted">
                         <?php
         if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo?user=<?php echo $id
+                        <a target="_blank" href="userinfo?user=<?php
+            echo $id
 ?>"><?php
         } ?><?php
         echo $tt; ?><?php
@@ -1939,17 +2270,21 @@ function get_client_info($id) {
 <?php
         if ($tt <> 0) { ?>
            
-           <small class="text-muted"><?php echo lang('WORKER_last'); ?>:</small>
+           <small class="text-muted"><?php
+            echo lang('WORKER_last'); ?>:</small>
            
            <small class="text-muted">
                         <?php
             if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo?user=<?php echo $id
+                        <a target="_blank" href="userinfo?user=<?php
+                echo $id
 ?>">
                             <?php
             } ?>
-                <time id="b" datetime="<?php echo $lt; ?>"></time>
-                <time id="c" datetime="<?php echo $lt; ?>"></time>
+                <time id="b" datetime="<?php
+            echo $lt; ?>"></time>
+                <time id="c" datetime="<?php
+            echo $lt; ?>"></time>
                             
                             <?php
             if ($priv_val <> "1") { ?></a><?php
@@ -1978,32 +2313,44 @@ function get_client_info($id) {
             <tbody>
 
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_login'); ?>:</small></td>
-                <td><small><?php echo $loginf ?></small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_login'); ?>:</small></td>
+                <td><small><?php
+        echo $loginf
+?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_posada'); ?>:</small></td>
-                <td><small><?php echo $posada ?></small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_posada'); ?>:</small></td>
+                <td><small><?php
+        echo $posada
+?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_unit'); ?>:</small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_unit'); ?>:</small></td>
                 <td><small><?php
         echo $pod; ?></small></td>
             </tr>
 
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_tel'); ?>:</small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_tel'); ?>:</small></td>
                 <td><small><?php
         echo $tel_user . " " . $tel_ext; ?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_room'); ?>:</small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_room'); ?>:</small></td>
                 <td><small><?php
         echo $adr; ?></small></td>
             </tr>
             <tr>
-                <td style=" width: 30px; "><small><?php echo lang('WORKER_mail'); ?>:</small></td>
-                <td><small><?php echo $mails ?></small></td>
+                <td style=" width: 30px; "><small><?php
+        echo lang('WORKER_mail'); ?>:</small></td>
+                <td><small><?php
+        echo $mails
+?></small></td>
             </tr>
                         </tbody>
         </table>
@@ -2017,7 +2364,9 @@ function get_client_info($id) {
 function id_of_user($input) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('SELECT id FROM users where login=:input');
-    $stmt->execute(array(':input' => $input));
+    $stmt->execute(array(
+        ':input' => $input
+    ));
     $id = $stmt->fetch(PDO::FETCH_ASSOC);
     
     return ($id['id']);
@@ -2027,7 +2376,9 @@ function priv_status_name($input) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT priv,is_client FROM users where id=:input');
-    $stmt->execute(array(':input' => $input));
+    $stmt->execute(array(
+        ':input' => $input
+    ));
     $id = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if ($id['is_client'] == "1") {
@@ -2059,7 +2410,9 @@ function priv_status($input) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT priv FROM users where id=:input');
-    $stmt->execute(array(':input' => $input));
+    $stmt->execute(array(
+        ':input' => $input
+    ));
     $id = $stmt->fetch(PDO::FETCH_ASSOC);
     
     return ($id['priv']);
@@ -2086,7 +2439,9 @@ function get_last_ticket_new($id) {
         
         $stmt = $dbConnection->prepare('SELECT max(last_update) from tickets where unit_id IN (' . $in_query . ') or user_init_id=:id');
         
-        $paramss = array(':id' => $id);
+        $paramss = array(
+            ':id' => $id
+        );
         $stmt->execute(array_merge($vv, $paramss));
         
         $max = $stmt->fetch(PDO::FETCH_NUM);
@@ -2095,11 +2450,16 @@ function get_last_ticket_new($id) {
         
         //echo $max_id;
         
+        
     } else if ($priv_val == "1") {
         
         $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((find_in_set(:id,user_to_id)) or (find_in_set(:tid,user_to_id) and unit_id IN (" . $in_query . "))) or user_init_id=:id2");
         
-        $paramss = array(':id' => $id, ':tid' => '0', ':id2' => $id);
+        $paramss = array(
+            ':id' => $id,
+            ':tid' => '0',
+            ':id2' => $id
+        );
         $stmt->execute(array_merge($vv, $paramss));
         
         $max = $stmt->fetch(PDO::FETCH_NUM);
@@ -2120,7 +2480,9 @@ function get_who_last_action_ticket($ticket_id) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('select init_user_id from ticket_log where ticket_id=:ticket_id order by date_op DESC limit 1');
-    $stmt->execute(array(':ticket_id' => $ticket_id));
+    $stmt->execute(array(
+        ':ticket_id' => $ticket_id
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $r = $fio['init_user_id'];
@@ -2131,7 +2493,9 @@ function get_last_action_type($ticket_id) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('select date_op, msg, init_user_id, to_user_id, to_unit_id from ticket_log where ticket_id=:ticket_id order by date_op DESC limit 1');
-    $stmt->execute(array(':ticket_id' => $ticket_id));
+    $stmt->execute(array(
+        ':ticket_id' => $ticket_id
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $r = $fio['msg'];
@@ -2147,7 +2511,10 @@ function get_last_msg_ticket($ticket_id, $type_op) {
     to_user_id, 
     to_unit_id 
     from ticket_log where ticket_id=:ticket_id and msg=:top order by date_op DESC limit 1');
-    $stmt->execute(array(':ticket_id' => $ticket_id, ':top' => $type_op));
+    $stmt->execute(array(
+        ':ticket_id' => $ticket_id,
+        ':top' => $type_op
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $r = $fio['msg'];
@@ -2210,7 +2577,9 @@ function get_last_ticket($menu, $id) {
         if ($priv_val == "0") {
             
             $stmt = $dbConnection->prepare('SELECT max(last_update) from tickets where unit_id IN (' . $in_query . ') or user_init_id=:id');
-            $paramss = array(':id' => $id);
+            $paramss = array(
+                ':id' => $id
+            );
             $stmt->execute(array_merge($vv, $paramss));
             $max = $stmt->fetch(PDO::FETCH_NUM);
             $max_id = $max[0];
@@ -2218,7 +2587,11 @@ function get_last_ticket($menu, $id) {
             $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where (
             (find_in_set(:id,user_to_id)) or (find_in_set(:tid,user_to_id) and unit_id IN (" . $in_query . "))
             ) or user_init_id=:id2");
-            $paramss = array(':id' => $id, ':tid' => '0', ':id2' => $id);
+            $paramss = array(
+                ':id' => $id,
+                ':tid' => '0',
+                ':id2' => $id
+            );
             $stmt->execute(array_merge($vv, $paramss));
             
             $max = $stmt->fetch(PDO::FETCH_NUM);
@@ -2251,19 +2624,28 @@ function get_last_ticket($menu, $id) {
             if (isset($_SESSION['hd.rustem_sort_in'])) {
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where unit_id IN (" . $in_query . ") and arch='0' and status=:s");
-                    $paramss = array(':s' => '1');
+                    $paramss = array(
+                        ':s' => '1'
+                    );
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where unit_id IN (" . $in_query . ") and arch='0' and status=:s and lock_by=:lb");
-                    $paramss = array(':s' => '0', ':lb' => '0');
+                    $paramss = array(
+                        ':s' => '0',
+                        ':lb' => '0'
+                    );
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where unit_id IN (" . $in_query . ") and arch='0' and lock_by=:lb");
-                    $paramss = array(':lb' => $id);
+                    $paramss = array(
+                        ':lb' => $id
+                    );
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where unit_id IN (" . $in_query . ") and arch='0' and (lock_by<>:lb and lock_by<>0) and (status=0)");
-                    $paramss = array(':lb' => $id);
+                    $paramss = array(
+                        ':lb' => $id
+                    );
                     $stmt->execute(array_merge($vv, $paramss));
                 }
             }
@@ -2283,25 +2665,38 @@ function get_last_ticket($menu, $id) {
             if (isset($_SESSION['hd.rustem_sort_in'])) {
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0')) and status=:s");
-                    $paramss = array(':id' => $id, ':s' => '1');
+                    $paramss = array(
+                        ':id' => $id,
+                        ':s' => '1'
+                    );
                     $stmt->execute(array_merge($vv, $paramss));
                     $max = $stmt->fetch(PDO::FETCH_NUM);
                     $max_id = $max[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0')) and lock_by=:lb and status=:s");
-                    $paramss = array(':id' => $id, ':lb' => '0', ':s' => '0');
+                    $paramss = array(
+                        ':id' => $id,
+                        ':lb' => '0',
+                        ':s' => '0'
+                    );
                     $stmt->execute(array_merge($vv, $paramss));
                     $max = $stmt->fetch(PDO::FETCH_NUM);
                     $max_id = $max[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0')) and lock_by=:lb");
-                    $paramss = array(':id' => $id, ':lb' => $lb);
+                    $paramss = array(
+                        ':id' => $id,
+                        ':lb' => $lb
+                    );
                     $stmt->execute(array_merge($vv, $paramss));
                     $max = $stmt->fetch(PDO::FETCH_NUM);
                     $max_id = $max[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0')) and (lock_by<>:lb and lock_by<>0) and (status=0)");
-                    $paramss = array(':id' => $id, ':lb' => $lb);
+                    $paramss = array(
+                        ':id' => $id,
+                        ':lb' => $lb
+                    );
                     $stmt->execute(array_merge($vv, $paramss));
                     $max = $stmt->fetch(PDO::FETCH_NUM);
                     $max_id = $max[0];
@@ -2310,7 +2705,9 @@ function get_last_ticket($menu, $id) {
             
             if (!isset($_SESSION['hd.rustem_sort_in'])) {
                 $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0'))");
-                $paramss = array(':id' => $id);
+                $paramss = array(
+                    ':id' => $id
+                );
                 $stmt->execute(array_merge($vv, $paramss));
                 $max = $stmt->fetch(PDO::FETCH_NUM);
                 $max_id = $max[0];
@@ -2320,22 +2717,31 @@ function get_last_ticket($menu, $id) {
             if (isset($_SESSION['hd.rustem_sort_in'])) {
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where arch='0' and status=:s");
-                    $stmt->execute(array(':s' => '1'));
+                    $stmt->execute(array(
+                        ':s' => '1'
+                    ));
                     $max = $stmt->fetch(PDO::FETCH_NUM);
                     $max_id = $max[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where arch='0' and lock_by=:lb and status=:s");
-                    $stmt->execute(array(':lb' => '0', ':s' => '0'));
+                    $stmt->execute(array(
+                        ':lb' => '0',
+                        ':s' => '0'
+                    ));
                     $max = $stmt->fetch(PDO::FETCH_NUM);
                     $max_id = $max[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where arch='0' and lock_by=:lb");
-                    $stmt->execute(array(':lb' => $id));
+                    $stmt->execute(array(
+                        ':lb' => $id
+                    ));
                     $max = $stmt->fetch(PDO::FETCH_NUM);
                     $max_id = $max[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
                     $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where arch='0' and (lock_by<>:lb and lock_by<>0) and (status=0)");
-                    $stmt->execute(array(':lb' => $id));
+                    $stmt->execute(array(
+                        ':lb' => $id
+                    ));
                     $max = $stmt->fetch(PDO::FETCH_NUM);
                     $max_id = $max[0];
                 }
@@ -2352,7 +2758,10 @@ function get_last_ticket($menu, $id) {
     } else if ($menu == "client") {
         
         $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where user_init_id=:cid and arch='0' and client_id=:id");
-        $stmt->execute(array(':id' => $id, ':cid' => $id));
+        $stmt->execute(array(
+            ':id' => $id,
+            ':cid' => $id
+        ));
         $max = $stmt->fetch(PDO::FETCH_NUM);
         $max_id = $max[0];
     } else if ($menu == "out") {
@@ -2360,22 +2769,35 @@ function get_last_ticket($menu, $id) {
         if (isset($_SESSION['hd.rustem_sort_out'])) {
             if ($_SESSION['hd.rustem_sort_out'] == "ok") {
                 $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where user_init_id=:id and arch='0' and status=:s");
-                $stmt->execute(array(':id' => $id, ':s' => '1'));
+                $stmt->execute(array(
+                    ':id' => $id,
+                    ':s' => '1'
+                ));
                 $max = $stmt->fetch(PDO::FETCH_NUM);
                 $max_id = $max[0];
             } else if ($_SESSION['hd.rustem_sort_out'] == "free") {
                 $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where user_init_id=:id and arch='0' and lock_by=:lb and status=:s");
-                $stmt->execute(array(':id' => $id, ':lb' => '0', ':s' => '0'));
+                $stmt->execute(array(
+                    ':id' => $id,
+                    ':lb' => '0',
+                    ':s' => '0'
+                ));
                 $max = $stmt->fetch(PDO::FETCH_NUM);
                 $max_id = $max[0];
             } else if ($_SESSION['hd.rustem_sort_out'] == "ilock") {
                 $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where user_init_id=:id and arch='0' and lock_by=:lb");
-                $stmt->execute(array(':id' => $id, ':lb' => $id));
+                $stmt->execute(array(
+                    ':id' => $id,
+                    ':lb' => $id
+                ));
                 $max = $stmt->fetch(PDO::FETCH_NUM);
                 $max_id = $max[0];
             } else if ($_SESSION['hd.rustem_sort_out'] == "lock") {
                 $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where user_init_id=:id and arch='0'  and (lock_by<>:lb and lock_by<>0) and (status=0)");
-                $stmt->execute(array(':id' => $id, ':lb' => $id));
+                $stmt->execute(array(
+                    ':id' => $id,
+                    ':lb' => $id
+                ));
                 $max = $stmt->fetch(PDO::FETCH_NUM);
                 $max_id = $max[0];
             }
@@ -2384,7 +2806,9 @@ function get_last_ticket($menu, $id) {
         if (!isset($_SESSION['hd.rustem_sort_out'])) {
             
             $stmt = $dbConnection->prepare("SELECT max(last_update) from tickets where user_init_id=:id and arch='0'");
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
             $max = $stmt->fetch(PDO::FETCH_NUM);
             $max_id = $max[0];
         }
@@ -2428,7 +2852,9 @@ function get_last_ticket($menu, $id) {
              or
             (user_to_id='0' and unit_id IN (" . $in_query2 . ") and arch='1')");
             
-            $paramss = array(':id' => $id);
+            $paramss = array(
+                ':id' => $id
+            );
             $stmt->execute(array_merge($vv, $vv2, $paramss));
             
             $max = $stmt->fetch(PDO::FETCH_NUM);
@@ -2452,27 +2878,37 @@ function push_msg_action2user($deliver, $type_op) {
     
     $u_hash = get_user_hash_by_id($deliver);
     $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, dt) VALUES (:delivers_id, :type_op, :n)');
-    $stmt_n->execute(array(':delivers_id' => $deliver, ':type_op' => $type_op, ':n' => $CONF['now_dt']));
+    $stmt_n->execute(array(
+        ':delivers_id' => $deliver,
+        ':type_op' => $type_op,
+        ':n' => $CONF['now_dt']
+    ));
 }
 
 function get_unit_stat_free($in) {
     global $dbConnection;
     $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=0 and lock_by=0');
-    $res->execute(array(':uid' => $in));
+    $res->execute(array(
+        ':uid' => $in
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
 }
 function get_unit_stat_lock($in) {
     global $dbConnection;
     $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=0 and lock_by!=0');
-    $res->execute(array(':uid' => $in));
+    $res->execute(array(
+        ':uid' => $in
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
 }
 function get_unit_stat_ok($in) {
     global $dbConnection;
     $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=1');
-    $res->execute(array(':uid' => $in));
+    $res->execute(array(
+        ':uid' => $in
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
 }
@@ -2487,7 +2923,10 @@ function get_total_client_tickets_out($in) {
     }
     
     $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id=:uid and client_id=:cid');
-    $res->execute(array(':uid' => $uid, ':cid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid,
+        ':cid' => $uid
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     
     return $count[0];
@@ -2503,7 +2942,9 @@ function get_total_tickets_out($in) {
     }
     
     $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id=:uid');
-    $res->execute(array(':uid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     
     return $count[0];
@@ -2518,7 +2959,10 @@ function get_total_client_tickets_lock($in) {
     }
     
     $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:uid and client_id=:cid and lock_by!='0' and status='0'");
-    $res->execute(array(':uid' => $uid, ':cid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid,
+        ':cid' => $uid
+    ));
     
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
@@ -2534,7 +2978,10 @@ function get_total_client_tickets_ok($in) {
     }
     
     $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:uid and client_id=:cid and ok_by!='0' and status='1'");
-    $res->execute(array(':uid' => $uid, ':cid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid,
+        ':cid' => $uid
+    ));
     
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
@@ -2549,7 +2996,9 @@ function get_total_tickets_lock($in) {
     }
     
     $res = $dbConnection->prepare("SELECT count(*) from tickets where lock_by=:uid and status='0'");
-    $res->execute(array(':uid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
 }
@@ -2561,7 +3010,9 @@ function get_total_tickets_ok($in) {
         $uid = $in;
     }
     $res = $dbConnection->prepare("SELECT count(*) from tickets where ok_by=:uid");
-    $res->execute(array(':uid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     
     return $count[0];
@@ -2575,7 +3026,9 @@ function get_total_tickets_out_and_success($in) {
         $uid = $in;
     }
     $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:uid and (ok_by='0') and arch='0'");
-    $res->execute(array(':uid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     
     return $count[0];
@@ -2585,7 +3038,9 @@ function get_total_tickets_out_and_lock() {
     $uid = $_SESSION['helpdesk_user_id'];
     
     $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:uid and (lock_by!='0' and ok_by='0') and arch='0'");
-    $res->execute(array(':uid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     
     return $count[0];
@@ -2607,7 +3062,9 @@ function get_total_tickets_out_and_ok() {
     $uid = $_SESSION['helpdesk_user_id'];
     
     $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:uid and (ok_by!='0') and arch='0'");
-    $res->execute(array(':uid' => $uid));
+    $res->execute(array(
+        ':uid' => $uid
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     
     return $count[0];
@@ -2616,7 +3073,9 @@ function get_total_tickets_free_client() {
     global $dbConnection;
     $res = $dbConnection->prepare("SELECT count(*) from tickets where status='0' and user_init_id='0' and client_id=:uid");
     
-    $res->execute(array(':uid' => $_SESSION['helpdesk_user_id']));
+    $res->execute(array(
+        ':uid' => $_SESSION['helpdesk_user_id']
+    ));
     $count = $res->fetch(PDO::FETCH_NUM);
     $count = $count[0];
     
@@ -2663,7 +3122,9 @@ function get_total_tickets_free($in) {
         
         //$res->execute(array(':uid' => $uid));
         
-        $paramss = array(':uid' => $uid);
+        $paramss = array(
+            ':uid' => $uid
+        );
         $res->execute(array_merge($vv, $paramss));
         $count = $res->fetch(PDO::FETCH_NUM);
         $count = $count[0];
@@ -2683,7 +3144,9 @@ function get_dashboard_msg() {
     $mid = $_SESSION['helpdesk_user_id'];
     
     $stmt = $dbConnection->prepare('SELECT messages from users where id=:mid');
-    $stmt->execute(array(':mid' => $mid));
+    $stmt->execute(array(
+        ':mid' => $mid
+    ));
     
     //$max = $stmt->fetch(PDO::FETCH_ASSOC);
     $res1 = $stmt->fetchAll();
@@ -2803,7 +3266,9 @@ function get_total_pages($menu, $id) {
             
             $res = $dbConnection->prepare("SELECT count(*) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0'))");
             
-            $paramss = array(':id' => $id);
+            $paramss = array(
+                ':id' => $id
+            );
             $res->execute(array_merge($vv, $paramss));
             $count = $res->fetch(PDO::FETCH_NUM);
             $count = $count[0];
@@ -2842,25 +3307,34 @@ function get_total_pages($menu, $id) {
             if (isset($_SESSION['hd.rustem_sort_in'])) {
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where unit_id IN (" . $in_query . ") and arch='0' and status=:s");
-                    $paramss = array(':s' => '1');
+                    $paramss = array(
+                        ':s' => '1'
+                    );
                     $res->execute(array_merge($vv, $paramss));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where unit_id IN (" . $in_query . ") and arch='0' and lock_by=:lb and status=:s");
-                    $paramss = array(':lb' => '0', ':s' => '0');
+                    $paramss = array(
+                        ':lb' => '0',
+                        ':s' => '0'
+                    );
                     $res->execute(array_merge($vv, $paramss));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where unit_id IN (" . $in_query . ") and arch='0' and lock_by=:lb");
-                    $paramss = array(':lb' => $id);
+                    $paramss = array(
+                        ':lb' => $id
+                    );
                     $res->execute(array_merge($vv, $paramss));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where unit_id IN (" . $in_query . ") and arch='0' and (lock_by<>:lb and lock_by<>0) and (status=0)");
-                    $paramss = array(':lb' => $id);
+                    $paramss = array(
+                        ':lb' => $id
+                    );
                     $res->execute(array_merge($vv, $paramss));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
@@ -2879,28 +3353,41 @@ function get_total_pages($menu, $id) {
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0')) and status=:s");
                     
-                    $paramss = array(':id' => $id, ':s' => '1');
+                    $paramss = array(
+                        ':id' => $id,
+                        ':s' => '1'
+                    );
                     $res->execute(array_merge($vv, $paramss));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0')) and lock_by=:lb and status=:s");
                     
-                    $paramss = array(':id' => $id, ':lb' => '0', ':s' => '0');
+                    $paramss = array(
+                        ':id' => $id,
+                        ':lb' => '0',
+                        ':s' => '0'
+                    );
                     $res->execute(array_merge($vv, $paramss));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0')) and lock_by=:lb");
                     
-                    $paramss = array(':id' => $id, ':lb' => $id);
+                    $paramss = array(
+                        ':id' => $id,
+                        ':lb' => $id
+                    );
                     $res->execute(array_merge($vv, $paramss));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0')) and (lock_by<>:lb and lock_by<>0) and (status=0)");
                     
-                    $paramss = array(':id' => $id, ':lb' => $id);
+                    $paramss = array(
+                        ':id' => $id,
+                        ':lb' => $id
+                    );
                     $res->execute(array_merge($vv, $paramss));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
@@ -2909,7 +3396,9 @@ function get_total_pages($menu, $id) {
             if (!isset($_SESSION['hd.rustem_sort_in'])) {
                 $res = $dbConnection->prepare("SELECT count(*) from tickets where ((find_in_set(:id,user_to_id) and arch='0') or (user_to_id='0' and unit_id IN (" . $in_query . ") and arch='0'))");
                 
-                $paramss = array(':id' => $id);
+                $paramss = array(
+                    ':id' => $id
+                );
                 $res->execute(array_merge($vv, $paramss));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $count = $count[0];
@@ -2920,22 +3409,31 @@ function get_total_pages($menu, $id) {
                 
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0' and status=:s");
-                    $res->execute(array(':s' => '1'));
+                    $res->execute(array(
+                        ':s' => '1'
+                    ));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0' and lock_by=:lb and status=:s");
-                    $res->execute(array(':lb' => '0', ':s' => '0'));
+                    $res->execute(array(
+                        ':lb' => '0',
+                        ':s' => '0'
+                    ));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0' and lock_by=:lb");
-                    $res->execute(array(':lb' => $id));
+                    $res->execute(array(
+                        ':lb' => $id
+                    ));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
                     $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0' and (lock_by<>:lb and lock_by<>0) and (status=0)");
-                    $res->execute(array(':lb' => $id));
+                    $res->execute(array(
+                        ':lb' => $id
+                    ));
                     $count = $res->fetch(PDO::FETCH_NUM);
                     $count = $count[0];
                 }
@@ -2956,7 +3454,10 @@ function get_total_pages($menu, $id) {
         }
         
         $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:id and arch='0' and client_id=:cid");
-        $res->execute(array(':id' => $id, ':cid' => $id));
+        $res->execute(array(
+            ':id' => $id,
+            ':cid' => $id
+        ));
         $count = $res->fetch(PDO::FETCH_NUM);
         $count = $count[0];
     }
@@ -2971,22 +3472,35 @@ function get_total_pages($menu, $id) {
             
             if ($_SESSION['hd.rustem_sort_out'] == "ok") {
                 $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:id and arch='0' and status=:s");
-                $res->execute(array(':id' => $id, ':s' => '1'));
+                $res->execute(array(
+                    ':id' => $id,
+                    ':s' => '1'
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $count = $count[0];
             } else if ($_SESSION['hd.rustem_sort_out'] == "free") {
                 $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:id and arch='0' and lock_by=:lb and status=:s");
-                $res->execute(array(':id' => $id, ':lb' => '0', ':s' => '0'));
+                $res->execute(array(
+                    ':id' => $id,
+                    ':lb' => '0',
+                    ':s' => '0'
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $count = $count[0];
             } else if ($_SESSION['hd.rustem_sort_out'] == "ilock") {
                 $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:id and arch='0' and lock_by=:lb");
-                $res->execute(array(':id' => $id, ':lb' => $id));
+                $res->execute(array(
+                    ':id' => $id,
+                    ':lb' => $id
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $count = $count[0];
             } else if ($_SESSION['hd.rustem_sort_out'] == "lock") {
                 $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:id and arch='0' and (lock_by<>:lb and lock_by<>0) and (status=0)");
-                $res->execute(array(':id' => $id, ':lb' => $id));
+                $res->execute(array(
+                    ':id' => $id,
+                    ':lb' => $id
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $count = $count[0];
             }
@@ -2995,7 +3509,9 @@ function get_total_pages($menu, $id) {
         if (!isset($_SESSION['hd.rustem_sort_out'])) {
             
             $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:id and arch='0'");
-            $res->execute(array(':id' => $id));
+            $res->execute(array(
+                ':id' => $id
+            ));
             $count = $res->fetch(PDO::FETCH_NUM);
             $count = $count[0];
         }
@@ -3034,7 +3550,9 @@ function get_total_pages($menu, $id) {
             
             $res = $dbConnection->prepare("SELECT count(*) from tickets where (unit_id IN (" . $in_query . ") or user_init_id=:id) and arch='1'");
             
-            $paramss = array(':id' => $id);
+            $paramss = array(
+                ':id' => $id
+            );
             $res->execute(array_merge($vv, $paramss));
             $count = $res->fetch(PDO::FETCH_NUM);
             $count = $count[0];
@@ -3045,7 +3563,10 @@ function get_total_pages($menu, $id) {
                             (user_to_id='0' and unit_id IN (" . $in_query2 . ") and arch='1') or
                             (user_init_id=:id2 and arch='1')");
             
-            $paramss = array(':id' => $id, ':id2' => $id);
+            $paramss = array(
+                ':id' => $id,
+                ':id2' => $id
+            );
             $res->execute(array_merge($vv, $vv2, $paramss));
             $count = $res->fetch(PDO::FETCH_NUM);
             $count = $count[0];
@@ -3073,7 +3594,9 @@ function name_of_client($input) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT fio FROM users where id=:input');
-    $stmt->execute(array(':input' => $input));
+    $stmt->execute(array(
+        ':input' => $input
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     echo ($fio['fio']);
@@ -3082,7 +3605,9 @@ function name_of_client_ret($input) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT fio FROM users where id=:input');
-    $stmt->execute(array(':input' => $input));
+    $stmt->execute(array(
+        ':input' => $input
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     return $fio['fio'];
@@ -3100,7 +3625,8 @@ function time_ago($in) {
 function humanTiming_period($time1, $time_ago) {
     
     $time = (strtotime($time_ago) - strtotime($time1));
-     // to get the time since that moment
+    
+    // to get the time since that moment
     
     return $time;
 }
@@ -3119,7 +3645,9 @@ function get_unit_name($input) {
     
     foreach ($u as $val) {
         $stmt = $dbConnection->prepare('SELECT name FROM deps where id=:val');
-        $stmt->execute(array(':val' => $val));
+        $stmt->execute(array(
+            ':val' => $val
+        ));
         $dep = $stmt->fetch(PDO::FETCH_ASSOC);
         
         $res.= $dep['name'];
@@ -3135,7 +3663,9 @@ function name_of_user($input) {
     $u = explode(",", $input);
     foreach ($u as $val) {
         $stmt = $dbConnection->prepare('SELECT fio FROM users where id=:input');
-        $stmt->execute(array(':input' => $val));
+        $stmt->execute(array(
+            ':input' => $val
+        ));
         $fio = $stmt->fetch(PDO::FETCH_ASSOC);
         $res.= $fio['fio'];
         $res.= "<br>";
@@ -3153,14 +3683,18 @@ function name_of_user_ret_nolink($input) {
     if ($u_count > 1) {
         foreach ($u as $val) {
             $stmt = $dbConnection->prepare('SELECT fio, uniq_id FROM users where id=:input');
-            $stmt->execute(array(':input' => $val));
+            $stmt->execute(array(
+                ':input' => $val
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             $res.= $fio['fio'] . ", ";
         }
         $res = substr($res, 0, -2);
     } else if ($u_count <= 1) {
         $stmt = $dbConnection->prepare('SELECT fio, uniq_id FROM users where id=:input');
-        $stmt->execute(array(':input' => $input));
+        $stmt->execute(array(
+            ':input' => $input
+        ));
         $fio = $stmt->fetch(PDO::FETCH_ASSOC);
         $res.= $fio['fio'];
     }
@@ -3176,14 +3710,18 @@ function name_of_user_ret($input) {
     if ($u_count > 1) {
         foreach ($u as $val) {
             $stmt = $dbConnection->prepare('SELECT fio, uniq_id FROM users where id=:input');
-            $stmt->execute(array(':input' => $val));
+            $stmt->execute(array(
+                ':input' => $val
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             $res.= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>, ";
         }
         $res = substr($res, 0, -2);
     } else if ($u_count <= 1) {
         $stmt = $dbConnection->prepare('SELECT fio, uniq_id FROM users where id=:input');
-        $stmt->execute(array(':input' => $input));
+        $stmt->execute(array(
+            ':input' => $input
+        ));
         $fio = $stmt->fetch(PDO::FETCH_ASSOC);
         $res.= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>";
     }
@@ -3194,7 +3732,9 @@ function unit_of_user($input) {
     global $dbConnection;
     
     $stmt = $dbConnection->prepare('SELECT unit FROM users where id=:input');
-    $stmt->execute(array(':input' => $input));
+    $stmt->execute(array(
+        ':input' => $input
+    ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
     return ($fio['unit']);
@@ -3202,7 +3742,7 @@ function unit_of_user($input) {
 
 function cutstr_help_ret($input) {
     
-    $result = implode(array_slice(explode('<br>', wordwrap($input, 500, '<br>', false)), 0, 1));
+    $result = implode(array_slice(explode('<br>', wordwrap($input, 500, '<br>', false)) , 0, 1));
     $r = $result;
     if ($result != $input) $r.= '...';
     return $r;
@@ -3210,7 +3750,7 @@ function cutstr_help_ret($input) {
 
 function cutstr_help2_ret($input) {
     
-    $result = implode(array_slice(explode('<br>', wordwrap($input, 100, '<br>', false)), 0, 1));
+    $result = implode(array_slice(explode('<br>', wordwrap($input, 100, '<br>', false)) , 0, 1));
     $r = $result;
     if ($result != $input) $r.= '...';
     return $r;
@@ -3218,21 +3758,24 @@ function cutstr_help2_ret($input) {
 
 function cutstr_ret($input) {
     
-    $result = implode(array_slice(explode('<br>', wordwrap($input, 30, '<br>', true)), 0, 1));
+    $result = implode(array_slice(explode('<br>', wordwrap($input, 30, '<br>', true)) , 0, 1));
     return $result;
     if ($result != $input) return '...';
 }
 
 function cutstr($input) {
     
-    $result = implode(array_slice(explode('<br>', wordwrap($input, 51, '<br>', false)), 0, 1));
+    $result = implode(array_slice(explode('<br>', wordwrap($input, 51, '<br>', false)) , 0, 1));
     echo $result;
     if ($result != $input) echo '...';
 }
 function get_date_ok($d_create, $id) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('select date_op from ticket_log where ticket_id=:id and msg=:ok order by date_op DESC');
-    $stmt->execute(array(':id' => $id, ':ok' => 'ok'));
+    $stmt->execute(array(
+        ':id' => $id,
+        ':ok' => 'ok'
+    ));
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $tt = $total_ticket['date_op'];

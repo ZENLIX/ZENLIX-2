@@ -218,38 +218,59 @@ EOBODY;
         }
         
         if ($mode == "add_cron") {
-	        /*
-        $user_to_id 	= $_POST['s2id_users_do'];
-        $subj 			= $_POST['subj'];
-        $msg			= $_POST['msg'];
-        $client_id		= $_POST['client_id_param'];
-        $unit_id 		= $_POST['to'];
-        $period 		= $_POST['period'];
-        $action_time 	= $_POST['time_action'];
-        $dt_start 		= $_POST['action_start'];
-        $dt_stop 		= $_POST['action_stop'];
-        $prio			= $_POST['prio'];
-                        */
-                        
-                        $status_action=$_POST['status_action'];
-                        
-                        
-                        $check_error=true;
-                    $msg="Please fill fields: ";
-                    if (empty($_POST['subj'])) {$check_error=false; $msg.="subject "; }
-                    if (empty($_POST['msg'])) {$check_error=false; $msg.="msg ";}
-                    if (empty($_POST['client_id_param'])) {$check_error=false; $msg.="client ";}
-                    if (empty($_POST['to'])) {$check_error=false; $msg.="to user ";}
-                    if (empty($_POST['period'])) {$check_error=false; $msg.="period ";}
-                    if (empty($_POST['time_action'])) {$check_error=false; $msg.="actiontime ";}
-                    if (empty($_POST['action_start'])) {$check_error=false; $msg.="period ";}
+
+
+$validator = new GUMP();
+$_POST = $validator->sanitize($_POST);
+
+$rules = array(
+    'subj'                  => 'required',
+    'msg'                   => 'required',
+    'client_id_param'       => 'required|numeric',
+    'to'                    => 'required|numeric',
+    'period'                => 'required',
+    'time_action'           => 'required',
+    'action_start'          => 'required'
+);
+$filters = array(
+    'subj'      => 'trim|sanitize_string',
+    'msg'       => 'trim'
+);
+
+$validator->set_field_name(array(
+    "subj"=> lang('NEW_subj')
+    ));
+
+GUMP::set_field_name("subj", lang('NEW_subj'));
+GUMP::set_field_name("msg", lang('NEW_MSG'));
+GUMP::set_field_name("client_id_param", lang('NEW_from'));
+GUMP::set_field_name("to", lang('NEW_to'));
+GUMP::set_field_name("period", lang('cron_tab'));
+GUMP::set_field_name("time_action", lang('cron_ta'));
+GUMP::set_field_name("action_start", lang('cron_active'));
+
+$_POST = $validator->filter($_POST, $filters);
+
+$validated = $validator->validate($_POST, $rules);
+
+
+
+
+
+
+$status_action=$_POST['status_action'];
+
+                    
                                                 
                         if ($_POST['period'] == "day") {$p_arr=$_POST['day_field']; }
                         else if ($_POST['period'] == "week") {$p_arr=$_POST['week_select']; }
                         else if ($_POST['period'] == "month") {$p_arr=$_POST['month_select']; }
-                        
-                        if ($check_error == true) {
-        $stmt = $dbConnection->prepare('insert into scheduler_ticket
+
+
+
+if($validated === true) {
+    $check_error=true;
+    $stmt = $dbConnection->prepare('insert into scheduler_ticket
         (user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, period, period_arr, action_time, dt_start, dt_stop, prio) values (
         :user_init_id, 
         :user_to_id, 
@@ -267,29 +288,31 @@ EOBODY;
         
         $stmt->execute(array(
         ':user_init_id' => '1', 
-        ':user_to_id' 	=> $_POST['s2id_users_do'],
-        ':date_create' 	=> $CONF['now_dt'],
-        ':subj' 		=> $_POST['subj'],
-        ':msg' 			=> $_POST['msg'],
-        ':client_id' 	=> $_POST['client_id_param'],
-        ':unit_id' 		=> $_POST['to'],
-        ':period' 		=> $_POST['period'],
-        ':period_arr' 	=> $p_arr,
-        ':action_time' 	=> $_POST['time_action'],
-        ':dt_start' 	=> $_POST['action_start'],
-        ':dt_stop' 		=> $_POST['action_stop'],
-        ':prio'			=> $_POST['prio']
+        ':user_to_id'   => $_POST['s2id_users_do'],
+        ':date_create'  => $CONF['now_dt'],
+        ':subj'         => $_POST['subj'],
+        ':msg'          => $_POST['msg'],
+        ':client_id'    => $_POST['client_id_param'],
+        ':unit_id'      => $_POST['to'],
+        ':period'       => $_POST['period'],
+        ':period_arr'   => $p_arr,
+        ':action_time'  => $_POST['time_action'],
+        ':dt_start'     => $_POST['action_start'],
+        ':dt_stop'      => $_POST['action_stop'],
+        ':prio'         => $_POST['prio']
         ));
 }
-
-
-		$results[] = array('check_error' => $check_error, 'msg' => $msg);
+else {
+    //print_r($is_valid);
+    $check_error=false;
+    $msg.="<div class=\"callout callout-danger\"><p><ul>";
+    foreach ($validator->get_readable_errors(false) as $key => $value) { $msg.="<li>".$value."</li>"; }
+    $msg.="</ul></p></div>";
+    
+}
+        $results[] = array('check_error' => $check_error, 'msg' => $msg);
         print json_encode($results);
-	        ?>
-	        
-	        
-	        
-	        <?php
+
 	        
 	        
         }
@@ -2375,13 +2398,39 @@ values
         }
         
         if ($mode == "conf_edit_main") {
+
+
+    GUMP::set_field_name("ldap", lang('EXT_ldap_ip'));
+    GUMP::set_field_name("name_of_firm", lang('CONF_name'));
+    GUMP::set_field_name("node_port", 'NodeJS port');
+    GUMP::set_field_name("days2arch", lang('CONF_2arch'));
+    GUMP::set_field_name("file_size", lang('CONF_file_size'));
+    GUMP::set_field_name("mail", lang('CONF_mail'));
+    GUMP::set_field_name("title_header", lang('CONF_title_org'));
+
+
+            $is_valid = GUMP::is_valid($_POST, array(
+        'ldap'   => 'valid_ip',
+        'name_of_firm'=>'required|max_len,20',
+        'title_header'=>'required|max_len,20',
+        'node_port'=>'required|numeric',
+        'days2arch'=>'required|numeric',
+        'file_size'=>'required|numeric',
+        'mail'      => 'required|valid_email'
+            ));
+
+
+
+if($is_valid === true) {
+    $r=true;
+
             update_val_by_key("ldap_ip", $_POST['ldap']);
             update_val_by_key("ldap_domain", $_POST['ldapd']);
             update_val_by_key("name_of_firm", $_POST['name_of_firm']);
             update_val_by_key("title_header", $_POST['title_header']);
             update_val_by_key("hostname", $_POST['hostname']);
             update_val_by_key("days2arch", $_POST['days2arch']);
-            update_val_by_key("first_login", $_POST['first_login']);
+            //update_val_by_key("first_login", $_POST['first_login']);
             update_val_by_key("fix_subj", $_POST['fix_subj']);
             update_val_by_key("file_uploads", $_POST['file_uploads']);
             update_val_by_key("node_port", $_POST['node_port']);
@@ -2392,11 +2441,22 @@ values
             update_val_by_key("file_types", $bodytag);
             update_val_by_key("file_size", $_POST['file_size']);
             update_val_by_key("mail", $_POST['mail']);
-?>
-                <div class="alert alert-success">
-                    <?php echo lang('PROFILE_msg_ok'); ?>
-                </div>
-        <?php
+            $msg.="<div class=\"alert alert-success\">".lang('PROFILE_msg_ok')."</div>";
+} else {
+    //print_r($is_valid);
+    $r=false;
+    //$msg=$is_valid;
+
+    $msg.="<div class=\"callout callout-danger\"><p><ul>";
+    foreach ($is_valid as $key => $value) { $msg.="<li>".$value."</li>"; }
+    $msg.="</ul></p></div>";
+}
+        $results[] = array('res' => $r, 'msg' => $msg);
+        print json_encode($results);
+
+
+                
+      
         }
         
         //del_profile_img
@@ -2987,18 +3047,42 @@ values
             $mail = ($_POST['mail']);
             $skype = ($_POST['skype']);
             $uf = $_SESSION['helpdesk_user_id'];
+    GUMP::set_field_name("fio", lang('USERS_fio'));
+    GUMP::set_field_name("login", lang('USERS_login'));
+            $is_valid = GUMP::is_valid($_POST, array(
+    'fio'   => 'required|max_len,100|min_len,6',
+    'login' => 'required|max_len,50|min_len,4|alpha_numeric'
+            ));
+
+
+
+if($is_valid === true) {
+    $r=true;
+    $stmt = $dbConnection->prepare('insert into approved_info
+(fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, date_app)
+VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from,  :n)');
             
+            $stmt->execute(array(':fio' => $fio, ':tel' => $tel, ':login' => $login, ':unit_desc' => $pid, ':adr' => $adr, ':email' => $mail, ':posada' => $posada, ':skype' => $skype, ':type_op' => 'add', ':user_from' => $uf, ':n' => $CONF['now_dt']));
+} else {
+    //print_r($is_valid);
+    $r=false;
+    //$msg=$is_valid;
+
+    $msg.="<div class=\"callout callout-danger\"><p><ul>";
+    foreach ($is_valid as $key => $value) { $msg.="<li>".$value."</li>"; }
+    $msg.="</ul></p></div>";
+}
+        $results[] = array('res' => $r, 'msg' => $msg);
+        print json_encode($results);
+
+
+            /*
             $stmt = $dbConnection->prepare('insert into approved_info
 (fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, date_app)
 VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from,  :n)');
             
             $stmt->execute(array(':fio' => $fio, ':tel' => $tel, ':login' => $login, ':unit_desc' => $pid, ':adr' => $adr, ':email' => $mail, ':posada' => $posada, ':skype' => $skype, ':type_op' => 'add', ':user_from' => $uf, ':n' => $CONF['now_dt']));
-?>
-            <div class="alert alert-success">
-                <?php echo lang('PROFILE_msg_send'); ?>
-            </div>
-        
-        <?php
+*/
         }
         
         if ($mode == "edit_user_approve") {
@@ -3014,17 +3098,37 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             $uf = $_SESSION['helpdesk_user_id'];
             $cid = get_user_val_by_hash($_POST['cid'], 'id');
             
+
+    GUMP::set_field_name("fio", lang('USERS_fio'));
+    GUMP::set_field_name("login", lang('USERS_login'));
+
+$is_valid = GUMP::is_valid($_POST, array(
+    'fio'   => 'required|max_len,100|min_len,6',
+    'login' => 'required|max_len,50|min_len,4|alpha_numeric'
+            ));
+
+
+
+if($is_valid === true) {
+    $r=true;
+
             $stmt = $dbConnection->prepare('insert into approved_info
 (fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, client_id, date_app)
 VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from, :cid,  :n)');
             
             $stmt->execute(array(':fio' => $fio, ':tel' => $tel, ':login' => $login, ':unit_desc' => $pid, ':adr' => $adr, ':email' => $mail, ':posada' => $posada, ':skype' => $skype, ':type_op' => 'edit', ':user_from' => $uf, ':cid' => $cid, ':n' => $CONF['now_dt']));
-?>
-            <div class="alert alert-success">
-                <?php echo lang('PROFILE_msg_send'); ?>
-            </div>
-        
-        <?php
+} else {
+    //print_r($is_valid);
+    $r=false;
+    //$msg=$is_valid;
+
+    $msg.="<div class=\"callout callout-danger\"><p><ul>";
+    foreach ($is_valid as $key => $value) { $msg.="<li>".$value."</li>"; }
+    $msg.="</ul></p></div>";
+}
+        $results[] = array('res' => $r, 'msg' => $msg);
+        print json_encode($results);
+
         }
         
         if ($mode == "arch_now") {
@@ -3901,6 +4005,11 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $client_posada = strip_tags(xss_clean(($_POST['posada'])));
             
             $client_id_param = ($_POST['client_id_param']);
+
+            
+
+
+
             
             if ($client_fio == "пусто") {
                 $client_fio = "";
@@ -3992,7 +4101,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 $stmt->execute(array(':max_id_res_ticket' => $max_id_res_ticket, ':user_init_id' => $user_init_id, ':user_to_id' => $user_to_id, ':subj' => $subj, ':msg' => $msg, ':max_id' => $max_id, ':unit_id' => $unit_id, ':status' => $status, ':hashname' => $hashname, ':prio' => $prio, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
-                
+                $unow = $_SESSION['helpdesk_user_id'];
                 $stmt->execute(array(':create' => 'create', ':unow' => $unow, ':max_id_res_ticket' => $max_id_res_ticket, ':user_to_id' => $user_to_id, ':unit_id' => $unit_id, ':n' => $CONF['now_dt']));
                 
                 //if ($CONF_MAIL['active'] == "true") {
@@ -4001,6 +4110,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 //              }
                 
                 echo ($hashname);
+
             }
             if ($type == "edit") {
                 
