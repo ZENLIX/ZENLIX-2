@@ -31,10 +31,10 @@ function lang_ru($phrase){
 'cron_info'=>'В данном разделе Вы можете создать задачу, которая будет выполняться по выбранному расписанию.',     
 'cron_title_list'=>'Список задач',     
     
+ 'CONF_node_info'=>'Для работы NodeJS сервера, у Вас должны быть установлены <em>nodejs, socket.io, mysql и forever</em>. А так же запустите команду:',
     
     
-    
-    
+'CONF_messages_type'=>'Тип сообщения',
     
     
     
@@ -172,7 +172,7 @@ function lang_ru($phrase){
 'ALLSTATS_main'=>'Общая статистика',    
 'ALLSTATS_help'=>'В данном разделе содержится статистика всех отделов и их пользователей, на которые Вы имеете права доступа.',
 'ALLSTATS_unit'=>'Информация о заявках Ваших отделов',
-'ALLSTATS_unit_free'=>'Свободных заявок',
+'ALLSTATS_unit_free'=>'Получено заявок',
 'ALLSTATS_unit_lock'=>'Занятых заявок',
 'ALLSTATS_unit_ok'=>'Выполненных заявок',
 'ALLSTATS_user'=>'Текущая информация о заявках пользователей Ваших отделов',
@@ -182,6 +182,8 @@ function lang_ru($phrase){
 'ALLSTATS_user_ok'=>'Выполненных',
 'ALLSTATS_user_out_all'=>'Созданых (всего)',
 'ALLSTATS_user_out_all_not'=>'Созданых (не выполненых)',
+
+'ALLSTATS_unit_out'=>'Создано заявок',
     
 'NAVBAR_files'=>'Файлы заявок',   
 'T_from'=>'с',

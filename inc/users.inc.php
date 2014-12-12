@@ -303,7 +303,32 @@ if (isset($_POST['menu'])) {
         </div>
   </div>
   
-    
+    <div class="form-group">
+  <label for="mess" class="col-sm-2 control-label"><?=lang('CONF_messages_type');?></label>
+  <div class="col-sm-10">
+    <div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" >
+    <strong class="text-info">Info</strong>
+  </label>
+</div>
+<div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_0" value="1" >
+    <strong class="text-warning">Warning</strong>
+  </label>
+</div>
+
+<div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_2" value="2" >
+    <strong class="text-danger">Danger</strong>
+  </label>
+  
+</div>
+
+  </div>
+  </div>
   
     
 
@@ -444,7 +469,7 @@ if (isset($_POST['menu'])) {
         $row = mysql_fetch_assoc($sql);
         */
         
-        $stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, unit,email,messages,lang,priv_add_client,priv_edit_client,ldap_key,pb,tel,skype,adr, unit_desc, posada, is_client,messages_title from users where uniq_id=:usid');
+        $stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, unit,email,messages,lang,priv_add_client,priv_edit_client,ldap_key,pb,tel,skype,adr, unit_desc, posada, is_client,messages_title, messages_type from users where uniq_id=:usid');
         $stmt->execute(array(':usid' => $usid));
         $res1 = $stmt->fetchAll();
         
@@ -467,6 +492,7 @@ if (isset($_POST['menu'])) {
             $skype = $row['skype'];
             $adr = $row['adr'];
             $msg_t = $row['messages_title'];
+            $msg_type = $row['messages_type'];
             
             $unitss = $row['unit_desc'];
             $posada = $row['posada'];
@@ -519,6 +545,12 @@ if (isset($_POST['menu'])) {
                     $status_superadmin = "checked";
                 }
             }
+
+            if ($msg_type == "0") { $msg_type_0="checked";}
+            else if ($msg_type == "1") {$msg_type_1="checked";}
+            else if ($msg_type == "2") {$msg_type_2="checked";}
+
+
         }
         if (isset($_GET['ok'])) {
 ?>
@@ -838,11 +870,45 @@ if (isset($_POST['menu'])) {
       <div class="form-group">
     <label for="mess" class="col-sm-2 control-label"><?php echo lang('MAIL_msg'); ?></label>
         <div class="col-sm-10">
-        <textarea placeholder="<?php echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"><?php echo $messages; ?></textarea>
+        <textarea placeholder="<?php echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"><?php echo $messages; ?>
+        </textarea>
         
 
         </div>
   </div>
+
+
+
+  <div class="form-group">
+  <label for="mess" class="col-sm-2 control-label"><?=lang('CONF_messages_type');?></label>
+  <div class="col-sm-10">
+    <div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" <?php echo $msg_type_0; ?>>
+    <strong class="text-info">Info</strong>
+  </label>
+</div>
+<div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_0" value="1" <?php echo $msg_type_1; ?>>
+    <strong class="text-warning">Warning</strong>
+  </label>
+</div>
+
+<div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_2" value="2" <?php echo $msg_type_2; ?>>
+    <strong class="text-danger">Danger</strong>
+  </label>
+  
+</div>
+
+  </div>
+  </div>
+
+
+
+
   
     
   <div class="form-group">

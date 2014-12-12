@@ -165,7 +165,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                     
                                 <?php echo make_html($row['subj']) ?>
                                 </h3>
-                                <small class="box-tools pull-right">
+                                <small class="box-tools pull-right text-muted">
                                 
                                 <i class="fa fa-clock-o"></i>
                                 <time id="c" datetime="<?php echo $row['date_create']; ?>"></time></small>

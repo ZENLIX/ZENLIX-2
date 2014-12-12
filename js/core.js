@@ -455,13 +455,13 @@ $(document).ready(function() {
             data: "mode=view_comment" + "&tid=" + ticket_id,
             success: function(html) {
                 $("#comment_content").html(html);
-                $("input#msg").val('')
+                //$("input#msg").val('');
                 makemytime(true);
                 //comment_body
                 var scroll = $('#comment_body');
                 var height = scroll[0].scrollHeight;
                 scroll.scrollTop(height);
-                console.log(height);
+                //console.log(height);
             }
         });
     };
@@ -1234,6 +1234,30 @@ php:
 	    
 	     };
     
+
+    if (ispath('main_stats')) {
+        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+
+            var p = $('#user_list').val();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=get_total_period_stat"+
+                "&start=" + picker.startDate.format('YYYY-MM-DD') + "&end=" + picker.endDate.format('YYYY-MM-DD'),
+                success: function(html) {
+                    $('#ts_res').html(html);
+                    $(".knob").knob();
+                    makemytime();
+                }
+            });
+        });
+        $('#reservation').daterangepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+    }
+
+
     if (ispath('user_stats')) {
         $("#user_list").select2({
             formatResult: format,
@@ -2486,6 +2510,19 @@ php:
         },5000);*/
     }
     if (ispath('helper')) {
+
+
+                if ($('#summernote_help').length != 0) {
+                $('#summernote_help').summernote({
+                        height: 300,
+                        focus: true,
+                        lang: get_lang_param('summernote_lang'),
+                        onImageUpload: function(files, editor, welEditable) {
+                            sendFile(files[0], editor, welEditable);
+                        }
+                    });
+}
+
         $('body').on('click', 'button#del_helper', function(event) {
             event.preventDefault();
             var hn = $(this).val();
@@ -2502,7 +2539,7 @@ php:
                                 url: ACTIONPATH,
                                 data: "mode=list_help",
                                 success: function(html) {
-                                    $("#help_content").html(html);
+                                    window.location = MyHOSTNAME + "helper";
                                 }
                             });
                         }
@@ -2641,6 +2678,7 @@ php:
                 });
             }
         });
+/*
         $('body').on('click', 'button#edit_helper', function(event) {
             event.preventDefault();
             var hn = $(this).val();
@@ -2669,6 +2707,7 @@ php:
                 }
             });
         });
+*/
         //if (def_filename == "helper.php") {
         /*   setInterval(function(){
             check_update();
@@ -2679,6 +2718,8 @@ php:
             data: "mode=list_help",
             success: function(html) {
                 $("#help_content").html(html);
+
+
             }
         });
     };
@@ -3690,7 +3731,8 @@ php:
                 $.ajax({
                     type: "POST",
                     url: ACTIONPATH,
-                    data: "mode=add_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()),
+                    data: "mode=add_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val())+
+                    "&msg_type="+encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()),
                     success: function(html) {
                         window.location = MyHOSTNAME + "users?create&ok";
                     }
@@ -3707,7 +3749,8 @@ php:
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=edit_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user2").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&status=" + encodeURIComponent($("#lock").val()) + "&idu=" + encodeURIComponent(usid),
+                data: "mode=edit_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user2").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&status=" + encodeURIComponent($("#lock").val()) + "&idu=" + encodeURIComponent(usid)+
+                    "&msg_type="+encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()),
                 success: function(html) {
                     //alert(html);
                     window.location = MyHOSTNAME + "users?edit=" + usid + "&ok";

@@ -2885,30 +2885,103 @@ function push_msg_action2user($deliver, $type_op) {
     ));
 }
 
-function get_unit_stat_free($in) {
+function get_unit_stat_create($in, $start, $stop) {
     global $dbConnection;
+
+//узнать всех пользователей отдела
+    //для каждого пользователя подсчитать к-во созданных заявок за период
+    //прибавить find_in_set(:id,unit)
+
+
+
+if (isset($start, $stop)) {
+    $stmt = $dbConnection->prepare('SELECT id from users where find_in_set(:uid,unit)');
+    $stmt->execute(array(':uid' => $in));
+    $res1 = $stmt->fetchAll();
+    $cres=0;
+    foreach ($res1 as $row) {
+        $res = $dbConnection->prepare('SELECT count(*) from ticket_log where init_user_id=:uid and msg=:msg and date_op between :start AND :end');
+        $res->execute(array(
+        ':uid' => $row['id'], ':start' => $start, ':end' => $stop, ':msg'=>'create'
+    ));
+            $count = $res->fetch(PDO::FETCH_NUM);
+            $cres=$cres+$count[0];
+     }
+}
+    else {
+
+   $stmt = $dbConnection->prepare('SELECT id from users where find_in_set(:uid,unit)');
+    $stmt->execute(array(':uid' => $in));
+    $res1 = $stmt->fetchAll();
+    $cres=0;
+    foreach ($res1 as $row) {
+        $res = $dbConnection->prepare('SELECT count(*) from ticket_log where init_user_id=:uid and msg=:msg');
+        $res->execute(array(
+        ':uid' => $row['id'], ':msg'=>'create'
+    ));
+            $count = $res->fetch(PDO::FETCH_NUM);
+            $cres=$cres+$count[0];
+     }
+}
+
+    return $cres;
+}
+
+
+function get_unit_stat_free($in, $start, $stop) {
+    global $dbConnection;
+
+if (isset($start, $stop)) {
+    $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=0 and lock_by=0 and last_update between :start AND :end');
+    $res->execute(array(
+        ':uid' => $in, ':start' => $start, ':end' => $stop
+    ));
+}
+    else {
+
     $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=0 and lock_by=0');
     $res->execute(array(
         ':uid' => $in
     ));
+}
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
 }
-function get_unit_stat_lock($in) {
+function get_unit_stat_lock($in, $start, $stop) {
     global $dbConnection;
+
+if (isset($start, $stop)) {
+    $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=0 and lock_by!=0 and last_update between :start AND :end');
+    $res->execute(array(
+        ':uid' => $in, ':start' => $start, ':end' => $stop
+    ));
+
+ }
+else {
+
     $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=0 and lock_by!=0');
     $res->execute(array(
         ':uid' => $in
     ));
+}
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
 }
-function get_unit_stat_ok($in) {
+function get_unit_stat_ok($in, $start, $stop) {
     global $dbConnection;
+
+if (isset($start, $stop)) {
+        $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=1 and ok_date between :start AND :end');
+    $res->execute(array(
+        ':uid' => $in, ':start' => $start, ':end' => $stop
+    ));
+}
+else {
     $res = $dbConnection->prepare('SELECT count(*) from tickets where unit_id=:uid AND status=1');
     $res->execute(array(
         ':uid' => $in
     ));
+}
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
 }

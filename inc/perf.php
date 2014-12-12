@@ -72,6 +72,20 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             </div>
 
 
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title">NODEJS</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+ <p class="help-block"><small><?php echo lang('CONF_node_info'); ?> <br>
+<pre>forever start <?php echo realpath(dirname(dirname(__FILE__))) . "/nodejs/server.js" ?></pre></small></p>
+
+
+
+
+                                </div><!-- /.box-body -->
+                            </div>
+
 
                                     
                                     

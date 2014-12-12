@@ -17,3 +17,5 @@ CREATE TABLE IF NOT EXISTS `scheduler_ticket` (
   `prio` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+ALTER TABLE `users` ADD messages_type int(11) DEFAULT '0';

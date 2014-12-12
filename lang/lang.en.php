@@ -30,8 +30,8 @@ function lang_en($phrase){
 'cron_info' => 'In this section, you can create a task that will be performed on the selected schedule.',
 'cron_title_list' => 'Problems',
 
-
-
+'CONF_messages_type'=>'Message type',
+'CONF_node_info'=>'For working NodeJS server, you will install <em>nodejs, socket.io, mysql и forever</em>. And start command:',
 
 
     
@@ -163,7 +163,7 @@ function lang_en($phrase){
 'ALLSTATS_main'=>'General statistics',    
 'ALLSTATS_help'=>'This section contains the statistics of all departments and users that you have permissions.',
 'ALLSTATS_unit'=>'Information about tickets of your departments',
-'ALLSTATS_unit_free'=>'Free tickets',
+'ALLSTATS_unit_free'=>'Received tickets',
 'ALLSTATS_unit_lock'=>'Occupied tickets',
 'ALLSTATS_unit_ok'=>'Completed tickets',
 'ALLSTATS_user'=>'Current information about tickets of your departments’ users',
@@ -173,7 +173,7 @@ function lang_en($phrase){
 'ALLSTATS_user_ok'=>'Performed',
 'ALLSTATS_user_out_all'=>'Creating (total)',
 'ALLSTATS_user_out_all_not'=>'Creating (not performed)',
-    
+    'ALLSTATS_unit_out'=>'Created tickets',
 'NAVBAR_files'=>'Files of tickets',   
 'T_from'=>'from',
 'FILES_title'=>'Files of tickets',

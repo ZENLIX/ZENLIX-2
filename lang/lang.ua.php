@@ -30,7 +30,8 @@ function lang_ua($phrase){
 'cron_add' => 'Додати в планувальник',
 'cron_info' => 'У даному розділі Ви можете створити задачу, яка буде виконуватися за обраним розкладом.',
 'cron_title_list' => 'Список завдань',    
-    
+'CONF_messages_type'=>'Тип повідомлення',
+'CONF_node_info'=>'Для роботи NodeJS серверу, у Вас повинні бути виставлені <em>nodejs, socket.io, mysql и forever</em>. А також запустіть команду:',
     
 'mail_msg_ticket_refer'=>'ЗАЯВКА ПЕРЕАДРЕСОВАНА',
 'mail_msg_ticket_refer_ext'=>'Ви отримали це повідомлення, тому що заявка була переадресована користувачем',
@@ -150,7 +151,7 @@ function lang_ua($phrase){
 'ALLSTATS_main'=>'Загагальна статистика',    
 'ALLSTATS_help'=>'В даному розділі знаходиться статистика всіх відділів та їх користувачів, на які ви маєте права доступу.',
 'ALLSTATS_unit'=>'Інформація щодо заявок вашого розділу',
-'ALLSTATS_unit_free'=>'Вільних заявок',
+'ALLSTATS_unit_free'=>'Отримано заявок',
 'ALLSTATS_unit_lock'=>'Зайнятих заявок',
 'ALLSTATS_unit_ok'=>'Виконаних заявок',
 'ALLSTATS_user'=>'Інформація щодо заявок користувачів вашого розділу',
@@ -160,7 +161,7 @@ function lang_ua($phrase){
 'ALLSTATS_user_ok'=>'Виконаних',
 'ALLSTATS_user_out_all'=>'Створено (всього)',
 'ALLSTATS_user_out_all_not'=>'Створено (не виконаних)',
-    
+    'ALLSTATS_unit_out'=>'Створено заявок',
 'NAVBAR_files'=>'Файли заявок',   
 'T_from'=>'з',
 'FILES_title'=>'Файли заявок',

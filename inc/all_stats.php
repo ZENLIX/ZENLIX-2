@@ -30,15 +30,47 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 <div class="col-md-3">
+
+    <div class="row">
+
+<div class="col-md-12">
+        <div class="box box-info">
+            <div class="box-header">
+            <h3 class="box-title">
+                Выбор за период
+            </h3></div>
+                                <div class="box-body">
+                                    
+                                    
+                                    <form>
+                                       
+  <div class="form-group">
+
+    <div class="input-group ">
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm"  />
+    </div>
+  </div>
+</form>
+                                    
+                                    
+                                    
+                                                                    </div><!-- /.box-body -->
+                            </div>
+</div>
+
+
+<div class="col-md-12">
+
     <div class="callout callout-info">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('ALLSTATS_help'); ?>
          </small>
                                     </div>
+                                </div></div>
 </div>
 
-<div class="col-md-9">
+<div class="col-md-9" id="ts_res">
     <div class="box box-solid">
             <div class="box-body">
             <h4><center><?php echo lang('ALLSTATS_unit'); ?></center></h4>
@@ -46,6 +78,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 <tbody>
                                 <tr>
                     <td style="width: 300px;"></td>
+                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_out'); ?>   </center></small></strong></td>
                     <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_free'); ?>   </center></small></strong></td>
                     <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_lock'); ?>       </center></small></strong></td>
                     <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_ok'); ?> </center></small></strong></td>
@@ -60,7 +93,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
                 <tr>
+
                     <td style=""><small><?php echo get_unit_name_return4news($value); ?>    </small></td>
+                    <td style=""><small><center><?php echo get_unit_stat_create($value); ?>   </center></small></td>
                     <td style=""><small><center><?php echo get_unit_stat_free($value); ?>   </center></small></td>
                     <td style=""><small><center><?php echo get_unit_stat_lock($value); ?>   </center></small></td>
                     <td style=""><small><center><?php echo get_unit_stat_ok($value); ?>     </center></small></td>

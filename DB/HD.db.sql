@@ -421,6 +421,7 @@ CREATE TABLE `users` (
   `skype` varchar(512) DEFAULT NULL,
   `unit_desc` varchar(1024) DEFAULT NULL,
   `adr` varchar(1024) DEFAULT NULL,
+  `messages_type` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 

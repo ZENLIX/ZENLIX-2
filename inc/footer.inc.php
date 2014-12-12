@@ -129,7 +129,7 @@ if (get_current_URL_name('view_user')) { ?>
 } ?>
 
 <?php
-if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') ) { ?>
+if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') ) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/daterangepicker.js?v5"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/s2/select2.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jqueryKnob/jquery.knob.js"></script>

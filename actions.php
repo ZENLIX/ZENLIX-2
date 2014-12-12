@@ -412,6 +412,144 @@ values (:comment, :n, :user_comment, :tid_comment)');
             <?php
             }
         }
+
+                if ($mode == "get_total_period_stat") {
+                $start = $_POST['start'] . " 00:00:00";
+                $end = $_POST['end'] . " 23:59:00";
+?>
+    <div class="box box-solid">
+        <div class="box-header">
+<h4 class="box-title"><?php echo lang('ALLSTATS_main'); ?> <time id="c" datetime="<?php echo $start ?>"></time> - <time id="c" datetime="<?php echo $end ?>"></time></h4>
+</div>
+            <div class="box-body">
+            <h4><center><?php echo lang('ALLSTATS_unit'); ?></center></h4>
+            <table class="table table-bordered">
+<tbody>
+                                <tr>
+                    <td style="width: 300px;"></td>
+                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_out'); ?>   </center></small></strong></td>
+                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_free'); ?>   </center></small></strong></td>
+                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_lock'); ?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_ok'); ?> </center></small></strong></td>
+                    
+                </tr>
+<?php
+            $unit_user = unit_of_user($_SESSION['helpdesk_user_id']);
+            $ee = explode(",", $unit_user);
+            foreach ($ee as $key => $value) {
+?>
+
+
+
+                <tr>
+                    <td style=""><small><?php echo get_unit_name_return4news($value); ?>    </small></td>
+                    <td style=""><small><center><?php echo get_unit_stat_create($value, $start, $end); ?>   </center></small></td>
+                    <td style=""><small><center><?php echo get_unit_stat_free($value, $start, $end); ?>   </center></small></td>
+                    <td style=""><small><center><?php echo get_unit_stat_lock($value, $start, $end); ?>   </center></small></td>
+                    <td style=""><small><center><?php echo get_unit_stat_ok($value, $start, $end); ?>     </center></small></td>
+                </tr>
+
+                
+                
+    <?php
+            } ?>
+</tbody>
+</table>
+
+<h4><center><?php echo lang('ALLSTATS_user'); ?></center></h4>
+<table class="table table-bordered table-hover">
+                <tbody>
+                <tr>
+                    <td style="width: 200px;">  <strong><small><center><?php echo lang('ALLSTATS_user_fio'); ?>                 </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php echo lang('t_LIST_status'); ?>         </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php echo lang('EXT_t_created'); ?>            </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php echo lang('EXT_stats_refer'); ?>            </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php echo lang('EXT_t_oked'); ?>          </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php echo lang('EXT_stats_lock'); ?>     </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php echo lang('EXT_stats_unlock'); ?> </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php echo lang('EXT_stats_no_ok'); ?> </center></small></strong></td>
+                </tr>
+<?php
+            
+            //$ee - массив id отделов, на которые у меня есть права
+            //$ec - массив id отделов пользователей
+            //если какой-то отдел совпадает вывести
+            $stmt = $dbConnection->prepare('SELECT id, unit from users where is_client=0');
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            if (!empty($result)) {
+                
+                foreach ($result as $row) {
+                    $ec = explode(",", $row['unit']);
+
+
+                $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id=:uid and date_create between :start AND :end');
+                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $get_total_tickets_create = $count[0];
+                
+                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'refer'));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $get_total_tickets_refer = $count[0];
+                
+                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'ok'));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $get_total_tickets_ok = $count[0];
+                
+                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'lock'));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $get_total_tickets_lock = $count[0];
+                
+                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'unlock'));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $get_total_tickets_unlock = $count[0];
+                
+                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'no_ok'));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $get_total_tickets_no_ok = $count[0];
+
+
+                    
+                    $result = array_intersect($ee, $ec);
+                    if ($result) {
+
+?>
+
+<tr>
+                    <td style="width: 200px;"><small><?php echo name_of_user_ret($row['id']); ?></small></td>
+                    <td style=""><small class="text-danger"><center><?php echo get_user_status($row['id']); ?></center></small></td>
+
+                    <td style=""><small class="text-danger"><center><?=$get_total_tickets_create; ?></center></small></td>
+                    <td style=""><small class="text-warning"><center><?=$get_total_tickets_refer; ?></center></small></td>
+                    <td style=""><small class="text-success"><center><?=$get_total_tickets_ok; ?></center></small></td>
+                    <td style=""><small class=""><center><?=$get_total_tickets_lock; ?></center></small></td>
+                    <td style=""><small class=""><center><?=$get_total_tickets_unlock; ?></center></small></td>
+                    <td style=""><small class=""><center><?=$get_total_tickets_no_ok; ?></center></small></td>
+</tr>
+
+
+
+
+
+
+<?php
+                    }
+                }
+            }
+?>
+
+                </tbody>
+</table>
+
+            </div>
+    </div>
+<?php
+                }
         
         if ($mode == "get_user_stat") {
             
@@ -995,7 +1133,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
             
             print json_encode($results);
         }
-        
+        /*
         if ($mode == "edit_helper") {
             $hn = ($_POST['hn']);
             
@@ -1012,6 +1150,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
             }
             
             $u = $fio['unit_to_id'];
+            $u = explode(",", $u);
 ?>
             <div class="box box-solid">
             <div class="box-body">
@@ -1023,10 +1162,13 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 <div class="form-group">
                     <label for="u" class="col-md-2 control-label"><small><?php echo lang('NEW_to'); ?>: </small></label>
                     <div class="col-md-10">
+                        
                         <select data-placeholder="<?php echo lang('NEW_to_unit'); ?>" class="chosen-select form-control" id="u" name="unit_id" multiple>
-                        <option value="0"><?php echo lang('HELP_all'); ?></option>
+                            <?php $ar_n=""; if (in_array('0', $u)) { $ar_n="selected"; } 
+                             ?>
+                        <option value="0" <?=$ar_n;?>><?php echo lang('HELP_all'); ?></option>
                             <?php
-            $u = explode(",", $u);
+            
             $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps');
             $stmt->execute();
             $result = $stmt->fetchAll();
@@ -1125,7 +1267,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
             </div></div>
         <?php
         }
-        
+        */
         if ($mode == "create_helper") {
 ?>
             <div class="box box-solid">
@@ -1345,7 +1487,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                         if ($priv_h == "yes") {
                             echo " 
             <div class=\"btn-group\">
-            <button id=\"edit_helper\" value=\"" . $row['hashname'] . "\" type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></button>
+            <a href=\"" . $CONF['hostname']."/helper?h=".$row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -1402,9 +1544,12 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                 <div class="box-header">
                                     <h5 class="box-title"><small><i class="fa fa-file-text-o"></i> </small><a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body" id="help_content">
+                                    <div id="summernote_help">
                                     <small><?php echo cutstr_help_ret(strip_tags($row['message'])); ?>
-                            </small>                                </div><!-- /.box-body -->
+                            </small>                               
+                                    </div>
+                             </div><!-- /.box-body -->
                             </div>
                         <?php
                     }
@@ -1415,7 +1560,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 
                 <?php
             } else if ($is_client == "0") {
-                
+                 
                 $user_id = id_of_user($_SESSION['helpdesk_user_login']);
                 $unit_user = unit_of_user($user_id);
                 $priv_val = priv_status($user_id);
@@ -1481,7 +1626,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                             if ($priv_h == "yes") {
                                 echo " 
             <div class=\"btn-group\">
-            <button id=\"edit_helper\" value=\"" . $row['hashname'] . "\" type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></button>
+<a href=\"" . $CONF['hostname']."/helper?h=".$row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -3350,6 +3495,7 @@ values (:unlock, :n, :unow, :tid)');
             $lang = ($_POST['lang']);
             $pidrozdil = $_POST['pidrozdil'];
             $posada = $_POST['posada'];
+            $msg_type=$_POST['msg_type'];
             
             $unit = ($_POST['unit']);
             
@@ -3403,10 +3549,11 @@ values (:unlock, :n, :unow, :tid)');
                 skype=:skype,
                 unit_desc=:unit_desc,
                 adr=:adr,
-                is_client=:is_client
+                is_client=:is_client,
+                messages_type=:msg_type
                 where uniq_id=:usid
                 ');
-                $stmt->execute(array(':fio' => $fio, ':login' => $login, ':status' => $status, ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':usid' => $usid, ':lk' => $ldap_key, ':pass' => $pass, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $usid, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client));
+                $stmt->execute(array(':fio' => $fio, ':login' => $login, ':status' => $status, ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':usid' => $usid, ':lk' => $ldap_key, ':pass' => $pass, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $usid, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client, ':msg_type'=>$msg_type));
             } else {
                 $stmt = $dbConnection->prepare('update users set
                 fio=:fio, 
@@ -3428,10 +3575,11 @@ values (:unlock, :n, :unow, :tid)');
                 skype=:skype,
                 unit_desc=:unit_desc,
                 adr=:adr,
-                is_client=:is_client
+                is_client=:is_client,
+                messages_type=:msg_type
                 where uniq_id=:usid
                 ');
-                $stmt->execute(array(':fio' => $fio, ':login' => $login, ':status' => $status, ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':usid' => $usid, ':lk' => $ldap_key, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $usid, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client));
+                $stmt->execute(array(':fio' => $fio, ':login' => $login, ':status' => $status, ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':usid' => $usid, ':lk' => $ldap_key, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $usid, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client, ':msg_type'=>$msg_type));
             }
             
             /*
@@ -3509,6 +3657,7 @@ values (:unlock, :n, :unow, :tid)');
             $lang = ($_POST['lang']);
             $pidrozdil = $_POST['pidrozdil'];
             $posada = $_POST['posada'];
+            $msg_type=$_POST['msg_type'];
             
             //$hidden=array();
             //$hidden = ($_POST['unit']);
@@ -3564,7 +3713,8 @@ values (:unlock, :n, :unow, :tid)');
             skype,
             unit_desc,
             adr,
-            is_client
+            is_client,
+            messages_type
             )
 values 
             (:fio, 
@@ -3587,9 +3737,10 @@ values
             :skype,
             :unit_desc,
             :adr,
-            :is_client
+            :is_client,
+            :msg_type
             )');
-            $stmt->execute(array(':fio' => $fio, ':login' => $login, ':pass' => $pass, ':one' => '1', ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':lk' => $ldap_key, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $hn, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client));
+            $stmt->execute(array(':fio' => $fio, ':login' => $login, ':pass' => $pass, ':one' => '1', ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':lk' => $ldap_key, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $hn, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client, ':msg_type'=>$msg_type));
         }
         if ($mode == "save_edit_ticket") {
             

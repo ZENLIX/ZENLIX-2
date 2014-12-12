@@ -249,7 +249,7 @@ if (isset($_GET['mode'])) {
     <div class="form-group">
     <label for="host" class="col-sm-4 control-label"><small>Host MySQL-server</small></label>
     <div class="col-sm-8">
-<input type="text" class="form-control input-sm" id="host" name="host" placeholder="localhost" value="">
+<input type="text" class="form-control input-sm" id="host" name="host" placeholder="ex. localhost" value="">
 
    </div>
   </div>
@@ -257,7 +257,7 @@ if (isset($_GET['mode'])) {
     <div class="form-group">
     <label for="username" class="col-sm-4 control-label"><small>Login</small></label>
     <div class="col-sm-8">
-<input type="text" class="form-control input-sm" id="username" name="username" placeholder="zenlix_user" value="">
+<input type="text" class="form-control input-sm" id="username" name="username" placeholder="ex. zenlix_user" value="">
 
    </div>
   </div>
@@ -267,7 +267,7 @@ if (isset($_GET['mode'])) {
       <div class="form-group">
     <label for="password" class="col-sm-4 control-label"><small>Password</small></label>
     <div class="col-sm-8">
-<input type="password" class="form-control input-sm" id="password" name="password" placeholder="pass" value="">
+<input type="password" class="form-control input-sm" id="password" name="password" placeholder="ex. pass" value="">
 
    </div>
   </div>
@@ -276,7 +276,7 @@ if (isset($_GET['mode'])) {
         <div class="form-group">
     <label for="db" class="col-sm-4 control-label"><small>DB name</small></label>
     <div class="col-sm-8">
-<input type="text" class="form-control input-sm" id="db" name="db" placeholder="zenlix_db" value="">
+<input type="text" class="form-control input-sm" id="db" name="db" placeholder="ex. zenlix_db" value="">
 
    </div>
   </div>

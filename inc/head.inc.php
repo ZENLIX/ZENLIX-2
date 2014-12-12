@@ -59,7 +59,7 @@ if (get_current_URL_name('create')) { ?>
 } ?>
 
 <?php
-if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler')) { ?>
+if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats')) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/daterangepicker-bs3.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/bootstrap-timepicker.min.css">
 <?php

@@ -118,8 +118,12 @@ get_helper(); ?>
     <div class="box">
     <div class="box-header"><h3 class="box-title"><i class="fa fa-exclamation-circle"></i> <?php echo lang('DASHBOARD_messages'); ?></h3></div>
     <div class="box-body">
-    
-     <div class="callout callout-info">
+    <?php
+    if (get_user_val('messages_type') == "0") {$style_msg="info";}
+    else if (get_user_val('messages_type') == "1") {$style_msg="warning";}
+    else if (get_user_val('messages_type') == "2") {$style_msg="danger";}
+    ?>
+     <div class="callout callout-<?=$style_msg;?>">
                                         <h4><?php echo get_user_val('messages_title'); ?></h4>
                                         <p><?php echo get_user_val('messages'); ?></p>
                                     </div>
