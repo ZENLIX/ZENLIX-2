@@ -14,7 +14,7 @@ include_once ("head.inc.php");
 
         <div class="form-box" id="login-box">
             <div class="header bg-light-blue" style="">
-            <center><img src="<?php echo $CONF['hostname'] ?>img/helpdesk-logo.png" width="128"></center>
+            <center><img src="<?=get_logo_img(); ?>" width="128"></center>
             <?php echo lang('MAIN_TITLE'); ?></div>
             <form class="form-signin" action="<?php echo $CONF['hostname'] ?>index.php" method="POST" autocomplete="off">
                 <div class="body bg-gray">
@@ -100,9 +100,14 @@ if (!is_writable($filename)) { ?>
 
 ?>
 </div>
-<script>
 
-</script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-1.11.0.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/app.js"></script>
+<script>
+$(document).ready(function() {
+
+$("body").css("display", "none");
+$("body").fadeIn(800);
+});
+</script>

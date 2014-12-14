@@ -4,7 +4,8 @@ $(document).ready(function() {
     // Disable caching of AJAX responses
     cache: false
 });
-
+$("body").css("display", "none");
+$("body").fadeIn(800);
 
     var socket = io.connect(location.protocol + '//' + show_hostname(MyHOSTNAME) + ':' + NODE_PORT, {
         secure: true
@@ -3274,6 +3275,23 @@ php:
         $('#client_example_out').bootstrapPaginator(options_client_out);
     }
     if (ispath('config')) {
+
+                $('#file_logo').change(function() {
+            $('#form_logo').submit();
+        });
+
+        $('body').on('click', 'button#del_logo_img', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=del_logo_img",
+                success: function() {
+                    window.location = MyHOSTNAME + "config";
+                }
+            });
+        });
+
         $('body').on('click', 'button#check_update', function(event) {
             event.preventDefault();
             $.ajax({
@@ -3314,7 +3332,7 @@ php:
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&days2arch=" + encodeURIComponent($("input#days2arch").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&fix_subj=" + encodeURIComponent($("#fix_subj").val()) + "&file_uploads=" + encodeURIComponent($("#file_uploads").val()) + "&file_types=" + encodeURIComponent($("#file_types").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) + "&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024)+"&allow_register=" + encodeURIComponent($("#allow_register").val()),
+                data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&days2arch=" + encodeURIComponent($("input#days2arch").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&fix_subj=" + encodeURIComponent($("#fix_subj").val()) + "&file_uploads=" + encodeURIComponent($("#file_uploads").val()) + "&file_types=" + encodeURIComponent($("#file_types").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) + "&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024)+"&allow_register=" + encodeURIComponent($("#allow_register").val())+"&lang="+encodeURIComponent($("#lang").val()),
                 dataType: "json",
                 success: function(html) {
 

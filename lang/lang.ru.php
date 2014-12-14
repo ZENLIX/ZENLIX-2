@@ -33,10 +33,13 @@ function lang_ru($phrase){
     
  'CONF_node_info'=>'Для работы NodeJS сервера, у Вас должны быть установлены <em>nodejs, socket.io, mysql и forever</em>. А так же запустите команду:',
     
-    
+ 'CONF_logo_image'=>'Логотип ',
 'CONF_messages_type'=>'Тип сообщения',
     
+'PROFILE_tickets_lock'=>'Заявки, с которыми работает',
+'PROFILE_tickets_free'=>'Заявки, которые ещё не взял',
     
+ 'TICKET_print'=>'Распечатать',   
     
 'mail_msg_ticket_refer'=>'ЗАЯВКА ПЕРЕАДРЕСОВАНА',
 'mail_msg_ticket_refer_ext'=>'Вы получили это сообщение, потому что заявка была переадресована пользователем',

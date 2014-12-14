@@ -2581,6 +2581,7 @@ if($is_valid === true) {
             update_val_by_key("node_port", $_POST['node_port']);
             update_val_by_key("time_zone", $_POST['time_zone']);
             update_val_by_key("allow_register", $_POST['allow_register']);
+            update_val_by_key("lang_def", $_POST['lang']);
             $bodytag = str_replace(",", "|", $_POST['file_types']);
             
             update_val_by_key("file_types", $bodytag);
@@ -2610,6 +2611,12 @@ if($is_valid === true) {
             $id = $_SESSION['helpdesk_user_id'];
             $stmt = $dbConnection->prepare('update users set usr_img=:s where id=:id');
             $stmt->execute(array(':id' => $id, ':s' => ''));
+        }
+
+                //del_profile_img
+        if ($mode == "del_logo_img") {
+            update_val_by_key("logo_img", '');
+            
         }
         
         if ($mode == "edit_profile_main_client") {
@@ -2648,9 +2655,33 @@ if($is_valid === true) {
             <?php
             }
         }
-        
+         
         if ($mode == "edit_profile_main") {
-            $m = ($_POST['mail']);
+            
+            
+
+
+$validator = new GUMP();
+$_POST = $validator->sanitize($_POST);
+
+$rules = array(
+    'fio'                   =>'required|max_len,100|min_len,6',
+    'mail'                  => 'required|valid_email'
+);
+$filters = array(
+    'fio'      => 'sanitize_string|trim'
+);
+
+GUMP::set_field_name("fio", lang('WORKER_fio'));
+GUMP::set_field_name("mail", lang('P_mail'));
+
+$_POST = $validator->filter($_POST, $filters);
+
+$validated = $validator->validate($_POST, $rules);
+
+
+if($validated === true) {
+$m = ($_POST['mail']);
             $id = $_SESSION['helpdesk_user_id'];
             $langu = ($_POST['lang']);
             $skype = ($_POST['skype']);
@@ -2667,7 +2698,6 @@ if($is_valid === true) {
             if (!validate_exist_mail($m)) {
                 $ec = 1;
             }
-            
             if ($ec == 0) {
                 $stmt = $dbConnection->prepare('update users set fio=:fio, skype=:s, tel=:t, email=:m, lang=:langu,
                 adr=:adr,posada=:posada,unit_desc=:unitss where id=:id');
@@ -2686,8 +2716,42 @@ if($is_valid === true) {
             <?php
             }
         }
+        else {
+        $msg.="<div class=\"callout callout-danger\"><p><ul>";
+    foreach ($validator->get_readable_errors(false) as $key => $value) { $msg.="<li>".$value."</li>"; }
+    $msg.="</ul></p></div>";
+    echo $msg;
+}
+        }
         
         if ($mode == "edit_profile_pass") {
+
+$validator = new GUMP();
+$_POST = $validator->sanitize($_POST);
+
+$rules = array(
+    'old_pass'                   => 'required|max_len,100|min_len,6',
+    'new_pass'                   => 'required|max_len,100|min_len,6',
+    'new_pass2'                  => 'required|max_len,100|min_len,6'
+);
+$filters = array(
+    'old_pass'      => 'sanitize_string|trim',
+    'new_pass'      => 'sanitize_string|trim',
+    'new_pass2'      => 'sanitize_string|trim',
+);
+
+GUMP::set_field_name("old_pass", lang('P_pass_old'));
+GUMP::set_field_name("new_pass", lang('P_pass_new'));
+GUMP::set_field_name("new_pass2", lang('P_pass_new_re'));
+
+$_POST = $validator->filter($_POST, $filters);
+
+$validated = $validator->validate($_POST, $rules);
+
+
+if($validated === true) {
+
+
             $p_old = md5(($_POST['old_pass']));
             $p_new = md5(($_POST['new_pass']));
             $p_new2 = md5(($_POST['new_pass2']));
@@ -2741,6 +2805,13 @@ if($is_valid === true) {
                 </div>
             <?php
             }
+        }
+        else {
+        $msg.="<div class=\"callout callout-danger\"><p><ul>";
+    foreach ($validator->get_readable_errors(false) as $key => $value) { $msg.="<li>".$value."</li>"; }
+    $msg.="</ul></p></div>";
+    echo $msg;
+}
         }
         
         if ($mode == "subj_del") {

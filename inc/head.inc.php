@@ -68,7 +68,7 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 
 <link rel="stylesheet"type="text/css" media="print" href="<?php echo $CONF['hostname'] ?>/css/print.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/AdminLTE.css">
-<body class="skin-blue">
+<body class="skin-blue" style="display:none;">
   
          
   

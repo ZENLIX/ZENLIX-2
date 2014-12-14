@@ -18,4 +18,20 @@ CREATE TABLE IF NOT EXISTS `scheduler_ticket` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-ALTER TABLE `users` ADD messages_type int(11) DEFAULT '0';
+
+
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (29, 'logo_img', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (30, 'lang_def', 'en') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+#######UPDATE users.messages_type####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='users' and column_name='messages_type'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE users ADD messages_type int(11) DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################

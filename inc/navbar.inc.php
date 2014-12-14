@@ -46,7 +46,7 @@ if ($tm != 0) {
                <header class="header">
             <a href="<?php echo $CONF['hostname'] ?>index.php" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
-                <img src="img/logo-small.png">
+                <img src="<?=get_logo_img('small');?>">
                  <?php echo $CONF['name_of_firm'] ?>
             </a>
             <!-- Header Navbar: style can be found in header.less -->

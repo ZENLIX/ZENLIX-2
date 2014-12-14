@@ -127,7 +127,7 @@ function get_user_lang() {
     $max_id = $max[0];
     $length = strlen(utf8_decode($max_id));
     if (($length < 1) || $max_id == "0") {
-        $ress = 'en';
+        $ress = get_conf_param('lang_def');
     } else {
         $ress = $max_id;
     }
@@ -177,6 +177,7 @@ function lang($in) {
             break;
 
         default:
+        
             $res = lang_en($in);
     }
     
@@ -1857,6 +1858,30 @@ function get_user_val($in) {
     $fior = $stmt->fetch(PDO::FETCH_NUM);
     
     return $fior[0];
+}
+
+function get_logo_img($type) {
+    global $CONF;
+    
+    if (isset($type)) {
+    if (get_conf_param('logo_img')) {
+        $fn=explode(".", get_conf_param('logo_img'));
+        $gn=$fn[0]."_logo.".$fn[1];
+        $r = $CONF['hostname'] . 'upload_files/avatars/' . $gn;
+    } else {
+        $r = $CONF['hostname'] . 'img/ZENLIX_small.png';
+    }
+
+    }
+        else if (!isset($type)) {
+
+    if (get_conf_param('logo_img')) {
+        $r = $CONF['hostname'] . 'upload_files/avatars/' . get_conf_param('logo_img');
+    } else {
+        $r = $CONF['hostname'] . 'img/ZENLIX.png';
+    }
+}
+    return $r;
 }
 
 function get_user_img() {

@@ -94,7 +94,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if ($user_id != $_SESSION['helpdesk_user_id']) {
 ?>
                                         
-       <br> <a href="messages?to=<?php echo $uniq_id; ?>" class="btn btn-warning btn-block btn-xs"><i class="fa fa-comments"></i> <?php echo lang('EXT_do_write_message'); ?></a>
+       <br> <a href="messages?to=<?php echo $uniq_id; ?>" class="btn btn-primary btn-block btn-xs"><i class="fa fa-comments"></i> <?php echo lang('EXT_do_write_message'); ?></a>
        <?php
     } ?>
         
@@ -237,7 +237,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         
         <div class="box" style="min-height: 10px; max-height: 400px; scroll-behavior: initial; overflow-y: scroll;">
                                 <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-lock"></i> <?php echo lang('STATS_lock_o'); ?></h3>
+                                    <h3 class="box-title"><i class="fa fa-lock"></i> <?php echo lang('PROFILE_tickets_lock'); ?></h3>
                                 </div><!-- /.box-header -->
                                 
                                         <?php
@@ -296,7 +296,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         
         <div class="box" style="min-height: 10px; max-height: 400px; scroll-behavior: initial; overflow-y: scroll;">
                                 <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-lock"></i> <?php echo lang('STATS_t_free'); ?></h3>
+                                    <h3 class="box-title"><i class="fa fa-circle-o"></i> <?php echo lang('PROFILE_tickets_free'); ?></h3>
                                 </div><!-- /.box-header -->
                                 
                                         <?php

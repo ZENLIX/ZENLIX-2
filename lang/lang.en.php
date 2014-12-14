@@ -32,9 +32,10 @@ function lang_en($phrase){
 
 'CONF_messages_type'=>'Message type',
 'CONF_node_info'=>'For working NodeJS server, you will install <em>nodejs, socket.io, mysql и forever</em>. And start command:',
-
-
-    
+'TICKET_print'=>'Print', 
+ 'CONF_logo_image'=>'Logo',
+    'PROFILE_tickets_lock'=>'Locked tickets',
+'PROFILE_tickets_free'=>'Free tickets',
 'mail_msg_ticket_refer'=>'TICKED WAS REDIRECTED',
 'mail_msg_ticket_refer_ext'=>'You received this message because the ticket was redirected by the user',
 'mail_msg_ticket_to_ext'=>'to',
