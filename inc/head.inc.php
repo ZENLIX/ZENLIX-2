@@ -63,12 +63,19 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/daterangepicker-bs3.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/bootstrap-timepicker.min.css">
 <?php
-} ?>
+} 
+
+$style_hide="display:none;";
+if (get_current_URL_name('print_ticket')) {
+	$style_hide="";
+}
+
+?>
 
 
 <link rel="stylesheet"type="text/css" media="print" href="<?php echo $CONF['hostname'] ?>/css/print.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/AdminLTE.css">
-<body class="skin-blue" style="display:none;">
+<body class="skin-blue" style="<?=$style_hide;?> ">
   
          
   

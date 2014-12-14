@@ -2638,9 +2638,22 @@ if($is_valid === true) {
             }
             
             if ($ec == 0) {
-                $stmt = $dbConnection->prepare('update users set fio=:fio, skype=:s, tel=:t, email=:m, lang=:langu,
-                adr=:adr,posada=:posada,unit_desc=:unitss where id=:id');
-                $stmt->execute(array(':id' => $id, ':m' => $m, ':langu' => $langu, ':s' => $skype, ':t' => $tel, ':adr' => $adr, ':fio' => $fio));
+                $stmt = $dbConnection->prepare('update users set 
+                    fio=:fio, 
+                    skype=:s, 
+                    tel=:t, 
+                    email=:m, 
+                    lang=:langu,
+                    adr=:adr
+                    where id=:id');
+                $stmt->execute(array(
+                    ':id' => $id, 
+                    ':m' => $m, 
+                    ':langu' => $langu, 
+                    ':s' => $skype, 
+                    ':t' => $tel, 
+                    ':adr' => $adr, 
+                    ':fio' => $fio));
 ?>
                 <div class="alert alert-success">
                     <?php echo lang('PROFILE_msg_ok'); ?>
