@@ -634,6 +634,53 @@ $("body").fadeIn(800);
             }
         });
     };
+
+    function view_helper_cat() {
+$.fn.editable.defaults.mode = 'inline';
+            $('a#edit_item').each(function(i, e) {
+            $(e).editable({
+                inputclass: 'input-sm',
+                emptytext: 'пусто',
+                params: {
+                    mode: 'save_helper_item'
+                }
+            });
+        });
+
+
+
+
+
+                            $('.sortable').nestedSortable({
+            ForcePlaceholderSize: true,
+                handle: 'div',
+                helper: 'clone',
+                items: 'li',
+                opacity: .6,
+                placeholder: 'placeholder',
+                revert: 250,
+                tabSize: 25,
+                tolerance: 'pointer',
+                toleranceElement: '> div',
+                maxLevels: 4,
+                
+update: function () {
+    list = $(this).nestedSortable('serialize');
+    //console.log(list);
+
+$.post(
+        ACTIONPATH,
+        { mode:"sort_units_helper" ,list: list},
+        function(data){
+            console.log(data);
+        }
+    );
+
+
+}
+
+        });
+};
     /*
 ###############################################
  FUNCTIONS end
@@ -2513,6 +2560,7 @@ php:
     if (ispath('helper')) {
 
 
+
                 if ($('#summernote_help').length != 0) {
                 $('#summernote_help').summernote({
                         height: 300,
@@ -2523,6 +2571,11 @@ php:
                         }
                     });
 }
+
+
+//del_item_no
+
+
 
         $('body').on('click', 'button#del_helper', function(event) {
             event.preventDefault();
@@ -2550,6 +2603,9 @@ php:
         });
         $("input#find_helper").keyup(function() {
             var t = $(this).val();
+            if ($(this).val().length > 1) {
+
+
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
@@ -2558,7 +2614,111 @@ php:
                     $("#help_content").html(html);
                 }
             });
+        }
+        else if ($(this).val().length < 2) {
+
+            $.ajax({
+            type: "POST",
+            url: ACTIONPATH,
+            data: "mode=view_cats",
+            success: function(html) {
+                $("#help_content").html(html);
+
+
+            }
         });
+
+        }
+        });
+
+//units_help
+
+view_helper_cat();
+        $('body').on('click', 'button#add_helper_item', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=items_view",
+                success: function(html) {
+
+                    $('#content_items').html(html);
+                    view_helper_cat();
+
+   
+                }
+            });
+
+        });
+
+        $('body').on('click', 'i#del_item_no', function(event) {
+            event.preventDefault();
+            //console.log('v');
+            var lang_helper_error = get_lang_param('JS_HELPER_error_to_del');
+            noty({
+                    text: lang_helper_error,
+                    layout: 'center',
+                    type: 'information',
+                    timeout: 3000
+                });
+            
+        });
+
+                $('body').on('click', 'i#del_item', function(event) {
+            event.preventDefault();
+            var ids = $(this).attr('value');
+            bootbox.confirm(get_lang_param('JS_del'), function(result) {
+                if (result == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=helper_item_del" + "&id=" + ids,
+                        success: function(html) {
+                            $("#content_items").html(html);
+                            view_helper_cat();
+
+                        }
+                    });
+                }
+                if (result == false) {
+                    console.log('false');
+                }
+            });
+        });
+
+/*
+        $('body').on('click', 'button#units_help', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=units_helper",
+                success: function(html) {
+
+
+                    $("#help_content").hide().html(html).fadeIn(500);
+
+
+
+
+view_helper_cat();
+
+
+
+
+
+
+
+
+
+//view_helper_cat();
+                    
+                }
+            });
+        });
+*/
+/*
         $('body').on('click', 'button#create_new_help', function(event) {
             event.preventDefault();
             $.ajax({
@@ -2586,6 +2746,7 @@ php:
                 }
             });
         });
+*/
         $('body').on('click', 'button#do_save_help', function(event) {
             event.preventDefault();
             var sHTML = $('#summernote_help').code();
@@ -2595,13 +2756,15 @@ php:
             var lang_unit = get_lang_param('JS_unit');
             var lang_probl = get_lang_param('JS_probl');
             var t = $("#t").val();
+            var cat_id=$("#cat").val();
             var data = {
                 'mode': 'do_save_help',
                 'u': u,
                 't': t,
                 'msg': sHTML,
                 'hn': hn,
-                'is_client': is_client
+                'is_client': is_client,
+                'cat_id':cat_id
             };
             var error_code = 0;
             if (u == null) {
@@ -2641,12 +2804,14 @@ php:
             var lang_probl = get_lang_param('JS_probl');
             var is_client = $("#is_client").prop('checked');
             var t = $("#t").val();
+            var cat = $("#cat").val();
             var data = {
                 'mode': 'do_create_help',
                 'u': u,
                 't': t,
                 'msg': sHTML,
-                'is_client': is_client
+                'is_client': is_client,
+                'cat':cat
             };
             var error_code = 0;
             //alert (u);
@@ -2716,7 +2881,7 @@ php:
         $.ajax({
             type: "POST",
             url: ACTIONPATH,
-            data: "mode=list_help",
+            data: "mode=view_cats",
             success: function(html) {
                 $("#help_content").html(html);
 

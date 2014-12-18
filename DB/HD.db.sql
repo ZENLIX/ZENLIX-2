@@ -154,6 +154,7 @@ CREATE TABLE `helper` (
   `message` longtext,
   `hashname` varchar(512) DEFAULT NULL,
   `client_flag` int(11) NOT NULL DEFAULT '0',
+  `cat_id`  int(11) NOT NULL DEFAULT '1'
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -269,6 +270,17 @@ VALUES
 UNLOCK TABLES;
 
 
+DROP TABLE IF EXISTS `helper_cat`;
+CREATE TABLE `helper_cat` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(512) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `sort_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+LOCK TABLES `helper_cat` WRITE;
+INSERT INTO `helper_cat` (`id`, `name`, `parent_id`, `sort_id`) VALUES (1, 'First item', 0, 0 );
+UNLOCK TABLES;
 # Дамп таблицы posada
 # ------------------------------------------------------------
 

@@ -138,6 +138,15 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 <?php
 } ?>
 
+<?php
+if ( get_current_URL_name('helper') ) { ?>
+<script src="<?php echo $CONF['hostname'] ?>js/jquery.mjs.nestedSortable.js"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/bootbox.min.js"></script>
+
+<?php
+} ?>
+
 
 
 

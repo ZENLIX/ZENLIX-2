@@ -177,7 +177,7 @@ function lang($in) {
             break;
 
         default:
-        
+
             $res = lang_en($in);
     }
     
@@ -2897,6 +2897,325 @@ function get_last_ticket($menu, $id) {
     
     return $max_id;
 }
+
+
+function showMenu_helper($level = 0) {
+global $dbConnection;
+
+//$result = mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$level); 
+
+    $stmt = $dbConnection->prepare('SELECT id, name from helper_cat where parent_id=:p_id order by sort_id ASC');
+    $stmt->execute(array(':p_id' => $level));
+    $re = $stmt->fetchAll();
+
+
+
+if ($level != 0) { echo "<ul>"; }
+    else if ($level == 0) { echo "<ul class=\"todo-list sortable\">"; }
+
+   // while ($node = mysql_fetch_array($result)) { 
+    foreach ($re as $row) {
+        //echo "<li id=\"list-".$row['id']."\"><div>".$row['name'];
+        ?>
+                                        <li id="list_<?=$row['id'];?>">
+                                            <div>
+                                            <!-- drag handle -->
+                                            <span class="handle ui-sortable-handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <!-- checkbox -->
+                                            
+                                            <!-- todo text -->
+                                            <span class="text" id="val_<?=$row['id'];?>">
+                                        <a href="#" data-pk="<?=$row['id'];?>" data-url="actions.php" id="edit_item" data-type="text" class="">
+                                                <?=$row['name'];?>
+                                            </a> 
+                                            </span>
+<small class="text-muted">(<?=count_items_helper($row['id']);?>)</small>
+                                            <!-- General tools such as edit or delete-->
+                                            <span class="tools">
+                                                <!--i class="fa fa-edit" id="edit_item" value="<?=$row['id'];?>"></i-->
+                                                <?php if (count_items_helper($row['id']) != 0) {
+                                                     echo "<i id=\"del_item_no\"  class=\"fa fa-trash-o\"></i>";
+                                                }
+                                                else if (count_items_helper($row['id']) == 0) {
+                                                    echo "<i id=\"del_item\" value=\"".$row['id']."\" class=\"fa fa-trash-o\"></i>";
+                                                }
+                                                ?>
+
+
+                                                
+                                            </span>
+                                        </div>
+                                        
+        <?php
+        //$hasChild = mysql_fetch_array(mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$node['ID'])) != null;
+
+        
+        $stmt2 = $dbConnection->prepare('SELECT id, name from helper_cat where parent_id=:p_id');
+        $stmt2->execute(array(':p_id' => $row['id']));
+        $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        //$hasChild=$row2['parent_id'];
+        
+
+        if ($row2) {
+            showMenu_helper($row['id']);
+        }
+        echo "</li>";
+    }
+echo "</ul>";
+}
+
+
+function count_items_helper($id) {
+global $dbConnection;
+
+            $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+            $unit_user = unit_of_user($user_id);
+            $priv_val = priv_status($user_id);
+            
+            $units = explode(",", $unit_user);
+            array_push($units, "0");
+
+
+
+
+            $is_client = get_user_val('is_client');
+
+if ($is_client == "1") { 
+
+
+    $res = $dbConnection->prepare('SELECT count(*) from helper where cat_id=:id and client_flag=:cf');
+    $res->execute(array(
+        ':id' => $id,
+        ':cf' =>'1'
+    ));
+    $count = $res->fetch(PDO::FETCH_NUM);
+    $res_m=$count[0];
+}
+
+else if ($is_client == "0") {
+
+        $stmt = $dbConnection->prepare('SELECT 
+                            id, user_init_id, unit_to_id, dt, title, message, hashname
+                            from helper where cat_id=:id');
+        $stmt->execute(array(
+        ':id' => $id));
+        $result = $stmt->fetchAll();
+        $c=0;
+                foreach ($result as $row) {
+                    
+                    $unit2id = explode(",", $row['unit_to_id']);
+                    
+                    $diff = array_intersect($units, $unit2id);
+                    
+
+                    if ($priv_val == 1) {
+                        if (($diff) || ($user_id == $row['user_init_id'])) {
+                            $ac = "ok";
+                        }
+                        
+                    } else if ($priv_val == 0) {
+                        $ac = "ok";
+                    } else if ($priv_val == 2) {
+                        $ac = "ok";
+                    }
+                    
+                    if ($ac == "ok") {
+
+                        $c++;
+                    }
+}
+$res_m=$c;
+}
+
+
+
+
+    return $res_m;
+
+
+}
+
+function get_max_helper_parent() {
+global $dbConnection;
+/*
+ $res = $dbConnection->prepare('SELECT id from helper_cat where cat_id=:id and client_flag=:cf');
+    $res->execute(array(
+        ':id' => $id,
+        ':cf' =>'1'
+    ));
+    $count = $res->fetch(PDO::FETCH_NUM);
+    $res_m=$count[0];
+*/
+return 0;
+}
+
+function show_item_helper_cat($id) {
+    global $dbConnection, $CONF;
+            //  $t = ($_POST['t']);
+            $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+            $unit_user = unit_of_user($user_id);
+            $priv_val = priv_status($user_id);
+            
+            $units = explode(",", $unit_user);
+            array_push($units, "0");
+            
+            $is_client = get_user_val('is_client');
+            
+            if ($is_client == "1") {
+                
+                $stmt = $dbConnection->prepare("SELECT 
+                            id, user_init_id, unit_to_id, dt, title, message, hashname
+                            from helper where cat_id=:id and client_flag=:cf");
+                $stmt->execute(array(':id' => $id, ':cf'=>'1'));
+                $result = $stmt->fetchAll();
+?>
+            <div class="box box-solid">
+            <div class="box-body">
+            <?php
+                
+                foreach ($result as $row) {
+                    
+                    
+                    
+                   
+?>
+
+                    <div class="box box-solid">
+                                <div class="box-header">
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
+                                    <div class="box-tools pull-right">
+
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <small><?php echo cutstr_help_ret(strip_tags($row['message'])); ?>
+                            </small>                                </div><!-- /.box-body -->
+                            </div>
+                <?php
+                    
+                }
+?></div></div> <?php
+            } else if ($is_client == "0") {
+                
+                $stmt = $dbConnection->prepare("SELECT 
+                            id, user_init_id, unit_to_id, dt, title, message, hashname
+                            from helper where cat_id=:id");
+                $stmt->execute(array(':id' => $id));
+                $result = $stmt->fetchAll();
+?>
+            <div class="box box-solid">
+            <div class="box-body">
+            <?php
+                
+                foreach ($result as $row) {
+                    
+                    $unit2id = explode(",", $row['unit_to_id']);
+                    
+                    $diff = array_intersect($units, $unit2id);
+                    
+                    $priv_h = "no";
+                    if ($priv_val == 1) {
+                        if (($diff) || ($user_id == $row['user_init_id'])) {
+                            $ac = "ok";
+                        }
+                        
+                        if ($user_id == $row['user_init_id']) {
+                            $priv_h = "yes";
+                        }
+                    } else if ($priv_val == 0) {
+                        $ac = "ok";
+                        if ($user_id == $row['user_init_id']) {
+                            $priv_h = "yes";
+                        }
+                    } else if ($priv_val == 2) {
+                        $ac = "ok";
+                        $priv_h = "yes";
+                    }
+                    
+                    if ($ac == "ok") {
+?>
+
+                    <div class="box box-solid">
+                                <div class="box-header">
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
+                                    <div class="box-tools pull-right">
+<small>(<?php echo lang('DASHBOARD_author'); ?>: <?php echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)<?php
+                        if ($priv_h == "yes") {
+                            echo " 
+            <div class=\"btn-group\">
+            <a href=\"" . $CONF['hostname']."/helper?h=".$row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+            <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
+            </div>
+            ";
+                        } ?></small>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <small><?php echo cutstr_help_ret(strip_tags($row['message'])); ?>
+                            </small>                                </div><!-- /.box-body -->
+                            </div>                <?php
+                    }
+                }
+?></div></div><?php
+            }
+}
+
+function show_items_helper($level = 0) {
+global $dbConnection;
+
+//$result = mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$level); 
+
+    $stmt = $dbConnection->prepare('SELECT id, name from helper_cat where parent_id=:p_id order by sort_id ASC');
+    $stmt->execute(array(':p_id' => $level));
+    $re = $stmt->fetchAll();
+
+
+
+if ($level != 0) { echo "<ul>"; }
+    else if ($level == 0) { echo "<ul>"; }
+
+   // while ($node = mysql_fetch_array($result)) { 
+    foreach ($re as $row) {
+        //echo "<li id=\"list-".$row['id']."\"><div>".$row['name'];
+
+        ?>
+                                        <li id="list-<?=$row['id'];?>">
+                                            <div>
+                                            
+                                            <!-- todo text -->
+                                            <span class="text">
+                                        <a href="helper?cat=<?=$row['id'];?>" class="">
+                                                <?=$row['name'];?> 
+                                                <small class="text-muted">(<?=count_items_helper($row['id']);?>)</small>
+                                            </a>
+                                            </span>
+
+                                            <!-- General tools such as edit or delete-->
+                                           
+                                        
+        <?php
+        //$hasChild = mysql_fetch_array(mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$node['ID'])) != null;
+
+        
+        $stmt2 = $dbConnection->prepare('SELECT id, name from helper_cat where parent_id=:p_id');
+        $stmt2->execute(array(':p_id' => $row['id']));
+        $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        //$hasChild=$row2['parent_id'];
+        
+
+        if ($row2) {
+            show_items_helper($row['id']);
+        }
+        echo "</div></li>";
+    }
+echo "</ul>";
+}
+
+
+
 
 function push_msg_action2user($deliver, $type_op) {
     global $dbConnection, $CONF;

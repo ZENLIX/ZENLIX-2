@@ -30,6 +30,13 @@ function lang_en($phrase){
 'cron_info' => 'In this section, you can create a task that will be performed on the selected schedule.',
 'cron_title_list' => 'Problems',
 
+'HELPER_add'=>'Adding information',
+'HELPER_add_info'=>'In this section, you can add instructions or documentation to solve common problems.',
+'HELP_cats_title'=>'category manager',
+'HELPER_cats_info'=>'In this section, you can manage categories.',
+'HELPER_cat'=>'Categories',
+'HELPER_cats'=>'Categories',
+'JS_HELPER_error_to_del'=>'You can not delete a category, because it should be empty.',
 'CONF_messages_type'=>'Message type',
 'CONF_node_info'=>'For working NodeJS server, you will install <em>nodejs, socket.io, mysql и forever</em>. And start command:',
 'TICKET_print'=>'Print', 

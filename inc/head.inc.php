@@ -47,6 +47,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_cu
 if ((get_current_URL_name('helper')) || get_current_URL_name('notes')) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote-bs3.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote.css">
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css">
 <?php
 } ?>
 

@@ -62,7 +62,86 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
     
     <?php
-        } else if (!isset($_GET['h'])) {
+        } 
+
+
+else if (isset($_GET['cat'])) {
+
+
+$cat_id=$_GET['cat'];
+
+    $stmt = $dbConnection->prepare('SELECT name from helper_cat where id=:p_id');
+    $stmt->execute(array(':p_id' => $cat_id));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+   // $row['name'];
+
+?>
+ <section class="content-header">
+                    <h1>
+                        <i class="fa fa-globe"></i> <?php echo lang('HELPER_title'); ?>
+                        <small><?=$row['name'];?></small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
+                        <li class="active"><a href="helper"><?php echo lang('HELPER_title'); ?></a></li>
+                        <li class="active"><?=$row['name'];?></li>
+                    </ol>
+</section>
+                
+                
+                
+            <section class="content">
+
+
+
+
+
+
+
+                    <!-- row -->
+                    <div class="row">
+                    
+                    
+                    
+                                        <div class="col-md-3">
+                    
+
+                    
+                                    
+                                    
+                                    
+                    
+                    
+                    
+                    </div>
+
+                    
+                    <div class="col-md-9">
+                         <div class="box box-solid">
+
+
+                                <div class="">
+                                   <?=show_item_helper_cat($cat_id);?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+
+
+
+<?php
+}
+
+
+
+
+
+
+        else {
 ?>
 
     <section class="content-header">

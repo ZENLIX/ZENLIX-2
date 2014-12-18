@@ -80,7 +80,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                 <div class="box-body">
                                   
                         <center>
-                            <img height="120" src="<?php echo $user_img; ?>" class="img-rounded" alt="User Image">
+                            <img  src="<?php echo $user_img; ?>" class="img-rounded" alt="User Image">
                         </center>
                         
                         <?php

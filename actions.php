@@ -1268,108 +1268,276 @@ values (:comment, :n, :user_comment, :tid_comment)');
         <?php
         }
         */
-        if ($mode == "create_helper") {
+if ($mode == "sort_units_helper") {
+$list=$_POST['list'];
+
+echo $list;
+
+$orderlist = explode('&', $list);
+
+$n=0;
+foreach ($orderlist as $order) {
+
+$a=explode("=", $order);
+
+//echo $a[0];
+
+$b=explode("[", $a['0']);
+
+$с=substr($b[1], 0, -1); //?
+$rest = substr($b[1], 0, -1);
+//echo $a[1];
+//echo "ID:".$rest."  Parent:".$a[1]."  Pos:".$n."                              ////";
+if ($a[1] == "null") {$a[1]=get_max_helper_parent();}
+echo "parent_id=".$a[1]." where id=".$rest.";\r\n";
+
+
+        $stmt = $dbConnection->prepare('UPDATE helper_cat set sort_id=:s_id,parent_id=:p_id where id=:el_id');
+        $stmt->execute(array(
+            ':s_id' => $n,
+            ':p_id' =>$a[1],
+            ':el_id'=>$rest
+        ));
+
+$n++;
+}  
+
+}
+
+
+
+
+if ($mode == "save_helper_item") {
+
+
+        $stmt = $dbConnection->prepare('UPDATE helper_cat set name=:t where id=:el_id');
+        $stmt->execute(array(
+            ':t' => $_POST['value'],
+            ':el_id'=>$_POST['pk']
+        ));
+}
+
+//helper_item_del
+if ($mode == "helper_item_del") {
+
+
+$stmt = $dbConnection->prepare('UPDATE helper_cat set parent_id=:t where parent_id=:el_id');
+        $stmt->execute(array(
+            ':t' => '0',
+            ':el_id'=>$_POST['id']
+        ));
+
+    $stmt = $dbConnection->prepare('delete from helper_cat where id=:n');
+        $stmt->execute(array(
+            ':n' => $_POST['id']
+        ));
+
+showMenu_helper();
+}
+
+if ($mode == "items_view") {
+    $stmt = $dbConnection->prepare('INSERT into helper_cat (name, parent_id, sort_id) values (:n,:p,:s)');
+        $stmt->execute(array(
+            ':n' => 'new item',
+            ':p'=>'0',
+            ':s'=>'100'
+        ));
+showMenu_helper();
+}
+
+
+if ($mode == "units_helper") {
 ?>
             <div class="box box-solid">
-            <div class="box-body">
-            <form class="form-horizontal" role="form">
+            <div class="">
+            
+<style type="text/css">
+
+a, a:visited {
+            color: #4183C4;
+            text-decoration: none;
+        }
+
+        
+
+        pre, code {
+            font-size: 12px;
+        }
+
+        pre {
+            width: 100%;
+            overflow: auto;
+        }
+
+        small {
+            font-size: 90%;
+        }
+
+        small code {
+            font-size: 11px;
+        }
+
+        .placeholder {
+            outline: 1px dashed #4183C4;
+            /*-webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            margin: -1px;*/
+        }
+
+        .mjs-nestedSortable-error {
+            background: #fbe3e4;
+            border-color: transparent;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            padding-left: 30px;
+        }
+
+        ul.sortable, ul.sortable ul {
+            margin: 0 0 0 25px;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        ul.sortable {
+            margin: 4em 0;
+        }
+
+        .sortable li {
+            margin: 5px 0 0 0;
+            padding: 0;
+        }
+
+        .sortable li div  {
+            /*
+            border: 1px solid #d4d4d4;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+            padding: 6px;
+            margin: 0;
+            cursor: move;
+            background: #f6f6f6;
+            background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
+            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+            */
+        }
+
+        .sortable li.mjs-nestedSortable-branch div {
+           /* background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
+            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
+            */
+            list-style-type: none;
+
+        }
+
+        .sortable li.mjs-nestedSortable-leaf div {
+
+
+        }
+
+        li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+            border-color: #999;
+            background: #fafafa;
+        }
+
+        .disclose {
+            cursor: pointer;
+            width: 10px;
+            display: none;
+        }
+
+        .sortable li.mjs-nestedSortable-collapsed > ul {
+            display: none;
+        }
+
+        .sortable li.mjs-nestedSortable-branch > div > .disclose {
+            display: inline-block;
+        }
+
+        .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
+            content: '+ ';
+        }
+
+        .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
+            content: '- ';
+        }
+
+        
+
+        p, ol, ul, pre, form {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        dl {
+            margin: 0;
+        }
+
+        dd {
+            margin: 0;
+            padding: 0 0 0 1.5em;
+        }
+
+        code {
+            background: #e5e5e5;
+        }
+
+        input {
+            vertical-align: text-bottom;
+        }
+
+        .notice {
+            color: #c33;
+        }
+
+    </style>
+
+
+<div class="">
+                                <div class="box-header">
+                                    
+                                    <h3 class="box-title">To Do List</h3>
+
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
 
 
 
 
-                <div class="form-group">
-                    <label for="u" class="col-md-2 control-label"><small><?php echo lang('NEW_to'); ?>: </small></label>
-                    <div class="col-md-10">
-                        <select style="height: 34px;" data-placeholder="<?php echo lang('NEW_to_unit'); ?>" class="chosen-select form-control" id="u" name="unit_id" multiple>
-                            <option value="0"><?php echo lang('HELP_all'); ?></option>
-                            <?php
-            $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
-            $stmt->execute(array(':n' => '0', ':s' => '1'));
-            $result = $stmt->fetchAll();
-            foreach ($result as $row) {
-                
-                $row['label'] = $row['label'];
-                $row['value'] = (int)$row['value'];
+<div id="content_items"> 
+
+
+<?php
+
+showMenu_helper();
 ?>
 
-                                <option value="<?php echo $row['value'] ?>"><?php echo $row['label'] ?></option>
 
-                            <?php
-            }
-?>
+</div>
 
-                        </select>
-                    </div>
-                </div>
-                <div class="">
-                    <div class="">
-                        <div class="form-group">
-
-                            <label for="t" class="col-sm-2 control-label"><small><?php echo lang('HELP_desc'); ?>: </small></label>
-
-                            <div class="col-sm-10">
-
-
-                                <input  type="text" name="fio" class="form-control input-sm" id="t" placeholder="<?php echo lang('HELP_desc'); ?>">
-
-
-
-                            </div>
-
-
-
-                        </div></div>
-                        
-                        
-                        
-                        <div class="form-group">
-  <label for="is_client" class="col-sm-2 control-label"><small><?php echo lang('EXT_for_clients'); ?></small></label>
-  <div class="col-sm-10">
-  
-  
-  
-      <div class="col-sm-10">
-      <div class="checkbox">
-    <label>
-      <input type="checkbox" id="is_client"> <?php echo lang('CONF_true'); ?>
-      <p class="help-block"><small><?php echo lang('EXT_for_clients_ext'); ?></small></p>
-    </label>
-  </div>
-      </div>
-  </div>
-    </div>
-                        
-                        
-                    <div class="form-group">
-
-                        <label for="t2" class="col-sm-2 control-label"><small><?php echo lang('HELP_do'); ?>: </small></label>
-
-                        <div class="col-sm-10">
-
-
-                            <div id="summernote_help"></div>
-
-
-
-                        </div>
-                        <div class="col-md-12"><hr></div>
-                        <div class="col-md-2"></div>
-                        <div class="col-md-10">
-                            <div class="btn-group btn-group-justified">
-                                <div class="btn-group">
-                                    <button id="do_create_help" class="btn btn-success" type="submit"><i class="fa fa-check-circle-o"></i> <?php echo lang('HELP_create'); ?></button>
-                                </div>
-                                <div class="btn-group">
-                                    <a href="helper" class="btn btn-default" type="submit"><i class="fa fa-reply"></i> <?php echo lang('HELP_back'); ?></a>
+                                </div><!-- /.box-body -->
+                                <div class="box-footer clearfix no-border">
+                                    <button id="add_helper_item" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
                                 </div>
                             </div>
-
-
-                        </div>
-            </form>
             </div></div>
         <?php
         }
+
+
+
+
+
         
         if ($mode == "find_help") {
             $t = ($_POST['t']);
@@ -1657,6 +1825,23 @@ values (:comment, :n, :user_comment, :tid_comment)');
             }
         }
         
+if ($mode == "view_cats") {
+
+    ?>
+<div class="box box-solid">
+    <div class="box-header">
+                                    
+                                    <h3 class="box-title"><?=lang('HELPER_cats');?></h3>
+
+                                </div><!-- /.box-header -->
+                                <div class="box-body" style=" font-size: 15px; line-height: 20px; ">
+                                    <?=show_items_helper();?>
+                                </div>
+                            </div>
+    <?php
+}
+
+
         ///////
         if ($mode == "do_save_help") {
             $u = $_POST['u'];
@@ -1673,20 +1858,20 @@ values (:comment, :n, :user_comment, :tid_comment)');
             } else {
                 $is_client = 0;
             }
-            
+            $cat_id=$_POST['cat_id'];
             $message = ($_POST['msg']);
             $message = str_replace("\r\n", "\n", $message);
             $message = str_replace("\r", "\n", $message);
             $message = str_replace("&nbsp;", " ", $message);
             
-            $stmt = $dbConnection->prepare('update helper set user_init_id=:user_id_z, unit_to_id=:beats, dt=:n, title=:t, message=:message, client_flag=:cf where hashname=:hn');
-            $stmt->execute(array(':hn' => $hn, ':user_id_z' => $user_id_z, ':beats' => $beats, ':t' => $t, ':message' => $message, ':cf' => $is_client, ':n' => $CONF['now_dt']));
+            $stmt = $dbConnection->prepare('update helper set user_init_id=:user_id_z, unit_to_id=:beats, dt=:n, title=:t, message=:message, client_flag=:cf, cat_id=:cat_id where hashname=:hn');
+            $stmt->execute(array(':hn' => $hn, ':user_id_z' => $user_id_z, ':beats' => $beats, ':t' => $t, ':message' => $message, ':cf' => $is_client, ':n' => $CONF['now_dt'], ':cat_id'=>$cat_id));
         }
         
         if ($mode == "do_create_help") {
             $u = $_POST['u'];
             $beats = implode(',', $u);
-            
+            $cat_id=$_POST['cat'];
             $is_client = $_POST['is_client'];
             if ($is_client == "true") {
                 $is_client = 1;
@@ -1702,9 +1887,9 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $message = str_replace("\r", "\n", $message);
             $message = str_replace("&nbsp;", " ", $message);
             
-            $stmt = $dbConnection->prepare('insert into helper (hashname, user_init_id,unit_to_id, dt, title,message,client_flag) values 
-        (:hn,:user_id_z,:beats, :n, :t,:message, :cf)');
-            $stmt->execute(array(':hn' => $hn, ':user_id_z' => $user_id_z, ':beats' => $beats, ':t' => $t, ':message' => $message, ':cf' => $is_client, ':n' => $CONF['now_dt']));
+            $stmt = $dbConnection->prepare('insert into helper (hashname, user_init_id,unit_to_id, dt, title,message,client_flag, cat_id) values 
+        (:hn,:user_id_z,:beats, :n, :t,:message, :cf, :cat_id)');
+            $stmt->execute(array(':hn' => $hn, ':user_id_z' => $user_id_z, ':beats' => $beats, ':t' => $t, ':message' => $message, ':cf' => $is_client, ':n' => $CONF['now_dt'], ':cat_id'=>$cat_id));
         }
         
         if ($mode == "dashboard_t") {
@@ -1721,7 +1906,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $user_id = id_of_user($_SESSION['helpdesk_user_login']);
             $unit_user = unit_of_user($user_id);
             $priv_val = priv_status($user_id);
-            
+            //priv_status($_SESSION['helpdesk_user_login']);
             $units = explode(",", $unit_user);
             $units = implode("', '", $units);
             
@@ -2556,8 +2741,8 @@ values
 
             $is_valid = GUMP::is_valid($_POST, array(
         'ldap'   => 'valid_ip',
-        'name_of_firm'=>'required|max_len,20',
-        'title_header'=>'required|max_len,20',
+        'name_of_firm'=>'required|max_len,100',
+        'title_header'=>'required|max_len,100',
         'node_port'=>'required|numeric',
         'days2arch'=>'required|numeric',
         'file_size'=>'required|numeric',

@@ -35,3 +35,24 @@ SET @sql = (SELECT IF(
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
 ######################################################
+
+CREATE TABLE IF NOT EXISTS `helper_cat` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(512) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `sort_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+INSERT INTO `helper_cat` (`id`, `name`, `parent_id`, `sort_id`) VALUES (1, 'First item', 0, 0 ) ON DUPLICATE KEY UPDATE `id` = `id`;
+#######UPDATE helper.cat_id############################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='helper' and column_name='cat_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE helper ADD cat_id int(11) NOT NULL DEFAULT 1;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
