@@ -416,6 +416,38 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 if ($mode == "get_total_period_stat") {
                 $start = $_POST['start'] . " 00:00:00";
                 $end = $_POST['end'] . " 23:59:00";
+                $unit= $_POST['unit'];
+
+                if ($unit != "0") {
+                    ?>
+<div class="box box-solid">
+ <div class="box-header">
+<h4 class="box-title">
+<center>
+    <?php echo lang('STATS_by_unit'); ?> <time id="c" datetime="<?php echo $start ?>"></time> - <time id="c" datetime="<?php echo $end ?>"></time><br>
+<?=get_unit_name($unit);?>
+</center>
+
+</h4>
+</div>
+<div class="box-body">
+Заявки созданные отделом:
+№, дата, кто создал, на кого создал, клиент, статус
+(узнать всех пользователей отдела: кто создавал заявки за период и какие заявки)
+Количество созданных
+
+
+Заявки выполненные отделом:
+(узнать всех пользователей отдела: кто выполнил заявки за период и какие)
+количество выполненных
+</div>
+
+</div>
+
+
+<?php
+                }
+                else if ($unit == "0") {
 ?>
     <div class="box box-solid">
         <div class="box-header">
@@ -549,6 +581,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
             </div>
     </div>
 <?php
+}
                 }
         
         if ($mode == "get_user_stat") {
@@ -721,8 +754,25 @@ values (:comment, :n, :user_comment, :tid_comment)');
                             </div>
 <?php
                 }
+                else {
+                    ?>
+                <div class="alert alert-warning alert-dismissable">
+                                        <i class="fa fa-warning"></i>
+                                        
+                                        <?=lang('E_no_info');?>
+                                    </div>
+
+                <?php
+                }
             } else {
-                echo "no selected user";
+                ?>
+                <div class="alert alert-warning alert-dismissable">
+                                        <i class="fa fa-warning"></i>
+                                        
+                                        <?=lang('E_no_selected_user');?>
+                                    </div>
+
+                <?php
             }
         }
         
@@ -1864,7 +1914,7 @@ if ($mode == "view_cats") {
             $message = str_replace("\r", "\n", $message);
             $message = str_replace("&nbsp;", " ", $message);
             
-            $stmt = $dbConnection->prepare('update helper set user_init_id=:user_id_z, unit_to_id=:beats, dt=:n, title=:t, message=:message, client_flag=:cf, cat_id=:cat_id where hashname=:hn');
+            $stmt = $dbConnection->prepare('update helper set user_edit_id=:user_id_z, unit_to_id=:beats, dt=:n, title=:t, message=:message, client_flag=:cf, cat_id=:cat_id where hashname=:hn');
             $stmt->execute(array(':hn' => $hn, ':user_id_z' => $user_id_z, ':beats' => $beats, ':t' => $t, ':message' => $message, ':cf' => $is_client, ':n' => $CONF['now_dt'], ':cat_id'=>$cat_id));
         }
         

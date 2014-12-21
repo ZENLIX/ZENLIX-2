@@ -2899,6 +2899,17 @@ function get_last_ticket($menu, $id) {
 }
 
 
+
+function get_helper_cat_name($id) {
+global $dbConnection;
+    $stmt = $dbConnection->prepare('SELECT id, name from helper_cat where id=:p_id');
+    $stmt->execute(array(':p_id' => $id));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+return $row['name'];
+}
+
+
 function showMenu_helper($level = 0) {
 global $dbConnection;
 
@@ -3075,7 +3086,16 @@ function show_item_helper_cat($id) {
             <div class="box box-solid">
             <div class="box-body">
             <?php
-                
+                 if (empty($result)) {
+?>
+            <div id="" class="well well-large well-transparent lead">
+                <center>
+                    <?php
+        echo lang('MSG_no_records'); ?>
+                </center>
+            </div>
+        <?php
+    } else if (!empty($result)) {
                 foreach ($result as $row) {
                     
                     
@@ -3097,6 +3117,7 @@ function show_item_helper_cat($id) {
                 <?php
                     
                 }
+            }
 ?></div></div> <?php
             } else if ($is_client == "0") {
                 
@@ -3109,7 +3130,16 @@ function show_item_helper_cat($id) {
             <div class="box box-solid">
             <div class="box-body">
             <?php
-                
+                 if (empty($result)) {
+?>
+            <div id="" class="well well-large well-transparent lead">
+                <center>
+                    <?php
+        echo lang('MSG_no_records'); ?>
+                </center>
+            </div>
+        <?php
+    } else if (!empty($result)) {
                 foreach ($result as $row) {
                     
                     $unit2id = explode(",", $row['unit_to_id']);
@@ -3158,7 +3188,7 @@ function show_item_helper_cat($id) {
                             </small>                                </div><!-- /.box-body -->
                             </div>                <?php
                     }
-                }
+                } }
 ?></div></div><?php
             }
 }

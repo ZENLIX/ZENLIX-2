@@ -37,7 +37,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     </h1>
                     <ol class="breadcrumb">
                        <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('HELPER_title'); ?></li>
+                       <li><a href="<?php echo $CONF['hostname'] ?>helper "><?php echo lang('HELPER_title'); ?></a></li>
+                       <li class="active"><a href="<?php echo $CONF['hostname'] ?>helper?cat=<?=$cat_id;?>"><?=get_helper_cat_name($cat_id);?></a></li>
+                        
                     </ol>
                 </section>
                 
@@ -198,10 +200,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             else if (!isset($_GET['edit'])) {
                 
             
-            $stmt = $dbConnection->prepare('select id, user_init_id, unit_to_id, dt, title, message, hashname
+            $stmt = $dbConnection->prepare('select id, user_init_id, unit_to_id, dt, title, message, hashname, cat_id, user_edit_id
                             from helper where hashname=:h');
             $stmt->execute(array(':h' => $h));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
+            $cat_id=$fio['cat_id'];
+            $user_edit_id=$fio['user_edit_id'];
+            $user_init_id=$fio['user_init_id'];
 ?>
 
         <section class="content-header">
@@ -211,7 +216,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     </h1>
                     <ol class="breadcrumb">
                        <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('HELPER_title'); ?></li>
+                        <li><a href="<?php echo $CONF['hostname'] ?>helper "><?php echo lang('HELPER_title'); ?></a></li>
+                       <li class="active"><a href="<?php echo $CONF['hostname'] ?>helper?cat=<?=$cat_id;?>"><?=get_helper_cat_name($cat_id);?></a></li>
+                        
                     </ol>
                 </section>
                 
@@ -233,7 +240,20 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     <p><?php echo ($fio['message']) ?></p>
     <hr>
     
-    <p class="text-right"><small class="text-muted"><?php echo lang('HELPER_pub'); ?>: <?php echo nameshort(name_of_user_ret($fio['user_init_id'])); ?></small><br><small class="text-muted"> <time id="c" datetime="<?php echo $fio['dt']; ?>"></time></small>
+    <p class="text-right"><small class="text-muted"><?php echo lang('HELPER_pub'); ?>: <?php echo nameshort(name_of_user_ret($fio['user_init_id'])); ?></small><br><small class="text-muted"> <time id="c" datetime="<?php echo $fio['dt']; ?>"></time>
+<br>
+
+<?php
+//|| ($user_edit_id != $user_init_id)
+if (($user_edit_id != "0") && ($user_edit_id != $user_init_id)) {
+
+?>
+<?=lang('TICKET_t_last_up');?>: <?php echo nameshort(name_of_user_ret($fio['user_edit_id'])); ?>
+<?php }
+?>
+
+
+    </small>
     <br>
 <?php 
                 $user_id = id_of_user($_SESSION['helpdesk_user_login']);
@@ -270,7 +290,7 @@ if ($priv_h == "yes") {
                                 echo " 
             <div class=\"btn-group pull-right\">
             <a id=\"print_t\" class=\"btn btn-default btn-xs\"> <i class=\"fa fa-print\"></i> " . lang('HELPER_print') . "</a>
-            <a href=\"" . $CONF['hostname']."/helper?h=".$h . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+            <a href=\"" . $CONF['hostname']."/helper?h=".$h . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i> " . lang('CONF_act_edit') . " </a>
             <button id=\"del_helper\" value=\"" . $h . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -600,7 +620,16 @@ $cat_id=$_GET['cat'];
                         </div>
                         <div class="col-md-12">
                             
+                            <div class="box box-solid">
+                                                                <div class="box-header">
+                                    
+                                    <h3 class="box-title"><?=lang('HELPER_cats');?></h3>
 
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                <?=show_items_helper();?>
+                            </div>
+                            </div>
 
 
 

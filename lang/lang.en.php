@@ -29,7 +29,8 @@ function lang_en($phrase){
 'cron_add' => 'Add to Planner',
 'cron_info' => 'In this section, you can create a task that will be performed on the selected schedule.',
 'cron_title_list' => 'Problems',
-
+'STATS_make'=>'Make report',
+'STATS_by_unit'=>'Statistics by unit from period',
 'HELPER_add'=>'Adding information',
 'HELPER_add_info'=>'In this section, you can add instructions or documentation to solve common problems.',
 'HELP_cats_title'=>'category manager',
@@ -58,10 +59,10 @@ function lang_en($phrase){
 'mail_msg_ticket_no_ok_ext'=>'You received this message because the ticket was commented by the user',
 'REG_msg'=>'Registration success! You can log in after administrator review.',
 'REG_new'=>'Create new account',
-
+'E_no_info'=>'Empty query',
 'REG_button'=>'Register',
 'REG_already'=>'I already have account',
-
+'E_no_selected_user'=>'Select user please',
 
 'EXT_stats_refer'=>'Redirected',
 'EXT_stats_lock'=>'Locked tickets',

@@ -33,7 +33,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('deps') || get_curr
 
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler')) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') ) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2.css?v2">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2-bootstrap.css">
 <?php
@@ -64,11 +64,7 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/daterangepicker-bs3.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/bootstrap-timepicker.min.css">
 <?php
-} 
 
-$style_hide="display:none;";
-if (get_current_URL_name('print_ticket')) {
-	$style_hide="";
 }
 
 ?>
@@ -76,7 +72,7 @@ if (get_current_URL_name('print_ticket')) {
 
 <link rel="stylesheet"type="text/css" media="print" href="<?php echo $CONF['hostname'] ?>/css/print.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/AdminLTE.css">
-<body class="skin-blue" style="<?=$style_hide;?> ">
+<body class="skin-blue" style="">
   
          
   

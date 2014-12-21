@@ -4,8 +4,8 @@ $(document).ready(function() {
     // Disable caching of AJAX responses
     cache: false
 });
-$("body").css("display", "none");
-$("body").fadeIn(800);
+$(".right-side").css("display", "none");
+$(".right-side").fadeIn(800);
 
     var socket = io.connect(location.protocol + '//' + show_hostname(MyHOSTNAME) + ':' + NODE_PORT, {
         secure: true
@@ -30,6 +30,7 @@ $("body").fadeIn(800);
                     update_list_page_content();
                     makemytime(true);
                 };
+                if (ispath('news')) {refresh_news();};
                 break;
             case 'ticket_refer':
                 active_noty_msg('ticket_refer', data.t_id);
@@ -46,6 +47,7 @@ $("body").fadeIn(800);
                 if (ispath('ticket')) {
                     update_ticket_page(data.t_id);
                 };
+                if (ispath('news')) {refresh_news();};
                 break;
             case 'ticket_ok':
                 active_noty_msg('ticket_ok', data.t_id);
@@ -64,6 +66,7 @@ $("body").fadeIn(800);
                     update_ticket_page(data.t_id);
                     update_labels();
                 };
+                if (ispath('news')) {refresh_news();};
                 break;
             case 'ticket_no_ok':
                 active_noty_msg('ticket_no_ok', data.t_id);
@@ -82,6 +85,7 @@ $("body").fadeIn(800);
                     update_ticket_page(data.t_id);
                     update_labels();
                 };
+                if (ispath('news')) {refresh_news();};
                 break;
             case 'ticket_lock':
                 active_noty_msg('ticket_lock', data.t_id);
@@ -97,6 +101,7 @@ $("body").fadeIn(800);
                 if (ispath('ticket')) {
                     update_ticket_page(data.t_id);
                 };
+                if (ispath('news')) {refresh_news();};
                 break;
             case 'ticket_unlock':
                 active_noty_msg('ticket_unlock', data.t_id);
@@ -112,6 +117,7 @@ $("body").fadeIn(800);
                 if (ispath('ticket')) {
                     update_ticket_page(data.t_id);
                 };
+                if (ispath('news')) {refresh_news();};
                 break;
             case 'ticket_comment':
                 active_noty_msg('ticket_comment', data.t_id);
@@ -121,6 +127,7 @@ $("body").fadeIn(800);
                         makemytime(true);
                     }
                 }
+                if (ispath('news')) {refresh_news();};
                 break;
             case 'message_send':
                 //console.log(data.chat_id);
@@ -635,6 +642,11 @@ $("body").fadeIn(800);
         });
     };
 
+function refresh_news() {
+    window.location = MyHOSTNAME + "news";
+}
+
+
     function view_helper_cat() {
 $.fn.editable.defaults.mode = 'inline';
             $('a#edit_item').each(function(i, e) {
@@ -867,7 +879,7 @@ $.post(
                 });
 	    
 	    
-	            $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+	        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
             $("#action_start").val( picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
             $("#action_stop").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
             
@@ -1284,20 +1296,47 @@ php:
     
 
     if (ispath('main_stats')) {
-        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
 
-            var p = $('#user_list').val();
+
+        $("#unitstat_id").select2({
+            allowClear: true,
+            maximumSelectionSize: 5,
+            formatNoMatches: get_lang_param('JS_not_found')
+        });
+
+
+
+$('body').on('click', 'button#main_stat_make', function(event) {
+            event.preventDefault();
+             var p = $('#unitstat_id').val();
+             var start_time=$("#start_time").val();
+             var stop_time=$("#stop_time").val();
+
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=get_total_period_stat"+
-                "&start=" + picker.startDate.format('YYYY-MM-DD') + "&end=" + picker.endDate.format('YYYY-MM-DD'),
+                "&start=" + start_time + "&end=" + stop_time+ "&unit="+p,
                 success: function(html) {
                     $('#ts_res').html(html);
                     $(".knob").knob();
                     makemytime();
                 }
             });
+
+
+        });
+
+
+
+        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+
+           
+
+            $("#start_time").val(picker.startDate.format('YYYY-MM-DD'));
+            $("#stop_time").val(picker.endDate.format('YYYY-MM-DD'));
+
+
         });
         $('#reservation').daterangepicker({
             format: 'YYYY-MM-DD'
@@ -1318,20 +1357,37 @@ php:
                 return m;
             }
         });
-        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
-            console.log(picker.startDate.format('YYYY-MM-DD'));
-            console.log(picker.endDate.format('YYYY-MM-DD'));
-            var p = $('#user_list').val();
+
+
+
+
+$('body').on('click', 'button#user_stat_make', function(event) {
+            event.preventDefault();
+             var p = $('#user_list').val();
+             var start_time=$("#start_time").val();
+             var stop_time=$("#stop_time").val();
+
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=get_user_stat" + "&uid=" + p + "&start=" + picker.startDate.format('YYYY-MM-DD') + "&end=" + picker.endDate.format('YYYY-MM-DD'),
+                data: "mode=get_user_stat" + "&uid=" + p + "&start=" + start_time + "&end=" + stop_time,
                 success: function(html) {
                     $('#content_stat').html(html);
                     $(".knob").knob();
                     makemytime();
                 }
             });
+
+        });
+
+
+
+
+        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+            var p = $('#user_list').val();
+            $("#start_time").val(picker.startDate.format('YYYY-MM-DD'));
+            $("#stop_time").val(picker.endDate.format('YYYY-MM-DD'));
+
         });
         $('#reservation').daterangepicker({
             format: 'YYYY-MM-DD'

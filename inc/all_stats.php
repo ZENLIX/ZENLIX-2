@@ -12,12 +12,17 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 <section class="content-header">
                     <h1>
-                        <i class="fa fa-bar-chart-o"></i> <?php echo lang('ALLSTATS_main'); ?>
-                        <small><?php echo lang('ALLSTATS_main_ext'); ?></small>
+                        <i class="fa fa-bar-chart-o"></i> <?php
+            echo lang('ALLSTATS_main'); ?>
+                        <small><?php
+            echo lang('ALLSTATS_main_ext'); ?></small>
                     </h1>
                     <ol class="breadcrumb">
-                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('ALLSTATS_main'); ?></li>
+                       <li><a href="<?php
+            echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php
+            echo $CONF['name_of_firm'] ?></a></li>
+                        <li class="active"><?php
+            echo lang('ALLSTATS_main'); ?></li>
                     </ol>
                 </section>
 
@@ -37,19 +42,72 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <div class="box box-info">
             <div class="box-header">
             <h3 class="box-title">
-                Выбор за период
+                <?php echo lang('EXT_graph_user_ext'); ?>
             </h3></div>
                                 <div class="box-body">
                                     
                                     
-                                    <form>
-                                       
-  <div class="form-group">
+                                    <form class="form-horizontal" role="form">
+                                    
+                <div class="form-group">
+                    
+                    <div class="col-md-12">
+                        <div class="input-group ">
+                            <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                        <select class="form-control input-sm" id="unitstat_id" name="unitstat_id">
+                            <option value="0"><?php echo lang('HELP_all'); ?></option>
+                            <?php
+            
+            $usr_units = explode(",", unit_of_user($_SESSION['helpdesk_user_id']));
+            
+            $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps');
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            foreach ($result as $row) {
+                
+                if (in_array($row['value'], $usr_units)) {
 
+                $row['label'] = $row['label'];
+                $row['value'] = (int)$row['value'];
+?>
+
+                                <option value="<?php
+                echo $row['value'] ?>"><?php
+                echo $row['label'] ?></option>
+
+                            <?php
+                        }
+            }
+?>
+
+                        </select>
+                    </div>
+                    </div>
+                </div>
+
+
+
+
+  <div class="form-group">
+<div class="col-md-12">
     <div class="input-group ">
-      <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm"  />
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm"  value="<?php
+            echo date("Y-m-d"); ?> - <?php
+            echo date("Y-m-d"); ?>" />
     </div>
+</div>
   </div>
+
+ <div class="form-group">
+<div class="col-md-12">
+    <button class="btn btn-info btn-block btn-sm" id="main_stat_make"><?php echo lang('STATS_make'); ?></button>
+</div>
+</div>
+<input type="hidden" id="start_time" value="<?php
+            echo date("Y-m-d"); ?>">
+<input type="hidden" id="stop_time" value="<?php
+            echo date("Y-m-d"); ?>">
+
 </form>
                                     
                                     
@@ -64,7 +122,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     <div class="callout callout-info">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
-<?php echo lang('ALLSTATS_help'); ?>
+<?php
+            echo lang('ALLSTATS_help'); ?>
          </small>
                                     </div>
                                 </div></div>
@@ -73,15 +132,20 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 <div class="col-md-9" id="ts_res">
     <div class="box box-solid">
             <div class="box-body">
-            <h4><center><?php echo lang('ALLSTATS_unit'); ?></center></h4>
+            <h4><center><?php
+            echo lang('ALLSTATS_unit'); ?></center></h4>
             <table class="table table-bordered">
 <tbody>
                                 <tr>
                     <td style="width: 300px;"></td>
-                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_out'); ?>   </center></small></strong></td>
-                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_free'); ?>   </center></small></strong></td>
-                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_lock'); ?>       </center></small></strong></td>
-                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_ok'); ?> </center></small></strong></td>
+                    <td style=""><strong><small><center><?php
+            echo lang('ALLSTATS_unit_out'); ?>   </center></small></strong></td>
+                    <td style=""><strong><small><center><?php
+            echo lang('ALLSTATS_unit_free'); ?>   </center></small></strong></td>
+                    <td style=""><strong><small><center><?php
+            echo lang('ALLSTATS_unit_lock'); ?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?php
+            echo lang('ALLSTATS_unit_ok'); ?> </center></small></strong></td>
                     
                 </tr>
 <?php
@@ -94,11 +158,16 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
                 <tr>
 
-                    <td style=""><small><?php echo get_unit_name_return4news($value); ?>    </small></td>
-                    <td style=""><small><center><?php echo get_unit_stat_create($value); ?>   </center></small></td>
-                    <td style=""><small><center><?php echo get_unit_stat_free($value); ?>   </center></small></td>
-                    <td style=""><small><center><?php echo get_unit_stat_lock($value); ?>   </center></small></td>
-                    <td style=""><small><center><?php echo get_unit_stat_ok($value); ?>     </center></small></td>
+                    <td style=""><small><?php
+                echo get_unit_name_return4news($value); ?>    </small></td>
+                    <td style=""><small><center><?php
+                echo get_unit_stat_create($value); ?>   </center></small></td>
+                    <td style=""><small><center><?php
+                echo get_unit_stat_free($value); ?>   </center></small></td>
+                    <td style=""><small><center><?php
+                echo get_unit_stat_lock($value); ?>   </center></small></td>
+                    <td style=""><small><center><?php
+                echo get_unit_stat_ok($value); ?>     </center></small></td>
                 </tr>
 
                 
@@ -108,17 +177,25 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 </tbody>
 </table>
 
-<h4><center><?php echo lang('ALLSTATS_user'); ?></center></h4>
+<h4><center><?php
+            echo lang('ALLSTATS_user'); ?></center></h4>
 <table class="table table-bordered table-hover">
                 <tbody>
                 <tr>
-                    <td style="width: 200px;">  <strong><small><center><?php echo lang('ALLSTATS_user_fio'); ?>                 </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('t_LIST_status'); ?>         </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('ALLSTATS_user_free'); ?>            </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('ALLSTATS_user_lock'); ?>            </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('ALLSTATS_user_ok'); ?>          </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('ALLSTATS_user_out_all'); ?>     </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('ALLSTATS_user_out_all_not'); ?> </center></small></strong></td>
+                    <td style="width: 200px;">  <strong><small><center><?php
+            echo lang('ALLSTATS_user_fio'); ?>                 </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+            echo lang('t_LIST_status'); ?>         </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+            echo lang('ALLSTATS_user_free'); ?>            </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+            echo lang('ALLSTATS_user_lock'); ?>            </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+            echo lang('ALLSTATS_user_ok'); ?>          </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+            echo lang('ALLSTATS_user_out_all'); ?>     </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+            echo lang('ALLSTATS_user_out_all_not'); ?> </center></small></strong></td>
                 </tr>
 <?php
             
@@ -138,13 +215,20 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 ?>
 
 <tr>
-                    <td style="width: 200px;"><small><?php echo name_of_user_ret($row['id']); ?></small></td>
-                    <td style=""><small class="text-danger"><center><?php echo get_user_status($row['id']); ?></center></small></td>
-                    <td style=""><small class="text-danger"><center><?php echo get_total_tickets_free($row['id']); ?></center></small></td>
-                    <td style=""><small class="text-warning"><center><?php echo get_total_tickets_lock($row['id']); ?></center></small></td>
-                    <td style=""><small class="text-success"><center><?php echo get_total_tickets_ok($row['id']); ?></center></small></td>
-                    <td style=""><small class=""><center><?php echo get_total_tickets_out($row['id']); ?></center></small></td>
-                    <td style=""><small class=""><center><?php echo get_total_tickets_out_and_success($row['id']); ?></center></small></td>
+                    <td style="width: 200px;"><small><?php
+                        echo name_of_user_ret($row['id']); ?></small></td>
+                    <td style=""><small class="text-danger"><center><?php
+                        echo get_user_status($row['id']); ?></center></small></td>
+                    <td style=""><small class="text-danger"><center><?php
+                        echo get_total_tickets_free($row['id']); ?></center></small></td>
+                    <td style=""><small class="text-warning"><center><?php
+                        echo get_total_tickets_lock($row['id']); ?></center></small></td>
+                    <td style=""><small class="text-success"><center><?php
+                        echo get_total_tickets_ok($row['id']); ?></center></small></td>
+                    <td style=""><small class=""><center><?php
+                        echo get_total_tickets_out($row['id']); ?></center></small></td>
+                    <td style=""><small class=""><center><?php
+                        echo get_total_tickets_out_and_success($row['id']); ?></center></small></td>
 </tr>
 
 

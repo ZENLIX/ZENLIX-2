@@ -154,7 +154,8 @@ CREATE TABLE `helper` (
   `message` longtext,
   `hashname` varchar(512) DEFAULT NULL,
   `client_flag` int(11) NOT NULL DEFAULT '0',
-  `cat_id`  int(11) NOT NULL DEFAULT '1'
+  `cat_id`  int(11) NOT NULL DEFAULT '1',
+  `user_edit_id` int(128) NOT NULL DEFAULT '0'
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

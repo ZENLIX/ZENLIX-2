@@ -38,8 +38,15 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                 <div class="box-body">
                                     
                                     
-                                    <form>
+                                    <form class="form-horizontal" role="form">
+
+
+
+
+
                                         <div class="form-group">
+
+<div class="col-md-12">
 
     <div class="input-group ">
       <span class="input-group-addon"><i class="fa fa-user"></i></span>
@@ -51,10 +58,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 <?php
             
-            /* $qstring = "SELECT fio as label, id as value FROM users where status='1' and login !='system' order by fio ASC;";
-                $result = mysql_query($qstring);//query the database for entries containing the term
-            while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
-            */
+
             
             $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where login !=:system and is_client=0 order by fio ASC');
             $stmt->execute(array(':system' => 'system'));
@@ -88,16 +92,24 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     
     
     
-    </div>
+    </div></div>
   </div>
   
   
   <div class="form-group">
-
+<div class="col-md-12">
     <div class="input-group ">
-      <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm"  />
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm"   value="<?php echo date("Y-m-d"); ?> - <?php echo date("Y-m-d"); ?>"/>
     </div>
+</div>
   </div>
+ <div class="form-group">
+<div class="col-md-12">
+    <button class="btn btn-info btn-block btn-sm" id="user_stat_make"><?=lang('STATS_make');?></button>
+</div>
+</div>
+<input type="hidden" id="start_time" value="<?php echo date("Y-m-d"); ?>">
+<input type="hidden" id="stop_time" value="<?php echo date("Y-m-d"); ?>">
 </form>
                                     
                                     

@@ -56,3 +56,19 @@ SET @sql = (SELECT IF(
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
 ######################################################
+
+
+
+#######UPDATE helper.cat_id############################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='helper' and column_name='cat_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE helper ADD user_edit_id int(128) NOT NULL DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+

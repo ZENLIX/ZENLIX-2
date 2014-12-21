@@ -328,6 +328,14 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
                 </section>
                 <!-- /.sidebar -->
             </aside>
+<?php
 
+
+$style_hide="display:none;";
+if (get_current_URL_name('print_ticket')) {
+    $style_hide="";
+}
+
+?>
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
+            <aside class="right-side" style="<?=$style_hide;?> ">

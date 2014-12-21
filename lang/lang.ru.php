@@ -404,7 +404,8 @@ function lang_ru($phrase){
 'TICKET_action_ok'=>'Выполнено',
 'TICKET_action_nook'=>'Не выполнено',
 'TICKET_msg_updated'=>'Заявка была обновлена​​.',
-
+'E_no_selected_user'=>'Укажите пользователя',
+'E_no_info'=>'Нет доступной информации',
 'TICKET_t_from'=>'Автор',
 'TICKET_t_was_create'=>'Была создана',
 'TICKET_t_to'=>'Исполнитель',
@@ -628,7 +629,8 @@ function lang_ru($phrase){
 'SUBJ_n'=>'Название',
 'SUBJ_action'=>'Действие',
 
-
+'STATS_by_unit'=>'Статистика по отделу за период',
+'STATS_make'=>'Сформировать',
 'STATS_TITLE'=>'Статистика пользователя',
 'STATS_in'=>'Входящие заявки',
 'STATS_out'=>'Исходящие заявки',

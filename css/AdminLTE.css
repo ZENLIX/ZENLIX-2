@@ -1613,14 +1613,15 @@ body > .header .logo .icon {
   padding: 0px 0px;
   list-style: none;
 }
+
 .box .todo-list > li {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  padding: 10px;
-  background: #f3f4f5;
+ /* padding: 10px;
+  background: #f3f4f5; */
   margin-bottom: 2px;
-  border-left: 2px solid #e6e7e8;
+  /*border-left: 2px solid #e6e7e8;*/
   color: #444;
 }
 .box .todo-list > li:last-of-type {
