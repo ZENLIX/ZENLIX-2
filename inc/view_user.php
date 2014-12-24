@@ -141,11 +141,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
           
           
           <div class="row">
-              <div class="col-md-3"><small class="text-muted"><?=lang('APPROVE_adr');?>:</small></div>
-              <div class="col-md-9">
-                <?php if ($user_adr) { ?> <small><?php echo $user_adr; ?></small><?php } ?>
-                <?php if ($user_unit) { ?><small><?php echo $user_unit; ?></small><?php } ?> </div>
               
+                <?php if ( ($user_adr) && ($user_unit)) { ?>
+                <div class="col-md-3"><small class="text-muted"><?=lang('APPROVE_adr');?>:</small></div>
+              <div class="col-md-9"> <small><?php echo $user_adr; ?></small>
+                <small><?php echo $user_unit; ?></small>
+            </div>
+              <?php } ?>
                           <?php
     if ($user_skype) { ?><div class="col-md-3"><small class="text-muted">Skype:</small></div>
               <div class="col-md-9"><small><?php echo $user_skype; ?></small></div> <?php

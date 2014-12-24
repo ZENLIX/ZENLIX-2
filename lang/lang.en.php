@@ -2,6 +2,12 @@
 function lang_en($phrase){
     static $lang = array(
 	    
+
+'STAT_MAIN_t1'=>'Tickets, created by departments\' user',
+'STAT_MAIN_num'=>'№',
+'STAT_MAIN_t2'=>'Tickets, success by departments\' user',
+'STAT_MAIN_t3'=>'Tickets, not success by departments\' user',
+
 	    
 'cron_navbar' => 'Planner',
 'cron_title' => 'Task Scheduler',

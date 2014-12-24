@@ -176,7 +176,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             } ?>
 </tbody>
 </table>
-
+<br>
 <h4><center><?php
             echo lang('ALLSTATS_user'); ?></center></h4>
 <table class="table table-bordered table-hover">

@@ -412,6 +412,7 @@ if ($priv_h == "yes") {
             -moz-border-radius: 3px;
             border-radius: 3px;
             margin: -1px;*/
+            height: 20px;
         }
 
         .mjs-nestedSortable-error {

@@ -55,7 +55,10 @@ if (isset($_POST['mode'])) {
             $msg.= "</div>";
         }
         
-        $results[] = array('check_error' => $check_error, 'msg' => $msg);
+        $results[] = array(
+            'check_error' => $check_error,
+            'msg' => $msg
+        );
         print json_encode($results);
         
         //
@@ -81,7 +84,16 @@ if (isset($_POST['mode'])) {
              :status,
              :pass)');
         
-        $stmt->execute(array(':client_fio' => $fio, ':client_login' => $login, ':client_mail' => $mail, ':priv' => '1', ':is_client' => '1', ':uniq_id' => $hn, ':status' => '1', ':pass' => md5($pass)));
+        $stmt->execute(array(
+            ':client_fio' => $fio,
+            ':client_login' => $login,
+            ':client_mail' => $mail,
+            ':priv' => '1',
+            ':is_client' => '1',
+            ':uniq_id' => $hn,
+            ':status' => '1',
+            ':pass' => md5($pass)
+        ));
         
         //send mail to user & admin
         
@@ -122,7 +134,9 @@ EOBODY;
             $userid = $_SESSION['helpdesk_user_id'];
             
             $stmt = $dbConnection->prepare('SELECT id, hashname, message from notes where user_id=:userid order by dt DESC');
-            $stmt->execute(array(':userid' => $userid));
+            $stmt->execute(array(
+                ':userid' => $userid
+            ));
             $res = $stmt->fetchAll();
 ?>
             
@@ -165,10 +179,14 @@ EOBODY;
                     }
 ?>
                     
-                    <li class="tr_<?php echo $row['id']; ?>">
-<a style=" cursor: pointer; " id="to_notes" value="<?php echo $row['hashname']; ?>"><?php echo $t_msg; ?>
+                    <li class="tr_<?php
+                    echo $row['id']; ?>">
+<a style=" cursor: pointer; " id="to_notes" value="<?php
+                    echo $row['hashname']; ?>"><?php
+                    echo $t_msg; ?>
 
-<span class="badge pull-right bg-red" id="del_notes" value="<?php echo $row['hashname']; ?>">
+<span class="badge pull-right bg-red" id="del_notes" value="<?php
+                    echo $row['hashname']; ?>">
 <i class="glyphicon glyphicon-trash"></i></span>
 
 </a>
@@ -218,59 +236,53 @@ EOBODY;
         }
         
         if ($mode == "add_cron") {
-
-
-$validator = new GUMP();
-$_POST = $validator->sanitize($_POST);
-
-$rules = array(
-    'subj'                  => 'required',
-    'msg'                   => 'required',
-    'client_id_param'       => 'required|numeric',
-    'to'                    => 'required|numeric',
-    'period'                => 'required',
-    'time_action'           => 'required',
-    'action_start'          => 'required'
-);
-$filters = array(
-    'subj'      => 'trim|sanitize_string',
-    'msg'       => 'trim'
-);
-
-$validator->set_field_name(array(
-    "subj"=> lang('NEW_subj')
-    ));
-
-GUMP::set_field_name("subj", lang('NEW_subj'));
-GUMP::set_field_name("msg", lang('NEW_MSG'));
-GUMP::set_field_name("client_id_param", lang('NEW_from'));
-GUMP::set_field_name("to", lang('NEW_to'));
-GUMP::set_field_name("period", lang('cron_tab'));
-GUMP::set_field_name("time_action", lang('cron_ta'));
-GUMP::set_field_name("action_start", lang('cron_active'));
-
-$_POST = $validator->filter($_POST, $filters);
-
-$validated = $validator->validate($_POST, $rules);
-
-
-
-
-
-
-$status_action=$_POST['status_action'];
-
-                    
-                                                
-                        if ($_POST['period'] == "day") {$p_arr=$_POST['day_field']; }
-                        else if ($_POST['period'] == "week") {$p_arr=$_POST['week_select']; }
-                        else if ($_POST['period'] == "month") {$p_arr=$_POST['month_select']; }
-
-
-
-if($validated === true) {
-    $check_error=true;
-    $stmt = $dbConnection->prepare('insert into scheduler_ticket
+            
+            $validator = new GUMP();
+            $_POST = $validator->sanitize($_POST);
+            
+            $rules = array(
+                'subj' => 'required',
+                'msg' => 'required',
+                'client_id_param' => 'required|numeric',
+                'to' => 'required|numeric',
+                'period' => 'required',
+                'time_action' => 'required',
+                'action_start' => 'required'
+            );
+            $filters = array(
+                'subj' => 'trim|sanitize_string',
+                'msg' => 'trim'
+            );
+            
+            $validator->set_field_name(array(
+                "subj" => lang('NEW_subj')
+            ));
+            
+            GUMP::set_field_name("subj", lang('NEW_subj'));
+            GUMP::set_field_name("msg", lang('NEW_MSG'));
+            GUMP::set_field_name("client_id_param", lang('NEW_from'));
+            GUMP::set_field_name("to", lang('NEW_to'));
+            GUMP::set_field_name("period", lang('cron_tab'));
+            GUMP::set_field_name("time_action", lang('cron_ta'));
+            GUMP::set_field_name("action_start", lang('cron_active'));
+            
+            $_POST = $validator->filter($_POST, $filters);
+            
+            $validated = $validator->validate($_POST, $rules);
+            
+            $status_action = $_POST['status_action'];
+            
+            if ($_POST['period'] == "day") {
+                $p_arr = $_POST['day_field'];
+            } else if ($_POST['period'] == "week") {
+                $p_arr = $_POST['week_select'];
+            } else if ($_POST['period'] == "month") {
+                $p_arr = $_POST['month_select'];
+            }
+            
+            if ($validated === true) {
+                $check_error = true;
+                $stmt = $dbConnection->prepare('insert into scheduler_ticket
         (user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, period, period_arr, action_time, dt_start, dt_stop, prio) values (
         :user_init_id, 
         :user_to_id, 
@@ -285,36 +297,37 @@ if($validated === true) {
         :dt_start, 
         :dt_stop,  
         :prio)');
-        
-        $stmt->execute(array(
-        ':user_init_id' => '1', 
-        ':user_to_id'   => $_POST['s2id_users_do'],
-        ':date_create'  => $CONF['now_dt'],
-        ':subj'         => $_POST['subj'],
-        ':msg'          => $_POST['msg'],
-        ':client_id'    => $_POST['client_id_param'],
-        ':unit_id'      => $_POST['to'],
-        ':period'       => $_POST['period'],
-        ':period_arr'   => $p_arr,
-        ':action_time'  => $_POST['time_action'],
-        ':dt_start'     => $_POST['action_start'],
-        ':dt_stop'      => $_POST['action_stop'],
-        ':prio'         => $_POST['prio']
-        ));
-}
-else {
-    //print_r($is_valid);
-    $check_error=false;
-    $msg.="<div class=\"callout callout-danger\"><p><ul>";
-    foreach ($validator->get_readable_errors(false) as $key => $value) { $msg.="<li>".$value."</li>"; }
-    $msg.="</ul></p></div>";
-    
-}
-        $results[] = array('check_error' => $check_error, 'msg' => $msg);
-        print json_encode($results);
-
-	        
-	        
+                
+                $stmt->execute(array(
+                    ':user_init_id' => '1',
+                    ':user_to_id' => $_POST['s2id_users_do'],
+                    ':date_create' => $CONF['now_dt'],
+                    ':subj' => $_POST['subj'],
+                    ':msg' => $_POST['msg'],
+                    ':client_id' => $_POST['client_id_param'],
+                    ':unit_id' => $_POST['to'],
+                    ':period' => $_POST['period'],
+                    ':period_arr' => $p_arr,
+                    ':action_time' => $_POST['time_action'],
+                    ':dt_start' => $_POST['action_start'],
+                    ':dt_stop' => $_POST['action_stop'],
+                    ':prio' => $_POST['prio']
+                ));
+            } else {
+                
+                //print_r($is_valid);
+                $check_error = false;
+                $msg.= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($validator->get_readable_errors(false) as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+            }
+            $results[] = array(
+                'check_error' => $check_error,
+                'msg' => $msg
+            );
+            print json_encode($results);
         }
         
         if ($mode == "save_notes") {
@@ -325,7 +338,11 @@ else {
             $message = str_replace("&nbsp;", " ", $message);
             
             $stmt = $dbConnection->prepare('update notes set message=:message, dt=:n where hashname=:noteid');
-            $stmt->execute(array(':message' => $message, ':noteid' => $noteid, ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':message' => $message,
+                ':noteid' => $noteid,
+                ':n' => $CONF['now_dt']
+            ));
             
             print_r($_POST['msg']);
         }
@@ -335,7 +352,9 @@ else {
             $uid = $_SESSION['helpdesk_user_id'];
             
             $stmt = $dbConnection->prepare('select hashname, message from notes where user_id=:uid order by dt DESC limit 1');
-            $stmt->execute(array(':uid' => $uid));
+            $stmt->execute(array(
+                ':uid' => $uid
+            ));
             
             $res = $stmt->fetchAll();
             
@@ -377,26 +396,46 @@ else {
                 $stmt = $dbConnection->prepare('insert into files 
         (ticket_hash, original_name, file_hash, file_type, file_size, file_ext) values 
         (:ticket_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext)');
-                $stmt->execute(array(':ticket_hash' => $th, ':original_name' => $fileName, ':file_hash' => $fhash, ':file_type' => $filetype, ':file_size' => $filesize, ':file_ext' => $ext));
+                $stmt->execute(array(
+                    ':ticket_hash' => $th,
+                    ':original_name' => $fileName,
+                    ':file_hash' => $fhash,
+                    ':file_type' => $filetype,
+                    ':file_size' => $filesize,
+                    ':file_ext' => $ext
+                ));
                 
                 ///comment
                 $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
                                             values (:tid_comment, :user_comment, :text_comment, :n)');
-                $stmt->execute(array(':tid_comment' => $tid_comment, ':user_comment' => $user_comment, ':text_comment' => '[file:' . $fhash . ']', ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':tid_comment' => $tid_comment,
+                    ':user_comment' => $user_comment,
+                    ':text_comment' => '[file:' . $fhash . ']',
+                    ':n' => $CONF['now_dt']
+                ));
                 
                 ///comment end
                 
                 ///add log////
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:comment, :n, :user_comment, :tid_comment)');
-                $stmt->execute(array(':tid_comment' => $tid_comment, ':user_comment' => $user_comment, ':comment' => 'comment', ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':tid_comment' => $tid_comment,
+                    ':user_comment' => $user_comment,
+                    ':comment' => 'comment',
+                    ':n' => $CONF['now_dt']
+                ));
                 
                 ////add log end///
                 
                 send_notification('ticket_comment', $tid_comment);
                 
                 $stmt = $dbConnection->prepare('update tickets set last_update=:n where id=:tid_comment');
-                $stmt->execute(array(':tid_comment' => $tid_comment, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':tid_comment' => $tid_comment,
+                    ':n' => $CONF['now_dt']
+                ));
                 view_comment($tid_comment);
             } else if ($flag == true) {
                 view_comment($tid_comment);
@@ -404,7 +443,8 @@ values (:comment, :n, :user_comment, :tid_comment)');
             <div class="alert alert-danger alert-dismissable">
                                         <i class="fa fa-ban"></i>
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                        <?php echo lang('upload_errorsize'); ?>
+                                        <?php
+                echo lang('upload_errorsize'); ?>
             </div>
                                     
                                     
@@ -412,156 +452,521 @@ values (:comment, :n, :user_comment, :tid_comment)');
             <?php
             }
         }
-
-                if ($mode == "get_total_period_stat") {
-                $start = $_POST['start'] . " 00:00:00";
-                $end = $_POST['end'] . " 23:59:00";
-                $unit= $_POST['unit'];
-
-                if ($unit != "0") {
-                    ?>
+        
+        if ($mode == "get_total_period_stat") {
+            $start = $_POST['start'] . " 00:00:00";
+            $end = $_POST['end'] . " 23:59:00";
+            $unit = $_POST['unit'];
+            
+            if ($unit != "0") {
+?>
 <div class="box box-solid">
  <div class="box-header">
 <h4 class="box-title">
 <center>
-    <?php echo lang('STATS_by_unit'); ?> <time id="c" datetime="<?php echo $start ?>"></time> - <time id="c" datetime="<?php echo $end ?>"></time><br>
-<?=get_unit_name($unit);?>
+    <?php
+                echo lang('STATS_by_unit'); ?> <time id="c" datetime="<?php
+                echo $start ?>"></time> - <time id="c" datetime="<?php
+                echo $end ?>"></time><br>
+<?php echo get_unit_name($unit); ?>
 </center>
 
-</h4>
+</h4><br>
 </div>
 <div class="box-body">
-Заявки созданные отделом:
-№, дата, кто создал, на кого создал, клиент, статус
-(узнать всех пользователей отдела: кто создавал заявки за период и какие заявки)
-Количество созданных
+<center><h4><?=lang('STAT_MAIN_t1');?></h4></center>
+<table class="table table-bordered">
+<tbody>
+
+                                <tr>
+                    <td style=""><strong><small><center><?=lang('STAT_MAIN_num');?></center></small></strong></td>
+                    <td style=""><strong><small><center>#</center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('NEW_subj');?></center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_create');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_init');?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_to');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('USERS_p_4');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_status');?>  </center></small></strong></td>
+                    
+                </tr>
 
 
-Заявки выполненные отделом:
-(узнать всех пользователей отдела: кто выполнил заявки за период и какие)
-количество выполненных
+
+
+<?php
+                
+                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where login !=:system and is_client=0 order by fio ASC');
+                $stmt->execute(array(
+                    ':system' => 'system'
+                ));
+                $res1 = $stmt->fetchAll();
+                $i = 1;
+                foreach ($res1 as $row) {
+                    
+                    $ec = explode(",", $row['unit']);
+                    
+                    if (in_array($unit, $ec)) {
+                        
+                        //$row['value']; //ID
+                        //
+                        $usr_id = $row['value'];
+                        $stmt = $dbConnection->prepare('SELECT date_op, msg, init_user_id, to_user_id, to_unit_id, ticket_id from ticket_log where init_user_id=:iud and date_op between :start AND :end AND msg=:msg order by date_op ASC');
+                        $stmt->execute(array(
+                            ':iud' => $usr_id,
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':msg' => 'create'
+                        ));
+                        $re = $stmt->fetchAll();
+                        
+                        if (!empty($re)) {
+                            
+                            foreach ($re as $row) {
+
+                                //$row['id'];
+                ////////////////////////////Показывает кому/////////////////////////////////////////////////////////////////
+                if ($row['to_user_id'] <> 0) {
+                    $to_text = "<div class=''>" . nameshort(name_of_user_ret($row['to_user_id'])) . "</div>";
+                }
+                if ($row['to_user_id'] == 0) {
+                    $to_text = view_array(get_unit_name_return($row['to_unit_id'])) ;
+                }
+                
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
+                    $t_status=get_ticket_val_by_hash('status', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_ob=get_ticket_val_by_hash('ok_by', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_dc=get_ticket_val_by_hash('date_create', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_lb=get_ticket_val_by_hash('lock_by', get_ticket_hash_by_id($row['ticket_id']));
+                if ($t_status == 1) {
+                    $st = "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> " . lang('t_list_a_oko') . " " . nameshort(name_of_user_ret_nolink($t_ob)) . "</span>";
+                    $t_ago = get_date_ok($t_dc, $row['ticket_id']);
+                }
+                if ($t_status == 0) {
+                    $t_ago = $t_dc;
+                    if ($t_lb <> 0) {
+
+                            $st = "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> " . lang('t_list_a_lock_u') . " " . nameshort(name_of_user_ret_nolink($t_lb)) . "</span>";
+                        
+                    }
+                    if ($t_lb == 0) {
+                        $st = "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> " . lang('t_list_a_hold') . "</span>";
+                    }
+                }
+                
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+?>
+
+                                <tr>
+                    <td style=""><small><center><?php echo $i; ?></center></small></td>
+                    <td style=""><small><center><?php echo $row['ticket_id']; ?> </center>  </small></td>
+                    <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['ticket_id']);?>">
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($row['ticket_id']))), 'no')); ?>
+                    </a>
+                    </small></td>
+                    <td style=""><small><time id="c" datetime="<?php echo $row['date_op'] ?>"></time>   </small></td>
+                    <td style=""><small><?php echo name_of_user_ret($row['init_user_id']); ?>       </small></td>
+                    <td style=""><small><?=$to_text; ?> </small></td>
+                    <td style=""><small><?=nameshort(name_of_user_ret(get_ticket_val_by_hash('client_id', get_ticket_hash_by_id($row['ticket_id']))));?> </small></td>
+                    <td style=""><small><?=$st;?>  </small></td>
+                    
+                </tr>
+
+
+<?php
+                                //echo $row['date_op'] . "<br>";
+                                $i++;
+                            }
+                        }
+                    }
+                }
+?>
+</tbody>
+</table>
+<br>
+<br>
+<center><h4><?=lang('STAT_MAIN_t2');?></h4></center>
+<table class="table table-bordered">
+<tbody>
+                                <tr>
+                    <td style=""><strong><small><center><?=lang('STAT_MAIN_num');?></center></small></strong></td>
+                    <td style=""><strong><small><center>#</center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('NEW_subj');?></center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_create');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_init');?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_to');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('USERS_p_4');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_status');?>  </center></small></strong></td>
+                    
+                </tr>
+
+
+
+<?php
+                
+                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where login !=:system and is_client=0 order by fio ASC');
+                $stmt->execute(array(
+                    ':system' => 'system'
+                ));
+                $res1 = $stmt->fetchAll();
+                $i = 1;
+                foreach ($res1 as $row) {
+                    
+                    $ec = explode(",", $row['unit']);
+                    
+                    if (in_array($unit, $ec)) {
+                        
+                        //$row['value']; //ID
+                        //
+                        $usr_id = $row['value'];
+                        $stmt = $dbConnection->prepare('SELECT id, ok_by, ok_date, user_to_id, user_init_id, unit_id from tickets where ok_by=:iud and ok_date between :start AND :end  order by ok_date ASC');
+                        $stmt->execute(array(
+                            ':iud' => $usr_id,
+                            ':start' => $start,
+                            ':end' => $end
+                        ));
+                        $re = $stmt->fetchAll();
+                        
+                        if (!empty($re)) {
+                            
+                            foreach ($re as $row) {
+
+                                //$row['id'];
+                ////////////////////////////Показывает кому/////////////////////////////////////////////////////////////////
+                if ($row['user_to_id'] <> 0) {
+                    $to_text = "<div class=''>" . nameshort(name_of_user_ret($row['user_to_id'])) . "</div>";
+                }
+                if ($row['user_to_id'] == 0) {
+                    $to_text = view_array(get_unit_name_return($row['unit_id'])) ;
+                }
+                
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
+                    $t_status=get_ticket_val_by_hash('status', get_ticket_hash_by_id($row['id']));
+                    $t_ob=get_ticket_val_by_hash('ok_by', get_ticket_hash_by_id($row['id']));
+                    $t_dc=get_ticket_val_by_hash('date_create', get_ticket_hash_by_id($row['id']));
+                    $t_lb=get_ticket_val_by_hash('lock_by', get_ticket_hash_by_id($row['id']));
+                if ($t_status == 1) {
+                    $st = "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> " . lang('t_list_a_oko') . " " . nameshort(name_of_user_ret_nolink($t_ob)) . "</span>";
+                    $t_ago = get_date_ok($t_dc, $row['id']);
+                }
+                if ($t_status == 0) {
+                    $t_ago = $t_dc;
+                    if ($t_lb <> 0) {
+
+                            $st = "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> " . lang('t_list_a_lock_u') . " " . nameshort(name_of_user_ret_nolink($t_lb)) . "</span>";
+                        
+                    }
+                    if ($t_lb == 0) {
+                        $st = "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> " . lang('t_list_a_hold') . "</span>";
+                    }
+                }
+                
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+?>
+
+                                <tr>
+                    <td style=""><small><center><?php echo $i; ?></center></small></td>
+                    <td style=""><small><center><?php echo $row['id']; ?> </center>  </small></td>
+                    <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['id']);?>">
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($row['id']))), 'no')); ?>
+                    </a>
+                    </small></td>
+                    <td style=""><small><time id="c" datetime="<?php echo $row['ok_date'] ?>"></time>   </small></td>
+                    <td style=""><small><?php echo name_of_user_ret($row['user_init_id']); ?>       </small></td>
+                    <td style=""><small><?=$to_text; ?> </small></td>
+                    <td style=""><small><?=nameshort(name_of_user_ret(get_ticket_val_by_hash('client_id', get_ticket_hash_by_id($row['id']))));?> </small></td>
+                    <td style=""><small><?=$st;?>  </small></td>
+                    
+                </tr>
+
+
+<?php
+                                //echo $row['date_op'] . "<br>";
+                                $i++;
+                            }
+                        }
+                    }
+                }
+?>
+</tbody>
+</table>
+
+<br><br>
+<center><h4><?=lang('STAT_MAIN_t3');?></h4></center>
+<table class="table table-bordered">
+
+                                <tr>
+                    <td style=""><strong><small><center><?=lang('STAT_MAIN_num');?></center></small></strong></td>
+                    <td style=""><strong><small><center>#</center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('NEW_subj');?></center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_create');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_init');?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_to');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('USERS_p_4');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_status');?>  </center></small></strong></td>
+                    
+                </tr>
+
+
+
+
+<?php
+                
+                        $stmt = $dbConnection->prepare('SELECT id, ok_by, ok_date, user_to_id, user_init_id, unit_id,last_update from tickets where status=:st and unit_id=:iud and last_update between :start AND :end  order by last_update ASC');
+                        $stmt->execute(array(
+                            ':iud' => $unit,
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':st' =>'0'
+
+                        ));
+
+
+                        $res1 = $stmt->fetchAll();
+                        
+                        $i = 1;
+
+                        
+                        if (!empty($res1)) {
+                            
+                            foreach ($res1 as $row) {
+
+                                //$row['id'];
+                ////////////////////////////Показывает кому/////////////////////////////////////////////////////////////////
+                if ($row['user_to_id'] <> 0) {
+                    $to_text = "<div class=''>" . nameshort(name_of_user_ret($row['user_to_id'])) . "</div>";
+                }
+                if ($row['user_to_id'] == 0) {
+                    $to_text = view_array(get_unit_name_return($row['unit_id'])) ;
+                }
+                
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
+                    $t_status=get_ticket_val_by_hash('status', get_ticket_hash_by_id($row['id']));
+                    $t_ob=get_ticket_val_by_hash('last_update', get_ticket_hash_by_id($row['id']));
+                    $t_dc=get_ticket_val_by_hash('date_create', get_ticket_hash_by_id($row['id']));
+                    $t_lb=get_ticket_val_by_hash('lock_by', get_ticket_hash_by_id($row['id']));
+                if ($t_status == 1) {
+                    $st = "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> " . lang('t_list_a_oko') . " " . nameshort(name_of_user_ret_nolink($t_ob)) . "</span>";
+                    $t_ago = get_date_ok($t_dc, $row['id']);
+                }
+                if ($t_status == 0) {
+                    $t_ago = $t_dc;
+                    if ($t_lb <> 0) {
+
+                            $st = "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> " . lang('t_list_a_lock_u') . " " . nameshort(name_of_user_ret_nolink($t_lb)) . "</span>";
+                        
+                    }
+                    if ($t_lb == 0) {
+                        $st = "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> " . lang('t_list_a_hold') . "</span>";
+                    }
+                }
+                
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+?>
+
+                                <tr>
+                    <td style=""><small><center><?php echo $i; ?></center></small></td>
+                    <td style=""><small><center><?php echo $row['id']; ?> </center>  </small></td>
+                    <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['id']);?>">
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($row['id']))), 'no')); ?>
+                    </a>
+                    </small></td>
+                    <td style=""><small><time id="c" datetime="<?php echo $row['last_update'] ?>"></time>   </small></td>
+                    <td style=""><small><?php echo name_of_user_ret($row['user_init_id']); ?>       </small></td>
+                    <td style=""><small><?=$to_text; ?> </small></td>
+                    <td style=""><small><?=nameshort(name_of_user_ret(get_ticket_val_by_hash('client_id', get_ticket_hash_by_id($row['id']))));?> </small></td>
+                    <td style=""><small><?=$st;?>  </small></td>
+                    
+                </tr>
+
+
+<?php
+                                //echo $row['date_op'] . "<br>";
+                                $i++;
+                            }
+                        }
+                    
+?>
+</tbody>
+</table>
+<br>
+
+
 </div>
 
 </div>
 
 
 <?php
-                }
-                else if ($unit == "0") {
+            } else if ($unit == "0") {
 ?>
     <div class="box box-solid">
         <div class="box-header">
-<h4 class="box-title"><?php echo lang('ALLSTATS_main'); ?> <time id="c" datetime="<?php echo $start ?>"></time> - <time id="c" datetime="<?php echo $end ?>"></time></h4>
+<h4 class="box-title"><?php
+                echo lang('ALLSTATS_main'); ?> <time id="c" datetime="<?php
+                echo $start ?>"></time> - <time id="c" datetime="<?php
+                echo $end ?>"></time></h4>
 </div>
             <div class="box-body">
-            <h4><center><?php echo lang('ALLSTATS_unit'); ?></center></h4>
+            <h4><center><?php
+                echo lang('ALLSTATS_unit'); ?></center></h4>
             <table class="table table-bordered">
 <tbody>
                                 <tr>
                     <td style="width: 300px;"></td>
-                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_out'); ?>   </center></small></strong></td>
-                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_free'); ?>   </center></small></strong></td>
-                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_lock'); ?>       </center></small></strong></td>
-                    <td style=""><strong><small><center><?php echo lang('ALLSTATS_unit_ok'); ?> </center></small></strong></td>
+                    <td style=""><strong><small><center><?php
+                echo lang('ALLSTATS_unit_out'); ?>   </center></small></strong></td>
+                    <td style=""><strong><small><center><?php
+                echo lang('ALLSTATS_unit_free'); ?>   </center></small></strong></td>
+                    <td style=""><strong><small><center><?php
+                echo lang('ALLSTATS_unit_lock'); ?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?php
+                echo lang('ALLSTATS_unit_ok'); ?> </center></small></strong></td>
                     
                 </tr>
 <?php
-            $unit_user = unit_of_user($_SESSION['helpdesk_user_id']);
-            $ee = explode(",", $unit_user);
-            foreach ($ee as $key => $value) {
+                $unit_user = unit_of_user($_SESSION['helpdesk_user_id']);
+                $ee = explode(",", $unit_user);
+                foreach ($ee as $key => $value) {
 ?>
 
 
 
                 <tr>
-                    <td style=""><small><?php echo get_unit_name_return4news($value); ?>    </small></td>
-                    <td style=""><small><center><?php echo get_unit_stat_create($value, $start, $end); ?>   </center></small></td>
-                    <td style=""><small><center><?php echo get_unit_stat_free($value, $start, $end); ?>   </center></small></td>
-                    <td style=""><small><center><?php echo get_unit_stat_lock($value, $start, $end); ?>   </center></small></td>
-                    <td style=""><small><center><?php echo get_unit_stat_ok($value, $start, $end); ?>     </center></small></td>
+                    <td style=""><small><?php
+                    echo get_unit_name_return4news($value); ?>    </small></td>
+                    <td style=""><small><center><?php
+                    echo get_unit_stat_create($value, $start, $end); ?>   </center></small></td>
+                    <td style=""><small><center><?php
+                    echo get_unit_stat_free($value, $start, $end); ?>   </center></small></td>
+                    <td style=""><small><center><?php
+                    echo get_unit_stat_lock($value, $start, $end); ?>   </center></small></td>
+                    <td style=""><small><center><?php
+                    echo get_unit_stat_ok($value, $start, $end); ?>     </center></small></td>
                 </tr>
 
                 
                 
     <?php
-            } ?>
+                } ?>
 </tbody>
 </table>
 
-<h4><center><?php echo lang('ALLSTATS_user'); ?></center></h4>
+<h4><center><?php
+                echo lang('ALLSTATS_user'); ?></center></h4>
 <table class="table table-bordered table-hover">
                 <tbody>
                 <tr>
-                    <td style="width: 200px;">  <strong><small><center><?php echo lang('ALLSTATS_user_fio'); ?>                 </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('t_LIST_status'); ?>         </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('EXT_t_created'); ?>            </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('EXT_stats_refer'); ?>            </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('EXT_t_oked'); ?>          </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('EXT_stats_lock'); ?>     </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('EXT_stats_unlock'); ?> </center></small></strong></td>
-                    <td style="">               <strong><small><center><?php echo lang('EXT_stats_no_ok'); ?> </center></small></strong></td>
+                    <td style="width: 200px;">  <strong><small><center><?php
+                echo lang('ALLSTATS_user_fio'); ?>                 </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+                echo lang('t_LIST_status'); ?>         </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+                echo lang('EXT_t_created'); ?>            </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+                echo lang('EXT_stats_refer'); ?>            </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+                echo lang('EXT_t_oked'); ?>          </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+                echo lang('EXT_stats_lock'); ?>     </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+                echo lang('EXT_stats_unlock'); ?> </center></small></strong></td>
+                    <td style="">               <strong><small><center><?php
+                echo lang('EXT_stats_no_ok'); ?> </center></small></strong></td>
                 </tr>
 <?php
-            
-            //$ee - массив id отделов, на которые у меня есть права
-            //$ec - массив id отделов пользователей
-            //если какой-то отдел совпадает вывести
-            $stmt = $dbConnection->prepare('SELECT id, unit from users where is_client=0');
-            $stmt->execute();
-            $result = $stmt->fetchAll();
-            if (!empty($result)) {
                 
-                foreach ($result as $row) {
-                    $ec = explode(",", $row['unit']);
-
-
-                $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id=:uid and date_create between :start AND :end');
-                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end));
-                $count = $res->fetch(PDO::FETCH_NUM);
-                $get_total_tickets_create = $count[0];
-                
-                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'refer'));
-                $count = $res->fetch(PDO::FETCH_NUM);
-                $get_total_tickets_refer = $count[0];
-                
-                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'ok'));
-                $count = $res->fetch(PDO::FETCH_NUM);
-                $get_total_tickets_ok = $count[0];
-                
-                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'lock'));
-                $count = $res->fetch(PDO::FETCH_NUM);
-                $get_total_tickets_lock = $count[0];
-                
-                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'unlock'));
-                $count = $res->fetch(PDO::FETCH_NUM);
-                $get_total_tickets_unlock = $count[0];
-                
-                $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $row['id'], ':start' => $start, ':end' => $end, ':refer' => 'no_ok'));
-                $count = $res->fetch(PDO::FETCH_NUM);
-                $get_total_tickets_no_ok = $count[0];
-
-
+                //$ee - массив id отделов, на которые у меня есть права
+                //$ec - массив id отделов пользователей
+                //если какой-то отдел совпадает вывести
+                $stmt = $dbConnection->prepare('SELECT id, unit from users where is_client=0');
+                $stmt->execute();
+                $result = $stmt->fetchAll();
+                if (!empty($result)) {
                     
-                    $result = array_intersect($ee, $ec);
-                    if ($result) {
-
+                    foreach ($result as $row) {
+                        $ec = explode(",", $row['unit']);
+                        
+                        $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id=:uid and date_create between :start AND :end');
+                        $res->execute(array(
+                            ':uid' => $row['id'],
+                            ':start' => $start,
+                            ':end' => $end
+                        ));
+                        $count = $res->fetch(PDO::FETCH_NUM);
+                        $get_total_tickets_create = $count[0];
+                        
+                        $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                        $res->execute(array(
+                            ':uid' => $row['id'],
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':refer' => 'refer'
+                        ));
+                        $count = $res->fetch(PDO::FETCH_NUM);
+                        $get_total_tickets_refer = $count[0];
+                        
+                        $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                        $res->execute(array(
+                            ':uid' => $row['id'],
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':refer' => 'ok'
+                        ));
+                        $count = $res->fetch(PDO::FETCH_NUM);
+                        $get_total_tickets_ok = $count[0];
+                        
+                        $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                        $res->execute(array(
+                            ':uid' => $row['id'],
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':refer' => 'lock'
+                        ));
+                        $count = $res->fetch(PDO::FETCH_NUM);
+                        $get_total_tickets_lock = $count[0];
+                        
+                        $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                        $res->execute(array(
+                            ':uid' => $row['id'],
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':refer' => 'unlock'
+                        ));
+                        $count = $res->fetch(PDO::FETCH_NUM);
+                        $get_total_tickets_unlock = $count[0];
+                        
+                        $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
+                        $res->execute(array(
+                            ':uid' => $row['id'],
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':refer' => 'no_ok'
+                        ));
+                        $count = $res->fetch(PDO::FETCH_NUM);
+                        $get_total_tickets_no_ok = $count[0];
+                        
+                        $result = array_intersect($ee, $ec);
+                        if ($result) {
 ?>
 
 <tr>
-                    <td style="width: 200px;"><small><?php echo name_of_user_ret($row['id']); ?></small></td>
-                    <td style=""><small class="text-danger"><center><?php echo get_user_status($row['id']); ?></center></small></td>
+                    <td style="width: 200px;"><small><?php
+                            echo name_of_user_ret($row['id']); ?></small></td>
+                    <td style=""><small class="text-danger"><center><?php
+                            echo get_user_status($row['id']); ?></center></small></td>
 
-                    <td style=""><small class="text-danger"><center><?=$get_total_tickets_create; ?></center></small></td>
-                    <td style=""><small class="text-warning"><center><?=$get_total_tickets_refer; ?></center></small></td>
-                    <td style=""><small class="text-success"><center><?=$get_total_tickets_ok; ?></center></small></td>
-                    <td style=""><small class=""><center><?=$get_total_tickets_lock; ?></center></small></td>
-                    <td style=""><small class=""><center><?=$get_total_tickets_unlock; ?></center></small></td>
-                    <td style=""><small class=""><center><?=$get_total_tickets_no_ok; ?></center></small></td>
+                    <td style=""><small class="text-danger"><center><?php echo $get_total_tickets_create; ?></center></small></td>
+                    <td style=""><small class="text-warning"><center><?php echo $get_total_tickets_refer; ?></center></small></td>
+                    <td style=""><small class="text-success"><center><?php echo $get_total_tickets_ok; ?></center></small></td>
+                    <td style=""><small class=""><center><?php echo $get_total_tickets_lock; ?></center></small></td>
+                    <td style=""><small class=""><center><?php echo $get_total_tickets_unlock; ?></center></small></td>
+                    <td style=""><small class=""><center><?php echo $get_total_tickets_no_ok; ?></center></small></td>
 </tr>
 
 
@@ -570,9 +975,9 @@ values (:comment, :n, :user_comment, :tid_comment)');
 
 
 <?php
+                        }
                     }
                 }
-            }
 ?>
 
                 </tbody>
@@ -581,8 +986,8 @@ values (:comment, :n, :user_comment, :tid_comment)');
             </div>
     </div>
 <?php
-}
-                }
+            }
+        }
         
         if ($mode == "get_user_stat") {
             
@@ -599,36 +1004,69 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 */
                 
                 $stmt = $dbConnection->prepare('SELECT date_op, msg, init_user_id, to_user_id, to_unit_id, ticket_id from ticket_log where init_user_id=:iud and date_op between :start AND :end order by id DESC');
-                $stmt->execute(array(':iud' => $uid, ':start' => $start, ':end' => $end));
+                $stmt->execute(array(
+                    ':iud' => $uid,
+                    ':start' => $start,
+                    ':end' => $end
+                ));
                 $re = $stmt->fetchAll();
                 
                 $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id=:uid and date_create between :start AND :end');
-                $res->execute(array(':uid' => $uid, ':start' => $start, ':end' => $end));
+                $res->execute(array(
+                    ':uid' => $uid,
+                    ':start' => $start,
+                    ':end' => $end
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $get_total_tickets_create = $count[0];
                 
                 $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $uid, ':start' => $start, ':end' => $end, ':refer' => 'refer'));
+                $res->execute(array(
+                    ':uid' => $uid,
+                    ':start' => $start,
+                    ':end' => $end,
+                    ':refer' => 'refer'
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $get_total_tickets_refer = $count[0];
                 
                 $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $uid, ':start' => $start, ':end' => $end, ':refer' => 'ok'));
+                $res->execute(array(
+                    ':uid' => $uid,
+                    ':start' => $start,
+                    ':end' => $end,
+                    ':refer' => 'ok'
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $get_total_tickets_ok = $count[0];
                 
                 $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $uid, ':start' => $start, ':end' => $end, ':refer' => 'lock'));
+                $res->execute(array(
+                    ':uid' => $uid,
+                    ':start' => $start,
+                    ':end' => $end,
+                    ':refer' => 'lock'
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $get_total_tickets_lock = $count[0];
                 
                 $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $uid, ':start' => $start, ':end' => $end, ':refer' => 'unlock'));
+                $res->execute(array(
+                    ':uid' => $uid,
+                    ':start' => $start,
+                    ':end' => $end,
+                    ':refer' => 'unlock'
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $get_total_tickets_unlock = $count[0];
                 
                 $res = $dbConnection->prepare('SELECT count(DISTINCT ticket_id) from ticket_log where init_user_id=:uid and msg=:refer and date_op between :start AND :end');
-                $res->execute(array(':uid' => $uid, ':start' => $start, ':end' => $end, ':refer' => 'no_ok'));
+                $res->execute(array(
+                    ':uid' => $uid,
+                    ':start' => $start,
+                    ':end' => $end,
+                    ':refer' => 'no_ok'
+                ));
                 $count = $res->fetch(PDO::FETCH_NUM);
                 $get_total_tickets_no_ok = $count[0];
                 
@@ -636,17 +1074,24 @@ values (:comment, :n, :user_comment, :tid_comment)');
                         
                         <div class="box box-info">
                             <div class="box-header">
-                                    <h4 class="box-title"><?php echo lang('EXT_stat_title'); ?> <time id="c" datetime="<?php echo $start ?>"></time> - <time id="c" datetime="<?php echo $end ?>"></time></h4>
+                                    <h4 class="box-title"><?php
+                    echo lang('EXT_stat_title'); ?> <time id="c" datetime="<?php
+                    echo $start ?>"></time> - <time id="c" datetime="<?php
+                    echo $end ?>"></time></h4>
                                 </div>
                             <div class="panel-body" style="max-height: 400px; scroll-behavior: initial; overflow-y: scroll;">
 
                                         <table class="table table-hover">
                                             <thead>
                                             <tr>
-                                                <th><center><small><?php echo lang('TICKET_t_date'); ?></small></center>    </th>
-                                                <th><center><small><?php echo lang('TICKET_name'); ?>   </small></center></th>
-                                                <th><center><small><?php echo lang('TICKET_t_action'); ?>   </small></center></th>
-                                                <th><center><small><?php echo lang('TICKET_t_desc'); ?> </small></center></th>
+                                                <th><center><small><?php
+                    echo lang('TICKET_t_date'); ?></small></center>    </th>
+                                                <th><center><small><?php
+                    echo lang('TICKET_name'); ?>   </small></center></th>
+                                                <th><center><small><?php
+                    echo lang('TICKET_t_action'); ?>   </small></center></th>
+                                                <th><center><small><?php
+                    echo lang('TICKET_t_desc'); ?> </small></center></th>
                                                 
 
                                             </tr>
@@ -694,14 +1139,19 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                                 <tr>
                                                     <td style="width: 100px; vertical-align: inherit;"><small><center>
                                                     
-                                                    <time id="c" datetime="<?php echo $row['date_op'] ?>"></time>
+                                                    <time id="c" datetime="<?php
+                        echo $row['date_op'] ?>"></time>
                                                     
                                                     </center></small></td>
                                                     <td style=" width: 70px; vertical-align: inherit;"><center><small>
-                                                       <a href="ticket?<?php echo get_ticket_hash_by_id($row['ticket_id']) ?>"> #<?php echo $row['ticket_id'] ?></a>
+                                                       <a href="ticket?<?php
+                        echo get_ticket_hash_by_id($row['ticket_id']) ?>"> #<?php
+                        echo $row['ticket_id'] ?></a>
                                                         </small></center></td>
-                                                    <td style=" width: 50px; vertical-align: inherit;"><small><center><i class="<?php echo $icon_action; ?>"></i>  </center></small></td>
-                                                    <td style=" width: 200px; vertical-align: inherit;"><small><?php echo $text_action ?></small></td>
+                                                    <td style=" width: 50px; vertical-align: inherit;"><small><center><i class="<?php
+                        echo $icon_action; ?>"></i>  </center></small></td>
+                                                    <td style=" width: 200px; vertical-align: inherit;"><small><?php
+                        echo $text_action ?></small></td>
 
                                                     
                                                 </tr>
@@ -719,57 +1169,75 @@ values (:comment, :n, :user_comment, :tid_comment)');
                             
                             <div class="box box-info">
                                 <div class="box-header">
-                                    <h4 class="box-title"><?php echo lang('EXT_stats_main'); ?></h4>
+                                    <h4 class="box-title"><?php
+                    echo lang('EXT_stats_main'); ?></h4>
                                 </div>
                                 
                                 <div class="row">
                             <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                            <input type="text" class="knob" data-readonly="true" value="<?php echo $get_total_tickets_create; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php echo (get_total_tickets_count()); ?>" data-fgColor="#39CCCC"/>
-                                            <div class="knob-label"><?php echo lang('EXT_t_created'); ?></div>
+                                            <input type="text" class="knob" data-readonly="true" value="<?php
+                    echo $get_total_tickets_create; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php
+                    echo (get_total_tickets_count()); ?>" data-fgColor="#39CCCC"/>
+                                            <div class="knob-label"><?php
+                    echo lang('EXT_t_created'); ?></div>
                                         </div><!-- ./col -->
                             <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                            <input type="text" class="knob" data-readonly="true" value="<?php echo $get_total_tickets_refer; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php echo (get_total_tickets_count()); ?>" data-fgColor="#932AB6"/>
-                                            <div class="knob-label"><?php echo lang('EXT_stats_refer'); ?></div>
+                                            <input type="text" class="knob" data-readonly="true" value="<?php
+                    echo $get_total_tickets_refer; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php
+                    echo (get_total_tickets_count()); ?>" data-fgColor="#932AB6"/>
+                                            <div class="knob-label"><?php
+                    echo lang('EXT_stats_refer'); ?></div>
                                         </div><!-- ./col -->
                             <div class="col-xs-4 text-center">
-                                            <input type="text" class="knob" data-readonly="true" value="<?php echo $get_total_tickets_ok; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php echo (get_total_tickets_count()); ?>" data-fgColor="#39CC57"/>
-                                            <div class="knob-label"><?php echo lang('EXT_t_oked'); ?></div>
+                                            <input type="text" class="knob" data-readonly="true" value="<?php
+                    echo $get_total_tickets_ok; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php
+                    echo (get_total_tickets_count()); ?>" data-fgColor="#39CC57"/>
+                                            <div class="knob-label"><?php
+                    echo lang('EXT_t_oked'); ?></div>
                                         </div><!-- ./col -->
                                 </div>
                             <div class="row">
                                <div class="col-xs-12"> <hr></div>
                             <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                            <input type="text" class="knob" data-readonly="true" value="<?php echo $get_total_tickets_lock; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php echo (get_total_tickets_count()); ?>" data-fgColor="#F39C12"/>
-                                            <div class="knob-label"><?php echo lang('EXT_stats_lock'); ?></div>
+                                            <input type="text" class="knob" data-readonly="true" value="<?php
+                    echo $get_total_tickets_lock; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php
+                    echo (get_total_tickets_count()); ?>" data-fgColor="#F39C12"/>
+                                            <div class="knob-label"><?php
+                    echo lang('EXT_stats_lock'); ?></div>
                                         </div><!-- ./col -->
                             <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                                            <input type="text" class="knob" data-readonly="true" value="<?php echo $get_total_tickets_unlock; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php echo (get_total_tickets_count()); ?>" data-fgColor="#001F3F"/>
-                                            <div class="knob-label"><?php echo lang('EXT_stats_unlock'); ?></div>
+                                            <input type="text" class="knob" data-readonly="true" value="<?php
+                    echo $get_total_tickets_unlock; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php
+                    echo (get_total_tickets_count()); ?>" data-fgColor="#001F3F"/>
+                                            <div class="knob-label"><?php
+                    echo lang('EXT_stats_unlock'); ?></div>
                                         </div><!-- ./col -->
                             <div class="col-xs-4 text-center">
-                                            <input type="text" class="knob" data-readonly="true" value="<?php echo $get_total_tickets_no_ok; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php echo (get_total_tickets_count()); ?>" data-fgColor="#F56954"/>
-                                            <div class="knob-label"><?php echo lang('EXT_stats_no_ok'); ?></div>
+                                            <input type="text" class="knob" data-readonly="true" value="<?php
+                    echo $get_total_tickets_no_ok; ?>" data-width="100" data-height="100" data-max="50" data-max="<?php
+                    echo (get_total_tickets_count()); ?>" data-fgColor="#F56954"/>
+                                            <div class="knob-label"><?php
+                    echo lang('EXT_stats_no_ok'); ?></div>
                                         </div><!-- ./col -->
                                 </div>
                             </div>
 <?php
-                }
-                else {
-                    ?>
+                } else {
+?>
                 <div class="alert alert-warning alert-dismissable">
                                         <i class="fa fa-warning"></i>
                                         
-                                        <?=lang('E_no_info');?>
+                                        <?php echo lang('E_no_info'); ?>
                                     </div>
 
                 <?php
                 }
             } else {
-                ?>
+?>
                 <div class="alert alert-warning alert-dismissable">
                                         <i class="fa fa-warning"></i>
                                         
-                                        <?=lang('E_no_selected_user');?>
+                                        <?php echo lang('E_no_selected_user'); ?>
                                     </div>
 
                 <?php
@@ -802,7 +1270,9 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $noteid = ($_POST['hn']);
             
             $stmt = $dbConnection->prepare('select hashname, message from notes where hashname=:noteid');
-            $stmt->execute(array(':noteid' => $noteid));
+            $stmt->execute(array(
+                ':noteid' => $noteid
+            ));
             $res = $stmt->fetchAll();
             
             foreach ($res as $row) {
@@ -813,14 +1283,21 @@ values (:comment, :n, :user_comment, :tid_comment)');
         if ($mode == "del_notes") {
             $noteid = ($_POST['nid']);
             $stmt = $dbConnection->prepare('delete from notes where hashname=:noteid');
-            $stmt->execute(array(':noteid' => $noteid));
+            $stmt->execute(array(
+                ':noteid' => $noteid
+            ));
         }
         
         if ($mode == "create_notes") {
             $uid = $_SESSION['helpdesk_user_id'];
             $hn = md5(time());
             $stmt = $dbConnection->prepare('insert into notes (message, hashname, user_id, dt) values (:nr, :hn, :uid, :n)');
-            $stmt->execute(array(':nr' => 'new record', ':hn' => $hn, ':uid' => $uid, ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':nr' => 'new record',
+                ':hn' => $hn,
+                ':uid' => $uid,
+                ':n' => $CONF['now_dt']
+            ));
             
             echo $hn;
         }
@@ -830,7 +1307,11 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $term = trim(strip_tags(($_POST['name'])));
             
             $stmt = $dbConnection->prepare('SELECT id FROM users WHERE ((fio = :term) or (login = :term2) or (tel = :term3)) and id!=1 and is_client=1 limit 1');
-            $stmt->execute(array(':term' => $term, ':term2' => $term, ':term3' => $term));
+            $stmt->execute(array(
+                ':term' => $term,
+                ':term2' => $term,
+                ':term3' => $term
+            ));
             
             $res1 = $stmt->fetchAll();
             
@@ -847,30 +1328,26 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 //user priv to add client in new ticket
                 $pa = get_user_val('priv_add_client');
                 
-                
                 if (isset($_POST['cron'])) {
-	                $r['priv'] = false;
-	                $r['msg_error'] = "<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">
-  <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>
-  User must be created.
-</div>";
-                }
-                else if (!isset($_POST['cron'])) {
-                if ($pa == 1) {
-                    $r['priv'] = true;
-                    $r['msg_error'] = "";
-
-                }
-                if ($pa == 0) {
                     $r['priv'] = false;
                     $r['msg_error'] = "<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">
   <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>
+  User must be created.
+</div>";
+                } else if (!isset($_POST['cron'])) {
+                    if ($pa == 1) {
+                        $r['priv'] = true;
+                        $r['msg_error'] = "";
+                    }
+                    if ($pa == 0) {
+                        $r['priv'] = false;
+                        $r['msg_error'] = "<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">
+  <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>
   " . lang('TICKET_error_msg') . "
 </div>";
-
+                    }
                 }
-                }
-                            }
+            }
             
             $row_set[] = $r;
             echo json_encode($row_set);
@@ -888,7 +1365,8 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     get_client_info($client_id);
                 } else {
 ?>
-                    <?php echo get_client_info_ticket($client_id) ?>
+                    <?php
+                    echo get_client_info_ticket($client_id) ?>
                     <?php
                 }
             } else if (isset($_POST['get_my_info'])) {
@@ -903,7 +1381,8 @@ values (:comment, :n, :user_comment, :tid_comment)');
 <div class="box box-info">
                                 <div class="box-header">
                                     <i class="fa fa-user"></i>
-                                    <h3 class="box-title"> <?php echo lang('WORKER_TITLE'); ?></h3>
+                                    <h3 class="box-title"> <?php
+                echo lang('WORKER_TITLE'); ?></h3>
                                 </div><!-- /.box-header -->
                                 <div class="box-body" >
 
@@ -912,41 +1391,55 @@ values (:comment, :n, :user_comment, :tid_comment)');
 
 <div class="callout callout-warning">
                                         
-                                        <p><?php echo lang('msg_created_new_user'); ?></p>
+                                        <p><?php
+                echo lang('msg_created_new_user'); ?></p>
                                     </div>
 
                             <table class="table  ">
                                 <tbody>
                                 <tr>
-                                    <td style=" width: 30px; "><small><?php echo lang('WORKER_fio'); ?>:</small></td>
+                                    <td style=" width: 30px; "><small><?php
+                echo lang('WORKER_fio'); ?>:</small></td>
                                     <td><small>
-                                            <a href="#" id="username" data-type="text" data-pk="1" data-title="Enter username"><?php echo $fio ?></a>
+                                            <a href="#" id="username" data-type="text" data-pk="1" data-title="Enter username"><?php
+                echo $fio ?></a>
                                         </small>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style=" width: 30px; "><small><?php echo lang('WORKER_login'); ?>:</small></td>
-                                    <td><small><a href="#" id="new_login" data-type="text"  data-pk="1" data-title="Enter username"><?php echo $u_l ?></a></small></td>
+                                    <td style=" width: 30px; "><small><?php
+                echo lang('WORKER_login'); ?>:</small></td>
+                                    <td><small><a href="#" id="new_login" data-type="text"  data-pk="1" data-title="Enter username"><?php
+                echo $u_l ?></a></small></td>
                                 </tr>
                                 <tr>
-                                    <td style=" width: 30px; "><small><?php echo lang('WORKER_posada'); ?>:</small></td>
-                                    <td><small><a href="#" id="new_posada"  data-type="select" data-source="<?php echo $CONF['hostname']; ?>/inc/json.php?posada" data-pk="1" data-title="<?php echo lang('WORKER_posada'); ?>"></a></small></td>
+                                    <td style=" width: 30px; "><small><?php
+                echo lang('WORKER_posada'); ?>:</small></td>
+                                    <td><small><a href="#" id="new_posada"  data-type="select" data-source="<?php
+                echo $CONF['hostname']; ?>/inc/json.php?posada" data-pk="1" data-title="<?php
+                echo lang('WORKER_posada'); ?>"></a></small></td>
                                 </tr>
                                 <tr>
-                                    <td style=" width: 30px; "><small><?php echo lang('WORKER_unit'); ?>:</small></td>
-                                    <td><small><a href="#" id="new_unit" data-type="select" data-source="<?php echo $CONF['hostname']; ?>/inc/json.php?units" data-pk="1" data-title="<?php echo lang('NEW_to_unit'); ?>"></a></small></td>
+                                    <td style=" width: 30px; "><small><?php
+                echo lang('WORKER_unit'); ?>:</small></td>
+                                    <td><small><a href="#" id="new_unit" data-type="select" data-source="<?php
+                echo $CONF['hostname']; ?>/inc/json.php?units" data-pk="1" data-title="<?php
+                echo lang('NEW_to_unit'); ?>"></a></small></td>
                                 </tr>
 
                                 <tr>
-                                    <td style=" width: 30px; "><small><?php echo lang('WORKER_tel'); ?>:</small></td>
+                                    <td style=" width: 30px; "><small><?php
+                echo lang('WORKER_tel'); ?>:</small></td>
                                     <td><small><a href="#" id="new_tel" data-type="text" data-pk="1" data-title="Enter username"></a></small></td>
                                 </tr>
                                 <tr>
-                                    <td style=" width: 30px; "><small><?php echo lang('WORKER_room'); ?>:</small></td>
+                                    <td style=" width: 30px; "><small><?php
+                echo lang('WORKER_room'); ?>:</small></td>
                                     <td><small><a href="#" id="new_adr" data-type="text" data-pk="1" data-title="Enter username"></a></small></td>
                                 </tr>
                                 <tr>
-                                    <td style=" width: 30px; "><small><?php echo lang('WORKER_mail'); ?>:</small></td>
+                                    <td style=" width: 30px; "><small><?php
+                echo lang('WORKER_mail'); ?>:</small></td>
                                     <td><small><a href="#" id="new_mail" data-type="text" data-pk="1" data-title="Enter username"></a></small></td>
                                 </tr>
 
@@ -983,6 +1476,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
             
             //header('HTTP 400 Bad Request', true, 400);
             //echo lang('ticket_login_error');
+            
             
         }
         
@@ -1021,7 +1515,9 @@ values (:comment, :n, :user_comment, :tid_comment)');
         
         if ($mode == "view_unread_msgs") {
             $stmt = $dbConnection->prepare('SELECT user_from, msg, date_op from messages where user_to=:uto and is_read=0');
-            $stmt->execute(array(':uto' => $_SESSION['helpdesk_user_id']));
+            $stmt->execute(array(
+                ':uto' => $_SESSION['helpdesk_user_id']
+            ));
             
             $re = $stmt->fetchAll();
             
@@ -1030,16 +1526,21 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                     
                                     
                                         <li><!-- start message -->
-                                            <a href="messages?to=<?php echo get_user_val_by_id($rews['user_from'], 'uniq_id'); ?>">
+                                            <a href="messages?to=<?php
+                echo get_user_val_by_id($rews['user_from'], 'uniq_id'); ?>">
                                                 <div class="pull-left">
-                                                    <img src="<?php echo get_user_img_by_id($uniq_id); ?>" class="img-circle" alt="User Image"/>
+                                                    <img src="<?php
+                echo get_user_img_by_id($uniq_id); ?>" class="img-circle" alt="User Image"/>
                                                 </div>
                                                 <h4>
-                                                    <?php echo nameshort(name_of_user_ret_nolink($rews['user_from'])); ?>
+                                                    <?php
+                echo nameshort(name_of_user_ret_nolink($rews['user_from'])); ?>
                                                     
-                                                    <small><i class="fa fa-clock-o"></i> <time id="b" datetime="<?php echo $rews['date_op']; ?>"></time> </time></small>
+                                                    <small><i class="fa fa-clock-o"></i> <time id="b" datetime="<?php
+                echo $rews['date_op']; ?>"></time> </time></small>
                                                 </h4>
-                                                <p><?php echo make_html($rews['msg'], 'no'); ?></p>
+                                                <p><?php
+                echo make_html($rews['msg'], 'no'); ?></p>
                                             </a>
                                         </li><!-- end message -->
                                         <?php
@@ -1054,22 +1555,28 @@ values (:comment, :n, :user_comment, :tid_comment)');
         if ($mode == "show_online_users") {
             
             $stmt = $dbConnection->prepare('select fio,id,uniq_id from users where last_time >= DATE_SUB(:n,INTERVAL 2 MINUTE)');
-            $stmt->execute(array(':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':n' => $CONF['now_dt']
+            ));
             $re = $stmt->fetchAll();
             
             foreach ($re as $rews) {
 ?>
 <li><!-- start message -->
-                                            <a href="view_user?<?php echo $rews['uniq_id']; ?>">
+                                            <a href="view_user?<?php
+                echo $rews['uniq_id']; ?>">
                                                 <div class="pull-left">
-                                                    <img src="<?php echo get_user_img_by_id($rews['id']); ?>" class="img-circle" alt="User Image"/>
+                                                    <img src="<?php
+                echo get_user_img_by_id($rews['id']); ?>" class="img-circle" alt="User Image"/>
                                                 </div>
                                                 <h4>
-                                                    <?php echo nameshort(name_of_user_ret_nolink($rews['id'])); ?>
+                                                    <?php
+                echo nameshort(name_of_user_ret_nolink($rews['id'])); ?>
                                                     
                                                     
                                                 </h4>
-                                                <p><?php echo get_user_val_by_id($rews['id'], 'posada'); ?></p>
+                                                <p><?php
+                echo get_user_val_by_id($rews['id'], 'posada'); ?></p>
                                             </a>
                                         </li><!-- end message -->
                                        <?php
@@ -1080,19 +1587,32 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $msgid = $_POST['msg_id'];
             
             $stmt = $dbConnection->prepare('select user_from, date_op, msg from messages where id=:msgid');
-            $stmt->execute(array(':msgid' => $msgid));
+            $stmt->execute(array(
+                ':msgid' => $msgid
+            ));
             $r = $stmt->fetch(PDO::FETCH_ASSOC);
             
             $uuniq_id = get_user_val_by_id($r['user_from'], 'uniq_id');
             $user_from = nameshort(name_of_user_ret_nolink($r['user_from']));
             $msgtext = $r['msg'];
             
-            $results[] = array('uniq_id' => $uuniq_id, 'new_msg_text' => lang('EXT_new_message'), 'time_op' => "<time id=\"b\" datetime=\"" . date("Y-m-d H:i:s") . "\"></time>", 'user_from' => $user_from, 'user_chat' => $msgtext);
+            $results[] = array(
+                'uniq_id' => $uuniq_id,
+                'new_msg_text' => lang('EXT_new_message') ,
+                'time_op' => "<time id=\"b\" datetime=\"" . date("Y-m-d H:i:s") . "\"></time>",
+                'user_from' => $user_from,
+                'user_chat' => $msgtext
+            );
             print json_encode($results);
         }
         
         if ($mode == "update_dashboard_labels") {
-            $results[] = array('tool1' => get_total_tickets_free(), 'tool2' => get_total_tickets_lock(), 'tool3' => get_total_tickets_out_and_success(), 'tool4' => get_total_tickets_ok());
+            $results[] = array(
+                'tool1' => get_total_tickets_free() ,
+                'tool2' => get_total_tickets_lock() ,
+                'tool3' => get_total_tickets_out_and_success() ,
+                'tool4' => get_total_tickets_ok()
+            );
             print json_encode($results);
         }
         
@@ -1113,7 +1633,10 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 $out_tickets = "";
             }
             
-            $results[] = array('in' => $newtickets, 'out' => $out_tickets);
+            $results[] = array(
+                'in' => $newtickets,
+                'out' => $out_tickets
+            );
             print json_encode($results);
         }
         if ($mode == "check_update_one") {
@@ -1121,7 +1644,9 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $ticket_id = ($_POST['id']);
             
             $stmt = $dbConnection->prepare('SELECT last_update,hash_name FROM tickets where id=:ticket_id');
-            $stmt->execute(array(':ticket_id' => $ticket_id));
+            $stmt->execute(array(
+                ':ticket_id' => $ticket_id
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             
             $db_lu = $fio['last_update'];
@@ -1139,7 +1664,11 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 $todo = "no";
             }
             
-            $results[] = array('type' => $todo, 'time' => $db_lu, 'hash' => $db_hn);
+            $results[] = array(
+                'type' => $todo,
+                'time' => $db_lu,
+                'hash' => $db_hn
+            );
             
             print json_encode($results);
         }
@@ -1162,7 +1691,11 @@ values (:comment, :n, :user_comment, :tid_comment)');
                         $s = "offline";
                     }
                     
-                    $results[] = array('name' => nameshort($un), 'stat' => $s, 'co' => $ud);
+                    $results[] = array(
+                        'name' => nameshort($un) ,
+                        'stat' => $s,
+                        'co' => $ud
+                    );
                 } else if ($idzz <> "0") {
                     $un = $row['fio'];
                     $ud = (int)$row['id'];
@@ -1176,13 +1709,18 @@ values (:comment, :n, :user_comment, :tid_comment)');
                             $s = "offline";
                         }
                         
-                        $results[] = array('name' => nameshort($un), 'stat' => $s, 'co' => $ud);
+                        $results[] = array(
+                            'name' => nameshort($un) ,
+                            'stat' => $s,
+                            'co' => $ud
+                        );
                     }
                 }
             }
             
             print json_encode($results);
         }
+        
         /*
         if ($mode == "edit_helper") {
             $hn = ($_POST['hn']);
@@ -1201,14 +1739,14 @@ values (:comment, :n, :user_comment, :tid_comment)');
             
             $u = $fio['unit_to_id'];
             $u = explode(",", $u);
-?>
+        ?>
             <div class="box box-solid">
             <div class="box-body">
             <form class="form-horizontal" role="form">
-
-
-
-
+        
+        
+        
+        
                 <div class="form-group">
                     <label for="u" class="col-md-2 control-label"><small><?php echo lang('NEW_to'); ?>: </small></label>
                     <div class="col-md-10">
@@ -1234,70 +1772,70 @@ values (:comment, :n, :user_comment, :tid_comment)');
                         $opt_sel = "selected";
                     }
                 }
-?>
-
+        ?>
+        
                                 <option <?php echo $opt_sel; ?> value="<?php echo $row['value'] ?>"><?php echo $row['label'] ?></option>
-
-<?php
+        
+        <?php
                 
                 //
                 
             }
-?>
-
+        ?>
+        
                         </select>
                     </div>
                 </div>
                 <div class="">
                     <div class="">
                         <div class="form-group">
-
+        
                             <label for="t" class="col-sm-2 control-label"><small><?php echo lang('HELP_desc'); ?>: </small></label>
-
+        
                             <div class="col-sm-10">
-
-
+        
+        
                                 <input  type="text" name="fio" class="form-control input-sm" id="t" placeholder="<?php echo lang('HELP_desc'); ?>" value="<?php echo $fio['title']; ?>">
-
-
-
+        
+        
+        
                             </div>
-
-
-
+        
+        
+        
                         </div></div>
                         
                         
                         <div class="form-group">
-  <label for="is_client" class="col-sm-2 control-label"><small><?php echo lang('EXT_for_clients'); ?></small></label>
-  <div class="col-sm-10">
-  
-  
-  
-      <div class="col-sm-10">
-      <div class="checkbox">
-    <label>
-      <input type="checkbox" id="is_client" <?php echo $isclient_status; ?>> <?php echo lang('CONF_true'); ?>
-      <p class="help-block"><small><?php echo lang('EXT_for_clients_ext'); ?></small></p>
-    </label>
-  </div>
-      </div>
-  </div>
-    </div>
-    
-    
+        <label for="is_client" class="col-sm-2 control-label"><small><?php echo lang('EXT_for_clients'); ?></small></label>
+        <div class="col-sm-10">
+        
+        
+        
+        <div class="col-sm-10">
+        <div class="checkbox">
+        <label>
+        <input type="checkbox" id="is_client" <?php echo $isclient_status; ?>> <?php echo lang('CONF_true'); ?>
+        <p class="help-block"><small><?php echo lang('EXT_for_clients_ext'); ?></small></p>
+        </label>
+        </div>
+        </div>
+        </div>
+        </div>
+        
+        
                         
                     <div class="form-group">
-
+        
                         <label for="t2" class="col-sm-2 control-label"><small><?php echo lang('HELP_do'); ?>: </small></label>
-
+        
                         <div class="col-sm-10">
-
-
+        
+        
                             <div id="summernote_help"><?php echo $fio['message']; ?></div>
-
-
-
+        
+        
+        
                         </div>
                         <div class="col-md-12"><hr></div>
                         <div class="col-md-2"></div>
@@ -1310,93 +1848,89 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                     <a href="helper" class="btn btn-default" type="submit"><i class="fa fa-reply"></i> <?php echo lang('HELP_back'); ?></a>
                                 </div>
                             </div>
-
-
+        
+        
                         </div>
             </form>
             </div></div>
         <?php
         }
         */
-if ($mode == "sort_units_helper") {
-$list=$_POST['list'];
-
-echo $list;
-
-$orderlist = explode('&', $list);
-
-$n=0;
-foreach ($orderlist as $order) {
-
-$a=explode("=", $order);
-
-//echo $a[0];
-
-$b=explode("[", $a['0']);
-
-$с=substr($b[1], 0, -1); //?
-$rest = substr($b[1], 0, -1);
-//echo $a[1];
-//echo "ID:".$rest."  Parent:".$a[1]."  Pos:".$n."                              ////";
-if ($a[1] == "null") {$a[1]=get_max_helper_parent();}
-echo "parent_id=".$a[1]." where id=".$rest.";\r\n";
-
-
-        $stmt = $dbConnection->prepare('UPDATE helper_cat set sort_id=:s_id,parent_id=:p_id where id=:el_id');
-        $stmt->execute(array(
-            ':s_id' => $n,
-            ':p_id' =>$a[1],
-            ':el_id'=>$rest
-        ));
-
-$n++;
-}  
-
-}
-
-
-
-
-if ($mode == "save_helper_item") {
-
-
-        $stmt = $dbConnection->prepare('UPDATE helper_cat set name=:t where id=:el_id');
-        $stmt->execute(array(
-            ':t' => $_POST['value'],
-            ':el_id'=>$_POST['pk']
-        ));
-}
-
-//helper_item_del
-if ($mode == "helper_item_del") {
-
-
-$stmt = $dbConnection->prepare('UPDATE helper_cat set parent_id=:t where parent_id=:el_id');
-        $stmt->execute(array(
-            ':t' => '0',
-            ':el_id'=>$_POST['id']
-        ));
-
-    $stmt = $dbConnection->prepare('delete from helper_cat where id=:n');
-        $stmt->execute(array(
-            ':n' => $_POST['id']
-        ));
-
-showMenu_helper();
-}
-
-if ($mode == "items_view") {
-    $stmt = $dbConnection->prepare('INSERT into helper_cat (name, parent_id, sort_id) values (:n,:p,:s)');
-        $stmt->execute(array(
-            ':n' => 'new item',
-            ':p'=>'0',
-            ':s'=>'100'
-        ));
-showMenu_helper();
-}
-
-
-if ($mode == "units_helper") {
+        if ($mode == "sort_units_helper") {
+            $list = $_POST['list'];
+            
+            echo $list;
+            
+            $orderlist = explode('&', $list);
+            
+            $n = 0;
+            foreach ($orderlist as $order) {
+                
+                $a = explode("=", $order);
+                
+                //echo $a[0];
+                
+                $b = explode("[", $a['0']);
+                
+                $с = substr($b[1], 0, -1);
+                 //?
+                $rest = substr($b[1], 0, -1);
+                
+                //echo $a[1];
+                //echo "ID:".$rest."  Parent:".$a[1]."  Pos:".$n."                              ////";
+                if ($a[1] == "null") {
+                    $a[1] = get_max_helper_parent();
+                }
+                echo "parent_id=" . $a[1] . " where id=" . $rest . ";\r\n";
+                
+                $stmt = $dbConnection->prepare('UPDATE helper_cat set sort_id=:s_id,parent_id=:p_id where id=:el_id');
+                $stmt->execute(array(
+                    ':s_id' => $n,
+                    ':p_id' => $a[1],
+                    ':el_id' => $rest
+                ));
+                
+                $n++;
+            }
+        }
+        
+        if ($mode == "save_helper_item") {
+            
+            $stmt = $dbConnection->prepare('UPDATE helper_cat set name=:t where id=:el_id');
+            $stmt->execute(array(
+                ':t' => $_POST['value'],
+                ':el_id' => $_POST['pk']
+            ));
+        }
+        
+        //helper_item_del
+        if ($mode == "helper_item_del") {
+            
+            $stmt = $dbConnection->prepare('UPDATE helper_cat set parent_id=:t where parent_id=:el_id');
+            $stmt->execute(array(
+                ':t' => '0',
+                ':el_id' => $_POST['id']
+            ));
+            
+            $stmt = $dbConnection->prepare('delete from helper_cat where id=:n');
+            $stmt->execute(array(
+                ':n' => $_POST['id']
+            ));
+            
+            showMenu_helper();
+        }
+        
+        if ($mode == "items_view") {
+            $stmt = $dbConnection->prepare('INSERT into helper_cat (name, parent_id, sort_id) values (:n,:p,:s)');
+            $stmt->execute(array(
+                ':n' => 'new item',
+                ':p' => '0',
+                ':s' => '100'
+            ));
+            showMenu_helper();
+        }
+        
+        if ($mode == "units_helper") {
 ?>
             <div class="box box-solid">
             <div class="">
@@ -1568,8 +2102,7 @@ a, a:visited {
 
 
 <?php
-
-showMenu_helper();
+            showMenu_helper();
 ?>
 
 
@@ -1583,11 +2116,6 @@ showMenu_helper();
             </div></div>
         <?php
         }
-
-
-
-
-
         
         if ($mode == "find_help") {
             $t = ($_POST['t']);
@@ -1606,13 +2134,16 @@ showMenu_helper();
                             id, user_init_id, unit_to_id, dt, title, message, hashname
                             from helper where (title like :t or message like :t2) and client_flag=:cf
                             order by dt desc");
-                $stmt->execute(array(':t' => '%' . $t . '%', ':t2' => '%' . $t . '%', ':cf' => '1'));
+                $stmt->execute(array(
+                    ':t' => '%' . $t . '%',
+                    ':t2' => '%' . $t . '%',
+                    ':cf' => '1'
+                ));
                 $result = $stmt->fetchAll();
 ?>
             <div class="box box-solid">
             <div class="box-body">
             <?php
-                
                 foreach ($result as $row) {
                     
                     $unit2id = explode(",", $row['unit_to_id']);
@@ -1643,13 +2174,16 @@ showMenu_helper();
 
                     <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php
+                        echo $row['hashname']; ?>"><?php
+                        echo $row['title']; ?></a></h5>
                                     <div class="box-tools pull-right">
 
                                     </div>
                                 </div>
                                 <div class="box-body">
-                                    <small><?php echo cutstr_help_ret(strip_tags($row['message'])); ?>
+                                    <small><?php
+                        echo cutstr_help_ret(strip_tags($row['message'])); ?>
                             </small>                                </div><!-- /.box-body -->
                             </div>
                 <?php
@@ -1662,13 +2196,15 @@ showMenu_helper();
                             id, user_init_id, unit_to_id, dt, title, message, hashname
                             from helper where title like :t or message like :t2
                             order by dt desc");
-                $stmt->execute(array(':t' => '%' . $t . '%', ':t2' => '%' . $t . '%'));
+                $stmt->execute(array(
+                    ':t' => '%' . $t . '%',
+                    ':t2' => '%' . $t . '%'
+                ));
                 $result = $stmt->fetchAll();
 ?>
             <div class="box box-solid">
             <div class="box-body">
             <?php
-                
                 foreach ($result as $row) {
                     
                     $unit2id = explode(",", $row['unit_to_id']);
@@ -1699,13 +2235,17 @@ showMenu_helper();
 
                     <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php
+                        echo $row['hashname']; ?>"><?php
+                        echo $row['title']; ?></a></h5>
                                     <div class="box-tools pull-right">
-<small>(<?php echo lang('DASHBOARD_author'); ?>: <?php echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)<?php
+<small>(<?php
+                        echo lang('DASHBOARD_author'); ?>: <?php
+                        echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)<?php
                         if ($priv_h == "yes") {
                             echo " 
             <div class=\"btn-group\">
-            <a href=\"" . $CONF['hostname']."/helper?h=".$row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+            <a href=\"" . $CONF['hostname'] . "/helper?h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -1713,7 +2253,8 @@ showMenu_helper();
                                     </div>
                                 </div>
                                 <div class="box-body">
-                                    <small><?php echo cutstr_help_ret(strip_tags($row['message'])); ?>
+                                    <small><?php
+                        echo cutstr_help_ret(strip_tags($row['message'])); ?>
                             </small>                                </div><!-- /.box-body -->
                             </div>                <?php
                     }
@@ -1726,7 +2267,9 @@ showMenu_helper();
             $hn = ($_POST['hn']);
             
             $stmt = $dbConnection->prepare('delete from helper where hashname=:hn');
-            $stmt->execute(array(':hn' => $hn));
+            $stmt->execute(array(
+                ':hn' => $hn
+            ));
         }
         
         if ($mode == "list_help") {
@@ -1738,18 +2281,20 @@ showMenu_helper();
                             id, user_init_id, unit_to_id, dt, title, message, hashname
                             from helper where client_flag=:cf
                             order by dt desc');
-                $stmt->execute(array(':cf' => '1'));
+                $stmt->execute(array(
+                    ':cf' => '1'
+                ));
                 $result = $stmt->fetchAll();
 ?>
             <div class="box box-solid">
             <div class="box-body">
             <?php
-                
                 if (empty($result)) {
 ?>
                  <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
 
-                    <center><?php echo lang('MSG_no_records'); ?></center></p>
+                    <center><?php
+                    echo lang('MSG_no_records'); ?></center></p>
 
 
 
@@ -1760,11 +2305,14 @@ showMenu_helper();
 ?>
 <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i> </small><a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i> </small><a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php
+                        echo $row['hashname']; ?>"><?php
+                        echo $row['title']; ?></a></h5>
                                 </div>
                                 <div class="box-body" id="help_content">
                                     <div id="summernote_help">
-                                    <small><?php echo cutstr_help_ret(strip_tags($row['message'])); ?>
+                                    <small><?php
+                        echo cutstr_help_ret(strip_tags($row['message'])); ?>
                             </small>                               
                                     </div>
                              </div><!-- /.box-body -->
@@ -1778,7 +2326,7 @@ showMenu_helper();
                 
                 <?php
             } else if ($is_client == "0") {
-                 
+                
                 $user_id = id_of_user($_SESSION['helpdesk_user_login']);
                 $unit_user = unit_of_user($user_id);
                 $priv_val = priv_status($user_id);
@@ -1800,7 +2348,8 @@ showMenu_helper();
 ?>
                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
 
-                    <center><?php echo lang('MSG_no_records'); ?></center></p>
+                    <center><?php
+                    echo lang('MSG_no_records'); ?></center></p>
 
                 
 
@@ -1838,13 +2387,17 @@ showMenu_helper();
 
 <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php
+                            echo $row['hashname']; ?>"><?php
+                            echo $row['title']; ?></a></h5>
                                     <div class="box-tools pull-right">
-<small>(<?php echo lang('DASHBOARD_author'); ?>: <?php echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)<?php
+<small>(<?php
+                            echo lang('DASHBOARD_author'); ?>: <?php
+                            echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)<?php
                             if ($priv_h == "yes") {
                                 echo " 
             <div class=\"btn-group\">
-<a href=\"" . $CONF['hostname']."/helper?h=".$row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+<a href=\"" . $CONF['hostname'] . "/helper?h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -1852,7 +2405,8 @@ showMenu_helper();
                                     </div>
                                 </div>
                                 <div class="box-body">
-                                    <small><?php echo cutstr_help_ret(strip_tags($row['message'])); ?>
+                                    <small><?php
+                            echo cutstr_help_ret(strip_tags($row['message'])); ?>
                             </small>                                </div><!-- /.box-body -->
                             </div>
 
@@ -1875,23 +2429,21 @@ showMenu_helper();
             }
         }
         
-if ($mode == "view_cats") {
-
-    ?>
+        if ($mode == "view_cats") {
+?>
 <div class="box box-solid">
     <div class="box-header">
                                     
-                                    <h3 class="box-title"><?=lang('HELPER_cats');?></h3>
+                                    <h3 class="box-title"><?php echo lang('HELPER_cats'); ?></h3>
 
                                 </div><!-- /.box-header -->
                                 <div class="box-body" style=" font-size: 15px; line-height: 20px; ">
-                                    <?=show_items_helper();?>
+                                    <?php echo show_items_helper(); ?>
                                 </div>
                             </div>
     <?php
-}
-
-
+        }
+        
         ///////
         if ($mode == "do_save_help") {
             $u = $_POST['u'];
@@ -1908,20 +2460,29 @@ if ($mode == "view_cats") {
             } else {
                 $is_client = 0;
             }
-            $cat_id=$_POST['cat_id'];
+            $cat_id = $_POST['cat_id'];
             $message = ($_POST['msg']);
             $message = str_replace("\r\n", "\n", $message);
             $message = str_replace("\r", "\n", $message);
             $message = str_replace("&nbsp;", " ", $message);
             
             $stmt = $dbConnection->prepare('update helper set user_edit_id=:user_id_z, unit_to_id=:beats, dt=:n, title=:t, message=:message, client_flag=:cf, cat_id=:cat_id where hashname=:hn');
-            $stmt->execute(array(':hn' => $hn, ':user_id_z' => $user_id_z, ':beats' => $beats, ':t' => $t, ':message' => $message, ':cf' => $is_client, ':n' => $CONF['now_dt'], ':cat_id'=>$cat_id));
+            $stmt->execute(array(
+                ':hn' => $hn,
+                ':user_id_z' => $user_id_z,
+                ':beats' => $beats,
+                ':t' => $t,
+                ':message' => $message,
+                ':cf' => $is_client,
+                ':n' => $CONF['now_dt'],
+                ':cat_id' => $cat_id
+            ));
         }
         
         if ($mode == "do_create_help") {
             $u = $_POST['u'];
             $beats = implode(',', $u);
-            $cat_id=$_POST['cat'];
+            $cat_id = $_POST['cat'];
             $is_client = $_POST['is_client'];
             if ($is_client == "true") {
                 $is_client = 1;
@@ -1939,7 +2500,16 @@ if ($mode == "view_cats") {
             
             $stmt = $dbConnection->prepare('insert into helper (hashname, user_init_id,unit_to_id, dt, title,message,client_flag, cat_id) values 
         (:hn,:user_id_z,:beats, :n, :t,:message, :cf, :cat_id)');
-            $stmt->execute(array(':hn' => $hn, ':user_id_z' => $user_id_z, ':beats' => $beats, ':t' => $t, ':message' => $message, ':cf' => $is_client, ':n' => $CONF['now_dt'], ':cat_id'=>$cat_id));
+            $stmt->execute(array(
+                ':hn' => $hn,
+                ':user_id_z' => $user_id_z,
+                ':beats' => $beats,
+                ':t' => $t,
+                ':message' => $message,
+                ':cf' => $is_client,
+                ':n' => $CONF['now_dt'],
+                ':cat_id' => $cat_id
+            ));
         }
         
         if ($mode == "dashboard_t") {
@@ -1956,6 +2526,7 @@ if ($mode == "view_cats") {
             $user_id = id_of_user($_SESSION['helpdesk_user_login']);
             $unit_user = unit_of_user($user_id);
             $priv_val = priv_status($user_id);
+            
             //priv_status($_SESSION['helpdesk_user_login']);
             $units = explode(",", $unit_user);
             $units = implode("', '", $units);
@@ -1980,7 +2551,11 @@ if ($mode == "view_cats") {
                             order by ok_by asc, prio desc, id desc
                             limit :start_pos, :perpage');
                 
-                $paramss = array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
+                $paramss = array(
+                    ':n' => '0',
+                    ':start_pos' => $start_pos,
+                    ':perpage' => $perpage
+                );
                 $stmt->execute(array_merge($vv, $paramss));
                 $results = $stmt->fetchAll();
             } else if ($priv_val == 1) {
@@ -2001,7 +2576,14 @@ if ($mode == "view_cats") {
                             order by ok_by asc, prio desc, id desc
                             limit :start_pos, :perpage');
                 
-                $paramss = array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage, ':user_id' => $user_id, ':n1' => '0', ':n2' => '0');
+                $paramss = array(
+                    ':n' => '0',
+                    ':start_pos' => $start_pos,
+                    ':perpage' => $perpage,
+                    ':user_id' => $user_id,
+                    ':n1' => '0',
+                    ':n2' => '0'
+                );
                 
                 $stmt->execute(array_merge($vv, $paramss));
                 
@@ -2014,7 +2596,11 @@ if ($mode == "view_cats") {
                             where arch=:n
                             order by ok_by asc, prio desc, id desc
                             limit :start_pos, :perpage');
-                $stmt->execute(array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
+                $stmt->execute(array(
+                    ':n' => '0',
+                    ':start_pos' => $start_pos,
+                    ':perpage' => $perpage
+                ));
                 $results = $stmt->fetchAll();
             }
             
@@ -2023,7 +2609,8 @@ if ($mode == "view_cats") {
 ?>
                 <div id="spinner" class="well well-large well-transparent lead">
                     <center>
-                        <?php echo lang('MSG_no_records'); ?>
+                        <?php
+                echo lang('MSG_no_records'); ?>
                     </center>
                 </div>
             <?php
@@ -2049,15 +2636,28 @@ if ($mode == "view_cats") {
                 <table class="table table-hover table-bordered " style=" font-size: 14px; ">
                 <thead>
                 <tr>
-                    <th><center><div id="sort_id" >#<?php echo $id_icon; ?></div></center></th>
-                    <th><center><div id="sort_prio"><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_LIST_prio'); ?>"></i><?php echo $prio_icon; ?></div></center></th>
-                    <th><center><div id="sort_subj"><?php echo lang('t_LIST_subj'); ?><?php echo $subj_icon; ?></div></center></th>
-                    <th><center><div id="sort_cli"><?php echo lang('t_LIST_worker'); ?><?php echo $cli_icon; ?></div></center></th>
-                    <th><center><?php echo lang('t_LIST_create'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_ago'); ?></center></th>
-                    <th><center><div id="sort_init"><?php echo lang('t_LIST_init'); ?><?php echo $init_icon; ?></div></center></th>
-                    <th><center><?php echo lang('t_LIST_to'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_status'); ?></center></th>
+                    <th><center><div id="sort_id" >#<?php
+                echo $id_icon; ?></div></center></th>
+                    <th><center><div id="sort_prio"><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php
+                echo lang('t_LIST_prio'); ?>"></i><?php
+                echo $prio_icon; ?></div></center></th>
+                    <th><center><div id="sort_subj"><?php
+                echo lang('t_LIST_subj'); ?><?php
+                echo $subj_icon; ?></div></center></th>
+                    <th><center><div id="sort_cli"><?php
+                echo lang('t_LIST_worker'); ?><?php
+                echo $cli_icon; ?></div></center></th>
+                    <th><center><?php
+                echo lang('t_LIST_create'); ?></center></th>
+                    <th><center><?php
+                echo lang('t_LIST_ago'); ?></center></th>
+                    <th><center><div id="sort_init"><?php
+                echo lang('t_LIST_init'); ?><?php
+                echo $init_icon; ?></div></center></th>
+                    <th><center><?php
+                echo lang('t_LIST_to'); ?></center></th>
+                    <th><center><?php
+                echo lang('t_LIST_status'); ?></center></th>
 
                 </tr>
                 </thead>
@@ -2217,14 +2817,21 @@ if ($mode == "view_cats") {
 
 
                     <tr id="tr_<?php
-                    echo $row['id']; ?>" class="<?php echo $style ?>">
-                        <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php
+                    echo $row['id']; ?>" class="<?php
+                    echo $style ?>">
+                        <td style=" vertical-align: middle; "><small class="<?php
+                    echo $muclass; ?>"><center><?php
                     echo $row['id']; ?></center></small></td>
-                        <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php echo $prio ?></center></small></td>
+                        <td style=" vertical-align: middle; "><small class="<?php
+                    echo $muclass; ?>"><center><?php
+                    echo $prio ?></center></small></td>
                         
-                        <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
-                    title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", make_html(strip_tags($row['msg']), 'no')); ?></small>" 
+                        <td style=" vertical-align: middle; "><a class="<?php
+                    echo $muclass; ?> pops"  
+                    title="<?php
+                    echo make_html($row['subj'], 'no'); ?>"
+                    data-content="<small><?php
+                    echo str_replace('"', "", make_html(strip_tags($row['msg']) , 'no')); ?></small>" 
                     
                     
                     href="ticket?<?php
@@ -2232,26 +2839,38 @@ if ($mode == "view_cats") {
                     cutstr(make_html($row['subj'], 'no')); ?></a></td>
                         
                         
-                        <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
-                        <a href="view_user?<?php echo get_user_hash_by_id($row['client_id']); ?>">
-                        <?php echo get_user_val_by_id($row['client_id'], 'fio'); ?>
+                        <td style=" vertical-align: middle; "><small class="<?php
+                    echo $muclass; ?>">
+                        <a href="view_user?<?php
+                    echo get_user_hash_by_id($row['client_id']); ?>">
+                        <?php
+                    echo get_user_val_by_id($row['client_id'], 'fio'); ?>
                         </a>
                         </small></td>
-                        <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="c" datetime="<?php echo $row['date_create']; ?>"></time></center></small></td>
-                        <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="a" datetime="<?php echo $t_ago; ?>"></time></center></small></td>
+                        <td style=" vertical-align: middle; "><small class="<?php
+                    echo $muclass; ?>"><center><time id="c" datetime="<?php
+                    echo $row['date_create']; ?>"></time></center></small></td>
+                        <td style=" vertical-align: middle; "><small class="<?php
+                    echo $muclass; ?>"><center><time id="a" datetime="<?php
+                    echo $t_ago; ?>"></time></center></small></td>
 
-                        <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
-                        <a href="view_user?<?php echo get_user_hash_by_id($row['user_init_id']); ?>">
+                        <td style=" vertical-align: middle; "><small class="<?php
+                    echo $muclass; ?>">
+                        <a href="view_user?<?php
+                    echo get_user_hash_by_id($row['user_init_id']); ?>">
                         <?php
                     echo nameshort(name_of_user_ret($row['user_init_id'])); ?>
                         </a>
                         </small></td>
 
-                        <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
-                                <?php echo make_html($to_text, 'no') ?>
+                        <td style=" vertical-align: middle; "><small class="<?php
+                    echo $muclass; ?>">
+                                <?php
+                    echo make_html($to_text, 'no') ?>
                             </small></td>
                         <td style=" vertical-align: middle; "><small><center>
-                                    <?php echo $st; ?> </center>
+                                    <?php
+                    echo $st; ?> </center>
                             </small></td>
 
                     </tr>
@@ -2469,43 +3088,55 @@ if ($mode == "view_cats") {
                 
                 $stmt = $dbConnection->prepare('SELECT id, hash_name, last_update from tickets where user_init_id=:cid and client_id=:cid2 order by last_update DESC limit :c');
                 
-                $stmt->execute(array(':cid' => $uid, ':cid2' => $uid, ':c' => $c));
+                $stmt->execute(array(
+                    ':cid' => $uid,
+                    ':cid2' => $uid,
+                    ':c' => $c
+                ));
                 $res1 = $stmt->fetchAll();
                 
                 foreach ($res1 as $rews) {
                     $at = get_last_action_ticket($rews['id']);
                     
                     $who_action = get_who_last_action_ticket($rews['id']);
-                    $results[] = array('name' => $rews['id'], 'at' => $at, 'hash' => $rews['hash_name'], 'time' => $rews['last_update']);
+                    $results[] = array(
+                        'name' => $rews['id'],
+                        'at' => $at,
+                        'hash' => $rews['hash_name'],
+                        'time' => $rews['last_update']
+                    );
                 }
             }
-                        if (empty($results)) {
-                ?>
+            if (empty($results)) {
+?>
                 <div id="" class="well well-large well-transparent lead">
                     <center>
-                        <?=lang('MSG_no_records');?>
+                        <?php echo lang('MSG_no_records'); ?>
                     </center>
                 </div>
             <?php
-            }
-            else {
-                ?><table class="table table-hover" style="margin-bottom: 0px;" id=""> <?php
+            } else {
+?><table class="table table-hover" style="margin-bottom: 0px;" id=""> <?php
                 foreach ($results as $arr) {
-                    ?>
+?>
 
-                    <tr><td style=" width: 100px; vertical-align: inherit;"><small><i class="fa fa-tag"></i> </small><a href="ticket?<?=$arr['hash'];?>"><small><?=lang('TICKET_name');?> #<?=$arr['name'];?></small></a></td><td><small><?=$arr['at'];?></small></td>
-                    <td style=" width: 110px; vertical-align: inherit;"><small style="float:right;" class="text-muted "> <time id="b" datetime="<?=$arr['time'];?>"></time></small></td></tr>
+                    <tr><td style=" width: 100px; vertical-align: inherit;"><small><i class="fa fa-tag"></i> </small><a href="ticket?<?php echo $arr['hash']; ?>"><small><?php echo lang('TICKET_name'); ?> #<?php echo $arr['name']; ?></small></a></td><td><small><?php echo $arr['at']; ?></small></td>
+                    <td style=" width: 110px; vertical-align: inherit;"><small style="float:right;" class="text-muted "> <time id="b" datetime="<?php echo $arr['time']; ?>"></time></small></td></tr>
 
                 <?php
                 }
-                ?></table><small><center><a id="more_news" value="<?=$start?>" class="btn btn-default btn-xs"><?=lang('last_more');?></a></center></small><?php
+?></table><small><center><a id="more_news" value="<?php echo $start
+?>" class="btn btn-default btn-xs"><?php echo lang('last_more'); ?></a></center></small><?php
             }
         }
         
         if ($mode == "update_status_time") {
             $uid = $_SESSION['helpdesk_user_id'];
             $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
-            $stmt->execute(array(':cid' => $uid, ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':cid' => $uid,
+                ':n' => $CONF['now_dt']
+            ));
         }
         
         if ($mode == "check_update") {
@@ -2524,7 +3155,10 @@ if ($mode == "view_cats") {
             
             //update
             $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
-            $stmt->execute(array(':cid' => $uid, ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':cid' => $uid,
+                ':n' => $CONF['now_dt']
+            ));
         }
         
         if ($mode == "get_noty_actions") {
@@ -2564,14 +3198,23 @@ if ($mode == "view_cats") {
                     break;
             }
             
-            $results[] = array('url' => $CONF['hostname'], 'up' => lang('JS_up'),
-             //обновлено
-            'ticket' => lang('JS_ticket'),
-             //Заявка
-            'name' => $ticket_id, 'at' => $at,
-             //слова
-            'hash' => get_ticket_hash_by_id($ticket_id), 'time' => "<time id=\"b\" datetime=\"" . date("Y-m-d H:i:s") . "\"></time>"
-             //время
+            $results[] = array(
+                'url' => $CONF['hostname'],
+                'up' => lang('JS_up') ,
+                
+                //обновлено
+                'ticket' => lang('JS_ticket') ,
+                
+                //Заявка
+                'name' => $ticket_id,
+                'at' => $at,
+                
+                //слова
+                'hash' => get_ticket_hash_by_id($ticket_id) ,
+                'time' => "<time id=\"b\" datetime=\"" . date("Y-m-d H:i:s") . "\"></time>"
+                
+                //время
+                
             );
             
             /*
@@ -2674,7 +3317,9 @@ if ($mode == "view_cats") {
             
             $stmt = $dbConnection->prepare('SELECT 
             id,fio,tel,unit_desc,adr ,email,login, posada, email,client_id,type_op,skype FROM approved_info where id=:id');
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             
             $q_fio = ($fio['fio']);
@@ -2701,7 +3346,17 @@ if ($mode == "view_cats") {
     posada=:qposada 
     where id=:cid');
                 
-                $stmt->execute(array(':qfio' => $q_fio, ':qtel' => $q_tel, ':qlogin' => $q_login, ':qpod' => $q_pod, ':qadr' => $q_adr, ':qemail' => $q_mail, ':qposada' => $q_posada, ':qskype' => $q_skype, ':cid' => $q_cid));
+                $stmt->execute(array(
+                    ':qfio' => $q_fio,
+                    ':qtel' => $q_tel,
+                    ':qlogin' => $q_login,
+                    ':qpod' => $q_pod,
+                    ':qadr' => $q_adr,
+                    ':qemail' => $q_mail,
+                    ':qposada' => $q_posada,
+                    ':qskype' => $q_skype,
+                    ':cid' => $q_cid
+                ));
             } else if ($q_type_op == "add") {
                 
                 $hn = md5(time());
@@ -2734,17 +3389,34 @@ values
             :adr,
             :is_client
             )');
-                $stmt->execute(array(':fio' => $q_fio, ':login' => $q_login, ':status' => '0', ':priv' => '1', ':email' => $q_mail, ':uniq_id' => $hn, ':posada' => $q_posada, ':tel' => $q_tel, ':skype' => $q_skype, ':unit_desc' => $q_pod, ':adr' => $q_adr, ':is_client' => '1'));
+                $stmt->execute(array(
+                    ':fio' => $q_fio,
+                    ':login' => $q_login,
+                    ':status' => '0',
+                    ':priv' => '1',
+                    ':email' => $q_mail,
+                    ':uniq_id' => $hn,
+                    ':posada' => $q_posada,
+                    ':tel' => $q_tel,
+                    ':skype' => $q_skype,
+                    ':unit_desc' => $q_pod,
+                    ':adr' => $q_adr,
+                    ':is_client' => '1'
+                ));
             }
             
             $stmt = $dbConnection->prepare('delete from approved_info where id=:id');
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
         }
         if ($mode == "aprove_no") {
             $id = ($_POST['id']);
             
             $stmt = $dbConnection->prepare('delete from approved_info where id=:id');
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
         }
         
         if ($mode == "conf_edit_pb") {
@@ -2772,72 +3444,73 @@ values
             
 ?>
                 <div class="alert alert-success">
-                    <?php echo lang('PROFILE_msg_ok'); ?>
+                    <?php
+            echo lang('PROFILE_msg_ok'); ?>
                 </div>
         <?php
         }
         
         if ($mode == "conf_edit_main") {
-
-
-    GUMP::set_field_name("ldap", lang('EXT_ldap_ip'));
-    GUMP::set_field_name("name_of_firm", lang('CONF_name'));
-    GUMP::set_field_name("node_port", 'NodeJS port');
-    GUMP::set_field_name("days2arch", lang('CONF_2arch'));
-    GUMP::set_field_name("file_size", lang('CONF_file_size'));
-    GUMP::set_field_name("mail", lang('CONF_mail'));
-    GUMP::set_field_name("title_header", lang('CONF_title_org'));
-
-
-            $is_valid = GUMP::is_valid($_POST, array(
-        'ldap'   => 'valid_ip',
-        'name_of_firm'=>'required|max_len,100',
-        'title_header'=>'required|max_len,100',
-        'node_port'=>'required|numeric',
-        'days2arch'=>'required|numeric',
-        'file_size'=>'required|numeric',
-        'mail'      => 'required|valid_email'
-            ));
-
-
-
-if($is_valid === true) {
-    $r=true;
-
-            update_val_by_key("ldap_ip", $_POST['ldap']);
-            update_val_by_key("ldap_domain", $_POST['ldapd']);
-            update_val_by_key("name_of_firm", $_POST['name_of_firm']);
-            update_val_by_key("title_header", $_POST['title_header']);
-            update_val_by_key("hostname", $_POST['hostname']);
-            update_val_by_key("days2arch", $_POST['days2arch']);
-            //update_val_by_key("first_login", $_POST['first_login']);
-            update_val_by_key("fix_subj", $_POST['fix_subj']);
-            update_val_by_key("file_uploads", $_POST['file_uploads']);
-            update_val_by_key("node_port", $_POST['node_port']);
-            update_val_by_key("time_zone", $_POST['time_zone']);
-            update_val_by_key("allow_register", $_POST['allow_register']);
-            update_val_by_key("lang_def", $_POST['lang']);
-            $bodytag = str_replace(",", "|", $_POST['file_types']);
             
-            update_val_by_key("file_types", $bodytag);
-            update_val_by_key("file_size", $_POST['file_size']);
-            update_val_by_key("mail", $_POST['mail']);
-            $msg.="<div class=\"alert alert-success\">".lang('PROFILE_msg_ok')."</div>";
-} else {
-    //print_r($is_valid);
-    $r=false;
-    //$msg=$is_valid;
-
-    $msg.="<div class=\"callout callout-danger\"><p><ul>";
-    foreach ($is_valid as $key => $value) { $msg.="<li>".$value."</li>"; }
-    $msg.="</ul></p></div>";
-}
-        $results[] = array('res' => $r, 'msg' => $msg);
-        print json_encode($results);
-
-
+            GUMP::set_field_name("ldap", lang('EXT_ldap_ip'));
+            GUMP::set_field_name("name_of_firm", lang('CONF_name'));
+            GUMP::set_field_name("node_port", 'NodeJS port');
+            GUMP::set_field_name("days2arch", lang('CONF_2arch'));
+            GUMP::set_field_name("file_size", lang('CONF_file_size'));
+            GUMP::set_field_name("mail", lang('CONF_mail'));
+            GUMP::set_field_name("title_header", lang('CONF_title_org'));
+            
+            $is_valid = GUMP::is_valid($_POST, array(
+                'ldap' => 'valid_ip',
+                'name_of_firm' => 'required|max_len,100',
+                'title_header' => 'required|max_len,100',
+                'node_port' => 'required|numeric',
+                'days2arch' => 'required|numeric',
+                'file_size' => 'required|numeric',
+                'mail' => 'required|valid_email'
+            ));
+            
+            if ($is_valid === true) {
+                $r = true;
                 
-      
+                update_val_by_key("ldap_ip", $_POST['ldap']);
+                update_val_by_key("ldap_domain", $_POST['ldapd']);
+                update_val_by_key("name_of_firm", $_POST['name_of_firm']);
+                update_val_by_key("title_header", $_POST['title_header']);
+                update_val_by_key("hostname", $_POST['hostname']);
+                update_val_by_key("days2arch", $_POST['days2arch']);
+                
+                //update_val_by_key("first_login", $_POST['first_login']);
+                update_val_by_key("fix_subj", $_POST['fix_subj']);
+                update_val_by_key("file_uploads", $_POST['file_uploads']);
+                update_val_by_key("node_port", $_POST['node_port']);
+                update_val_by_key("time_zone", $_POST['time_zone']);
+                update_val_by_key("allow_register", $_POST['allow_register']);
+                update_val_by_key("lang_def", $_POST['lang']);
+                $bodytag = str_replace(",", "|", $_POST['file_types']);
+                
+                update_val_by_key("file_types", $bodytag);
+                update_val_by_key("file_size", $_POST['file_size']);
+                update_val_by_key("mail", $_POST['mail']);
+                $msg.= "<div class=\"alert alert-success\">" . lang('PROFILE_msg_ok') . "</div>";
+            } else {
+                
+                //print_r($is_valid);
+                $r = false;
+                
+                //$msg=$is_valid;
+                
+                $msg.= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($is_valid as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+            }
+            $results[] = array(
+                'res' => $r,
+                'msg' => $msg
+            );
+            print json_encode($results);
         }
         
         //del_profile_img
@@ -2845,13 +3518,15 @@ if($is_valid === true) {
             
             $id = $_SESSION['helpdesk_user_id'];
             $stmt = $dbConnection->prepare('update users set usr_img=:s where id=:id');
-            $stmt->execute(array(':id' => $id, ':s' => ''));
+            $stmt->execute(array(
+                ':id' => $id,
+                ':s' => ''
+            ));
         }
-
-                //del_profile_img
+        
+        //del_profile_img
         if ($mode == "del_logo_img") {
             update_val_by_key("logo_img", '');
-            
         }
         
         if ($mode == "edit_profile_main_client") {
@@ -2882,191 +3557,212 @@ if($is_valid === true) {
                     adr=:adr
                     where id=:id');
                 $stmt->execute(array(
-                    ':id' => $id, 
-                    ':m' => $m, 
-                    ':langu' => $langu, 
-                    ':s' => $skype, 
-                    ':t' => $tel, 
-                    ':adr' => $adr, 
-                    ':fio' => $fio));
+                    ':id' => $id,
+                    ':m' => $m,
+                    ':langu' => $langu,
+                    ':s' => $skype,
+                    ':t' => $tel,
+                    ':adr' => $adr,
+                    ':fio' => $fio
+                ));
 ?>
                 <div class="alert alert-success">
-                    <?php echo lang('PROFILE_msg_ok'); ?>
+                    <?php
+                echo lang('PROFILE_msg_ok'); ?>
                 </div>
             <?php
             }
             if ($ec == 1) {
 ?>
                 <div class="alert alert-danger">
-                    <?php echo lang('PROFILE_msg_error'); ?>
+                    <?php
+                echo lang('PROFILE_msg_error'); ?>
                 </div>
             <?php
             }
         }
-         
+        
         if ($mode == "edit_profile_main") {
             
+            $validator = new GUMP();
+            $_POST = $validator->sanitize($_POST);
             
-
-
-$validator = new GUMP();
-$_POST = $validator->sanitize($_POST);
-
-$rules = array(
-    'fio'                   =>'required|max_len,100|min_len,6',
-    'mail'                  => 'required|valid_email'
-);
-$filters = array(
-    'fio'      => 'sanitize_string|trim'
-);
-
-GUMP::set_field_name("fio", lang('WORKER_fio'));
-GUMP::set_field_name("mail", lang('P_mail'));
-
-$_POST = $validator->filter($_POST, $filters);
-
-$validated = $validator->validate($_POST, $rules);
-
-
-if($validated === true) {
-$m = ($_POST['mail']);
-            $id = $_SESSION['helpdesk_user_id'];
-            $langu = ($_POST['lang']);
-            $skype = ($_POST['skype']);
-            $tel = ($_POST['tel']);
-            $adr = ($_POST['adr']);
-            $fio = ($_POST['fio']);
-            $posada = ($_POST['posada']);
-            $unitss = ($_POST['unit']);
+            $rules = array(
+                'fio' => 'required|max_len,100|min_len,6',
+                'mail' => 'required|valid_email'
+            );
+            $filters = array(
+                'fio' => 'sanitize_string|trim'
+            );
             
-            $ec = 0;
-            if (!validate_email($m)) {
-                $ec = 1;
-            }
-            if (!validate_exist_mail($m)) {
-                $ec = 1;
-            }
-            if ($ec == 0) {
-                $stmt = $dbConnection->prepare('update users set fio=:fio, skype=:s, tel=:t, email=:m, lang=:langu,
+            GUMP::set_field_name("fio", lang('WORKER_fio'));
+            GUMP::set_field_name("mail", lang('P_mail'));
+            
+            $_POST = $validator->filter($_POST, $filters);
+            
+            $validated = $validator->validate($_POST, $rules);
+            
+            if ($validated === true) {
+                $m = ($_POST['mail']);
+                $id = $_SESSION['helpdesk_user_id'];
+                $langu = ($_POST['lang']);
+                $skype = ($_POST['skype']);
+                $tel = ($_POST['tel']);
+                $adr = ($_POST['adr']);
+                $fio = ($_POST['fio']);
+                $posada = ($_POST['posada']);
+                $unitss = ($_POST['unit']);
+                
+                $ec = 0;
+                if (!validate_email($m)) {
+                    $ec = 1;
+                }
+                if (!validate_exist_mail($m)) {
+                    $ec = 1;
+                }
+                if ($ec == 0) {
+                    $stmt = $dbConnection->prepare('update users set fio=:fio, skype=:s, tel=:t, email=:m, lang=:langu,
                 adr=:adr,posada=:posada,unit_desc=:unitss where id=:id');
-                $stmt->execute(array(':id' => $id, ':m' => $m, ':langu' => $langu, ':s' => $skype, ':t' => $tel, ':adr' => $adr, ':posada' => $posada, ':unitss' => $unitss, ':fio' => $fio));
+                    $stmt->execute(array(
+                        ':id' => $id,
+                        ':m' => $m,
+                        ':langu' => $langu,
+                        ':s' => $skype,
+                        ':t' => $tel,
+                        ':adr' => $adr,
+                        ':posada' => $posada,
+                        ':unitss' => $unitss,
+                        ':fio' => $fio
+                    ));
 ?>
                 <div class="alert alert-success">
-                    <?php echo lang('PROFILE_msg_ok'); ?>
+                    <?php
+                    echo lang('PROFILE_msg_ok'); ?>
                 </div>
             <?php
-            }
-            if ($ec == 1) {
+                }
+                if ($ec == 1) {
 ?>
                 <div class="alert alert-danger">
-                    <?php echo lang('PROFILE_msg_error'); ?>
+                    <?php
+                    echo lang('PROFILE_msg_error'); ?>
                 </div>
             <?php
+                }
+            } else {
+                $msg.= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($validator->get_readable_errors(false) as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+                echo $msg;
             }
-        }
-        else {
-        $msg.="<div class=\"callout callout-danger\"><p><ul>";
-    foreach ($validator->get_readable_errors(false) as $key => $value) { $msg.="<li>".$value."</li>"; }
-    $msg.="</ul></p></div>";
-    echo $msg;
-}
         }
         
         if ($mode == "edit_profile_pass") {
-
-$validator = new GUMP();
-$_POST = $validator->sanitize($_POST);
-
-$rules = array(
-    'old_pass'                   => 'required|max_len,100|min_len,6',
-    'new_pass'                   => 'required|max_len,100|min_len,6',
-    'new_pass2'                  => 'required|max_len,100|min_len,6'
-);
-$filters = array(
-    'old_pass'      => 'sanitize_string|trim',
-    'new_pass'      => 'sanitize_string|trim',
-    'new_pass2'      => 'sanitize_string|trim',
-);
-
-GUMP::set_field_name("old_pass", lang('P_pass_old'));
-GUMP::set_field_name("new_pass", lang('P_pass_new'));
-GUMP::set_field_name("new_pass2", lang('P_pass_new_re'));
-
-$_POST = $validator->filter($_POST, $filters);
-
-$validated = $validator->validate($_POST, $rules);
-
-
-if($validated === true) {
-
-
-            $p_old = md5(($_POST['old_pass']));
-            $p_new = md5(($_POST['new_pass']));
-            $p_new2 = md5(($_POST['new_pass2']));
-            $id = ($_POST['id']);
             
-            $stmt = $dbConnection->prepare('select pass from users where id=:id');
-            $stmt->execute(array(':id' => $id));
-            $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+            $validator = new GUMP();
+            $_POST = $validator->sanitize($_POST);
             
-            $pass_orig = $total_ticket['pass'];
+            $rules = array(
+                'old_pass' => 'required|max_len,100|min_len,6',
+                'new_pass' => 'required|max_len,100|min_len,6',
+                'new_pass2' => 'required|max_len,100|min_len,6'
+            );
+            $filters = array(
+                'old_pass' => 'sanitize_string|trim',
+                'new_pass' => 'sanitize_string|trim',
+                'new_pass2' => 'sanitize_string|trim',
+            );
             
-            $ec = 0;
+            GUMP::set_field_name("old_pass", lang('P_pass_old'));
+            GUMP::set_field_name("new_pass", lang('P_pass_new'));
+            GUMP::set_field_name("new_pass2", lang('P_pass_new_re'));
             
-            if ($pass_orig <> $p_old) {
-                $ec = 1;
-                $text = lang('PROFILE_msg_pass_err');
-            }
+            $_POST = $validator->filter($_POST, $filters);
             
-            if ($p_new <> $p_new2) {
-                $ec = 1;
-                $text = lang('PROFILE_msg_pass_err2');
-            }
+            $validated = $validator->validate($_POST, $rules);
             
-            if (strlen($p_new) < 3) {
-                $ec = 1;
-                $text = lang('PROFILE_msg_pass_err3');
-            }
-            
-            if ($ec == 0) {
+            if ($validated === true) {
                 
-                $stmt = $dbConnection->prepare('update users set pass=:p_new where id=:id');
-                $stmt->execute(array(':id' => $id, ':p_new' => $p_new));
+                $p_old = md5(($_POST['old_pass']));
+                $p_new = md5(($_POST['new_pass']));
+                $p_new2 = md5(($_POST['new_pass2']));
+                $id = ($_POST['id']);
                 
-                session_destroy();
-                unset($_SESSION);
-                session_unset();
-                setcookie('authhash_uid', "");
-                setcookie('authhash_code', "");
-                unset($_COOKIE['authhash_uid']);
-                unset($_COOKIE['authhash_code']);
+                $stmt = $dbConnection->prepare('select pass from users where id=:id');
+                $stmt->execute(array(
+                    ':id' => $id
+                ));
+                $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                $pass_orig = $total_ticket['pass'];
+                
+                $ec = 0;
+                
+                if ($pass_orig <> $p_old) {
+                    $ec = 1;
+                    $text = lang('PROFILE_msg_pass_err');
+                }
+                
+                if ($p_new <> $p_new2) {
+                    $ec = 1;
+                    $text = lang('PROFILE_msg_pass_err2');
+                }
+                
+                if (strlen($p_new) < 3) {
+                    $ec = 1;
+                    $text = lang('PROFILE_msg_pass_err3');
+                }
+                
+                if ($ec == 0) {
+                    
+                    $stmt = $dbConnection->prepare('update users set pass=:p_new where id=:id');
+                    $stmt->execute(array(
+                        ':id' => $id,
+                        ':p_new' => $p_new
+                    ));
+                    
+                    session_destroy();
+                    unset($_SESSION);
+                    session_unset();
+                    setcookie('authhash_uid', "");
+                    setcookie('authhash_code', "");
+                    unset($_COOKIE['authhash_uid']);
+                    unset($_COOKIE['authhash_code']);
 ?>
                 <div class="alert alert-success">
-                    <?php echo lang('PROFILE_msg_pass_ok'); ?>
+                    <?php
+                    echo lang('PROFILE_msg_pass_ok'); ?>
                 </div>
             <?php
-            }
-            if ($ec == 1) {
+                }
+                if ($ec == 1) {
 ?>
                 <div class="alert alert-danger">
-                    <?php echo lang('PROFILE_msg_te'); ?> <?php echo $text; ?>
+                    <?php
+                    echo lang('PROFILE_msg_te'); ?> <?php
+                    echo $text; ?>
                 </div>
             <?php
+                }
+            } else {
+                $msg.= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($validator->get_readable_errors(false) as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+                echo $msg;
             }
-        }
-        else {
-        $msg.="<div class=\"callout callout-danger\"><p><ul>";
-    foreach ($validator->get_readable_errors(false) as $key => $value) { $msg.="<li>".$value."</li>"; }
-    $msg.="</ul></p></div>";
-    echo $msg;
-}
         }
         
         if ($mode == "subj_del") {
             $id = ($_POST['id']);
             
             $stmt = $dbConnection->prepare('delete from subj where id=:id');
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
             
             $stmt = $dbConnection->prepare('select id, name from subj');
             $stmt->execute();
@@ -3079,20 +3775,26 @@ if($validated === true) {
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
             foreach ($res1 as $row) {
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>">
 
 
-                        <td><small><center><?php echo $row['id']; ?></center></small></td>
-                        <td><small><?php echo $row['name']; ?></small></td>
-                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button></center></small></td>
+                        <td><small><center><?php
+                echo $row['id']; ?></center></small></td>
+                        <td><small><?php
+                echo $row['name']; ?></small></td>
+                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button></center></small></td>
                     </tr>
                 <?php
             } ?>
@@ -3108,10 +3810,14 @@ if($validated === true) {
             $t = ($_POST['text']);
             
             $stmt = $dbConnection->prepare('insert into deps (name) values (:t)');
-            $stmt->execute(array(':t' => $t));
+            $stmt->execute(array(
+                ':t' => $t
+            ));
             
             $stmt = $dbConnection->prepare('select id, name, status from deps where id!=:n');
-            $stmt->execute(array(':n' => '0'));
+            $stmt->execute(array(
+                ':n' => '0'
+            ));
             $res1 = $stmt->fetchAll();
 ?>
 
@@ -3121,8 +3827,10 @@ if($validated === true) {
                 <thead>
                 <tr>
                     
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -3142,14 +3850,22 @@ if($validated === true) {
                     $cl = "";
                 }
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>" class="<?php echo $cl; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>" class="<?php
+                echo $cl; ?>">
 
 
                         
-                        <td><small><a href="#" data-pk="<?php echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php echo $row['name']; ?></a></small></td>
+                        <td><small><a href="#" data-pk="<?php
+                echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php
+                echo $row['name']; ?></a></small></td>
                         <td><small><center>
-                        <button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button>
-                        <button id="<?php echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php echo $row['id']; ?>"><?php echo $icon; ?></button>
+                        <button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button>
+                        <button id="<?php
+                echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php
+                echo $row['id']; ?>"><?php
+                echo $icon; ?></button>
                         
                         </center></small></td>
                     </tr>
@@ -3168,20 +3884,26 @@ if($validated === true) {
             $id = ($_POST['id']);
             
             $stmt2 = $dbConnection->prepare('SELECT file_ext from files where file_hash=:id');
-            $stmt2->execute(array(':id' => $id));
+            $stmt2->execute(array(
+                ':id' => $id
+            ));
             $max = $stmt2->fetch(PDO::FETCH_NUM);
             $ext = $max[0];
             
             unlink(realpath(dirname(__FILE__)) . "/upload_files/" . $id . "." . $ext);
             $stmt = $dbConnection->prepare('delete from files where file_hash=:id');
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
         }
         
         if ($mode == "deps_del") {
             $id = ($_POST['id']);
             
             $stmt = $dbConnection->prepare('delete from deps where id=:id');
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
             
             /*
             найти всех пользователей у которых есть этот отдел
@@ -3189,7 +3911,9 @@ if($validated === true) {
             */
             
             $stmt = $dbConnection->prepare('select id, name, status from deps where id!=:n');
-            $stmt->execute(array(':n' => '0'));
+            $stmt->execute(array(
+                ':n' => '0'
+            ));
             $res1 = $stmt->fetchAll();
 ?>
 
@@ -3199,8 +3923,10 @@ if($validated === true) {
                 <thead>
                 <tr>
                     
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -3218,12 +3944,20 @@ if($validated === true) {
                     $cl = "";
                 }
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>" class="<?php echo $cl; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>" class="<?php
+                echo $cl; ?>">
 
 
                         
-                        <td><small><a href="#" data-pk="<?php echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php echo $row['name']; ?></a></small></td>
-                        <td><small><center><button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button> <button id="<?php echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php echo $row['id']; ?>"><?php echo $icon; ?></button></center></small></center></small></td>
+                        <td><small><a href="#" data-pk="<?php
+                echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php
+                echo $row['name']; ?></a></small></td>
+                        <td><small><center><button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button> <button id="<?php
+                echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php
+                echo $row['id']; ?>"><?php
+                echo $icon; ?></button></center></small></center></small></td>
                     </tr>
                 <?php
             } ?>
@@ -3241,7 +3975,10 @@ if($validated === true) {
             $sid = ($_POST['id']);
             
             $stmt = $dbConnection->prepare('update subj set name=:v where id=:sid');
-            $stmt->execute(array(':sid' => $sid, ':v' => $v));
+            $stmt->execute(array(
+                ':sid' => $sid,
+                ':v' => $v
+            ));
             
             $stmt = $dbConnection->prepare('select id, name from subj');
             $stmt->execute();
@@ -3254,20 +3991,26 @@ if($validated === true) {
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
             foreach ($res1 as $row) {
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>">
 
 
-                        <td><small><center><?php echo $row['id']; ?></center></small></td>
-                        <td><small><?php echo $row['name']; ?></small></td>
-                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button></center></small></td>
+                        <td><small><center><?php
+                echo $row['id']; ?></center></small></td>
+                        <td><small><?php
+                echo $row['name']; ?></small></td>
+                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button></center></small></td>
                     </tr>
                 <?php
             } ?>
@@ -3284,7 +4027,9 @@ if($validated === true) {
             $t = ($_POST['text']);
             
             $stmt = $dbConnection->prepare('insert into subj (name) values (:t)');
-            $stmt->execute(array(':t' => $t));
+            $stmt->execute(array(
+                ':t' => $t
+            ));
             
             $stmt = $dbConnection->prepare('select id, name from subj');
             $stmt->execute();
@@ -3297,20 +4042,26 @@ if($validated === true) {
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
             foreach ($res1 as $row) {
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>">
 
 
-                        <td><small><center><?php echo $row['id']; ?></center></small></td>
-                        <td><small><?php echo $row['name']; ?></small></td>
-                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button></center></small></td>
+                        <td><small><center><?php
+                echo $row['id']; ?></center></small></td>
+                        <td><small><?php
+                echo $row['name']; ?></small></td>
+                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button></center></small></td>
                     </tr>
                 <?php
             } ?>
@@ -3327,7 +4078,9 @@ if($validated === true) {
             $t = ($_POST['text']);
             
             $stmt = $dbConnection->prepare('insert into posada (name) values (:t)');
-            $stmt->execute(array(':t' => $t));
+            $stmt->execute(array(
+                ':t' => $t
+            ));
             
             $stmt = $dbConnection->prepare('select id, name from posada');
             $stmt->execute();
@@ -3340,20 +4093,26 @@ if($validated === true) {
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
             foreach ($res1 as $row) {
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>">
 
 
-                        <td><small><center><?php echo $row['id']; ?></center></small></td>
-                        <td><small><?php echo $row['name']; ?></small></td>
-                        <td><small><center><button id="posada_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button></center></small></td>
+                        <td><small><center><?php
+                echo $row['id']; ?></center></small></td>
+                        <td><small><?php
+                echo $row['name']; ?></small></td>
+                        <td><small><center><button id="posada_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button></center></small></td>
                     </tr>
                 <?php
             } ?>
@@ -3366,18 +4125,22 @@ if($validated === true) {
         <?php
         }
         
-                if ($mode == "cron_del") {
+        if ($mode == "cron_del") {
             $id = ($_POST['id']);
             
             $stmt = $dbConnection->prepare('delete from scheduler_ticket where id=:id');
-            $stmt->execute(array(':id' => $id));
-            }
+            $stmt->execute(array(
+                ':id' => $id
+            ));
+        }
         
         if ($mode == "posada_del") {
             $id = ($_POST['id']);
             
             $stmt = $dbConnection->prepare('delete from posada where id=:id');
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
             
             $stmt = $dbConnection->prepare('select id, name from posada');
             $stmt->execute();
@@ -3390,20 +4153,26 @@ if($validated === true) {
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
             foreach ($res1 as $row) {
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>">
 
 
-                        <td><small><center><?php echo $row['id']; ?></center></small></td>
-                        <td><small><?php echo $row['name']; ?></small></td>
-                        <td><small><center><button id="posada_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button></center></small></td>
+                        <td><small><center><?php
+                echo $row['id']; ?></center></small></td>
+                        <td><small><?php
+                echo $row['name']; ?></small></td>
+                        <td><small><center><button id="posada_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button></center></small></td>
                     </tr>
                 <?php
             } ?>
@@ -3420,7 +4189,9 @@ if($validated === true) {
             $t = ($_POST['text']);
             
             $stmt = $dbConnection->prepare('insert into units (name) values (:t)');
-            $stmt->execute(array(':t' => $t));
+            $stmt->execute(array(
+                ':t' => $t
+            ));
             
             $stmt = $dbConnection->prepare('select id, name from units');
             $stmt->execute();
@@ -3433,20 +4204,26 @@ if($validated === true) {
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
             foreach ($res1 as $row) {
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>">
 
 
-                        <td><small><center><?php echo $row['id']; ?></center></small></td>
-                        <td><small><?php echo $row['name']; ?></small></td>
-                        <td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button></center></small></td>
+                        <td><small><center><?php
+                echo $row['id']; ?></center></small></td>
+                        <td><small><?php
+                echo $row['name']; ?></small></td>
+                        <td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button></center></small></td>
                     </tr>
                 <?php
             } ?>
@@ -3462,7 +4239,9 @@ if($validated === true) {
             $id = ($_POST['id']);
             
             $stmt = $dbConnection->prepare('delete from units where id=:id');
-            $stmt->execute(array(':id' => $id));
+            $stmt->execute(array(
+                ':id' => $id
+            ));
             
             $stmt = $dbConnection->prepare('select id, name from units');
             $stmt->execute();
@@ -3475,20 +4254,26 @@ if($validated === true) {
                 <thead>
                 <tr>
                     <th><center>ID</center></th>
-                    <th><center><?php echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php echo lang('TABLE_action'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_name'); ?></center></th>
+                    <th><center><?php
+            echo lang('TABLE_action'); ?></center></th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
             foreach ($res1 as $row) {
 ?>
-                    <tr id="tr_<?php echo $row['id']; ?>">
+                    <tr id="tr_<?php
+                echo $row['id']; ?>">
 
 
-                        <td><small><center><?php echo $row['id']; ?></center></small></td>
-                        <td><small><?php echo $row['name']; ?></small></td>
-                        <td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button></center></small></td>
+                        <td><small><center><?php
+                echo $row['id']; ?></center></small></td>
+                        <td><small><?php
+                echo $row['name']; ?></small></td>
+                        <td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?php
+                echo $row['id']; ?>">del</button></center></small></td>
                     </tr>
                 <?php
             } ?>
@@ -3511,42 +4296,58 @@ if($validated === true) {
             $mail = ($_POST['mail']);
             $skype = ($_POST['skype']);
             $uf = $_SESSION['helpdesk_user_id'];
-    GUMP::set_field_name("fio", lang('USERS_fio'));
-    GUMP::set_field_name("login", lang('USERS_login'));
+            GUMP::set_field_name("fio", lang('USERS_fio'));
+            GUMP::set_field_name("login", lang('USERS_login'));
             $is_valid = GUMP::is_valid($_POST, array(
-    'fio'   => 'required|max_len,100|min_len,6',
-    'login' => 'required|max_len,50|min_len,4|alpha_numeric'
+                'fio' => 'required|max_len,100|min_len,6',
+                'login' => 'required|max_len,50|min_len,4|alpha_numeric'
             ));
-
-
-
-if($is_valid === true) {
-    $r=true;
-    $stmt = $dbConnection->prepare('insert into approved_info
+            
+            if ($is_valid === true) {
+                $r = true;
+                $stmt = $dbConnection->prepare('insert into approved_info
 (fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, date_app)
 VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from,  :n)');
+                
+                $stmt->execute(array(
+                    ':fio' => $fio,
+                    ':tel' => $tel,
+                    ':login' => $login,
+                    ':unit_desc' => $pid,
+                    ':adr' => $adr,
+                    ':email' => $mail,
+                    ':posada' => $posada,
+                    ':skype' => $skype,
+                    ':type_op' => 'add',
+                    ':user_from' => $uf,
+                    ':n' => $CONF['now_dt']
+                ));
+            } else {
+                
+                //print_r($is_valid);
+                $r = false;
+                
+                //$msg=$is_valid;
+                
+                $msg.= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($is_valid as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+            }
+            $results[] = array(
+                'res' => $r,
+                'msg' => $msg
+            );
+            print json_encode($results);
             
-            $stmt->execute(array(':fio' => $fio, ':tel' => $tel, ':login' => $login, ':unit_desc' => $pid, ':adr' => $adr, ':email' => $mail, ':posada' => $posada, ':skype' => $skype, ':type_op' => 'add', ':user_from' => $uf, ':n' => $CONF['now_dt']));
-} else {
-    //print_r($is_valid);
-    $r=false;
-    //$msg=$is_valid;
-
-    $msg.="<div class=\"callout callout-danger\"><p><ul>";
-    foreach ($is_valid as $key => $value) { $msg.="<li>".$value."</li>"; }
-    $msg.="</ul></p></div>";
-}
-        $results[] = array('res' => $r, 'msg' => $msg);
-        print json_encode($results);
-
-
             /*
             $stmt = $dbConnection->prepare('insert into approved_info
-(fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, date_app)
-VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from,  :n)');
+            (fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, date_app)
+            VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from,  :n)');
             
             $stmt->execute(array(':fio' => $fio, ':tel' => $tel, ':login' => $login, ':unit_desc' => $pid, ':adr' => $adr, ':email' => $mail, ':posada' => $posada, ':skype' => $skype, ':type_op' => 'add', ':user_from' => $uf, ':n' => $CONF['now_dt']));
-*/
+            */
         }
         
         if ($mode == "edit_user_approve") {
@@ -3562,37 +4363,53 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             $uf = $_SESSION['helpdesk_user_id'];
             $cid = get_user_val_by_hash($_POST['cid'], 'id');
             
-
-    GUMP::set_field_name("fio", lang('USERS_fio'));
-    GUMP::set_field_name("login", lang('USERS_login'));
-
-$is_valid = GUMP::is_valid($_POST, array(
-    'fio'   => 'required|max_len,100|min_len,6',
-    'login' => 'required|max_len,50|min_len,4|alpha_numeric'
+            GUMP::set_field_name("fio", lang('USERS_fio'));
+            GUMP::set_field_name("login", lang('USERS_login'));
+            
+            $is_valid = GUMP::is_valid($_POST, array(
+                'fio' => 'required|max_len,100|min_len,6',
+                'login' => 'required|max_len,50|min_len,4|alpha_numeric'
             ));
-
-
-
-if($is_valid === true) {
-    $r=true;
-
-            $stmt = $dbConnection->prepare('insert into approved_info
+            
+            if ($is_valid === true) {
+                $r = true;
+                
+                $stmt = $dbConnection->prepare('insert into approved_info
 (fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, client_id, date_app)
 VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from, :cid,  :n)');
-            
-            $stmt->execute(array(':fio' => $fio, ':tel' => $tel, ':login' => $login, ':unit_desc' => $pid, ':adr' => $adr, ':email' => $mail, ':posada' => $posada, ':skype' => $skype, ':type_op' => 'edit', ':user_from' => $uf, ':cid' => $cid, ':n' => $CONF['now_dt']));
-} else {
-    //print_r($is_valid);
-    $r=false;
-    //$msg=$is_valid;
-
-    $msg.="<div class=\"callout callout-danger\"><p><ul>";
-    foreach ($is_valid as $key => $value) { $msg.="<li>".$value."</li>"; }
-    $msg.="</ul></p></div>";
-}
-        $results[] = array('res' => $r, 'msg' => $msg);
-        print json_encode($results);
-
+                
+                $stmt->execute(array(
+                    ':fio' => $fio,
+                    ':tel' => $tel,
+                    ':login' => $login,
+                    ':unit_desc' => $pid,
+                    ':adr' => $adr,
+                    ':email' => $mail,
+                    ':posada' => $posada,
+                    ':skype' => $skype,
+                    ':type_op' => 'edit',
+                    ':user_from' => $uf,
+                    ':cid' => $cid,
+                    ':n' => $CONF['now_dt']
+                ));
+            } else {
+                
+                //print_r($is_valid);
+                $r = false;
+                
+                //$msg=$is_valid;
+                
+                $msg.= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($is_valid as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+            }
+            $results[] = array(
+                'res' => $r,
+                'msg' => $msg
+            );
+            print json_encode($results);
         }
         
         if ($mode == "arch_now") {
@@ -3600,7 +4417,9 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             $tid = ($_POST['tid']);
             
             $stmt = $dbConnection->prepare('SELECT arch FROM tickets where id=:tid');
-            $stmt->execute(array(':tid' => $tid));
+            $stmt->execute(array(
+                ':tid' => $tid
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             
             $s = $fio['arch'];
@@ -3608,18 +4427,31 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             if ($s == "0") {
                 
                 $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=:n where id=:tid');
-                $stmt->execute(array(':tid' => $tid, ':n1' => '1', ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':tid' => $tid,
+                    ':n1' => '1',
+                    ':n' => $CONF['now_dt']
+                ));
             }
             if ($s == "1") {
                 $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=:n where id=:tid');
-                $stmt->execute(array(':tid' => $tid, ':n1' => '0', ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':tid' => $tid,
+                    ':n1' => '0',
+                    ':n' => $CONF['now_dt']
+                ));
             }
             
             $unow = $_SESSION['helpdesk_user_id'];
             
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:ar, :n, :unow, :tid)');
-            $stmt->execute(array(':tid' => $tid, ':unow' => $unow, ':ar' => 'arch', ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':tid' => $tid,
+                ':unow' => $unow,
+                ':ar' => 'arch',
+                ':n' => $CONF['now_dt']
+            ));
         }
         
         if ($mode == "status_no_ok") {
@@ -3627,7 +4459,9 @@ values (:ar, :n, :unow, :tid)');
             $tid = ($_POST['tid']);
             
             $stmt = $dbConnection->prepare('SELECT status, ok_by FROM tickets where id=:tid');
-            $stmt->execute(array(':tid' => $tid));
+            $stmt->execute(array(
+                ':tid' => $tid
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             
             $st = $fio['status'];
@@ -3637,25 +4471,39 @@ values (:ar, :n, :unow, :tid)');
             
             if ($st == "0") {
                 $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=:n, last_update=:nz where id=:tid');
-                $stmt->execute(array(':s' => '1', ':tid' => $tid, ':user' => $user, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':s' => '1',
+                    ':tid' => $tid,
+                    ':user' => $user,
+                    ':n' => $CONF['now_dt'],
+                    ':nz' => $CONF['now_dt']
+                ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log 
             (msg, date_op, init_user_id, ticket_id)
             values (:ok, :n, :unow, :tid)');
-                $stmt->execute(array(':ok' => 'ok', ':tid' => $tid, ':unow' => $unow, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':ok' => 'ok',
+                    ':tid' => $tid,
+                    ':unow' => $unow,
+                    ':n' => $CONF['now_dt']
+                ));
                 send_notification('ticket_ok', $tid);
 ?>
 
-                <div class="alert alert-success"><i class="fa fa-check"></i> <?php echo lang('TICKET_msg_OK'); ?></div>
+                <div class="alert alert-success"><i class="fa fa-check"></i> <?php
+                echo lang('TICKET_msg_OK'); ?></div>
 
             <?php
             }
             if ($st == "1") {
 ?>
 
-                <div class="alert alert-danger"><?php echo lang('TICKET_msg_OK_error'); ?> <?php echo name_of_user($ob); ?></div>
+                <div class="alert alert-danger"><?php
+                echo lang('TICKET_msg_OK_error'); ?> <?php
+                echo name_of_user($ob); ?></div>
 
             <?php
             }
@@ -3666,7 +4514,9 @@ values (:ar, :n, :unow, :tid)');
             $tid = ($_POST['tid']);
             
             $stmt = $dbConnection->prepare('SELECT status, ok_by, user_init_id FROM tickets where id=:tid');
-            $stmt->execute(array(':tid' => $tid));
+            $stmt->execute(array(
+                ':tid' => $tid
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             
             $st = $fio['status'];
@@ -3680,25 +4530,37 @@ values (:ar, :n, :unow, :tid)');
                 if (($ob == $user) || ($ps == "0") || ($ps == "2") || ($uinitd == $user)) {
                     
                     $stmt = $dbConnection->prepare('update tickets set ok_by=:n, status=:n1, last_update=:nz where id=:tid');
-                    $stmt->execute(array(':tid' => $tid, ':n' => '0', ':n1' => '0', ':nz' => $CONF['now_dt']));
+                    $stmt->execute(array(
+                        ':tid' => $tid,
+                        ':n' => '0',
+                        ':n1' => '0',
+                        ':nz' => $CONF['now_dt']
+                    ));
                     
                     $unow = $_SESSION['helpdesk_user_id'];
                     
                     $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:no_ok, :n, :unow, :tid)');
-                    $stmt->execute(array(':tid' => $tid, ':unow' => $unow, ':no_ok' => 'no_ok', ':n' => $CONF['now_dt']));
+                    $stmt->execute(array(
+                        ':tid' => $tid,
+                        ':unow' => $unow,
+                        ':no_ok' => 'no_ok',
+                        ':n' => $CONF['now_dt']
+                    ));
                     
                     send_notification('ticket_no_ok', $tid);
 ?>
 
-                    <div class="alert alert-success"><i class="fa fa-check"></i> <?php echo lang('TICKET_msg_unOK'); ?></div>
+                    <div class="alert alert-success"><i class="fa fa-check"></i> <?php
+                    echo lang('TICKET_msg_unOK'); ?></div>
 
                 <?php
                 }
             }
             if ($st == "0") {
 ?>
-                <div class="alert alert-danger"><?php echo lang('TICKET_msg_unOK_error'); ?></div>
+                <div class="alert alert-danger"><?php
+                echo lang('TICKET_msg_unOK_error'); ?></div>
             <?php
             }
         }
@@ -3708,7 +4570,9 @@ values (:no_ok, :n, :unow, :tid)');
             $tid = ($_POST['tid']);
             
             $stmt = $dbConnection->prepare('SELECT lock_by FROM tickets where id=:tid');
-            $stmt->execute(array(':tid' => $tid));
+            $stmt->execute(array(
+                ':tid' => $tid
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             
             $lb = $fio['lock_by'];
@@ -3718,24 +4582,36 @@ values (:no_ok, :n, :unow, :tid)');
             if ($lb == "0") {
                 
                 $stmt = $dbConnection->prepare('update tickets set lock_by=:user, last_update=:n where id=:tid');
-                $stmt->execute(array(':tid' => $tid, ':user' => $user, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':tid' => $tid,
+                    ':user' => $user,
+                    ':n' => $CONF['now_dt']
+                ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:lock, :n, :unow, :tid)');
-                $stmt->execute(array(':tid' => $tid, ':unow' => $unow, ':lock' => 'lock', ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':tid' => $tid,
+                    ':unow' => $unow,
+                    ':lock' => 'lock',
+                    ':n' => $CONF['now_dt']
+                ));
                 
                 send_notification('ticket_lock', $tid);
 ?>
 
-                <div class="alert alert-success"><i class="fa fa-check"></i> <?php echo lang('TICKET_msg_lock'); ?></div>
+                <div class="alert alert-success"><i class="fa fa-check"></i> <?php
+                echo lang('TICKET_msg_lock'); ?></div>
 
             <?php
             }
             if ($lb <> "0") {
 ?>
-                <div class="alert alert-danger"><?php echo lang('TICKET_msg_lock_error'); ?> <?php echo name_of_user($lb); ?></div>
+                <div class="alert alert-danger"><?php
+                echo lang('TICKET_msg_lock_error'); ?> <?php
+                echo name_of_user($lb); ?></div>
             <?php
             }
         }
@@ -3743,17 +4619,27 @@ values (:lock, :n, :unow, :tid)');
             $tid = ($_POST['tid']);
             
             $stmt = $dbConnection->prepare('update tickets set lock_by=:n, last_update=:nz where id=:tid');
-            $stmt->execute(array(':tid' => $tid, ':n' => '0', ':nz' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':tid' => $tid,
+                ':n' => '0',
+                ':nz' => $CONF['now_dt']
+            ));
             
             $unow = $_SESSION['helpdesk_user_id'];
             
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:unlock, :n, :unow, :tid)');
-            $stmt->execute(array(':tid' => $tid, ':unow' => $unow, ':unlock' => 'unlock', ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':tid' => $tid,
+                ':unow' => $unow,
+                ':unlock' => 'unlock',
+                ':n' => $CONF['now_dt']
+            ));
             send_notification('ticket_unlock', $tid);
 ?>
 
-            <div class="alert alert-success"><i class="fa fa-check"></i> <?php echo lang('TICKET_msg_unlock'); ?></div>
+            <div class="alert alert-success"><i class="fa fa-check"></i> <?php
+            echo lang('TICKET_msg_unlock'); ?></div>
 
         <?php
         }
@@ -3775,7 +4661,15 @@ values (:unlock, :n, :unow, :tid)');
             msg=concat(msg,:br,:x_refer_comment), 
             lock_by=:n, 
             last_update=:nz where id=:tid');
-                $stmt->execute(array(':to' => $to, ':tou' => $tou, ':br' => '<br>', ':x_refer_comment' => $x_refer_comment, ':tid' => $tid, ':n' => '0', ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':to' => $to,
+                    ':tou' => $tou,
+                    ':br' => '<br>',
+                    ':x_refer_comment' => $x_refer_comment,
+                    ':tid' => $tid,
+                    ':n' => '0',
+                    ':nz' => $CONF['now_dt']
+                ));
             } else if (strlen($tom) <= 2) {
                 
                 $stmt = $dbConnection->prepare('update tickets set 
@@ -3783,17 +4677,31 @@ values (:unlock, :n, :unow, :tid)');
             user_to_id=:tou, 
             lock_by=:n, 
             last_update=:nz where id=:tid');
-                $stmt->execute(array(':to' => $to, ':tou' => $tou, ':tid' => $tid, ':n' => '0', ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':to' => $to,
+                    ':tou' => $tou,
+                    ':tid' => $tid,
+                    ':n' => '0',
+                    ':nz' => $CONF['now_dt']
+                ));
             }
             
             $unow = $_SESSION['helpdesk_user_id'];
             
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, to_user_id, ticket_id, to_unit_id) values (:refer, :n, :unow, :tou, :tid, :to)');
-            $stmt->execute(array(':to' => $to, ':tou' => $tou, ':refer' => 'refer', ':tid' => $tid, ':unow' => $unow, ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':to' => $to,
+                ':tou' => $tou,
+                ':refer' => 'refer',
+                ':tid' => $tid,
+                ':unow' => $unow,
+                ':n' => $CONF['now_dt']
+            ));
             
             send_notification('ticket_refer', $tid);
 ?>
-            <div class="alert alert-success"><?php echo lang('TICKET_msg_refer'); ?></div>
+            <div class="alert alert-success"><?php
+            echo lang('TICKET_msg_refer'); ?></div>
         <?php
         }
         if ($mode == "edit_user") {
@@ -3814,7 +4722,7 @@ values (:unlock, :n, :unow, :tid)');
             $lang = ($_POST['lang']);
             $pidrozdil = $_POST['pidrozdil'];
             $posada = $_POST['posada'];
-            $msg_type=$_POST['msg_type'];
+            $msg_type = $_POST['msg_type'];
             
             $unit = ($_POST['unit']);
             
@@ -3872,7 +4780,31 @@ values (:unlock, :n, :unow, :tid)');
                 messages_type=:msg_type
                 where uniq_id=:usid
                 ');
-                $stmt->execute(array(':fio' => $fio, ':login' => $login, ':status' => $status, ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':usid' => $usid, ':lk' => $ldap_key, ':pass' => $pass, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $usid, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client, ':msg_type'=>$msg_type));
+                $stmt->execute(array(
+                    ':fio' => $fio,
+                    ':login' => $login,
+                    ':status' => $status,
+                    ':priv' => $privs,
+                    ':unit' => $unit,
+                    ':mail' => $mail,
+                    ':mess' => $mess,
+                    ':lang' => $lang,
+                    ':usid' => $usid,
+                    ':lk' => $ldap_key,
+                    ':pass' => $pass,
+                    ':priv_add_client' => $priv_add_client,
+                    ':priv_edit_client' => $priv_edit_client,
+                    ':pb' => $push,
+                    ':messages_title' => $mess_title,
+                    ':uniq_id' => $usid,
+                    ':posada' => $posada,
+                    ':tel' => $tel,
+                    ':skype' => $skype,
+                    ':unit_desc' => $pidrozdil,
+                    ':adr' => $adr,
+                    ':is_client' => $is_client,
+                    ':msg_type' => $msg_type
+                ));
             } else {
                 $stmt = $dbConnection->prepare('update users set
                 fio=:fio, 
@@ -3898,7 +4830,30 @@ values (:unlock, :n, :unow, :tid)');
                 messages_type=:msg_type
                 where uniq_id=:usid
                 ');
-                $stmt->execute(array(':fio' => $fio, ':login' => $login, ':status' => $status, ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':usid' => $usid, ':lk' => $ldap_key, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $usid, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client, ':msg_type'=>$msg_type));
+                $stmt->execute(array(
+                    ':fio' => $fio,
+                    ':login' => $login,
+                    ':status' => $status,
+                    ':priv' => $privs,
+                    ':unit' => $unit,
+                    ':mail' => $mail,
+                    ':mess' => $mess,
+                    ':lang' => $lang,
+                    ':usid' => $usid,
+                    ':lk' => $ldap_key,
+                    ':priv_add_client' => $priv_add_client,
+                    ':priv_edit_client' => $priv_edit_client,
+                    ':pb' => $push,
+                    ':messages_title' => $mess_title,
+                    ':uniq_id' => $usid,
+                    ':posada' => $posada,
+                    ':tel' => $tel,
+                    ':skype' => $skype,
+                    ':unit_desc' => $pidrozdil,
+                    ':adr' => $adr,
+                    ':is_client' => $is_client,
+                    ':msg_type' => $msg_type
+                ));
             }
             
             /*
@@ -3976,7 +4931,7 @@ values (:unlock, :n, :unow, :tid)');
             $lang = ($_POST['lang']);
             $pidrozdil = $_POST['pidrozdil'];
             $posada = $_POST['posada'];
-            $msg_type=$_POST['msg_type'];
+            $msg_type = $_POST['msg_type'];
             
             //$hidden=array();
             //$hidden = ($_POST['unit']);
@@ -4059,7 +5014,30 @@ values
             :is_client,
             :msg_type
             )');
-            $stmt->execute(array(':fio' => $fio, ':login' => $login, ':pass' => $pass, ':one' => '1', ':priv' => $privs, ':unit' => $unit, ':mail' => $mail, ':mess' => $mess, ':lang' => $lang, ':priv_add_client' => $priv_add_client, ':priv_edit_client' => $priv_edit_client, ':lk' => $ldap_key, ':pb' => $push, ':messages_title' => $mess_title, ':uniq_id' => $hn, ':posada' => $posada, ':tel' => $tel, ':skype' => $skype, ':unit_desc' => $pidrozdil, ':adr' => $adr, ':is_client' => $is_client, ':msg_type'=>$msg_type));
+            $stmt->execute(array(
+                ':fio' => $fio,
+                ':login' => $login,
+                ':pass' => $pass,
+                ':one' => '1',
+                ':priv' => $privs,
+                ':unit' => $unit,
+                ':mail' => $mail,
+                ':mess' => $mess,
+                ':lang' => $lang,
+                ':priv_add_client' => $priv_add_client,
+                ':priv_edit_client' => $priv_edit_client,
+                ':lk' => $ldap_key,
+                ':pb' => $push,
+                ':messages_title' => $mess_title,
+                ':uniq_id' => $hn,
+                ':posada' => $posada,
+                ':tel' => $tel,
+                ':skype' => $skype,
+                ':unit_desc' => $pidrozdil,
+                ':adr' => $adr,
+                ':is_client' => $is_client,
+                ':msg_type' => $msg_type
+            ));
         }
         if ($mode == "save_edit_ticket") {
             
@@ -4069,52 +5047,90 @@ values
             $prio = $_POST['prio'];
             
             $stmt = $dbConnection->prepare('SELECT id, subj, msg, prio FROM tickets where hash_name=:hn');
-            $stmt->execute(array(':hn' => $t_hash));
+            $stmt->execute(array(
+                ':hn' => $t_hash
+            ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
             $pk = $fio['id'];
             
             if ($prio != $fio['prio']) {
                 $stmt = $dbConnection->prepare('update tickets set prio=:v, last_edit=:n, last_update=:nz where hash_name=:pk');
-                $stmt->execute(array(':v' => $prio, ':pk' => $t_hash, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':v' => $prio,
+                    ':pk' => $t_hash,
+                    ':n' => $CONF['now_dt'],
+                    ':nz' => $CONF['now_dt']
+                ));
                 $unow = $_SESSION['helpdesk_user_id'];
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:edit_subj, :n, :unow, :pk)');
-                $stmt->execute(array(':edit_subj' => 'edit_prio', ':pk' => $pk, ':unow' => $unow, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':edit_subj' => 'edit_prio',
+                    ':pk' => $pk,
+                    ':unow' => $unow,
+                    ':n' => $CONF['now_dt']
+                ));
             }
             
             if ($subj != $fio['subj']) {
                 $stmt = $dbConnection->prepare('update tickets set subj=:v, last_edit=:n, last_update=:nz where hash_name=:pk');
-                $stmt->execute(array(':v' => $subj, ':pk' => $t_hash, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':v' => $subj,
+                    ':pk' => $t_hash,
+                    ':n' => $CONF['now_dt'],
+                    ':nz' => $CONF['now_dt']
+                ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:edit_subj, :n, :unow, :pk)');
-                $stmt->execute(array(':edit_subj' => 'edit_subj', ':pk' => $pk, ':unow' => $unow, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':edit_subj' => 'edit_subj',
+                    ':pk' => $pk,
+                    ':unow' => $unow,
+                    ':n' => $CONF['now_dt']
+                ));
             }
             
             if ($msg != $fio['msg']) {
                 
                 $stmt = $dbConnection->prepare('update tickets set msg=:v, last_edit=:n, last_update=:nz where hash_name=:pk');
-                $stmt->execute(array(':v' => $msg, ':pk' => $t_hash, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':v' => $msg,
+                    ':pk' => $t_hash,
+                    ':n' => $CONF['now_dt'],
+                    ':nz' => $CONF['now_dt']
+                ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:edit_msg, :n, :unow, :pk)');
-                $stmt->execute(array(':edit_msg' => 'edit_msg', ':pk' => $pk, ':unow' => $unow, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':edit_msg' => 'edit_msg',
+                    ':pk' => $pk,
+                    ':unow' => $unow,
+                    ':n' => $CONF['now_dt']
+                ));
             }
         }
         
         if ($mode == "deps_hide") {
             $id = ($_POST['id']);
             $stmt = $dbConnection->prepare('update deps set status=:v where id=:id');
-            $stmt->execute(array(':v' => '0', ':id' => $id));
+            $stmt->execute(array(
+                ':v' => '0',
+                ':id' => $id
+            ));
         }
         if ($mode == "deps_show") {
             $id = ($_POST['id']);
             $stmt = $dbConnection->prepare('update deps set status=:v where id=:id');
-            $stmt->execute(array(':v' => '1', ':id' => $id));
+            $stmt->execute(array(
+                ':v' => '1',
+                ':id' => $id
+            ));
         }
         
         if ($mode == "edit_deps") {
@@ -4122,7 +5138,10 @@ values (:edit_msg, :n, :unow, :pk)');
             $pk = ($_POST['pk']);
             
             $stmt = $dbConnection->prepare('update deps set name=:v where id=:pk');
-            $stmt->execute(array(':v' => $v, ':pk' => $pk));
+            $stmt->execute(array(
+                ':v' => $v,
+                ':pk' => $pk
+            ));
         }
         
         if ($mode == "recalculate_messages") {
@@ -4149,7 +5168,10 @@ values (:edit_msg, :n, :unow, :pk)');
             $stmt = $dbConnection->prepare('SELECT count(id) as cou from messages where
         ((user_from=:ufrom and user_to=:uto)) and is_read=0
          ');
-            $stmt->execute(array(':ufrom' => $uniq_id, ':uto' => $_SESSION['helpdesk_user_id']));
+            $stmt->execute(array(
+                ':ufrom' => $uniq_id,
+                ':uto' => $_SESSION['helpdesk_user_id']
+            ));
             
             $tt = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($tt['cou'] != 0) {
@@ -4182,7 +5204,10 @@ values (:edit_msg, :n, :unow, :pk)');
             $t = $_POST['t'];
             if ($_POST['t']) {
                 $stmt = $dbConnection->prepare('SELECT id, fio from users where fio like :t and id!=:uid order by fio ASC limit 10');
-                $stmt->execute(array(':t' => '%' . $t . '%', ':uid' => $_SESSION['helpdesk_user_id']));
+                $stmt->execute(array(
+                    ':t' => '%' . $t . '%',
+                    ':uid' => $_SESSION['helpdesk_user_id']
+                ));
                 
                 $re = $stmt->fetchAll();
 ?>
@@ -4190,7 +5215,6 @@ values (:edit_msg, :n, :unow, :pk)');
                                             
                                                 <ul class="nav nav-pills nav-stacked">
                                                     <?php
-                
                 if (empty($re)) {
                     
                     echo "no ";
@@ -4202,7 +5226,10 @@ values (:edit_msg, :n, :unow, :pk)');
                         $stmt = $dbConnection->prepare('SELECT count(id) as cou from messages where
         ((user_from=:ufrom and user_to=:uto)) and is_read=0
          ');
-                        $stmt->execute(array(':ufrom' => $uniq_id, ':uto' => $_SESSION['helpdesk_user_id']));
+                        $stmt->execute(array(
+                            ':ufrom' => $uniq_id,
+                            ':uto' => $_SESSION['helpdesk_user_id']
+                        ));
                         
                         $tt = $stmt->fetch(PDO::FETCH_ASSOC);
                         if ($tt['cou'] != 0) {
@@ -4211,12 +5238,16 @@ values (:edit_msg, :n, :unow, :pk)');
                             $tt = "<small id=\"ul_label_" . $uniq_id . "\"></small>";
                         }
 ?>
-                                                    <li class="user_li" user-id="<?php echo $uniq_id; ?>">
+                                                    <li class="user_li" user-id="<?php
+                        echo $uniq_id; ?>">
                                                     <a href="#">
-                                                        <img style="width: 25px;height: 25px;" src="<?php echo get_user_img_by_id($uniq_id); ?>" class="img-circle" alt="User Image">
-                                                     <?php echo nameshort(name_of_user_ret_nolink($uniq_id)); ?>
+                                                        <img style="width: 25px;height: 25px;" src="<?php
+                        echo get_user_img_by_id($uniq_id); ?>" class="img-circle" alt="User Image">
+                                                     <?php
+                        echo nameshort(name_of_user_ret_nolink($uniq_id)); ?>
                                                      
-                                                     <?php echo $tt; ?>
+                                                     <?php
+                        echo $tt; ?>
                                                      </a>
                                                      </li>
                                                     <?php
@@ -4230,7 +5261,9 @@ values (:edit_msg, :n, :unow, :pk)');
                 $stmt = $dbConnection->prepare('SELECT id, user_from,user_to from messages where
                         (user_to=:u_to)
                         order by is_read, date_op ASC');
-                $stmt->execute(array(':u_to' => $_SESSION['helpdesk_user_id']));
+                $stmt->execute(array(
+                    ':u_to' => $_SESSION['helpdesk_user_id']
+                ));
                 
                 $re = $stmt->fetchAll();
                 if (!empty($re)) {
@@ -4253,13 +5286,15 @@ values (:edit_msg, :n, :unow, :pk)');
                                         
                                         <ul class="nav nav-pills nav-stacked">
                                                     <?php
-                
                 foreach ($user_arr as $uniq_id) {
                     
                     $stmt = $dbConnection->prepare('SELECT count(id) as cou from messages where
         ((user_from=:ufrom and user_to=:uto)) and is_read=0
          ');
-                    $stmt->execute(array(':ufrom' => $uniq_id, ':uto' => $_SESSION['helpdesk_user_id']));
+                    $stmt->execute(array(
+                        ':ufrom' => $uniq_id,
+                        ':uto' => $_SESSION['helpdesk_user_id']
+                    ));
                     
                     $tt = $stmt->fetch(PDO::FETCH_ASSOC);
                     if ($tt['cou'] != 0) {
@@ -4268,12 +5303,16 @@ values (:edit_msg, :n, :unow, :pk)');
                         $tt = "<small id=\"ul_label_" . $uniq_id . "\"></small>";
                     }
 ?>
-                                                    <li class="user_li" user-id="<?php echo $uniq_id; ?>">
+                                                    <li class="user_li" user-id="<?php
+                    echo $uniq_id; ?>">
                                                     <a href="#">
-                                                        <img style="width: 25px;height: 25px;" src="<?php echo get_user_img_by_id($uniq_id); ?>" class="img-circle" alt="User Image">
-                                                     <?php echo nameshort(name_of_user_ret_nolink($uniq_id)); ?>
+                                                        <img style="width: 25px;height: 25px;" src="<?php
+                    echo get_user_img_by_id($uniq_id); ?>" class="img-circle" alt="User Image">
+                                                     <?php
+                    echo nameshort(name_of_user_ret_nolink($uniq_id)); ?>
                                                      
-                                                     <?php echo $tt; ?>
+                                                     <?php
+                    echo $tt; ?>
                                                      </a>
                                                      </li>
                                                     <?php
@@ -4311,16 +5350,31 @@ values (:edit_msg, :n, :unow, :pk)');
                 
                 $stmt = $dbConnection->prepare('INSERT INTO notification_msg_pool (delivers_id,type_op,ticket_id,dt,chat_msg_id)
                     values (:delivers_id,:type_op,:ticket_id,:n,:chat_msg_id)');
-                $stmt->execute(array(':delivers_id' => $unid, ':type_op' => 'message_send', ':ticket_id' => $user_comment, ':chat_msg_id' => $max_id_res_msgs, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':delivers_id' => $unid,
+                    ':type_op' => 'message_send',
+                    ':ticket_id' => $user_comment,
+                    ':chat_msg_id' => $max_id_res_msgs,
+                    ':n' => $CONF['now_dt']
+                ));
             }
             
             $stmt = $dbConnection->prepare('INSERT INTO messages (id, user_from,user_to,date_op,msg,type_msg,is_read)
                     values (:ida, :user_from, :user_to, :n, :msg, :type_msg, :is_read)');
-            $stmt->execute(array(':ida' => $max_id_res_msgs, ':user_from' => $user_comment, ':user_to' => $a, ':msg' => $text_comment, ':type_msg' => $b, ':is_read' => '0', ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':ida' => $max_id_res_msgs,
+                ':user_from' => $user_comment,
+                ':user_to' => $a,
+                ':msg' => $text_comment,
+                ':type_msg' => $b,
+                ':is_read' => '0',
+                ':n' => $CONF['now_dt']
+            ));
             
             view_messages($target);
             
             //echo $target.'=='.$_SESSION['helpdesk_user_id'];
+            
             
         }
         
@@ -4348,18 +5402,31 @@ values (:edit_msg, :n, :unow, :pk)');
             
             $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
 values (:tid_comment, :user_comment, :text_comment, :n)');
-            $stmt->execute(array(':tid_comment' => $tid_comment, ':user_comment' => $user_comment, ':text_comment' => $text_comment, ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':user_comment' => $user_comment,
+                ':text_comment' => $text_comment,
+                ':n' => $CONF['now_dt']
+            ));
             
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
 values (:comment, :n, :user_comment, :tid_comment)');
-            $stmt->execute(array(':tid_comment' => $tid_comment, ':user_comment' => $user_comment, ':comment' => 'comment', ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':user_comment' => $user_comment,
+                ':comment' => 'comment',
+                ':n' => $CONF['now_dt']
+            ));
             
             send_notification('ticket_comment', $tid_comment);
             
             //}
             
             $stmt = $dbConnection->prepare('update tickets set last_update=:n where id=:tid_comment');
-            $stmt->execute(array(':tid_comment' => $tid_comment, ':n' => $CONF['now_dt']));
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':n' => $CONF['now_dt']
+            ));
             
             view_comment($tid_comment);
         }
@@ -4369,7 +5436,10 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $hn = $_POST['hn'];
             
             $stmt = $dbConnection->prepare('insert into files (name, h_name) VALUES (:name, :hn)');
-            $stmt->execute(array(':name' => $name, ':hn' => $hn));
+            $stmt->execute(array(
+                ':name' => $name,
+                ':hn' => $hn
+            ));
         }
         if ($mode == "conf_test_mail") {
             
@@ -4388,7 +5458,8 @@ values (:comment, :n, :user_comment, :tid_comment)');
             if (get_conf_param('mail_type') == "sendmail") {
                 $mail = new PHPMailer(true);
                 $mail->IsSendmail();
-                 // telling the class to use SendMail transport
+                
+                // telling the class to use SendMail transport
                 
                 try {
                     $mail->AddReplyTo($CONF_MAIL['from'], $CONF['name_of_firm']);
@@ -4396,34 +5467,43 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     $mail->SetFrom($CONF_MAIL['from'], $CONF['name_of_firm']);
                     $mail->Subject = 'test message';
                     $mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
-                     // optional - MsgHTML will create an alternate automatically
+                    
+                    // optional - MsgHTML will create an alternate automatically
                     $mail->MsgHTML('Test message via sendmail');
                     $mail->Send();
                     echo "Message Sent OK<p></p>\n";
                 }
                 catch(phpmailerException $e) {
                     echo $e->errorMessage();
-                     //Pretty error messages from PHPMailer
+                    
+                    //Pretty error messages from PHPMailer
+                    
                     
                 }
                 catch(Exception $e) {
                     echo $e->getMessage();
-                     //Boring error messages from anything else!
+                    
+                    //Boring error messages from anything else!
+                    
                     
                 }
             } else if (get_conf_param('mail_type') == "SMTP") {
                 
                 $mail = new PHPMailer(true);
-                 // the true param means it will throw exceptions on errors, which we need to catch
+                
+                // the true param means it will throw exceptions on errors, which we need to catch
                 
                 $mail->IsSMTP();
-                 // telling the class to use SMTP
+                
+                // telling the class to use SMTP
                 
                 try {
                     $mail->SMTPDebug = 2;
-                     // enables SMTP debug information (for testing)
+                    
+                    // enables SMTP debug information (for testing)
                     $mail->SMTPAuth = $CONF_MAIL['auth'];
-                     // enable SMTP authentication
+                    
+                    // enable SMTP authentication
                     if (get_conf_param('mail_auth_type') != "none") {
                         $mail->SMTPSecure = $CONF_MAIL['auth_type'];
                     }
@@ -4437,19 +5517,24 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     $mail->SetFrom($CONF_MAIL['from'], $CONF['name_of_firm']);
                     $mail->Subject = 'test message via smtp';
                     $mail->AltBody = 'To view the message, please use an HTML compatible email viewer!';
-                     // optional - MsgHTML will create an alternate automatically
+                    
+                    // optional - MsgHTML will create an alternate automatically
                     $mail->MsgHTML("test message");
                     $mail->Send();
                     echo "Message Sent OK<p></p>\n";
                 }
                 catch(phpmailerException $e) {
                     echo $e->errorMessage();
-                     //Pretty error messages from PHPMailer
+                    
+                    //Pretty error messages from PHPMailer
+                    
                     
                 }
                 catch(Exception $e) {
                     echo $e->getMessage();
-                     //Boring error messages from anything else!
+                    
+                    //Boring error messages from anything else!
+                    
                     
                 }
             }
@@ -4475,11 +5560,6 @@ values (:comment, :n, :user_comment, :tid_comment)');
             $client_posada = strip_tags(xss_clean(($_POST['posada'])));
             
             $client_id_param = ($_POST['client_id_param']);
-
-            
-
-
-
             
             if ($client_fio == "пусто") {
                 $client_fio = "";
@@ -4558,7 +5638,19 @@ values (:comment, :n, :user_comment, :tid_comment)');
              :is_client,
              :uniq_id)');
                 
-                $stmt->execute(array(':max_id' => $max_id, ':client_fio' => $client_fio, ':client_tel' => $client_tel, ':client_login' => $client_login, ':unit_desc' => $unit_desc, ':client_adr' => $client_adr, ':client_mail' => $client_mail, ':client_posada' => $client_posada, ':priv' => '1', ':is_client' => '1', ':uniq_id' => $hn));
+                $stmt->execute(array(
+                    ':max_id' => $max_id,
+                    ':client_fio' => $client_fio,
+                    ':client_tel' => $client_tel,
+                    ':client_login' => $client_login,
+                    ':unit_desc' => $unit_desc,
+                    ':client_adr' => $client_adr,
+                    ':client_mail' => $client_mail,
+                    ':client_posada' => $client_posada,
+                    ':priv' => '1',
+                    ':is_client' => '1',
+                    ':uniq_id' => $hn
+                ));
                 
                 $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");
                 $stmt->execute();
@@ -4568,11 +5660,31 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
                                 (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
-                $stmt->execute(array(':max_id_res_ticket' => $max_id_res_ticket, ':user_init_id' => $user_init_id, ':user_to_id' => $user_to_id, ':subj' => $subj, ':msg' => $msg, ':max_id' => $max_id, ':unit_id' => $unit_id, ':status' => $status, ':hashname' => $hashname, ':prio' => $prio, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':max_id_res_ticket' => $max_id_res_ticket,
+                    ':user_init_id' => $user_init_id,
+                    ':user_to_id' => $user_to_id,
+                    ':subj' => $subj,
+                    ':msg' => $msg,
+                    ':max_id' => $max_id,
+                    ':unit_id' => $unit_id,
+                    ':status' => $status,
+                    ':hashname' => $hashname,
+                    ':prio' => $prio,
+                    ':n' => $CONF['now_dt'],
+                    ':nz' => $CONF['now_dt']
+                ));
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
                 $unow = $_SESSION['helpdesk_user_id'];
-                $stmt->execute(array(':create' => 'create', ':unow' => $unow, ':max_id_res_ticket' => $max_id_res_ticket, ':user_to_id' => $user_to_id, ':unit_id' => $unit_id, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':create' => 'create',
+                    ':unow' => $unow,
+                    ':max_id_res_ticket' => $max_id_res_ticket,
+                    ':user_to_id' => $user_to_id,
+                    ':unit_id' => $unit_id,
+                    ':n' => $CONF['now_dt']
+                ));
                 
                 //if ($CONF_MAIL['active'] == "true") {
                 send_notification('ticket_create', $max_id_res_ticket);
@@ -4580,7 +5692,6 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 //              }
                 
                 echo ($hashname);
-
             }
             if ($type == "edit") {
                 
@@ -4591,7 +5702,15 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     
                     $stmt = $dbConnection->prepare('update users set tel=:client_tel, login=:client_login, unit_desc=:unit_desc, adr=:client_adr, email=:client_mail, posada=:client_posada where id=:client_id_param');
                     
-                    $stmt->execute(array(':client_tel' => $client_tel, ':client_login' => $client_login, ':unit_desc' => $unit_desc, ':client_adr' => $client_adr, ':client_mail' => $client_mail, ':client_posada' => $client_posada, ':client_id_param' => $client_id_param));
+                    $stmt->execute(array(
+                        ':client_tel' => $client_tel,
+                        ':client_login' => $client_login,
+                        ':unit_desc' => $unit_desc,
+                        ':client_adr' => $client_adr,
+                        ':client_mail' => $client_mail,
+                        ':client_posada' => $client_posada,
+                        ':client_id_param' => $client_id_param
+                    ));
                 }
                 
                 $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");
@@ -4602,13 +5721,33 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
                                 (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
-                $stmt->execute(array(':max_id_res_ticket' => $max_id_res_ticket, ':user_init_id' => $user_init_id, ':user_to_id' => $user_to_id, ':subj' => $subj, ':msg' => $msg, ':max_id' => $client_id_param, ':unit_id' => $unit_id, ':status' => $status, ':hashname' => $hashname, ':prio' => $prio, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':max_id_res_ticket' => $max_id_res_ticket,
+                    ':user_init_id' => $user_init_id,
+                    ':user_to_id' => $user_to_id,
+                    ':subj' => $subj,
+                    ':msg' => $msg,
+                    ':max_id' => $client_id_param,
+                    ':unit_id' => $unit_id,
+                    ':status' => $status,
+                    ':hashname' => $hashname,
+                    ':prio' => $prio,
+                    ':n' => $CONF['now_dt'],
+                    ':nz' => $CONF['now_dt']
+                ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
                 
-                $stmt->execute(array(':create' => 'create', ':unow' => $unow, ':max_id_res_ticket' => $max_id_res_ticket, ':user_to_id' => $user_to_id, ':unit_id' => $unit_id, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':create' => 'create',
+                    ':unow' => $unow,
+                    ':max_id_res_ticket' => $max_id_res_ticket,
+                    ':user_to_id' => $user_to_id,
+                    ':unit_id' => $unit_id,
+                    ':n' => $CONF['now_dt']
+                ));
                 
                 //echo("dd");
                 //if ($CONF_MAIL['active'] == "true") {
@@ -4631,13 +5770,33 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
                                 (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
                 
-                $stmt->execute(array(':max_id_res_ticket' => $max_id_res_ticket, ':user_init_id' => $user_init_id, ':user_to_id' => $user_to_id, ':subj' => $subj, ':msg' => $msg, ':max_id' => $_SESSION['helpdesk_user_id'], ':unit_id' => $unit_id, ':status' => $status, ':hashname' => $hashname, ':prio' => $prio, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':max_id_res_ticket' => $max_id_res_ticket,
+                    ':user_init_id' => $user_init_id,
+                    ':user_to_id' => $user_to_id,
+                    ':subj' => $subj,
+                    ':msg' => $msg,
+                    ':max_id' => $_SESSION['helpdesk_user_id'],
+                    ':unit_id' => $unit_id,
+                    ':status' => $status,
+                    ':hashname' => $hashname,
+                    ':prio' => $prio,
+                    ':n' => $CONF['now_dt'],
+                    ':nz' => $CONF['now_dt']
+                ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
                 
-                $stmt->execute(array(':create' => 'create', ':unow' => $unow, ':max_id_res_ticket' => $max_id_res_ticket, ':user_to_id' => $user_to_id, ':unit_id' => $unit_id, ':n' => $CONF['now_dt']));
+                $stmt->execute(array(
+                    ':create' => 'create',
+                    ':unow' => $unow,
+                    ':max_id_res_ticket' => $max_id_res_ticket,
+                    ':user_to_id' => $user_to_id,
+                    ':unit_id' => $unit_id,
+                    ':n' => $CONF['now_dt']
+                ));
                 
                 //??????????????????????????????????????????????????????????????
                 
