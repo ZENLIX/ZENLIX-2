@@ -7,7 +7,7 @@ $(document).ready(function() {
 $(".right-side").css("display", "none");
 $(".right-side").fadeIn(800);
 
-    var socket = io.connect(location.protocol + '//' + show_hostname(MyHOSTNAME) + ':' + NODE_PORT, {
+    var socket = io.connect(NODE_URL, {
         secure: true
     });
     socket.emit('join', {

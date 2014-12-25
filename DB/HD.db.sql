@@ -261,7 +261,7 @@ VALUES
 	(23,'ldap_ip','ip'),
 	(24,'ldap_domain','ldap.local'),
 	(25,'version','2.0'),
-	(26,'node_port','8080'),
+	(26,'node_port','http://localhost:3001/'),
   (27,'time_zone','Europe/Kiev'),
   (28,'allow_register','true'),
   (29, 'logo_img', ''),

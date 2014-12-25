@@ -26,7 +26,7 @@ echo $CONF['hostname']; ?>";
     var MyLANG = "<?php
 echo $lang; ?>";
     var USER_HASH = "<?php echo get_user_val('uniq_id'); ?>";
-    var NODE_PORT = "<?php echo get_conf_param('node_port'); ?>";
+    var NODE_URL = "<?php echo get_conf_param('node_port'); ?>";
 </script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-1.11.0.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js"></script>

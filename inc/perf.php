@@ -448,9 +448,9 @@ class SimpleImage
   </div>
   
       <div class="form-group">
-    <label for="node_port" class="col-sm-4 control-label"><small>NodeJS port</small></label>
+    <label for="node_port" class="col-sm-4 control-label"><small>NodeJS/socket.io URL</small></label>
     <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="node_port" placeholder="8080" value="<?php
+      <input type="text" class="form-control input-sm" id="node_port" placeholder="ex. http://domain.com:3001" value="<?php
         echo get_conf_param('node_port') ?>">
     </div>
   </div>

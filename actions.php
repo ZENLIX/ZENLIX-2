@@ -3454,7 +3454,7 @@ values
             
             GUMP::set_field_name("ldap", lang('EXT_ldap_ip'));
             GUMP::set_field_name("name_of_firm", lang('CONF_name'));
-            GUMP::set_field_name("node_port", 'NodeJS port');
+            //GUMP::set_field_name("node_port", 'NodeJS port');
             GUMP::set_field_name("days2arch", lang('CONF_2arch'));
             GUMP::set_field_name("file_size", lang('CONF_file_size'));
             GUMP::set_field_name("mail", lang('CONF_mail'));
@@ -3464,7 +3464,7 @@ values
                 'ldap' => 'valid_ip',
                 'name_of_firm' => 'required|max_len,100',
                 'title_header' => 'required|max_len,100',
-                'node_port' => 'required|numeric',
+                //'node_port' => 'required|numeric',
                 'days2arch' => 'required|numeric',
                 'file_size' => 'required|numeric',
                 'mail' => 'required|valid_email'
