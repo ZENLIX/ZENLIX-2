@@ -63,7 +63,7 @@ EXECUTE stmt;
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)
         FROM INFORMATION_SCHEMA.COLUMNS WHERE
-        table_name='helper' and column_name='cat_id'
+        table_name='helper' and column_name='user_edit_id'
     ) > 0,
     "SELECT 0",
     "ALTER TABLE helper ADD user_edit_id int(128) NOT NULL DEFAULT 0;"
