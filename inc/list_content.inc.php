@@ -3,6 +3,18 @@ session_start();
 error_reporting(0);
 include_once ("../functions.inc.php");
 
+
+
+
+
+
+
+
+
+
+
+
+
 if (isset($_POST['menu'])) {
     
     if ($_POST['menu'] == 'out') {

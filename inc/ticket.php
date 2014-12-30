@@ -172,7 +172,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                 
                                 </div>
                                 <div class="box-body">
-                                <table class="table ">
+                                <table class="table table-bordered">
                 <tbody>
                 <tr style="width:50%">
                     <td ><small class="text-muted"><?php echo lang('TICKET_t_from'); ?>: </small></td>
