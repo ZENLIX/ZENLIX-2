@@ -112,11 +112,11 @@ LOCK TABLES `deps` WRITE;
 
 INSERT INTO `deps` (`id`, `name`, `status`)
 VALUES
-	(1,'Отдел WEB-разработки',1),
-	(2,'Сектор хостинга',1),
-	(3,'Отдел SEO, рекламы и маркетинга',0),
-	(4,'Отдел безопастности сети',1),
-	(5,'Отдел поддержки пользователей',1);
+	(1,'Web-designers dep',1),
+	(2,'Hosting dep',1),
+	(3,'SEO',0),
+	(4,'Network security',1),
+	(5,'User support',1);
 
 /*!40000 ALTER TABLE `deps` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -298,8 +298,8 @@ LOCK TABLES `posada` WRITE;
 
 INSERT INTO `posada` (`id`, `name`)
 VALUES
-	(1,'администратор'),
-	(2,'координатор');
+	(1,'administrator'),
+	(2,'coordinator');
 
 /*!40000 ALTER TABLE `posada` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -321,14 +321,14 @@ LOCK TABLES `subj` WRITE;
 
 INSERT INTO `subj` (`id`, `name`)
 VALUES
-	(25,'Система'),
-	(28,'Интернет и локальная сеть'),
-	(30,'Телефония'),
-	(31,'Другое'),
-	(32,'Компьютеры и переферия'),
-	(33,'Принтеры (обслуживание)'),
-	(35,'Видеонаблюдение'),
-	(36,'Установка ПО');
+	(1,'Systems'),
+	(2,'Internet and Local Network'),
+	(3,'IP-phone'),
+	(4,'etc'),
+	(5,'Computers'),
+	(6,'Printers and Scanners'),
+	(7,'Video cameras'),
+	(8,'Software installing');
 
 /*!40000 ALTER TABLE `subj` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -398,8 +398,8 @@ LOCK TABLES `units` WRITE;
 
 INSERT INTO `units` (`id`, `name`)
 VALUES
-	(1,'Бухгалтерия'),
-	(2,'Кадры');
+	(1,'IT-personal'),
+	(2,'Programmers');
 
 /*!40000 ALTER TABLE `units` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -445,7 +445,7 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `fio`, `login`, `pass`, `status`, `priv`, `unit`, `is_admin`, `is_client`, `email`, `messages`, `lang`, `priv_add_client`, `priv_edit_client`, `last_time`, `ldap_key`, `pb`, `messages_title`, `usr_img`, `uniq_id`, `posada`, `tel`, `skype`, `unit_desc`, `adr`)
 VALUES
-	(1, 'System Account', 'system', '81dc9bdb52d04dc20036dbd8313ed055', 1, 2, '1,2,3', 8, 0, '', 'Это необходимо для того, что бы знать кто её выполняет и не происходили дубликаты выполнения одной и той же задачи.', 'ru', 1, 1, '2014-10-23 15:23:49', 0, '', 'Пожалуйста, не забывайте блокировать заявки!', '', '7371a131b959f3527cbde59f0e5caf96', '', '', 'rustem_ck', '', '');
+	(1, 'System Account', 'system', '81dc9bdb52d04dc20036dbd8313ed055', 1, 2, '1,2,3', 8, 0, '', 'Это необходимо для того, что бы знать кто её выполняет и не происходили дубликаты выполнения одной и той же задачи.', 'ru', 1, 1, '2014-10-23 15:23:49', 0, '', 'Пожалуйста, не забывайте блокировать заявки!', '', '7371a131b959f3527cbde59f0e5caf96', '', '', '', '', '');
 
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
