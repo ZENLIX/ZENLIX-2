@@ -7,7 +7,13 @@ include_once ("head.inc.php");
 
 
 
-
+<style type="text/css" media="screen">
+body {
+background: url(img/login_bg.jpg);
+background-size: 100% 100%;
+background-repeat: no-repeat;
+}    
+</style>
 
 
 <body class="bg-navy">
@@ -56,7 +62,11 @@ echo $_SERVER['REQUEST_URI']; ?>">
             
         </div>
 
-
+<div style="color:white; position: fixed; bottom: 0; width:100%; text-align: right;">
+<right>
+<h4></h4>
+<p style=" margin-right: 20px; "> <?=get_conf_param('name_of_firm');?> (c) <?php echo date("Y"); ?></p>
+</right></div>
 
 
 

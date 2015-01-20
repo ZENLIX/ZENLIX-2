@@ -1145,10 +1145,11 @@ function validate_user($user_id, $input) {
     if (get_user_authtype($ul)) {
         if (ldap_auth($ul, $input)) {
             
-            $stmt = $dbConnection->prepare('SELECT login, fio from users where id=:user_id and status=:ls LIMIT 1');
+            $stmt = $dbConnection->prepare('SELECT login, fio from users where id=:user_id and status=:ls and is_client=:ic LIMIT 1');
             $stmt->execute(array(
                 ':user_id' => $user_id,
-                ':ls' => '1'
+                ':ls' => '1',
+            ':ic' => '0'
             ));
             
             if ($stmt->rowCount() == 1) {
