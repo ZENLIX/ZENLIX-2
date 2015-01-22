@@ -1,5 +1,5 @@
 
-	
+	/*
 	var mysql = require('mysql');
 
 var db = mysql.createConnection({
@@ -9,7 +9,7 @@ var db = mysql.createConnection({
     database: 'hd_prod'
 })
 	
-
+*/
 
 
 
