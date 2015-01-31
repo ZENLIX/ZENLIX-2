@@ -9,6 +9,15 @@ function lang_ua($phrase){
 'STAT_MAIN_t2'=>'Заявки, виконані користувачами відділу',
 'STAT_MAIN_t3'=>'Заявки, не виконані користувачами відділу',
     
+
+'PERF_menu_main_conf'=>'Загальні налаштування',
+'PERF_menu_ticket_conf'=>'Параметри заявок',
+'PERF_menu_notify_conf'=>'Центр нотифікації',
+'PERF_menu_info_conf'=>'Інформація',
+
+'PERF_GM_title'=>'Глобальне повідомлення DASHBOARD',
+'PERF_GM_to_users'=>'Обраним користувачам',
+
 'cron_navbar'=>'Планувальник',    
 'cron_title'=>'планувальник задач',     
 'cron_view' => 'Перегляд інформації про завдання',

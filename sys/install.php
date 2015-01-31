@@ -141,6 +141,8 @@ $mysql_username = $_POST['username'];
 $mysql_password = $_POST['password'];
 // Database name
 $mysql_database = $_POST['db'];
+
+$nodeport=$_POST['nodeport'];
 // Connect to MySQL server
 mysql_connect($mysql_host, $mysql_username, $mysql_password) or die('Error connecting to MySQL server: ' . mysql_error());
 // Select database
@@ -200,6 +202,8 @@ $node_params.="host: '".$mysql_host."',\n";
 $node_params.="user: '".$mysql_username."',\n";
 $node_params.="password: '".$mysql_password."',\n";
 $node_params.="database: '".$mysql_database."'})\n";
+$node_params.="require('/usr/local/lib/node_modules/socket.io').listen(".$nodeport.");\n";
+//var io = require('/usr/local/lib/node_modules/socket.io').listen(8080);
 $node_params.=file_get_contents($nodeserver);
 file_put_contents($nodeserver, $node_params);
 
@@ -209,8 +213,13 @@ file_put_contents($nodeserver, $node_params);
 
 $pos = strrpos($_SERVER['REQUEST_URI'], '/');
 $sys_url= $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
-      
-mysql_query("update perf set value='$sys_url' where param='hostname'")or die("Invalid query: " . mysql_error());
+
+$lc=substr($sys_url, -1);
+if ($lc == "/") {$lc=substr($lc, 0, -1); }
+
+      $np="http://".$sys_url.":".$nodeport."/";
+mysql_query("update perf set value='$sys_url' where param='hostname'") or die("Invalid query: " . mysql_error());
+mysql_query("update perf set value='$np' where param='node_port'") or die("Invalid query: " . mysql_error());
 ?>
 <h2>Congratulations on the successful installation!</h2>
 You can log in at: <a href="http://<?=$sys_url;?>"><?=$sys_url;?></a>,<br> login: <strong>system</strong> & password: <strong>1234</strong>.<br>
@@ -277,6 +286,15 @@ if (isset($_GET['mode'])) {
     <label for="db" class="col-sm-4 control-label"><small>DB name</small></label>
     <div class="col-sm-8">
 <input type="text" class="form-control input-sm" id="db" name="db" placeholder="ex. zenlix_db" value="">
+
+   </div>
+  </div>
+  
+  
+          <div class="form-group">
+    <label for="nodeport" class="col-sm-4 control-label"><small>NODE-JS PORT</small></label>
+    <div class="col-sm-8">
+<input type="text" class="form-control input-sm" id="nodeport" name="nodeport" placeholder="ex. 3001" value="">
 
    </div>
   </div>

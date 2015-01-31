@@ -11,8 +11,13 @@ function lang_ru($phrase){
 'STAT_MAIN_t3'=>'Заявки, не выполненные пользователями отдела',
 
 
+'PERF_menu_main_conf'=>'Общие настройки',
+'PERF_menu_ticket_conf'=>'Параметры заявок',
+'PERF_menu_notify_conf'=>'Центр нотификации',
+'PERF_menu_info_conf'=>'Информация',
 
-
+'PERF_GM_title'=>'Глобальное сообщение DASHBOARD',
+'PERF_GM_to_users'=>'Выбранным пользователям',
     
 'cron_navbar'=>'Планировщик',    
 'cron_title'=>'Планировщик задач',     

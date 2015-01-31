@@ -265,7 +265,11 @@ VALUES
   (27,'time_zone','Europe/Kiev'),
   (28,'allow_register','true'),
   (29, 'logo_img', ''),
-  (30, 'lang_def', 'en');
+  (30, 'lang_def', 'en'),
+  (31, 'global_msg_to', ''),
+  (32, 'global_msg_type', 'info'),
+  (33, 'global_msg_data', ''),
+  (34, 'global_msg_status', '0');
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;
 UNLOCK TABLES;

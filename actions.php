@@ -3450,13 +3450,81 @@ values
         <?php
         }
         
+
+        if ($mode == "conf_edit_ticket") {
+            
+            GUMP::set_field_name("days2arch", lang('CONF_2arch'));
+            GUMP::set_field_name("file_size", lang('CONF_file_size'));
+            
+                        $is_valid = GUMP::is_valid($_POST, array(
+                'days2arch' => 'required|numeric',
+                'file_size' => 'required|numeric'
+            ));
+            
+            if ($is_valid === true) {
+                $r = true;
+                $bodytag = str_replace(",", "|", $_POST['file_types']);
+                
+                update_val_by_key("days2arch", $_POST['days2arch']);
+                update_val_by_key("fix_subj", $_POST['fix_subj']);
+                update_val_by_key("file_uploads", $_POST['file_uploads']);
+                update_val_by_key("file_types", $bodytag);
+                update_val_by_key("file_size", $_POST['file_size']);
+                
+                
+                
+                //update_val_by_key("mail", $_POST['mail']);
+                $msg.= "<div class=\"alert alert-success\">" . lang('PROFILE_msg_ok') . "</div>";
+            } else {
+                
+                //print_r($is_valid);
+                $r = false;
+                
+                //$msg=$is_valid;
+                
+                $msg.= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($is_valid as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+            }
+            $results[] = array(
+                'res' => $r,
+                'msg' => $msg
+            );
+            print json_encode($results);
+        }
+
+//conf_edit_gm
+if ($mode == "conf_edit_gm") {
+//print_r($_POST);
+
+
+
+
+
+
+
+if ($_POST['to_msg'] == "0") {update_val_by_key("global_msg_to", $_POST['usr_list']);}
+else if ($_POST['to_msg'] == "1") {update_val_by_key("global_msg_to", "all");}
+
+update_val_by_key("global_msg_status", $_POST['status']);
+update_val_by_key("global_msg_data", $_POST['gm_text']);
+
+if ($_POST['msg_type'] == "0") {update_val_by_key("global_msg_type", 'info');}
+if ($_POST['msg_type'] == "1") {update_val_by_key("global_msg_type", 'warning');}
+if ($_POST['msg_type'] == "2") {update_val_by_key("global_msg_type", 'danger');}
+
+$msg= "<div class=\"alert alert-success\">" . lang('PROFILE_msg_ok') . "</div>";
+echo $msg;
+}
+
         if ($mode == "conf_edit_main") {
             
             GUMP::set_field_name("ldap", lang('EXT_ldap_ip'));
             GUMP::set_field_name("name_of_firm", lang('CONF_name'));
             //GUMP::set_field_name("node_port", 'NodeJS port');
-            GUMP::set_field_name("days2arch", lang('CONF_2arch'));
-            GUMP::set_field_name("file_size", lang('CONF_file_size'));
+            
             GUMP::set_field_name("mail", lang('CONF_mail'));
             GUMP::set_field_name("title_header", lang('CONF_title_org'));
             
@@ -3465,8 +3533,6 @@ values
                 'name_of_firm' => 'required|max_len,100',
                 'title_header' => 'required|max_len,100',
                 //'node_port' => 'required|numeric',
-                'days2arch' => 'required|numeric',
-                'file_size' => 'required|numeric',
                 'mail' => 'required|valid_email'
             ));
             
@@ -3478,19 +3544,14 @@ values
                 update_val_by_key("name_of_firm", $_POST['name_of_firm']);
                 update_val_by_key("title_header", $_POST['title_header']);
                 update_val_by_key("hostname", $_POST['hostname']);
-                update_val_by_key("days2arch", $_POST['days2arch']);
                 
-                //update_val_by_key("first_login", $_POST['first_login']);
-                update_val_by_key("fix_subj", $_POST['fix_subj']);
-                update_val_by_key("file_uploads", $_POST['file_uploads']);
                 update_val_by_key("node_port", $_POST['node_port']);
                 update_val_by_key("time_zone", $_POST['time_zone']);
                 update_val_by_key("allow_register", $_POST['allow_register']);
                 update_val_by_key("lang_def", $_POST['lang']);
-                $bodytag = str_replace(",", "|", $_POST['file_types']);
+                //$bodytag = str_replace(",", "|", $_POST['file_types']);
                 
-                update_val_by_key("file_types", $bodytag);
-                update_val_by_key("file_size", $_POST['file_size']);
+                
                 update_val_by_key("mail", $_POST['mail']);
                 $msg.= "<div class=\"alert alert-success\">" . lang('PROFILE_msg_ok') . "</div>";
             } else {

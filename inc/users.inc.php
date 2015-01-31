@@ -218,7 +218,7 @@ if (isset($_POST['menu'])) {
     <div class="form-group">
   <label for="my-select" class="col-sm-2 control-label"><?php echo lang('USERS_units'); ?></label>
   <div class="col-sm-10">
-  <select multiple="multiple" id="my-select" name="unit[]">
+  <select multiple="multiple" id="my-select" name="unit[]" disabled>
 <?php
         
         /*$qstring = "SELECT name as label, id as value FROM deps where id !='0' ;";
@@ -254,7 +254,7 @@ if (isset($_POST['menu'])) {
     <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_add_client" checked="checked"> <?php echo lang('TICKET_p_add_client'); ?>
+      <input type="checkbox" id="priv_add_client" checked="checked" disabled> <?php echo lang('TICKET_p_add_client'); ?>
     </label>
   </div>
     </div>
@@ -262,7 +262,7 @@ if (isset($_POST['menu'])) {
         <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_edit_client" checked="checked"> <?php echo lang('TICKET_p_edit_client'); ?>
+      <input type="checkbox" id="priv_edit_client" checked="checked" disabled> <?php echo lang('TICKET_p_edit_client'); ?>
     </label>
   </div>
     </div>

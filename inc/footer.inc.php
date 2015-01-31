@@ -2,7 +2,7 @@
 <div id="footer" style=" padding-bottom: 70px; ">
     <div class="container" style=" padding: 20px; ">
         <div class="col-md-12">
-            <p class="text-muted credit pull-right"><small>Developed by <a href="http://zenlix.com/">ZENLIX</a> (с) 2014.</p>
+            <p class="text-muted credit pull-right"><small>Developed by <a href="http://zenlix.com/">ZENLIX</a> (с) <?=date('Y');?>.</p>
             </small>
         </div>
 
@@ -28,7 +28,7 @@ echo $lang; ?>";
     var USER_HASH = "<?php echo get_user_val('uniq_id'); ?>";
     var NODE_URL = "<?php echo get_conf_param('node_port'); ?>";
 </script>
-<script src="<?php echo $CONF['hostname'] ?>js/jquery-1.11.0.min.js"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/jquery-2.1.3.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/app.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.titlealert.js"></script>
@@ -86,7 +86,7 @@ if (get_current_URL_name('ticket')) { ?>
 } ?>
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_current_URL_name('scheduler')) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_current_URL_name('scheduler') || get_current_URL_name('config')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/s2/select2.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.autosize.min.js"></script>
 

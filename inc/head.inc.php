@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/jquery-ui.min.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/ionicons.min.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/style.css?v4">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/font-awesome.min.css">
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/chosen.min.css">
 
 

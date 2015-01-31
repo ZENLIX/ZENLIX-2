@@ -8,7 +8,14 @@ function lang_en($phrase){
 'STAT_MAIN_t2'=>'Tickets, success by departments\' user',
 'STAT_MAIN_t3'=>'Tickets, not success by departments\' user',
 
+'PERF_menu_main_conf'=>'Main preferences',
+'PERF_menu_ticket_conf'=>'Ticket\' config',
+'PERF_menu_notify_conf'=>'Notification center',
+'PERF_menu_info_conf'=>'Information',
 	    
+'PERF_GM_title'=>'Global DASHBOARD message',
+'PERF_GM_to_users'=>'Selected users',
+
 'cron_navbar' => 'Planner',
 'cron_title' => 'Task Scheduler',
 'cron_view' => 'View information about the task',

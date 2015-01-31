@@ -1506,6 +1506,11 @@ $('body').on('click', 'button#user_stat_make', function(event) {
                 }
             });
         });
+
+
+
+
+
         $('body').on('click', 'button#do_comment', function(event) {
             event.preventDefault();
             var tid = $("#target_user").val();
@@ -3183,6 +3188,11 @@ view_helper_cat();
     */
         var p = new RegExp('(\.|\/)' + $('input#file_types').val());
         // Initialize the jQuery File Upload widget:
+
+if(jQuery().fileupload) { 
+
+
+
         $('#fileupload').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
@@ -3223,6 +3233,7 @@ view_helper_cat();
         }).on('fileuploadsubmit', function(e, data) {
             console.log(data);
         });
+    }
     }
     if (ispath('list')) {
         $('body').on('click', 'button#action_list_ok', function(event) {
@@ -3497,6 +3508,51 @@ view_helper_cat();
     }
     if (ispath('config')) {
 
+
+
+$('input[type=radio][name=optionsRadios1]').on('ifChanged', function(event){
+        
+            console.log(this.value);
+            if (this.value == '0') {
+                $('#to_msg').prop('disabled', false).trigger("chosen:updated");
+            } else if (this.value == '1') {
+                $('#to_msg').prop('disabled', true).trigger("chosen:updated");
+            } 
+        });
+
+
+$('#to_msg').chosen({ max_selected_options: 50 });
+//conf_edit_global_message
+$('body').on('click', 'button#conf_edit_global_message', function(event) {
+            event.preventDefault();
+
+
+//console.log($('#to_msg').val());
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=conf_edit_gm" + 
+                "&status=" + encodeURIComponent($("#gm_active").val())+
+                "&to_msg="+ encodeURIComponent($("input[type=radio][name=optionsRadios1]:checked").val())+
+                "&usr_list="+ encodeURIComponent($("#to_msg").val())+
+                "&msg_type="+ encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
+                "&gm_text="+ encodeURIComponent($("#gm_text").val())
+                ,
+                success: function(html) {
+                    $("#conf_edit_gm_res").hide().html(html).fadeIn(500);
+                    setTimeout(function() {
+                        $('#conf_edit_gm_res').children('.alert').fadeOut(500);
+                    }, 3000);
+                }
+            });
+
+
+
+        });
+
+
+
                 $('#file_logo').change(function() {
             $('#form_logo').submit();
         });
@@ -3548,12 +3604,49 @@ view_helper_cat();
                 }
             });
         });
+
+        $('body').on('click', 'button#conf_edit_ticket', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=conf_edit_ticket" + 
+"&days2arch=" + encodeURIComponent($("input#days2arch").val())+ 
+"&fix_subj=" + encodeURIComponent($("#fix_subj").val()) + 
+"&file_uploads=" + encodeURIComponent($("#file_uploads").val()) + 
+"&file_types=" + encodeURIComponent($("#file_types").val())+ 
+"&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024),
+                dataType: "json",
+                success: function(html) {
+
+ $.each(html, function(i, item) {
+                        
+                        if (item.res == true) { $("#conf_edit_ticket_res").hide().html(item.msg).fadeIn(500);
+                    setTimeout(function() {
+                        $('#conf_edit_ticket_res').children('.alert').fadeOut(500);
+                    }, 3000); }
+                        else if (item.res == false) { 
+                            //$('#res').html(item.msg); 
+                            $("#conf_edit_ticket_res").hide().html(item.msg).fadeIn(500);
+                           
+                            }
+                            //console.log(item.msg);
+                        
+                    });
+
+
+                    
+                }
+            });
+        });
+
+
         $('body').on('click', 'button#conf_edit_main', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&days2arch=" + encodeURIComponent($("input#days2arch").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&fix_subj=" + encodeURIComponent($("#fix_subj").val()) + "&file_uploads=" + encodeURIComponent($("#file_uploads").val()) + "&file_types=" + encodeURIComponent($("#file_types").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) + "&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024)+"&allow_register=" + encodeURIComponent($("#allow_register").val())+"&lang="+encodeURIComponent($("#lang").val()),
+                data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) +"&allow_register=" + encodeURIComponent($("#allow_register").val())+"&lang="+encodeURIComponent($("#lang").val()),
                 dataType: "json",
                 success: function(html) {
 
@@ -3852,8 +3945,14 @@ view_helper_cat();
                 $('#exampleInputPassword1').prop("disabled", false);
             }
         });
-        //input[type=radio][name=optionsRadios]
-        $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event) {
+
+
+
+
+
+$('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
+        //$('input[type=radio][name=optionsRadios]').on('change', function(event) {
+            //console.log(this.value);
             if (this.value == '0') {
                 $('#priv_add_client').iCheck('enable');
                 $('#priv_edit_client').iCheck('enable');

@@ -7,120 +7,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         include ("head.inc.php");
         include ("navbar.inc.php");
         
-        $timezones = array(
-            'Pacific/Midway' => "(GMT-11:00) Midway Island",
-            'US/Samoa' => "(GMT-11:00) Samoa",
-            'US/Hawaii' => "(GMT-10:00) Hawaii",
-            'US/Alaska' => "(GMT-09:00) Alaska",
-            'US/Pacific' => "(GMT-08:00) Pacific Time (US &amp; Canada)",
-            'America/Tijuana' => "(GMT-08:00) Tijuana",
-            'US/Arizona' => "(GMT-07:00) Arizona",
-            'US/Mountain' => "(GMT-07:00) Mountain Time (US &amp; Canada)",
-            'America/Chihuahua' => "(GMT-07:00) Chihuahua",
-            'America/Mazatlan' => "(GMT-07:00) Mazatlan",
-            'America/Mexico_City' => "(GMT-06:00) Mexico City",
-            'America/Monterrey' => "(GMT-06:00) Monterrey",
-            'Canada/Saskatchewan' => "(GMT-06:00) Saskatchewan",
-            'US/Central' => "(GMT-06:00) Central Time (US &amp; Canada)",
-            'US/Eastern' => "(GMT-05:00) Eastern Time (US &amp; Canada)",
-            'US/East-Indiana' => "(GMT-05:00) Indiana (East)",
-            'America/Bogota' => "(GMT-05:00) Bogota",
-            'America/Lima' => "(GMT-05:00) Lima",
-            'America/Caracas' => "(GMT-04:30) Caracas",
-            'Canada/Atlantic' => "(GMT-04:00) Atlantic Time (Canada)",
-            'America/La_Paz' => "(GMT-04:00) La Paz",
-            'America/Santiago' => "(GMT-04:00) Santiago",
-            'Canada/Newfoundland' => "(GMT-03:30) Newfoundland",
-            'America/Buenos_Aires' => "(GMT-03:00) Buenos Aires",
-            'Greenland' => "(GMT-03:00) Greenland",
-            'Atlantic/Stanley' => "(GMT-02:00) Stanley",
-            'Atlantic/Azores' => "(GMT-01:00) Azores",
-            'Atlantic/Cape_Verde' => "(GMT-01:00) Cape Verde Is.",
-            'Africa/Casablanca' => "(GMT) Casablanca",
-            'Europe/Dublin' => "(GMT) Dublin",
-            'Europe/Lisbon' => "(GMT) Lisbon",
-            'Europe/London' => "(GMT) London",
-            'Africa/Monrovia' => "(GMT) Monrovia",
-            'Europe/Amsterdam' => "(GMT+01:00) Amsterdam",
-            'Europe/Belgrade' => "(GMT+01:00) Belgrade",
-            'Europe/Berlin' => "(GMT+01:00) Berlin",
-            'Europe/Bratislava' => "(GMT+01:00) Bratislava",
-            'Europe/Brussels' => "(GMT+01:00) Brussels",
-            'Europe/Budapest' => "(GMT+01:00) Budapest",
-            'Europe/Copenhagen' => "(GMT+01:00) Copenhagen",
-            'Europe/Ljubljana' => "(GMT+01:00) Ljubljana",
-            'Europe/Madrid' => "(GMT+01:00) Madrid",
-            'Europe/Paris' => "(GMT+01:00) Paris",
-            'Europe/Prague' => "(GMT+01:00) Prague",
-            'Europe/Rome' => "(GMT+01:00) Rome",
-            'Europe/Sarajevo' => "(GMT+01:00) Sarajevo",
-            'Europe/Skopje' => "(GMT+01:00) Skopje",
-            'Europe/Stockholm' => "(GMT+01:00) Stockholm",
-            'Europe/Vienna' => "(GMT+01:00) Vienna",
-            'Europe/Warsaw' => "(GMT+01:00) Warsaw",
-            'Europe/Zagreb' => "(GMT+01:00) Zagreb",
-            'Europe/Athens' => "(GMT+02:00) Athens",
-            'Europe/Bucharest' => "(GMT+02:00) Bucharest",
-            'Africa/Cairo' => "(GMT+02:00) Cairo",
-            'Africa/Harare' => "(GMT+02:00) Harare",
-            'Europe/Helsinki' => "(GMT+02:00) Helsinki",
-            'Europe/Istanbul' => "(GMT+02:00) Istanbul",
-            'Asia/Jerusalem' => "(GMT+02:00) Jerusalem",
-            'Europe/Kiev' => "(GMT+02:00) Kyiv",
-            'Europe/Minsk' => "(GMT+02:00) Minsk",
-            'Europe/Riga' => "(GMT+02:00) Riga",
-            'Europe/Sofia' => "(GMT+02:00) Sofia",
-            'Europe/Tallinn' => "(GMT+02:00) Tallinn",
-            'Europe/Vilnius' => "(GMT+02:00) Vilnius",
-            'Asia/Baghdad' => "(GMT+03:00) Baghdad",
-            'Asia/Kuwait' => "(GMT+03:00) Kuwait",
-            'Africa/Nairobi' => "(GMT+03:00) Nairobi",
-            'Asia/Riyadh' => "(GMT+03:00) Riyadh",
-            'Asia/Tehran' => "(GMT+03:30) Tehran",
-            'Europe/Moscow' => "(GMT+04:00) Moscow",
-            'Asia/Baku' => "(GMT+04:00) Baku",
-            'Europe/Volgograd' => "(GMT+04:00) Volgograd",
-            'Asia/Muscat' => "(GMT+04:00) Muscat",
-            'Asia/Tbilisi' => "(GMT+04:00) Tbilisi",
-            'Asia/Yerevan' => "(GMT+04:00) Yerevan",
-            'Asia/Kabul' => "(GMT+04:30) Kabul",
-            'Asia/Karachi' => "(GMT+05:00) Karachi",
-            'Asia/Tashkent' => "(GMT+05:00) Tashkent",
-            'Asia/Kolkata' => "(GMT+05:30) Kolkata",
-            'Asia/Kathmandu' => "(GMT+05:45) Kathmandu",
-            'Asia/Yekaterinburg' => "(GMT+06:00) Ekaterinburg",
-            'Asia/Almaty' => "(GMT+06:00) Almaty",
-            'Asia/Dhaka' => "(GMT+06:00) Dhaka",
-            'Asia/Novosibirsk' => "(GMT+07:00) Novosibirsk",
-            'Asia/Bangkok' => "(GMT+07:00) Bangkok",
-            'Asia/Jakarta' => "(GMT+07:00) Jakarta",
-            'Asia/Krasnoyarsk' => "(GMT+08:00) Krasnoyarsk",
-            'Asia/Chongqing' => "(GMT+08:00) Chongqing",
-            'Asia/Hong_Kong' => "(GMT+08:00) Hong Kong",
-            'Asia/Kuala_Lumpur' => "(GMT+08:00) Kuala Lumpur",
-            'Australia/Perth' => "(GMT+08:00) Perth",
-            'Asia/Singapore' => "(GMT+08:00) Singapore",
-            'Asia/Taipei' => "(GMT+08:00) Taipei",
-            'Asia/Ulaanbaatar' => "(GMT+08:00) Ulaan Bataar",
-            'Asia/Urumqi' => "(GMT+08:00) Urumqi",
-            'Asia/Irkutsk' => "(GMT+09:00) Irkutsk",
-            'Asia/Seoul' => "(GMT+09:00) Seoul",
-            'Asia/Tokyo' => "(GMT+09:00) Tokyo",
-            'Australia/Adelaide' => "(GMT+09:30) Adelaide",
-            'Australia/Darwin' => "(GMT+09:30) Darwin",
-            'Asia/Yakutsk' => "(GMT+10:00) Yakutsk",
-            'Australia/Brisbane' => "(GMT+10:00) Brisbane",
-            'Australia/Canberra' => "(GMT+10:00) Canberra",
-            'Pacific/Guam' => "(GMT+10:00) Guam",
-            'Australia/Hobart' => "(GMT+10:00) Hobart",
-            'Australia/Melbourne' => "(GMT+10:00) Melbourne",
-            'Pacific/Port_Moresby' => "(GMT+10:00) Port Moresby",
-            'Australia/Sydney' => "(GMT+10:00) Sydney",
-            'Asia/Vladivostok' => "(GMT+11:00) Vladivostok",
-            'Asia/Magadan' => "(GMT+12:00) Magadan",
-            'Pacific/Auckland' => "(GMT+12:00) Auckland",
-            'Pacific/Fiji' => "(GMT+12:00) Fiji",
-        );
+
+
+//print_r(generate_timezone_list());
+
+
+      
 class SimpleImage
     {
         
@@ -252,6 +144,27 @@ class SimpleImage
             $status_lang_ua = "selected";
         }
 
+
+
+
+if (isset($_GET['ti_conf'])) {
+$menu_opt="ti_conf";
+$menu_active['tickets']="active";
+}
+
+else if (isset($_GET['notify'])) {
+$menu_opt="notify";
+$menu_active['notify']="active";
+}
+else if (isset($_GET['inform'])) {
+$menu_opt="inform";
+$menu_active['inform']="active";
+}
+
+else {
+$menu_opt="main";
+$menu_active['main']="active";
+}
 ?>
 <section class="content-header">
                     <h1>
@@ -264,7 +177,8 @@ class SimpleImage
                        <li><a href="<?php
         echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php
         echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php
+                    
+                    <li class="active"><?php
         echo lang('CONF_title'); ?></li>
                     </ol>
                 </section>
@@ -279,13 +193,22 @@ class SimpleImage
 
 <div class="col-md-3">
 
-<div class="callout callout-info">
-                                        
-                                        <small> <i class="fa fa-info-circle"></i> 
-<?php
-        echo lang('CONF_info'); ?>
-       </small>
-                                    </div>
+
+<div class="list-group">
+  <a href="config" class="list-group-item <?=$menu_active['main'];?>">
+    <?=lang('PERF_menu_main_conf');?>
+  </a>
+  <a href="config?ti_conf" class="list-group-item <?=$menu_active['tickets'];?>"><?=lang('PERF_menu_ticket_conf');?></a>
+  <a href="config?notify" class="list-group-item <?=$menu_active['notify'];?>"><?=lang('PERF_menu_notify_conf');?></a>
+  <a href="config?inform" class="list-group-item <?=$menu_active['inform'];?>"><?=lang('PERF_menu_info_conf');?></a>
+  
+</div>
+
+
+
+
+
+
 
 
 
@@ -307,44 +230,14 @@ class SimpleImage
                                 </div><!-- /.box-body -->
                             </div>
 
-<div class="box box-solid">
-                                <div class="box-header">
-                                    <h3 class="box-title">CRON</h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
- <p class="help-block"><small><?php
-        echo lang('CONF_2arch_info'); ?> <br>
-<pre>5 0 * * * /usr/bin/php5 -f <?php
-        echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron.php" ?> > <?php
-        echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p>
 
-<p class="help-block"><small><?php
-        echo lang('CONF_2noty_info'); ?> <br>
-      <pre>* * * * * /usr/bin/php5 -f <?php
-        echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron_notify.php" ?> > <?php
-        echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p> 
-
-
-                                </div><!-- /.box-body -->
-                            </div>
-
-
-<div class="box box-solid">
-                                <div class="box-header">
-                                    <h3 class="box-title">NODEJS</h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
- <p class="help-block"><small><?php
-        echo lang('CONF_node_info'); ?> <br>
-<pre>forever start <?php
-        echo realpath(dirname(dirname(__FILE__))) . "/nodejs/server.js" ?></pre></small></p>
-
-
-
-
-                                </div><!-- /.box-body -->
-                            </div>
-
+<div class="callout callout-info">
+                                        
+                                        <small> <i class="fa fa-info-circle"></i> 
+<?php
+        echo lang('CONF_info'); ?>
+       </small>
+                                    </div>
 
                                     
                                     
@@ -352,161 +245,26 @@ class SimpleImage
                                     
                                     
 </div>
+
+<?php
+
+
+if ($menu_opt == "ti_conf") {
+?>
+
 <div class="col-md-9">
+
 <div class="row">
 <div class="col-md-12">
-
 <div class="box box-solid">
 <div class="box-header">
-<h3 class="box-title"><i class="fa fa-cog"></i> <?php
-        echo lang('CONF_mains'); ?></h3>
+<h3 class="box-title"><i class="fa fa-tag"></i> <?=lang('PERF_menu_ticket_conf');?></h3>
 </div>
       <div class="box-body">
-          <div class="form-horizontal" role="form">
-    <div class="form-group">
-    <label for="name_of_firm" class="col-sm-4 control-label"><small><?php
-        echo lang('CONF_name'); ?></small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="name_of_firm" placeholder="<?php
-        echo lang('CONF_name'); ?>" value="<?php
-        echo get_conf_param('name_of_firm'); ?>">
-    </div>
-  </div>  
-    <div class="form-group">
-    <label for="title_header" class="col-sm-4 control-label"><small><?php
-        echo lang('CONF_title_org'); ?></small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="title_header" placeholder="<?php
-        echo lang('CONF_title_org'); ?>" value="<?php
-        echo get_conf_param('title_header'); ?>">
-    </div>
-  </div>
-
-
-  <div class="form-group">
-    <label for="image_logo" class="col-sm-4 control-label"><small><?=lang('CONF_logo_image');?></small></label>
-    <div class="col-sm-2">
-      <img src="<?=get_logo_img('small');?>" >
-    </div>
-    <div class="col-sm-3">
-        <form action="<?php echo $CONF['hostname'] ?>config" method="post" id="form_logo" enctype="multipart/form-data"> 
-             
-             <span class="file-input btn btn-block btn-default btn-file" style="width:100%">
-                <?php echo lang('PROFILE_select_image'); ?> <input id="file_logo" type="file" name="file">
-            </span>
-        </form>
-    </div>
-    <div class="col-sm-3"><button id="del_logo_img" class="btn btn-block bg-maroon"><?php echo lang('PROFILE_del_image'); ?></button></div>
-  </div>
-
-
-    <div class="form-group">
-    <label for="mail" class="col-sm-4 control-label"><small><?php
-        echo lang('CONF_mail'); ?></small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="mail" placeholder="<?php
-        echo lang('CONF_mail'); ?>" value="<?php
-        echo get_conf_param('mail'); ?>">
-    </div>
-  </div>
-  
-
-
-          <div class="form-group">
-    <label for="lang" class="col-sm-4 control-label"><small><?php echo lang('SYSTEM_lang'); ?></small></label>
-        <div class="col-sm-8">
-    <select data-placeholder="<?php echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
-                    <option value="0"></option>
-                    
-                        <option <?php echo $status_lang_en; ?> value="en">English</option>
-                        <option <?php echo $status_lang_ru; ?> value="ru">Русский</option>
-                        <option <?php echo $status_lang_ua; ?> value="ua">Українська</option>
-</select>
-        </div>
-  </div>
-
-
-
-
-  <div class="form-group">
-    <label for="ldap_ip" class="col-sm-4 control-label"><small><?php
-        echo lang('EXT_ldap_ip'); ?></small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="ldap_ip" placeholder="<?php
-        echo lang('EXT_ldap_ip'); ?>" value="<?php
-        echo get_conf_param('ldap_ip') ?>">
-    </div>
-  </div>
-    <div class="form-group">
-    <label for="ldap_domain" class="col-sm-4 control-label"><small><?php
-        echo lang('EXT_ldap_domain'); ?></small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="ldap_domain" placeholder="<?php
-        echo lang('EXT_ldap_domain'); ?>" value="<?php
-        echo get_conf_param('ldap_domain') ?>">
-    </div>
-  </div>
-  
-      <div class="form-group">
-    <label for="node_port" class="col-sm-4 control-label"><small>NodeJS/socket.io URL</small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="node_port" placeholder="ex. http://domain.com:3001" value="<?php
-        echo get_conf_param('node_port') ?>">
-    </div>
-  </div>
-  
-  
-  
-
-  <div class="form-group">
-    <label for="hostname" class="col-sm-4 control-label"><small><?php
-        echo lang('CONF_url'); ?></small></label>
-    <div class="col-sm-8">
-    <div class="input-group">
-    <span class="input-group-addon"><small><?php
-        echo site_proto(); ?></small></span>
-      <input type="text" class="form-control input-sm" id="hostname" placeholder="<?php
-        $pos = strrpos($_SERVER['REQUEST_URI'], '/');
-        echo "http://" . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, $pos + 1); ?>" value="<?php
-        echo get_conf_param('hostname'); ?>">
-    </div>
-    </div>
-  </div>
-
+      <form class="form-horizontal" role="form">
 
 
 <div class="form-group">
-    <label for="time_zone" class="col-sm-4 control-label"><small><?php
-        echo lang('CONF_timezone'); ?></small></label>
-    <div class="col-sm-8">
-     
-
-
-<select class="form-control input-sm" id="time_zone">
-  <?php
-        foreach ($timezones as $key => $value) {
-?>
-    <option value="<?php
-            echo $key; ?>" <?php
-            if (get_conf_param('time_zone') == $key) {
-                echo "selected";
-            } ?> ><?php
-            echo $value; ?></option>
-    <?php
-        } ?>
-  
-</select> 
-
-
-
-
-
-    </div>
-  </div>
-
-
-  
-    <div class="form-group">
     <label for="days2arch" class="col-sm-4 control-label"><small><?php
         echo lang('CONF_2arch'); ?></small></label>
     <div class="col-sm-8">
@@ -544,36 +302,6 @@ class SimpleImage
 </small></p>
 </div>
   </div>
-  
-  
-  
-  
-  <div class="form-group">
-    <label for="allow_register" class="col-sm-4 control-label"><small><?php echo lang('REG_new'); ?></small></label>
-    <div class="col-sm-8">
-  <select class="form-control input-sm" id="allow_register">
-  <option value="true" <?php
-        if (get_conf_param('allow_register') == "true") {
-            echo "selected";
-        } ?>><?php
-        echo lang('CONF_true'); ?></option>
-  <option value="false" <?php
-        if (get_conf_param('allow_register') == "false") {
-            echo "selected";
-        } ?>><?php
-        echo lang('CONF_false'); ?></option>
-</select>    
-</div>
-  </div>
-
-
-
-
-
-  
-  
-  
-  
           <div class="form-group">
     <label for="file_uploads" class="col-sm-4 control-label"><small><?php
         echo lang('CONF_fup'); ?></small></label>
@@ -626,24 +354,191 @@ class SimpleImage
   
   
 <center>
-    <button type="submit" id="conf_edit_main" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
+    <button type="submit" id="conf_edit_ticket" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
         echo lang('CONF_act_edit'); ?></button>
     
 </center>
-
-
-  
-    </div>
-  
-  <div id="conf_edit_main_res"></div>
-      
+      </form>
       </div>
+      <div id="conf_edit_ticket_res"></div>
+      </div>
+      </div>
+      </div>
+      </div>
+
+
+<?php
+}
+
+else if ($menu_opt == "notify") {
+?>
+
+
+
+<div class="col-md-9">
+
+<div class="row">
+
+<div class="col-md-12">
+  <div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-bell"></i> <?=lang('PERF_GM_title');?></h3>
+</div>
+      <div class="box-body">
+      <form class="form-horizontal" role="form">
+   
+
+    <div class="form-group">
+    <label for="gm_active" class="col-sm-4 control-label"><small><?=lang('t_LIST_status');?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="gm_active">
+  <option value="1" <?php
+        if (get_conf_param('global_msg_status') == "1") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="0" <?php
+        if (get_conf_param('global_msg_status') == "0") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>   </div>
+  </div>
+
+
+<?php
+if (get_conf_param('global_msg_to') == "all") {$s_all="checked=\"checked\"";}
+else {$s_list="checked=\"checked\"";}
+?>
+
+     <div class="form-group">
+    <label for="to_msg" class="col-sm-4 control-label"><small><?php
+        echo lang('NEW_to'); ?></small></label>
+    <div class="col-sm-4">
+    
+    <div class="radio">
+    <label>
+      <input type="radio" name="optionsRadios1" id="optionsRadios1" value="0" <?=$s_list;?>> <?=lang('PERF_GM_to_users');?>
+    </label>
+  </div>
+
+    </div>
+
+
+    <div class="col-sm-4">
+    
+    <div class="radio">
+    <label>
+      <input type="radio" name="optionsRadios1" id="optionsRadios2" value="1" <?=$s_all;?>> <?=lang('t_list_a_all');?>
+    </label>
+  </div>
+
+    </div>
+
+
+  </div>
+
+  <div class="form-group">
+    <label for="to_msg" class="col-sm-4 control-label"></label>
+    <div class="col-sm-8">
+    
+    <select data-placeholder="<?=lang('NAVBAR_users');?>" class="chosen-select form-control" id="to_msg" name="" multiple>
+                <option value="0"></option>
+                <?php
+        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where id !=:n AND status=:s');
+        $stmt->execute(array(':n' => '0', ':s' => '1'));
+        $res1 = $stmt->fetchAll();
+
+$list_sel=array();
+if (get_conf_param('global_msg_to') != "all") {
+    $list_sel=get_conf_param('global_msg_to');
+    $list_sel=explode(",", $list_sel);
+
+}
+
+
+
+        foreach ($res1 as $row) {
+            $opt="";
+            if (in_array($row['value'], $list_sel)) { $opt="selected";}
+            //echo($row['label']);
+            $row['label'] = $row['label'];
+            $row['value'] = (int)$row['value'];
+?>
+
+                            <option value="<?php echo $row['value'] ?>" <?=$opt;?>><?php echo $row['label'] ?></option>
+
+                        <?php
+        }
+
+
+
+if (get_conf_param('global_msg_type') == "info") {$gm_type['0']="checked";}
+else if (get_conf_param('global_msg_type') == "warning") {$gm_type['1']="checked";}
+else if (get_conf_param('global_msg_type') == "danger") {$gm_type['2']="checked";}
+
+
+?>
+
+            </select>
+
+    </div>
+  </div>
+
+    <div class="form-group">
+  <label for="mess" class="col-sm-4 control-label"><small><?=lang('CONF_messages_type');?></small></label>
+  <div class="col-sm-8">
+    <div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" <?=$gm_type['0'];?>>
+    <strong class="text-info">Info</strong>
+  </label>
+</div>
+<div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_0" value="1" <?=$gm_type['1'];?>>
+    <strong class="text-warning">Warning</strong>
+  </label>
 </div>
 
+<div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_2" value="2" <?=$gm_type['2'];?>>
+    <strong class="text-danger">Danger</strong>
+  </label>
+  
+</div>
+
+  </div>
+  </div>
+
+  
+  <div class="form-group">
+    <label for="from" class="col-sm-4 control-label"><small><?php
+        echo lang('MAIL_msg'); ?></small></label>
+    <div class="col-sm-8">
+    <textarea placeholder="" class="form-control input-sm" name="gm_text" id="gm_text" rows="3">
+    <?=get_conf_param('global_msg_data');?>
+    </textarea>
+
+    </div>
+  </div>
 
 
 
-
+<div class="">
+<center>
+    <button type="submit" id="conf_edit_global_message" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
+        echo lang('CONF_act_edit'); ?></button>
+<div class="" id="conf_edit_gm_res"></div>
+</center>
+</div>
+  </form>
+      
+      </div>
+  </div>
+  
+  
 </div>
 
 
@@ -798,8 +693,6 @@ class SimpleImage
 </div>
 </div>
 
-
-
 <div class="col-md-12">
   <div class="box box-solid">
 <div class="box-header">
@@ -835,7 +728,319 @@ class SimpleImage
 </div>
 
 
+
+
+
+
+
+</div>
+
+</div>
+
+
+
+<?php
+}
+else if ($menu_opt == "inform") {
+?>
+
+<div class="col-md-9">
+<div class="row">
+<div class="col-md-12">
+
+<div class="box box-solid">
+
+      <div class="box-body">
+
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title">CRON</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+ <p class="help-block"><small><?php
+        echo lang('CONF_2arch_info'); ?> <br>
+<pre>5 0 * * * /usr/bin/php5 -f <?php
+        echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron.php" ?> > <?php
+        echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p>
+
+<p class="help-block"><small><?php
+        echo lang('CONF_2noty_info'); ?> <br>
+      <pre>* * * * * /usr/bin/php5 -f <?php
+        echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron_notify.php" ?> > <?php
+        echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p> 
+
+
+                                </div><!-- /.box-body -->
+                            </div>
+
+
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title">NODEJS</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+ <p class="help-block"><small><?php
+        echo lang('CONF_node_info'); ?> <br>
+<pre>forever start <?php
+        echo realpath(dirname(dirname(__FILE__))) . "/nodejs/server.js" ?></pre></small></p>
+
+
+
+
+                                </div><!-- /.box-body -->
+                            </div>
+
+
+
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+
+<?php
+}
+
+else {
+
+?>
+
+
+
+<div class="col-md-9">
+<div class="row">
+<div class="col-md-12">
+
+<div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-cog"></i> <?php
+        echo lang('CONF_mains'); ?></h3>
+</div>
+      <div class="box-body">
+          <div class="form-horizontal" role="form">
+    <div class="form-group">
+    <label for="name_of_firm" class="col-sm-4 control-label"><small><?php
+        echo lang('CONF_name'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="name_of_firm" placeholder="<?php
+        echo lang('CONF_name'); ?>" value="<?php
+        echo get_conf_param('name_of_firm'); ?>">
+    </div>
+  </div>  
+    <div class="form-group">
+    <label for="title_header" class="col-sm-4 control-label"><small><?php
+        echo lang('CONF_title_org'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="title_header" placeholder="<?php
+        echo lang('CONF_title_org'); ?>" value="<?php
+        echo get_conf_param('title_header'); ?>">
+    </div>
+  </div>
+
+
+  <div class="form-group">
+    <label for="image_logo" class="col-sm-4 control-label"><small><?=lang('CONF_logo_image');?></small></label>
+    <div class="col-sm-2">
+      <img src="<?=get_logo_img('small');?>" >
+    </div>
+    <div class="col-sm-3">
+        <form action="<?php echo $CONF['hostname'] ?>config" method="post" id="form_logo" enctype="multipart/form-data"> 
+             
+             <span class="file-input btn btn-block btn-default btn-file" style="width:100%">
+                <?php echo lang('PROFILE_select_image'); ?> <input id="file_logo" type="file" name="file">
+            </span>
+        </form>
+    </div>
+    <div class="col-sm-3"><button id="del_logo_img" class="btn btn-block bg-maroon"><?php echo lang('PROFILE_del_image'); ?></button></div>
+  </div>
+
+
+    <div class="form-group">
+    <label for="mail" class="col-sm-4 control-label"><small><?php
+        echo lang('CONF_mail'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="mail" placeholder="<?php
+        echo lang('CONF_mail'); ?>" value="<?php
+        echo get_conf_param('mail'); ?>">
+    </div>
+  </div>
+  
+
+
+          <div class="form-group">
+    <label for="lang" class="col-sm-4 control-label"><small><?php echo lang('SYSTEM_lang'); ?></small></label>
+        <div class="col-sm-8">
+    <select data-placeholder="<?php echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
+                    <option value="0"></option>
+                    
+                        <option <?php echo $status_lang_en; ?> value="en">English</option>
+                        <option <?php echo $status_lang_ru; ?> value="ru">Русский</option>
+                        <option <?php echo $status_lang_ua; ?> value="ua">Українська</option>
+</select>
+        </div>
+  </div>
+
+
+
+
+  <div class="form-group">
+    <label for="ldap_ip" class="col-sm-4 control-label"><small><?php
+        echo lang('EXT_ldap_ip'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="ldap_ip" placeholder="<?php
+        echo lang('EXT_ldap_ip'); ?>" value="<?php
+        echo get_conf_param('ldap_ip') ?>">
+    </div>
+  </div>
+    <div class="form-group">
+    <label for="ldap_domain" class="col-sm-4 control-label"><small><?php
+        echo lang('EXT_ldap_domain'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="ldap_domain" placeholder="<?php
+        echo lang('EXT_ldap_domain'); ?>" value="<?php
+        echo get_conf_param('ldap_domain') ?>">
+    </div>
+  </div>
+  
+      <div class="form-group">
+    <label for="node_port" class="col-sm-4 control-label"><small>NodeJS/socket.io URL</small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="node_port" placeholder="ex. http://domain.com:3001" value="<?php
+        echo get_conf_param('node_port') ?>">
+    </div>
+  </div>
+  
+  
+  
+
+  <div class="form-group">
+    <label for="hostname" class="col-sm-4 control-label"><small><?php
+        echo lang('CONF_url'); ?></small></label>
+    <div class="col-sm-8">
+    <div class="input-group">
+    <span class="input-group-addon"><small><?php
+        echo site_proto(); ?></small></span>
+      <input type="text" class="form-control input-sm" id="hostname" placeholder="<?php
+        $pos = strrpos($_SERVER['REQUEST_URI'], '/');
+        echo "http://" . $_SERVER['HTTP_HOST'] . substr($_SERVER['REQUEST_URI'], 0, $pos + 1); ?>" value="<?php
+        echo get_conf_param('hostname'); ?>">
+    </div>
+    </div>
+  </div>
+
+
+
+<div class="form-group">
+    <label for="time_zone" class="col-sm-4 control-label"><small><?php
+        echo lang('CONF_timezone'); ?></small></label>
+    <div class="col-sm-8">
+     
+
+
+<select class="form-control input-sm" id="time_zone">
+  <?php
+        foreach (generate_timezone_list() as $key => $value) {
+?>
+    <option value="<?php
+            echo $key; ?>" <?php
+            if (get_conf_param('time_zone') == $key) {
+                echo "selected";
+            } ?> ><?php
+            echo $value; ?></option>
+    <?php
+        } ?>
+  
+</select> 
+
+
+
+
+
+    </div>
+  </div>
+
+
+  
+    
+  
+  
+  
+  
+  <div class="form-group">
+    <label for="allow_register" class="col-sm-4 control-label"><small><?php echo lang('REG_new'); ?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="allow_register">
+  <option value="true" <?php
+        if (get_conf_param('allow_register') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('allow_register') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>    
+</div>
+  </div>
+
+
+
+
+
+
+  
+  
+<center>
+    <button type="submit" id="conf_edit_main" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
+        echo lang('CONF_act_edit'); ?></button>
+    
+</center>
+
+
+  
+    </div>
+  
+  <div id="conf_edit_main_res"></div>
+      
+      </div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div></div>
+
+<?php
+
+}
+
+?>
+
+
 </div></section>
 
 

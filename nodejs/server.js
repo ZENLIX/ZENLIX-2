@@ -31,11 +31,11 @@ var io = require('/usr/local/lib/node_modules/socket.io').listen(app);
 app.listen(8080, "0.0.0.0");
 
 
-
+var io = require('/usr/local/lib/node_modules/socket.io').listen(8080);
 */
 
 
-var io = require('/usr/local/lib/node_modules/socket.io').listen(8080);
+
 
 
 //insert into `notification_msg_pool` (delivers_id, type_op) values ('7371a131b959f3527cbde59f0e5caf96', 'ticket_create');
