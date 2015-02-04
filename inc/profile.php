@@ -191,7 +191,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             <div class="box box-warning" >
                                 <div class="box-header" >
                                 
-                                    <h4 style="text-align:center;"><?php echo $fio; ?><br><small><?php echo get_user_val('posada'); ?></small></h4>
+                                    <h4 style="text-align:center;"><?php echo $fio; ?><br><small><?php if (get_user_val('posada') != 0)  {echo get_user_val('posada');}  ?></small></h4>
 
                                 </div>
                                 <div class="box-body">
@@ -409,6 +409,32 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 </select>
         </div>
   </div>
+
+
+            <div class="form-group">
+    <label for="noty" class="col-sm-4 control-label"><small><?php echo lang('NOTY_layot'); ?></small></label>
+        <div class="col-sm-8">
+    <select data-placeholder="<?php echo lang('NOTY_layot'); ?>" class="chosen-select form-control input-sm" id="noty" name="noty">
+                    <option value="0"></option>
+                    
+                        <option <?php check_user_noty_layot('top'); ?> value="top">Top</option>
+                        <option <?php check_user_noty_layot('topLeft'); ?> value="topLeft">TopLeft</option>
+                        <option <?php check_user_noty_layot('topCenter'); ?> value="topCenter">TopCenter</option>
+                        <option <?php check_user_noty_layot('topRight'); ?> value="topRight">TopRight</option>         
+
+                        <option <?php check_user_noty_layot('centerLeft'); ?> value="centerLeft">CenterLeft</option>                        
+                        <option <?php check_user_noty_layot('center'); ?> value="center">Center</option>                        
+                        <option <?php check_user_noty_layot('centerRight'); ?> value="centerRight">CenterRight</option>    
+
+                        <option <?php check_user_noty_layot('bottomLeft'); ?> value="bottomLeft">BottomLeft</option>       
+                        <option <?php check_user_noty_layot('bottomCenter'); ?> value="bottomCenter">BottomCenter</option> 
+                        <option <?php check_user_noty_layot('bottomRight'); ?> value="bottomRight">BottomRight</option> 
+                        <option <?php check_user_noty_layot('bottom'); ?> value="bottom">Bottom</option>                  
+</select>
+        </div>
+  </div>
+
+
   
   
     <div class="col-md-offset-3 col-md-6">

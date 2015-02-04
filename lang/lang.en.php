@@ -15,7 +15,7 @@ function lang_en($phrase){
 	    
 'PERF_GM_title'=>'Global DASHBOARD message',
 'PERF_GM_to_users'=>'Selected users',
-
+'NOTY_layot'=>'Notification layot',
 'cron_navbar' => 'Planner',
 'cron_title' => 'Task Scheduler',
 'cron_view' => 'View information about the task',

@@ -174,7 +174,7 @@ $(".right-side").fadeIn(800);
                         var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'' + item.url + '/ticket?' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
                         noty({
                             text: t,
-                            layout: 'bottomRight',
+                            layout: USER_noty_layot,
                             timeout: false
                         });
                         $.ionSound.play("button_tiny");
@@ -200,7 +200,7 @@ $(".right-side").fadeIn(800);
                         var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'messages?to=' + item.uniq_id + '\'><strong><i class=\'fa fa-comments\'></i> ' + item.new_msg_text + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time_op + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><strong>' + item.user_from + ':</strong><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'> ' + item.user_chat + '</em>';
                         noty({
                             text: t,
-                            layout: 'bottomRight',
+                            layout: USER_noty_layot,
                             timeout: false
                         });
                         $.ionSound.play("button_tiny");
@@ -722,7 +722,7 @@ $.post(
     var def_p = window.location.pathname.split("/");
     var def_filename = def_p[def_p.length - 1];
     $.noty.defaults = {
-        layout: 'top',
+        layout: USER_noty_layot,
         theme: 'relax',
         type: 'information',
         text: '',
@@ -2032,6 +2032,34 @@ console.log(height);
                 }
             });
         });
+
+
+
+$("#noty").on("change", function(){
+        //alert( this.value );
+        var p=this.value;
+                       // var t = 'test';
+                    noty({
+                                text: 'test',
+                                layout: p,
+                                type: 'information',
+                                timeout: 2000
+                            });
+
+/*
+                        noty({
+                            text: "test",
+                            layout: this.value,
+                            timeout: false
+                        });
+*/
+                        $.ionSound.play("button_tiny");
+
+
+    });
+
+
+
         $('body').on('click', 'button#edit_profile_main', function(event) {
             event.preventDefault();
             if ($("#fio").val().length < 3) {
@@ -2045,7 +2073,8 @@ console.log(height);
                 $.ajax({
                     type: "POST",
                     url: ACTIONPATH,
-                    data: "mode=edit_profile_main" + "&mail=" + encodeURIComponent($("#mail").val()) + "&fio=" + encodeURIComponent($("#fio").val()) + "&lang=" + encodeURIComponent($("select#lang").val()) + "&skype=" + encodeURIComponent($("#skype").val()) + "&tel=" + encodeURIComponent($("#tel").val()) + "&adr=" + encodeURIComponent($("#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&unit=" + encodeURIComponent($("#pidrozdil").val()) + "&id=" + encodeURIComponent($("#edit_profile_main").attr('value')),
+                    data: "mode=edit_profile_main" + "&mail=" + encodeURIComponent($("#mail").val()) + "&fio=" + encodeURIComponent($("#fio").val()) + "&lang=" + encodeURIComponent($("select#lang").val()) + "&skype=" + encodeURIComponent($("#skype").val()) + "&tel=" + encodeURIComponent($("#tel").val()) + "&adr=" + encodeURIComponent($("#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&unit=" + encodeURIComponent($("#pidrozdil").val()) + "&id=" + encodeURIComponent($("#edit_profile_main").attr('value'))+
+                    "&user_layot="+encodeURIComponent($("#noty").val()),
                     success: function(html) {
                         $("#m_info").hide().html(html).fadeIn(500);
                         setTimeout(function() {

@@ -19,6 +19,8 @@ function lang_ru($phrase){
 'PERF_GM_title'=>'Глобальное сообщение DASHBOARD',
 'PERF_GM_to_users'=>'Выбранным пользователям',
     
+'NOTY_layot'=>'Расположение уведомления',
+
 'cron_navbar'=>'Планировщик',    
 'cron_title'=>'Планировщик задач',     
 'cron_view'=>'Просмотр информации о задаче',     

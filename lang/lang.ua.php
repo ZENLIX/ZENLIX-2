@@ -17,7 +17,7 @@ function lang_ua($phrase){
 
 'PERF_GM_title'=>'Глобальне повідомлення DASHBOARD',
 'PERF_GM_to_users'=>'Обраним користувачам',
-
+'NOTY_layot'=>'Розміщення повідомлення',
 'cron_navbar'=>'Планувальник',    
 'cron_title'=>'планувальник задач',     
 'cron_view' => 'Перегляд інформації про завдання',

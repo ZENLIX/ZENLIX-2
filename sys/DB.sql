@@ -41,6 +41,21 @@ PREPARE stmt FROM @sql;
 EXECUTE stmt;
 ######################################################
 
+
+#######UPDATE users.noty_layot####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='users' and column_name='noty_layot'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE users ADD noty_layot varchar(64) NOT NULL DEFAULT 'bottomRight';"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
 CREATE TABLE IF NOT EXISTS `helper_cat` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,

@@ -58,6 +58,19 @@ if ($CONF_HD['debug_mode'] == false) {
     error_reporting(0);
 }
 
+function check_user_noty_layot($in) {
+$layot=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'noty_layot');
+if ($in == $layot) { echo "selected";}
+}
+
+function get_noty_layot() {
+
+//$layot=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'noti_layot');
+
+
+
+}
+
 function generate_timezone_list()
 {
     static $regions = array(

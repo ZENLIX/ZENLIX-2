@@ -27,6 +27,7 @@ echo $CONF['hostname']; ?>";
 echo $lang; ?>";
     var USER_HASH = "<?php echo get_user_val('uniq_id'); ?>";
     var NODE_URL = "<?php echo get_conf_param('node_port'); ?>";
+    var USER_noty_layot="<?=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'noty_layot');?>";
 </script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-2.1.3.min.js"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js"></script>

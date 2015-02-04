@@ -3598,6 +3598,7 @@ echo $msg;
             $skype = ($_POST['skype']);
             $tel = ($_POST['tel']);
             $adr = ($_POST['adr']);
+
             
             $ec = 0;
             
@@ -3673,6 +3674,7 @@ echo $msg;
                 $fio = ($_POST['fio']);
                 $posada = ($_POST['posada']);
                 $unitss = ($_POST['unit']);
+                $noty= $_POST['user_layot'];
                 
                 $ec = 0;
                 if (!validate_email($m)) {
@@ -3683,7 +3685,7 @@ echo $msg;
                 }
                 if ($ec == 0) {
                     $stmt = $dbConnection->prepare('update users set fio=:fio, skype=:s, tel=:t, email=:m, lang=:langu,
-                adr=:adr,posada=:posada,unit_desc=:unitss where id=:id');
+                adr=:adr,posada=:posada,unit_desc=:unitss,noty_layot=:noty where id=:id');
                     $stmt->execute(array(
                         ':id' => $id,
                         ':m' => $m,
@@ -3693,7 +3695,8 @@ echo $msg;
                         ':adr' => $adr,
                         ':posada' => $posada,
                         ':unitss' => $unitss,
-                        ':fio' => $fio
+                        ':fio' => $fio,
+                        ':noty'=>$noty
                     ));
 ?>
                 <div class="alert alert-success">
