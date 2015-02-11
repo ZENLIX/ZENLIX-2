@@ -197,7 +197,7 @@ $current .= "?>\n";
 file_put_contents($fileconf, $current);
 
 
-$node_params.="var mysql = require('mysql'); var db = mysql.createConnection({\n";
+$node_params.="var mysql = require('mysql'); \n var db = mysql.createConnection({\n";
 $node_params.="host: '".$mysql_host."',\n";
 $node_params.="user: '".$mysql_username."',\n";
 $node_params.="password: '".$mysql_password."',\n";
@@ -213,13 +213,13 @@ file_put_contents($nodeserver, $node_params);
 
 $pos = strrpos($_SERVER['REQUEST_URI'], '/');
 $sys_url= $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
-
 $lc=substr($sys_url, -1);
-if ($lc == "/") {$lc=substr($lc, 0, -1); }
+if ($lc == "/") { $c=substr($sys_url, 0, -1); }
+$p="http://".$c.":".$nodeport."/";
 
-      $np="http://".$sys_url.":".$nodeport."/";
+
 mysql_query("update perf set value='$sys_url' where param='hostname'") or die("Invalid query: " . mysql_error());
-mysql_query("update perf set value='$np' where param='node_port'") or die("Invalid query: " . mysql_error());
+mysql_query("update perf set value='$p' where param='node_port'") or die("Invalid query: " . mysql_error());
 ?>
 <h2>Congratulations on the successful installation!</h2>
 You can log in at: <a href="http://<?=$sys_url;?>"><?=$sys_url;?></a>,<br> login: <strong>system</strong> & password: <strong>1234</strong>.<br>
@@ -238,7 +238,20 @@ You can log in at: <a href="http://<?=$sys_url;?>"><?=$sys_url;?></a>,<br> login
 }
 else if (!isset($_POST['mode'])) {
 if (isset($_GET['mode'])) {
-		if ($_GET['mode'] == 'db_install' ) { ?>
+		if ($_GET['mode'] == 'db_install' ) { 
+
+
+
+
+
+
+
+
+      //echo "last= ".$p;
+
+
+
+      ?>
 		
 		<div class="container" id="content">
 		<div class="page-header">
