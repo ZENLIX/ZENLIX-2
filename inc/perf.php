@@ -220,7 +220,7 @@ $menu_active['main']="active";
         echo get_conf_param('version'); ?></h3>
                                 </div>
                                 <div class="box-body">
-                                Coding by ZENLIX (c) 2014
+                                Coding by ZENLIX (c) 2015
                                    <p>
       <i class="fa fa-envelope"></i> support@zenlix.com
       </p>
@@ -351,6 +351,36 @@ if ($menu_opt == "ti_conf") {
     </div>
   </div>
   
+
+
+
+   <div class="form-group">
+    <label for="ticket_last_time" class="col-sm-4 control-label"><small><?php
+        echo lang('CONF_tlt'); ?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="ticket_last_time">
+  <option value="true" <?php
+        if (get_conf_param('ticket_last_time') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('ticket_last_time') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>    
+<p class="help-block"><small>
+<?php
+        echo lang('CONF_tlt_info'); ?>
+</small></p>
+</div>
+  </div>
+
+
+
+
+
   
   
 <center>
@@ -363,6 +393,277 @@ if ($menu_opt == "ti_conf") {
       <div id="conf_edit_ticket_res"></div>
       </div>
       </div>
+
+
+
+
+<div class="col-md-12">
+<div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-envelope-o"></i> <?=lang('CONF_EMAIL_GATE_title');?></h3>
+</div>
+      <div class="box-body">
+      <form class="form-horizontal" role="form">
+      
+
+
+
+<div class="form-group">
+    <label for="email_gate_status" class="col-sm-4 control-label"><small><?=lang('t_LIST_status');?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="email_gate_status">
+  <option value="true" <?php
+        if (get_conf_param('email_gate_status') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('email_gate_status') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>    
+
+</div>
+  </div>
+
+
+
+<div class="form-group">
+    <label for="email_gate_all" class="col-sm-4 control-label"><small><?=lang('CONF_EMAIL_GATE_all');?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="email_gate_all">
+  <option value="true" <?php
+        if (get_conf_param('email_gate_all') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('email_gate_all') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>    
+<p class="help-block"><small><?=lang('CONF_EMAIL_GATE_all_info');?></small></p>
+</div>
+  </div>
+
+
+
+
+    <div class="form-group" id="for_to" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right">
+        <label for="to" class="col-md-4 control-label" ><small><?=lang('CONF_EMAIL_GATE_to');?> </small></label>
+        <div class="col-md-4">
+            <select data-placeholder="<?php echo lang('NEW_to_unit'); ?>" class="chosen-select form-control" id="to" name="unit_id">
+                <option value="0"></option>
+                <?php
+        $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
+        $stmt->execute(array(':n' => '0', ':s' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+            
+$s="";
+
+
+
+
+
+if (get_conf_param('email_gate_unit_id') == $row['value']) {$s="selected";}
+
+            //echo($row['label']);
+            $row['label'] = $row['label'];
+            $row['value'] = (int)$row['value'];
+?>
+
+                            <option value="<?php echo $row['value'] ?>" <?=$s;?>><?php echo $row['label'] ?></option>
+
+                        <?php
+        }
+?>
+
+            </select>
+        </div>
+
+
+
+
+        <div class="col-md-4" style="" id="dsd">
+    
+    
+    <select data-placeholder="<?php echo lang('NEW_to_user'); ?>" id="users_do" name="unit_id" class="form-control input-sm" multiple>
+        <option></option>
+
+
+<?php
+        
+        /* $qstring = "SELECT fio as label, id as value FROM users where status='1' and login !='system' order by fio ASC;";
+                $result = mysql_query($qstring);//query the database for entries containing the term
+        while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
+        */
+        
+        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and login !=:system and is_client=0 order by fio ASC');
+        $stmt->execute(array(':n' => '1', ':system' => 'system'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+            
+            //echo($row['label']);
+            $row['label'] = $row['label'];
+            $row['value'] = (int)$row['value'];
+            
+            if (get_user_status_text($row['value']) == "online") {
+                $s = "online";
+            } else if (get_user_status_text($row['value']) == "offline") {
+                $s = "offline";
+            }
+
+
+
+$st_sel="";
+$mass=explode(",", get_conf_param('email_gate_user_id'));
+if (in_array($row['value'], $mass)) {$st_sel="selected";}
+
+?>
+                    <option data-foo="<?php echo $s; ?>" value="<?php echo $row['value'] ?>" <?=$st_sel;?>><?php echo nameshort($row['label']) ?> </option>
+
+                <?php
+        }
+?>
+    </select>
+            
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+  <div class="form-group">
+    <label for="email_gate_mailbox" class="col-sm-4 control-label"><small><?=lang('CONF_EMAIL_GATE_mailbox');?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="email_gate_mailbox" placeholder="<?=lang('CONF_EMAIL_GATE_mailbox');?>" value="<?php
+        echo get_conf_param('email_gate_mailbox') ?>">
+        <p class="help-block"><small><?=lang('CONF_EMAIL_GATE_mailbox_info');?></small></p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="email_gate_filter" class="col-sm-4 control-label"><small><?=lang('CONF_EMAIL_GATE_filter');?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="email_gate_filter" placeholder="<?=lang('CONF_EMAIL_GATE_filter');?>" value="<?php
+        echo get_conf_param('email_gate_filter') ?>">
+        <p class="help-block"><small><?=lang('CONF_EMAIL_GATE_filter_ex');?>:   
+<pre>
+   *    ALL - return all mails matching the rest of the criteria
+   *    ANSWERED - match mails with the \\ANSWERED flag set
+   *    BCC "string" - match mails with "string" in the Bcc: field
+   *    BEFORE "date" - match mails with Date: before "date"
+   *    BODY "string" - match mails with "string" in the body of the mail
+   *    CC "string" - match mails with "string" in the Cc: field
+   *    DELETED - match deleted mails
+   *    FLAGGED - match mails with the \\FLAGGED (sometimes referred to as Important or Urgent) flag set
+   *    FROM "string" - match mails with "string" in the From: field
+   *    KEYWORD "string" - match mails with "string" as a keyword
+   *    NEW - match new mails
+   *    OLD - match old mails
+   *    ON "date" - match mails with Date: matching "date"
+   *    RECENT - match mails with the \\RECENT flag set
+   *    SEEN - match mails that have been read (the \\SEEN flag is set)
+   *    SINCE "date" - match mails with Date: after "date"
+   *    SUBJECT "string" - match mails with "string" in the Subject:
+   *    TEXT "string" - match mails with text "string"
+   *    TO "string" - match mails with "string" in the To:
+   *    UNANSWERED - match mails that have not been answered
+   *    UNDELETED - match mails that are not deleted
+   *    UNFLAGGED - match mails that are not flagged
+   *    UNKEYWORD "string" - match mails that do not have the keyword "string"
+   *    UNSEEN - match mails which have not been read yet
+</pre>
+   </small></p>
+    </div>
+  </div>
+
+<div class="form-group">
+    <label for="email_gate_host" class="col-sm-4 control-label"><small><?=lang('CONF_EMAIL_GATE_host');?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="email_gate_host" placeholder="<?=lang('CONF_EMAIL_GATE_host');?>" value="<?php
+        echo get_conf_param('email_gate_host'); ?>">
+    </div>
+  </div>
+
+<div class="form-group">
+    <label for="email_gate_cat" class="col-sm-4 control-label"><small><?=lang('CONF_EMAIL_GATE_cat');?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="email_gate_cat" placeholder="<?=lang('CONF_EMAIL_GATE_cat');?>" value="<?php
+        echo get_conf_param('email_gate_cat') ?>">
+    </div>
+  </div>
+
+    <div class="form-group">
+    <label for="email_gate_port" class="col-sm-4 control-label"><small><?=lang('CONF_EMAIL_GATE_port');?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="email_gate_port" placeholder="<?=lang('CONF_EMAIL_GATE_port');?>" value="<?php
+        echo get_conf_param('email_gate_port') ?>">
+    </div>
+  </div>
+ <div class="form-group">
+    <label for="email_gate_login" class="col-sm-4 control-label"><small><?php
+        echo lang('CONF_mail_login'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="email_gate_login" placeholder="<?php
+        echo lang('CONF_mail_login'); ?>" value="<?php
+        echo get_conf_param('email_gate_login') ?>">
+    </div>
+  </div>
+  
+      <div class="form-group">
+    <label for="email_gate_pass" class="col-sm-4 control-label"><small><?php
+        echo lang('CONF_mail_pass'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="password" class="form-control input-sm" id="email_gate_pass" placeholder="<?php
+        echo lang('CONF_mail_pass'); ?>" value="<?php
+        echo get_conf_param('email_gate_pass') ?>">
+    </div>
+  </div>
+
+<button type="submit" id="conf_test_mail" class="btn btn-default btn-sm pull-right"> test</button>
+<center>
+    <button type="submit" id="conf_edit_email_gate" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
+        echo lang('CONF_act_edit'); ?></button>
+</center>
+
+
+      <div class="" id="conf_edit_email_gate_res"></div>
+      <div class="" id="conf_test_email_gate_res"></div>
+
+
+
+
+
+
+
+      </form>
+      </div>
+      </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
       </div>
       </div>
 
@@ -759,7 +1060,7 @@ else if ($menu_opt == "inform") {
                                 <div class="box-body">
  <p class="help-block"><small><?php
         echo lang('CONF_2arch_info'); ?> <br>
-<pre>5 0 * * * /usr/bin/php5 -f <?php
+<pre>* * * * * /usr/bin/php5 -f <?php
         echo realpath(dirname(dirname(__FILE__))) . "/sys/4cron.php" ?> > <?php
         echo realpath(dirname(dirname(__FILE__))) . "/4cron.log" ?> 2>&1</pre></small></p>
 

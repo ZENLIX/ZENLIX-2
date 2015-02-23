@@ -13,6 +13,28 @@ function lang_en($phrase){
 'PERF_menu_notify_conf'=>'Notification center',
 'PERF_menu_info_conf'=>'Information',
 	    
+
+
+'TICKET_deadline_text'=>'Deadline',
+'TICKET_deadline_old'=>'deadline: overdue',
+'TICKET_deadline_time'=>'deadline:',
+'TICKET_deadline_success'=>'deadline: success',
+ 'CONF_false'=>'Disable',  
+
+'CONF_EMAIL_GATE_title' => 'Acceptance of applications for e-mail',
+'CONF_EMAIL_GATE_all' => 'Acceptance of applications from unknown',
+'CONF_EMAIL_GATE_all_info' => 'All the letters of not existing in the user database (email-address) will be accepted. Just an unknown sender will be sent a login / password for future access to the web interface and the creation of applications. ',
+'CONF_EMAIL_GATE_to' => 'directs all applications',
+'CONF_EMAIL_GATE_mailbox' => 'E-mail-Mail Recipient',
+'CONF_EMAIL_GATE_mailbox_info' => 'E-mail address from which you will be collecting mail and creation of applications',
+'CONF_EMAIL_GATE_filter' => 'Filter',
+'CONF_EMAIL_GATE_filter_ex' => 'Filter List',
+'CONF_EMAIL_GATE_host' => 'Address IMAP-server',
+'CONF_EMAIL_GATE_cat' => 'The directory on the IMAP-server',
+'CONF_EMAIL_GATE_port' => 'Port IMAP-server',
+
+
+
 'PERF_GM_title'=>'Global DASHBOARD message',
 'PERF_GM_to_users'=>'Selected users',
 'NOTY_layot'=>'Notification layot',
@@ -70,13 +92,14 @@ function lang_en($phrase){
 'mail_msg_ticket_ok_ext'=>'You received this message because the ticket was commented by the user',
 'mail_msg_ticket_no_ok'=>'TICKED WAS NOT DONE',
 'mail_msg_ticket_no_ok_ext'=>'You received this message because the ticket was commented by the user',
-'REG_msg'=>'Registration success! You can log in after administrator review.',
+'REG_msg'=>'Registration success! You can log in used your pass from email message.',
 'REG_new'=>'Create new account',
 'E_no_info'=>'Empty query',
 'REG_button'=>'Register',
 'REG_already'=>'I already have account',
 'E_no_selected_user'=>'Select user please',
-
+'CONF_tlt'=>'Deadline for tickets',
+'CONF_tlt_info'=>'Allows you to set the deadline for execution of the ticket.',
 'EXT_stats_refer'=>'Redirected',
 'EXT_stats_lock'=>'Locked tickets',
 'EXT_stats_unlock'=>'Unlocked',
@@ -86,7 +109,7 @@ function lang_en($phrase){
 
 'EXT_stat_title'=>'Register of user actions with ',
 'CONF_timezone'=>'Time zone',
-'CONF_2noty_info'=>'For e-mail notifications, add a cron string ',
+'CONF_2noty_info'=>'For e-mail and other notifications, add a cron string ',
 'UPGRADE_title'=>'system Update',
 'UPGRADE_title_ext'=>'update Wizard version',
 'UPGRADE_version_already'=>'You Have the most recent version!',
@@ -217,7 +240,7 @@ function lang_en($phrase){
  'CONF_title_org'=>'Header of system',     
  'CONF_url'=>'URL system',     
  'CONF_2arch'=>'In how many days the ticket will remove to the archive',     
- 'CONF_2arch_info'=>'For automatic move of tickets to the archive, add to cron scheduler this string:',     
+ 'CONF_2arch_info'=>'For automatic move of tickets to the archive and create tickets from email add to cron scheduler this string:',     
 
  'CONF_subj'=>'Subjects of tickets',     
  'CONF_fix_list'=>'Fixed list',     

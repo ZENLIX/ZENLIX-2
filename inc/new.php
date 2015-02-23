@@ -275,6 +275,47 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <div class="help-block"></div></div></div>
 
 
+
+
+            <!--######### INPUT FOR DATE-FINISH ############## -->
+
+    <?php
+        if (get_conf_param('ticket_last_time') == "true") { ?>
+
+            
+                      <div class="control-group" id="for_prio">
+    <div class="controls">
+        <div class="form-group">
+            <label for="d_finish" class="col-sm-2 control-label"><small><?=lang('TICKET_deadline_text');?>: </small></label>
+
+            <div class="col-sm-10" style=" padding-top: 5px; ">
+
+<div class='input-group date' id='date_finish'>
+
+                    <input id="d_finish" type='text' class="form-control input-sm" data-date-format="YYYY-MM-DD HH:mm:ss" value="<?php echo date("Y-m-d H:i:s"); ?>" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    </div>  
+            
+            <?php }?>
+     
+            
+            <!--######### INPUT FOR DATE-FINISH ############## -->
+
+
+
+
+
+
+
+
 <?php
         if ($CONF['file_uploads'] == "true") { ?>
 
@@ -341,6 +382,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     <input type="hidden" id="hashname" value="<?php echo md5(time()); ?>">
     <input type="hidden" id="status_action" value="">
     <input type="hidden" id="prio" value="1">
+    <input type="hidden" id="d_finish_val" value="NULL">
     <input type="hidden" value="<?php
         echo $_SESSION['helpdesk_user_id']; ?>" id="user_init_id">
     <input type="hidden" id="user_name_login" value="<?php echo get_user_val('login'); ?>">

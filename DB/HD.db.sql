@@ -258,7 +258,7 @@ VALUES
 	(20,'file_types','gif|jpe?g|png|doc|xls|rtf|pdf|zip|rar|bmp|docx|xlsx'),
 	(21,'file_size','2097152'),
 	(22,'pb_api','api'),
-	(23,'ldap_ip','ip'),
+	(23,'ldap_ip','0.0.0.0'),
 	(24,'ldap_domain','ldap.local'),
 	(25,'version','2.4'),
 	(26,'node_port','http://localhost:3001/'),
@@ -269,7 +269,20 @@ VALUES
   (31, 'global_msg_to', ''),
   (32, 'global_msg_type', 'info'),
   (33, 'global_msg_data', ''),
-  (34, 'global_msg_status', '0');
+  (34, 'global_msg_status', '0'),
+  (35, 'ticket_last_time', 'false'),
+  (36, 'email_gate_status', 'false'),
+  (37, 'email_gate_all', 'false'),
+  (38, 'email_gate_unit_id', ''),
+  (39, 'email_gate_user_id', ''),
+  (40, 'email_gate_mailbox', ''),
+  (41, 'email_gate_host', ''),
+  (42, 'email_gate_port', ''),
+  (43, 'email_gate_login', ''),
+  (44, 'email_gate_pass', ''),
+  (45, 'email_gate_filter', 'UNSEEN'),
+  (46, 'email_gate_cat', 'INBOX');
+
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -307,6 +320,21 @@ VALUES
 
 /*!40000 ALTER TABLE `posada` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+DROP TABLE IF EXISTS `ticket_info`;
+
+CREATE TABLE `ticket_info` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ticket_id` int(11) DEFAULT NULL,
+  `ticket_source` varchar(128) NOT NULL DEFAULT 'web',
+  `ip` varchar(64) DEFAULT NULL,
+  `os` varchar(512) DEFAULT NULL,
+  `browser` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 
 
 # Дамп таблицы subj
@@ -364,7 +392,7 @@ DROP TABLE IF EXISTS `tickets`;
 CREATE TABLE `tickets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_init_id` int(11) DEFAULT NULL,
-  `user_to_id` varchar(11) DEFAULT NULL,
+  `user_to_id` varchar(512) DEFAULT NULL,
   `date_create` datetime DEFAULT NULL,
   `subj` varchar(512) DEFAULT NULL,
   `msg` longtext,
@@ -381,6 +409,7 @@ CREATE TABLE `tickets` (
   `prio` int(4) NOT NULL DEFAULT '0',
   `ok_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL,
+  `deadline_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -421,7 +450,7 @@ CREATE TABLE `users` (
   `pass` varchar(64) NOT NULL DEFAULT '',
   `status` int(11) NOT NULL DEFAULT '1',
   `priv` int(11) DEFAULT '0',
-  `unit` varchar(11) NOT NULL DEFAULT '0',
+  `unit` varchar(512) NOT NULL DEFAULT '0',
   `is_admin` int(4) NOT NULL DEFAULT '0',
   `is_client` int(4) NOT NULL DEFAULT '0',
   `email` varchar(128) DEFAULT NULL,

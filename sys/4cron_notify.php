@@ -1,4 +1,7 @@
 <?php
+
+ini_set('max_execution_time', 300);
+
 $base = dirname(dirname(__FILE__)); 
 include($base ."/conf.php");
 //include_once($base ."/functions.inc.php");
@@ -412,6 +415,14 @@ function name_of_client_ret($input) {
     return $fio['fio'];
 
 }
+
+
+
+
+
+
+
+
 function make_mail($type_op, $lang, $user_mail, $ticket_id) {
 	global $dbConnection,$base,$CONF;
 	

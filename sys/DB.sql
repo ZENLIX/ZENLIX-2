@@ -18,6 +18,15 @@ CREATE TABLE IF NOT EXISTS `scheduler_ticket` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `ticket_info` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ticket_id` int(11) DEFAULT NULL,
+  `ticket_source` varchar(128) NOT NULL DEFAULT 'web',
+  `ip` varchar(64) DEFAULT NULL,
+  `os` varchar(512) DEFAULT NULL,
+  `browser` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (29, 'logo_img', '') ON DUPLICATE KEY UPDATE `value` = `value`;
@@ -27,6 +36,21 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (31, 'global_msg_to', '') ON 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (32, 'global_msg_type', 'info') ON DUPLICATE KEY UPDATE `value` = `value`;
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (33, 'global_msg_data', '') ON DUPLICATE KEY UPDATE `value` = `value`;
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (34, 'global_msg_status', '0') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (35, 'ticket_last_time', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (36, 'email_gate_status', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (37, 'email_gate_all', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (38, 'email_gate_unit_id', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (39, 'email_gate_user_id', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (40, 'email_gate_mailbox', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (41, 'email_gate_host', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (42, 'email_gate_port', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (43, 'email_gate_login', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (44, 'email_gate_pass', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (45, 'email_gate_filter', 'UNSEEN') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (46, 'email_gate_cat', 'INBOX') ON DUPLICATE KEY UPDATE `value` = `value`;
 
 #######UPDATE users.messages_type####################
 SET @sql = (SELECT IF(
@@ -64,6 +88,9 @@ CREATE TABLE IF NOT EXISTS `helper_cat` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
 INSERT INTO `helper_cat` (`id`, `name`, `parent_id`, `sort_id`) VALUES (1, 'First item', 0, 0 ) ON DUPLICATE KEY UPDATE `id` = `id`;
+
+
+
 #######UPDATE helper.cat_id############################
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)
@@ -92,3 +119,16 @@ PREPARE stmt FROM @sql;
 EXECUTE stmt;
 ######################################################
 
+
+#######UPDATE tickets.deadline############################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='tickets' and column_name='deadline_time'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE tickets ADD deadline_time datetime DEFAULT NULL;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################

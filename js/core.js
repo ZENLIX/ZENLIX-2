@@ -1060,7 +1060,7 @@ $("#user_info").hide();
             formatResult: format,
             formatSelection: format,
             allowClear: true,
-            maximumSelectionSize: 5,
+            maximumSelectionSize: 15,
             width: '100%',
             formatNoMatches: get_lang_param('JS_not_found'),
             escapeMarkup: function(m) {
@@ -1300,7 +1300,7 @@ php:
 
         $("#unitstat_id").select2({
             allowClear: true,
-            maximumSelectionSize: 5,
+            maximumSelectionSize: 15,
             formatNoMatches: get_lang_param('JS_not_found')
         });
 
@@ -1350,7 +1350,7 @@ $('body').on('click', 'button#main_stat_make', function(event) {
             formatResult: format,
             formatSelection: format,
             allowClear: true,
-            maximumSelectionSize: 5,
+            maximumSelectionSize: 15,
             width: '100%',
             formatNoMatches: get_lang_param('JS_not_found'),
             escapeMarkup: function(m) {
@@ -1894,7 +1894,7 @@ $('body').on('click', 'button#user_stat_make', function(event) {
             formatResult: format,
             formatSelection: format,
             allowClear: true,
-            maximumSelectionSize: 5,
+            maximumSelectionSize: 15,
             width: '100%',
             formatNoMatches: get_lang_param('JS_not_found'),
             escapeMarkup: function(m) {
@@ -2109,6 +2109,28 @@ $("#noty").on("change", function(){
     }
     if (ispath('create')) {
         $.fn.editable.defaults.mode = 'inline';
+
+
+
+
+        $('#d_finish').daterangepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',timePicker: true,timePicker12Hour: false,singleDatePicker:true,
+            minDate: new Date()
+        });
+
+$("#d_finish").change(function() {
+
+$('#d_finish_val').val($(this).val());
+
+ });
+$('#d_finish').on('apply.daterangepicker', function(ev, picker) {
+            //$("#action_start").val( picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
+            $('#d_finish_val').val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
+            
+            
+        });
+
+
         $("select#users_do").change(function() {
             var p = $('select#users_do').val();
             var t = $('select#to').val();
@@ -2464,7 +2486,7 @@ php:
             formatResult: format,
             formatSelection: format,
             allowClear: true,
-            maximumSelectionSize: 5,
+            maximumSelectionSize: 15,
             width: '100%',
             formatNoMatches: get_lang_param('JS_not_found'),
             escapeMarkup: function(m) {
@@ -3153,6 +3175,7 @@ view_helper_cat();
         function enter_ticket() {
             var status_action = $("#status_action").val();
             var u_do;
+            var deadline_time=$("#d_finish_val").val();
             if (status_action == 'add') {
                 //uploadObj.startUpload();
                 $('#enter_ticket').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
@@ -3166,7 +3189,8 @@ view_helper_cat();
                     type: "POST",
                     //async: false,
                     url: ACTIONPATH,
-                    data: "mode=add_ticket" + "&type_add=add" + "&fio=" + encodeURIComponent($("#username").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&login=" + encodeURIComponent($("#new_login").text()) + "&pod=" + encodeURIComponent($("#new_unit").text()) + "&adr=" + encodeURIComponent($("#new_adr").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&mail=" + encodeURIComponent($("#new_mail").text()) + "&posada=" + encodeURIComponent($("#new_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val()),
+                    data: "mode=add_ticket" + "&type_add=add" + "&fio=" + encodeURIComponent($("#username").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&login=" + encodeURIComponent($("#new_login").text()) + "&pod=" + encodeURIComponent($("#new_unit").text()) + "&adr=" + encodeURIComponent($("#new_adr").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&mail=" + encodeURIComponent($("#new_mail").text()) + "&posada=" + encodeURIComponent($("#new_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val())+
+                    "&deadline_time="+deadline_time,
                     success: function(html) {
                         //window.location = "new.php?ok&h="+html;
                         window.location = MyHOSTNAME + "create?ok&h=" + html;
@@ -3186,7 +3210,8 @@ view_helper_cat();
                     type: "POST",
                     //async: false,
                     url: ACTIONPATH,
-                    data: "mode=add_ticket" + "&type_add=edit" + "&client_id_param=" + encodeURIComponent($("#client_id_param").val()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&login=" + encodeURIComponent($("#edit_login").text()) + "&pod=" + encodeURIComponent($("#edit_unit").text()) + "&adr=" + encodeURIComponent($("#edit_adr").text()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&mail=" + encodeURIComponent($("#edit_mail").text()) + "&posada=" + encodeURIComponent($("#edit_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val()),
+                    data: "mode=add_ticket" + "&type_add=edit" + "&client_id_param=" + encodeURIComponent($("#client_id_param").val()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&login=" + encodeURIComponent($("#edit_login").text()) + "&pod=" + encodeURIComponent($("#edit_unit").text()) + "&adr=" + encodeURIComponent($("#edit_adr").text()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&mail=" + encodeURIComponent($("#edit_mail").text()) + "&posada=" + encodeURIComponent($("#edit_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val())+
+                    "&deadline_time="+deadline_time,
                     success: function(html) {
                         //console.log(html);
                         window.location = MyHOSTNAME + "create?ok&h=" + html;
@@ -3539,6 +3564,80 @@ if(jQuery().fileupload) {
 
 
 
+        $("select#to").on('change', function() {
+            if ($('select#to').val() != 0) {
+                $('#for_to').popover('hide');
+                //$('#for_to').removeClass('has-error');
+                //$('#for_to').addClass('has-success');
+                $('#dsd').popover('hide');
+            } else {
+                $('#dsd').popover('show');
+                $('#for_to').popover('show');
+                //$('#for_to').addClass('has-error');
+                setTimeout(function() {
+                    $("#dsd").popover('hide');
+                }, 2000);
+            }
+        });
+        $("select#to").change(function() {
+            var i = $('select#to').val();
+            if ($('select#to').val() != 0) {
+                $('#for_to').popover('hide');
+                //$('#for_to').removeClass('has-error');
+                //$('#for_to').addClass('has-success');
+                createuserslist(i, 'users_do');
+            } else {
+                createuserslist(i, 'users_do');
+                $('#for_to').popover('show');
+                //$('#for_to').addClass('has-error');
+                setTimeout(function() {
+                    $("#for_to").popover('hide');
+                }, 2000);
+            }
+        });
+
+
+
+        $("#users_do").select2({
+            formatResult: format,
+            formatSelection: format,
+            allowClear: true,
+            maximumSelectionSize: 15,
+            width: '100%',
+            formatNoMatches: get_lang_param('JS_not_found'),
+            escapeMarkup: function(m) {
+                return m;
+            }
+        });
+
+        
+        $("select#users_do").change(function() {
+            var p = $('select#users_do').val();
+            var t = $('select#to').val();
+            //console.log(p);
+            if (t == 0) {
+                if (p != 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=get_unit_id" + "&uid=" + p,
+                        success: function(html) {
+                            //console.log(html);
+                            $("select#to [value='" + html + "']").attr("selected", "selected");
+                            $('select#to').trigger('chosen:updated');
+                            $('#for_to').popover('hide');
+                            //$('#for_to').removeClass('has-error');
+                            //$('#for_to').addClass('has-success');
+                        }
+                    });
+                }
+                if (p == 0) {
+                    $("select#to").find('option:selected').removeAttr("selected");
+                    $('select#to').trigger('chosen:updated');
+                }
+            }
+        });
+
 $('input[type=radio][name=optionsRadios1]').on('ifChanged', function(event){
         
             console.log(this.value);
@@ -3644,7 +3743,8 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
 "&fix_subj=" + encodeURIComponent($("#fix_subj").val()) + 
 "&file_uploads=" + encodeURIComponent($("#file_uploads").val()) + 
 "&file_types=" + encodeURIComponent($("#file_types").val())+ 
-"&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024),
+"&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024)+
+"&ticket_last_time="+ encodeURIComponent($("#ticket_last_time").val()),
                 dataType: "json",
                 success: function(html) {
 
@@ -3735,6 +3835,39 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
                 }
             });
         });
+
+
+        $('body').on('click', 'button#conf_edit_email_gate', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=conf_edit_email_gate" + 
+                "&email_gate_status="+$("#email_gate_status").val()+
+                "&email_gate_all="+$("#email_gate_all").val()+
+                "&to="+$("#to").val()+
+                "&users_do="+$("#users_do").val()+
+                "&email_gate_mailbox="+$("#email_gate_mailbox").val()+
+                "&email_gate_filter="+$("#email_gate_filter").val()+
+                "&email_gate_host="+$("#email_gate_host").val()+
+                "&email_gate_cat="+$("#email_gate_cat").val()+
+                "&email_gate_port="+$("#email_gate_port").val()+
+                "&email_gate_login="+$("#email_gate_login").val()+
+                "&email_gate_pass="+$("#email_gate_pass").val(),
+                success: function(html) {
+                    $("#conf_edit_email_gate_res").hide().html(html).fadeIn(500);
+                    setTimeout(function() {
+                    $('#conf_edit_email_gate_res').children('.alert').fadeOut(500);
+                    }, 3000);
+                }
+            });
+        });
+
+
+
+
+
+
         if ($('select#mail_type').val() == "sendmail") {
             $('#smtp_div').hide();
         } else if ($('select#mail_type').val() == "SMTP") {
@@ -3924,7 +4057,7 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
         });
         $("#my-select").select2({
             allowClear: true,
-            maximumSelectionSize: 5,
+            maximumSelectionSize: 15,
             width: '100%',
             formatNoMatches: get_lang_param('JS_not_found')
         });
@@ -4077,6 +4210,8 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
         });
         $('body').on('click', 'button#create_user', function(event) {
             event.preventDefault();
+            //console.log($("#my-select").val());
+            
             if ($("#fio_user").val().length < 3) {
                 //$("#errors").val('true');
                 my_errors.fio = true;
@@ -4109,6 +4244,7 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
                     scrollTop: 0
                 }, "slow");
             }
+            
         });
         $('body').on('click', 'button#edit_user', function(event) {
             event.preventDefault();

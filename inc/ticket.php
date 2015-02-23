@@ -14,8 +14,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     //$hn=($_GET['hash']);
     $hn = $rkeys[1];
     $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, comment, last_edit, is_read, lock_by, ok_by, arch, ok_date, prio, last_update
-                            from tickets
+                            * from tickets
                             where hash_name=:hn');
     $stmt->execute(array(':hn' => $hn));
     $res1 = $stmt->fetchAll();
@@ -148,6 +147,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     <i class="fa fa-refresh"></i> <?php echo lang('TICKET_msg_updated'); ?></div>
             <?php
             }
+
 ?>
             </div>
             </div>
@@ -165,10 +165,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                     
                                 <?php echo make_html($row['subj']) ?>
                                 </h3>
+                                <small class="text-muted">
+                                <?=get_ticket_info_source($row['id']);?>
+                                </small>
                                 <small class="box-tools pull-right text-muted">
                                 
                                 <i class="fa fa-clock-o"></i>
-                                <time id="c" datetime="<?php echo $row['date_create']; ?>"></time></small>
+                                <time id="c" datetime="<?php echo $row['date_create']; ?>"></time> <?=get_deadline_label($row['id']);?></small>
                                 
                                 </div>
                                 <div class="box-body">
@@ -197,10 +200,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             </table>
 
             <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                <?php echo make_html($row['msg']) ?>
+                                <?php echo make_html($row['msg']); ?>
                             </div>
                             
                             <div class="row"><div class="col-md-12">
+                            <small class="text-muted" >
+                                <?=get_ticket_info($row['id']);?>
+                            </small>
                                 <a href="print_ticket?<?php echo $hn; ?>" class="btn btn-default btn-xs pull-right"><i class="fa fa-print"></i> <?=lang('TICKET_print');?></a>
                             <?php
             if (($inituserid_flag == 1) && ($arch == 0)) { ?><button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>  <?php echo lang('CONF_act_edit'); ?></button> <?php

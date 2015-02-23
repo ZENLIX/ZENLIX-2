@@ -23,7 +23,7 @@ error_reporting(0);
 <link rel="stylesheet" href="js/bootstrap/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="css/jquery-ui.min.css">
 
-<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
 
 <style type="text/css" media="all">
     .chosen-rtl .chosen-drop { left: -9000px; }
@@ -117,7 +117,7 @@ if (isset($_POST['mode'])) {
 
 		<div class="container" id="content">
 		<div class="page-header">
-  <h1>ZENLIX <small>system installation</small></h1>
+  <h1><img src="img/ZENLIX_small.png"> ZENLIX <small>installation system (3 step from 3)</small></h1>
 </div>
 		<div class="row">
 		
@@ -175,7 +175,7 @@ if (substr(trim($line), -1, 1) == ';')
 $current .= "<?php\n";
 $current .= "########################################\n";
 $current .= "#	ZENLIX - configuration file\n";
-$current .= "#	ZENLIX (c) 2014\n";
+$current .= "#	ZENLIX (c) 2015\n";
 $current .= "#	support@zenlix.com\n";
 $current .= "########################################\n";
 
@@ -201,8 +201,8 @@ $node_params.="var mysql = require('mysql'); \n var db = mysql.createConnection(
 $node_params.="host: '".$mysql_host."',\n";
 $node_params.="user: '".$mysql_username."',\n";
 $node_params.="password: '".$mysql_password."',\n";
-$node_params.="database: '".$mysql_database."'})\n";
-$node_params.="require('/usr/local/lib/node_modules/socket.io').listen(".$nodeport.");\n";
+$node_params.="database: '".$mysql_database."'});\n";
+$node_params.="var io = require('/usr/local/lib/node_modules/socket.io').listen(".$nodeport.");\n";
 //var io = require('/usr/local/lib/node_modules/socket.io').listen(8080);
 $node_params.=file_get_contents($nodeserver);
 file_put_contents($nodeserver, $node_params);
@@ -222,10 +222,14 @@ mysql_query("update perf set value='$sys_url' where param='hostname'") or die("I
 mysql_query("update perf set value='$p' where param='node_port'") or die("Invalid query: " . mysql_error());
 ?>
 <h2>Congratulations on the successful installation!</h2>
-You can log in at: <a href="http://<?=$sys_url;?>"><?=$sys_url;?></a>,<br> login: <strong>system</strong> & password: <strong>1234</strong>.<br>
+<p>
+You can log in at: <a href="http://<?=$sys_url;?>"><?=$sys_url;?></a>,<br> login: <strong>system</strong> & password: <strong>1234</strong>.
+</p>
+
+<br>
 
 
-<hr>
+<a href="http://<?=$sys_url;?>" class="btn btn-success btn-lg btn-block">Log In</a>
 
 
   </div>
@@ -255,7 +259,7 @@ if (isset($_GET['mode'])) {
 		
 		<div class="container" id="content">
 		<div class="page-header">
-  <h1>ZENLIX <small>prepare to install</small></h1>
+  <h1><img src="img/ZENLIX_small.png"> ZENLIX <small>prepare to install (2 step from 3)</small></h1>
 </div>
 		<div class="row">
 		
@@ -336,7 +340,7 @@ if (isset($_GET['mode'])) {
 		?>
 		<div class="container" id="content">
 		<div class="page-header">
-  <h1>ZENLIX <small>prepare to install</small></h1>
+  <h1><img src="img/ZENLIX_small.png"> ZENLIX <small>prepare to install (1 step from 3)</small></h1>
 </div>
 		<div class="row">
 		
@@ -408,7 +412,8 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
     $filename=realpath(dirname(dirname(__FILE__)))."/conf.php";
     if (!is_writable($filename)) { ?>
     <span class="label label-danger">not active</span>
-    <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
+    <div class="alert alert-danger" role="alert">You must create conf.php file in root web-directory or permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a>
+    </div>
     <?php } if (is_writable($filename)) {?>
     <span class="label label-success">Success</span>
     <?php } ?>
@@ -452,7 +457,7 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
 
 </table>
 <center>
-<a class="btn btn-lg btn-success" href="index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-right"></i>  Далее</a>
+<a class="btn btn-lg btn-success" href="index.php?mode=db_install" role="button"><i class="fa fa-chevron-circle-right"></i>  Next</a>
 </center>
 
   </div>
@@ -473,20 +478,39 @@ else if (!isset($_GET['mode'])) {
 ?>
 <div class="container" id="content">
       
-
+<style type="text/css">
+  pre {
+    white-space: pre-wrap;       /* CSS 3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+</style>
       <div class="jumbotron">
+      <img src="img/ZENLIX.png">
         <h1>ZENLIX </h1>
         <p class="lead">ZENLIX web ticket system for accounting tasks </p>
-        <p><a class="btn btn-lg btn-success" href="index.php?mode=check_install" role="button">Start install!</a></p>
-      </div>
-
-      <div class="row marketing">
-      <p class="text-center"><strong>About system</strong></p>
-        <p class="text-center">Very often, the organization needs to watch the performed tasks. Our system helps to receive requests from clients, process them, and also to create tasks (tickets) to his subordinates and monitor their implementation. With this workflow perfectly optimized.     </p>
         
         
-         </div>
+        
+      </div>      
 
+
+<center>LICENSE AGREEMENTS</center>
+         <pre>
+        Copyright (c) 2014 YAROSLAV SNISAR
+
+This license authorizes persons who have received a copy of this software and associated documentation files (hereinafter referred to as "Software"), to use the Software, namely the right to use, copy, modify, add copies of the Software. Is strictly prohibited publication, distribute, sublicense, and / or sell copies of the Software, as well as persons to whom the Software is furnished.
+All of the above, the rules regarding rights are subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT, BUT NOT LIMITED TO. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIMS FOR DAMAGES OR OTHER REQUIREMENTS, INCLUDING UNDER CONTRACT, TORT OR ANY SITUATION ARISING FROM THE USE OF THE SOFTWARE OR OTHER ACTION WITH THE SOFTWARE.
+        </pre>
+
+
+<p><a class="btn btn-lg btn-success btn-block" href="index.php?mode=check_install" role="button">I agree with license & start install</a></p>
 
 
     </div>
@@ -496,7 +520,7 @@ else if (!isset($_GET['mode'])) {
 <div id="footer" style="  ">
     <div class="container" style=" padding: 20px; ">
         <div class="col-md-8">
-            <p class="text-muted credit"><small>Designed by <a href="mailto:info@zenlix.com">ZENLIX</a> (с) 2014.</p>
+            <p class="text-muted credit"><small>Designed by <a href="mailto:info@zenlix.com">ZENLIX</a> (с) 2015.</p>
             </small>
         </div>
 

@@ -28,30 +28,174 @@ if (isset($_POST['menu'])) {
         $user_id = id_of_user($_SESSION['helpdesk_user_login']);
         $ps = priv_status($user_id);
         
-        if (isset($_SESSION['hd.rustem_sort_out'])) {
+
+
+/*
+
+2 boss
+0 head
+1 user
+
+
+if boss - all created tickets
+if head - user deps created tickets
+if user - only his tickets
+
+*/
+
+
+
+
+
+        
+
+
+
+
+
+
+            if ($ps == "2") {
+
+
+
+
+if (isset($_SESSION['hd.rustem_sort_out'])) {
             if ($_SESSION['hd.rustem_sort_out'] == "ok") {
-                $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio from tickets where user_init_id=:user_id and arch=:n and status=:s limit :start_pos, :perpage');
+                $stmt = $dbConnection->prepare('SELECT * from tickets where arch=:n and status=:s limit :start_pos, :perpage');
+                $stmt->execute(array(':s' => '1', ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
+            } else if ($_SESSION['hd.rustem_sort_out'] == "free") {
+                $stmt = $dbConnection->prepare('SELECT * from tickets where arch=:n and lock_by=:lb and status=:s limit :start_pos, :perpage');
+                $stmt->execute(array( ':lb' => '0', ':s' => '0', ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
+            } else if ($_SESSION['hd.rustem_sort_out'] == "ilock") {
+                $stmt = $dbConnection->prepare('SELECT * from tickets where arch=:n and lock_by=:lb limit :start_pos, :perpage');
+                $stmt->execute(array( ':lb' => $user_id, ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
+            } else if ($_SESSION['hd.rustem_sort_out'] == "lock") {
+                $stmt = $dbConnection->prepare('SELECT * from tickets where arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) limit :start_pos, :perpage');
+                $stmt->execute(array(':lb' => $user_id, ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
+            }
+        }
+               else if (!isset($_SESSION['hd.rustem_sort_out'])) {
+            
+            $stmt = $dbConnection->prepare('SELECT * from tickets 
+        where arch=:n 
+        order by id desc limit :start_pos, :perpage');
+            $stmt->execute(array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
+        }
+             }
+
+
+            else if ($ps == "0") {
+
+/*
+
+получить список всех пользователей всех отелов и отсеять дуликаты
+
+получить список id всех пользователей где отдел = 
+
+
+
+*/
+
+$p=get_users_from_units_by_user();
+//print_r($p);
+
+        
+        //$ee = explode(",", $unit_user);
+        
+        foreach ($p as $key => $value) {
+            $in_query = $in_query . ' :val_' . $key . ', ';
+        }
+        
+        $in_query = substr($in_query, 0, -2);
+        foreach ($p as $key => $value) {
+            $vv[":val_" . $key] = $value;
+        }
+
+
+
+
+if (isset($_SESSION['hd.rustem_sort_out'])) {
+            if ($_SESSION['hd.rustem_sort_out'] == "ok") {
+                $stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id IN (' . $in_query . ') and arch=:n and status=:s limit :start_pos, :perpage');
+
+                $paramss=array(':s' => '1', ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
+                $stmt->execute(array_merge($vv, $paramss));
+
+                    
+            } else if ($_SESSION['hd.rustem_sort_out'] == "free") {
+                $stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id IN (' . $in_query . ') and arch=:n and lock_by=:lb and status=:s limit :start_pos, :perpage');
+
+                $paramss=array( ':lb' => '0', ':s' => '0', ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
+                $stmt->execute(array_merge($vv, $paramss));
+                    
+
+
+
+            } else if ($_SESSION['hd.rustem_sort_out'] == "ilock") {
+                $stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id IN (' . $in_query . ') and arch=:n and lock_by=:lb limit :start_pos, :perpage');
+
+                $paramss=array( ':lb' => $user_id, ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
+                $stmt->execute(array_merge($vv, $paramss));
+                    
+
+
+            } else if ($_SESSION['hd.rustem_sort_out'] == "lock") {
+                $stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id IN (' . $in_query . ') and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) limit :start_pos, :perpage');
+
+                $paramss=array(':lb' => $user_id, ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
+                $stmt->execute(array_merge($vv, $paramss));
+
+
+            }
+        }
+               else if (!isset($_SESSION['hd.rustem_sort_out'])) {
+            
+            $stmt = $dbConnection->prepare('SELECT * from tickets 
+        where user_init_id IN (' . $in_query . ') and arch=:n 
+        order by id desc limit :start_pos, :perpage');
+            $paramss=array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
+            $stmt->execute(array_merge($vv, $paramss));
+        }
+
+
+             }
+
+            else if ($ps == "1") {
+
+
+
+if (isset($_SESSION['hd.rustem_sort_out'])) {
+            if ($_SESSION['hd.rustem_sort_out'] == "ok") {
+                $stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id=:user_id and arch=:n and status=:s limit :start_pos, :perpage');
+
                 $stmt->execute(array(':user_id' => $user_id, ':s' => '1', ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
             } else if ($_SESSION['hd.rustem_sort_out'] == "free") {
-                $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=:s limit :start_pos, :perpage');
+                $stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb and status=:s limit :start_pos, :perpage');
                 $stmt->execute(array(':user_id' => $user_id, ':lb' => '0', ':s' => '0', ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
             } else if ($_SESSION['hd.rustem_sort_out'] == "ilock") {
-                $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb limit :start_pos, :perpage');
+                $stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id=:user_id and arch=:n and lock_by=:lb limit :start_pos, :perpage');
                 $stmt->execute(array(':user_id' => $user_id, ':lb' => $user_id, ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
             } else if ($_SESSION['hd.rustem_sort_out'] == "lock") {
-                $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio from tickets where user_init_id=:user_id and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) limit :start_pos, :perpage');
+                $stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id=:user_id and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0) limit :start_pos, :perpage');
                 $stmt->execute(array(':user_id' => $user_id, ':lb' => $user_id, ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
             }
         }
-        
-        if (!isset($_SESSION['hd.rustem_sort_out'])) {
+               else if (!isset($_SESSION['hd.rustem_sort_out'])) {
             
-            $stmt = $dbConnection->prepare('SELECT id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio 
-        from tickets 
+            $stmt = $dbConnection->prepare('SELECT * from tickets 
         where user_init_id=:user_id and arch=:n 
         order by id desc limit :start_pos, :perpage');
             $stmt->execute(array(':user_id' => $user_id, ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
         }
+
+        }
+
+
+
+
+        
+        
+
         
         //or id in (LIST TICKET_ID)
         
@@ -65,7 +209,13 @@ if (isset($_POST['menu'])) {
             </div>
         <?php
         }
-        if ($aha <> "0") { ?>
+        if ($aha <> "0") { 
+
+
+
+
+
+            ?>
 
 
 
@@ -85,6 +235,7 @@ if (isset($_POST['menu'])) {
                     <th><center><?php echo lang('t_LIST_worker'); ?></center></th>
                     <th><center><?php echo lang('t_LIST_create'); ?></center></th>
                     <th><center><?php echo lang('t_LIST_ago'); ?></center></th>
+                    <th><center><?php echo lang('t_LIST_init') ?></center></th>
                     <th><center><?php echo lang('t_LIST_to'); ?></center></th>
                     <th><center><?php echo lang('t_LIST_status'); ?></center></th>
                     <th><center><?php echo lang('t_LIST_action'); ?></center></th>
@@ -204,7 +355,7 @@ if (isset($_POST['menu'])) {
                         <td style=" vertical-align: middle; "><small><center><?php echo $prio ?></center></small></td>
                         <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
                     title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", make_html(strip_tags($row['msg']), 'no')); ?></small>" 
+                    data-content="<small><?php echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg'])), 'no')); ?></small>" 
                     
                     
                     href="ticket?<?php
@@ -216,7 +367,15 @@ if (isset($_POST['menu'])) {
                         </a>
                         </small></td>
                         <td style=" vertical-align: middle; "><small><center><time id="c" datetime="<?php echo $row['date_create']; ?>"></time></center></small></td>
-                        <td style=" vertical-align: middle; "><small><center><time id="a" datetime="<?php echo $t_ago; ?>"></time></center></small></td>
+                        <td style=" vertical-align: middle; "><small><center><time id="a" datetime="<?php echo $t_ago; ?>"></time>
+
+                        <?=get_deadline_label($row['id']);?></center></small></td>
+
+
+<td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><?php
+                echo nameshort(name_of_user_ret($row['user_init_id'])); ?></small></td>
+
+
                         <td style=" vertical-align: middle; ">
                             <small><?php echo $to_text; ?></small>
                             
@@ -510,7 +669,7 @@ if (isset($_POST['menu'])) {
                     <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php echo $prio ?></center></small></td>
                     <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
                     title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", make_html(strip_tags($row['msg']), 'no')); ?></small>" 
+                    data-content="<small><?php echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg']), 'no'))); ?></small>" 
                     
                     
                     href="ticket?<?php
@@ -524,6 +683,7 @@ if (isset($_POST['menu'])) {
                     <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="c" datetime="<?php echo $row['date_create']; ?>"></time></center></small></td>
                     <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center>
                     <time id="a" datetime="<?php echo $t_ago; ?>"></time>
+                     <?=get_deadline_label($row['id']);?>
                     </center></small></td>
 
                     <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><?php
@@ -603,33 +763,25 @@ if (isset($_POST['menu'])) {
             if (isset($_SESSION['hd.rustem_sort_in'])) {
                 
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where unit_id IN (' . $in_query . ')  and arch=:n and status=:s
                             limit :start_pos, :perpage');
                     $paramss = array(':n' => '0', ':s' => '1', ':start_pos' => $start_pos, ':perpage' => $perpage);
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where unit_id IN (' . $in_query . ')  and arch=:n and status=:s and lock_by=:lb
                             limit :start_pos, :perpage');
                     $paramss = array(':n' => '0', ':s' => '0', ':lb' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where unit_id IN (' . $in_query . ')  and arch=:n and lock_by=:lb
                             limit :start_pos, :perpage');
                     $paramss = array(':n' => '0', ':lb' => $user_id, ':start_pos' => $start_pos, ':perpage' => $perpage);
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where unit_id IN (' . $in_query . ')  and arch=:n and (lock_by<>:lb and lock_by<>0) and (status=0)
                             limit :start_pos, :perpage');
                     
@@ -639,9 +791,7 @@ if (isset($_POST['menu'])) {
             }
             
             if (!isset($_SESSION['hd.rustem_sort_in'])) {
-                $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                $stmt = $dbConnection->prepare('SELECT * from tickets
                             where unit_id IN (' . $in_query . ')  and arch=:n
                             order by ok_by asc, prio desc, id desc
                             limit :start_pos, :perpage');
@@ -655,36 +805,28 @@ if (isset($_POST['menu'])) {
             
             if (isset($_SESSION['hd.rustem_sort_in'])) {
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2)) and status=:s
                             limit :start_pos, :perpage');
                     $paramss = array(':user_id' => $user_id, ':s' => '1', ':n' => '0', ':n1' => '0', ':n2' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2)) and lock_by=:lb and status=:s
                             limit :start_pos, :perpage');
                     $paramss = array(':user_id' => $user_id, ':lb' => '0', ':s' => '0', ':n' => '0', ':n1' => '0', ':n2' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2)) and lock_by=:lb
                             limit :start_pos, :perpage');
                     $paramss = array(':user_id' => $user_id, ':lb' => $user_id, ':n' => '0', ':n1' => '0', ':n2' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
                     $stmt->execute(array_merge($vv, $paramss));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2)) and (lock_by<>:lb and lock_by<>0) and (status=0)
                             limit :start_pos, :perpage');
@@ -694,9 +836,7 @@ if (isset($_POST['menu'])) {
             }
             
             if (!isset($_SESSION['hd.rustem_sort_in'])) {
-                $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2))
                             order by ok_by asc, prio desc, id desc
@@ -714,33 +854,25 @@ if (isset($_POST['menu'])) {
                 
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {
                     
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where arch=:n
                             and status=:s
                             limit :start_pos, :perpage');
                     $stmt->execute(array(':n' => '0', ':s' => '1', ':start_pos' => $start_pos, ':perpage' => $perpage));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "free") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where arch=:n
                             and lock_by=:lb and status=:s
                             limit :start_pos, :perpage');
                     $stmt->execute(array(':n' => '0', ':s' => '0', ':lb' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "ilock") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where arch=:n
                             and lock_by=:lb
                             limit :start_pos, :perpage');
                     $stmt->execute(array(':n' => '0', ':lb' => $user_id, ':start_pos' => $start_pos, ':perpage' => $perpage));
                 } else if ($_SESSION['hd.rustem_sort_in'] == "lock") {
-                    $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                    $stmt = $dbConnection->prepare('SELECT * from tickets
                             where arch=:n
                             and (lock_by<>:lb and lock_by<>0) and (status=0)
                             limit :start_pos, :perpage');
@@ -749,9 +881,7 @@ if (isset($_POST['menu'])) {
             }
             
             if (!isset($_SESSION['hd.rustem_sort_in'])) {
-                $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                $stmt = $dbConnection->prepare('SELECT * from tickets
                             where arch=:n
                             order by ok_by asc, prio desc, id desc
                             limit :start_pos, :perpage');
@@ -971,7 +1101,7 @@ if (isset($_POST['menu'])) {
                     <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php echo $prio ?></center></small></td>
                     <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
                     title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", make_html(strip_tags($row['msg']), 'no')); ?></small>" 
+                    data-content="<small><?php echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg']), 'no'))); ?></small>" 
                     
                     
                     href="ticket?<?php
@@ -984,7 +1114,11 @@ if (isset($_POST['menu'])) {
                     
                     </small></td>
                     <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="c" datetime="<?php echo $row['date_create']; ?>"></time></center></small></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="a" datetime="<?php echo $t_ago; ?>"></time></center></small></td>
+                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="a" datetime="<?php echo $t_ago; ?>"></time>
+
+                    <?=get_deadline_label($row['id']);?>
+
+                    </center></small></td>
 
                     <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
                     <a href="view_user?<?php echo get_user_hash_by_id($row['user_init_id']); ?>">
@@ -1153,7 +1287,7 @@ if (isset($_POST['menu'])) {
                 echo $row['id']; ?></center></small></td>
                         <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
                     title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", make_html(strip_tags($row['msg']), 'no')); ?></small>" 
+                    data-content="<small><?php echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg']), 'no'))); ?></small>" 
                     
                     
                     href="ticket?<?php

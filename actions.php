@@ -21,9 +21,18 @@ if (isset($_POST['mode'])) {
         $fio = $_POST['fio'];
         $login = $_POST['login'];
         $mail = $_POST['mail'];
-        
+        $hn = md5(time());
         $errors = false;
         
+
+
+/*
+- Проверка есть ли такой логин уже в системе? - дубликат?
+- Проверка правильный ли вообще email.
+    - Проверка есть ли такой email - проверка дубликатов?
+*/
+
+
         if (validate_exist_login($login) == false) {
             $errors = true;
             $el = lang('ticket_login_error') . "<br>";
@@ -62,6 +71,12 @@ if (isset($_POST['mode'])) {
         print json_encode($results);
         
         //
+
+        if ($errors == true) { }
+        else if ($errors == false) {
+
+
+
         $pass = generatepassword();
         
         $stmt = $dbConnection->prepare('insert into users 
@@ -126,10 +141,33 @@ if (isset($_POST['mode'])) {
 EOBODY;
         
         send_mail_reg($mail, $subject, $message);
+
+
+        }
+
+
+
+
     }
     
+
+
+
+
+
+
     if ((validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) || (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code']))) {
         
+
+
+
+
+
+
+
+
+
+
         if ($mode == "get_list_notes") {
             $userid = $_SESSION['helpdesk_user_id'];
             
@@ -2544,9 +2582,7 @@ a, a:visited {
             
             if ($priv_val == 0) {
                 
-                $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                $stmt = $dbConnection->prepare('SELECT * from tickets
                             where unit_id IN (' . $in_query . ')  and arch=:n
                             order by ok_by asc, prio desc, id desc
                             limit :start_pos, :perpage');
@@ -2568,9 +2604,7 @@ a, a:visited {
                 ('.implode(' OR ', array_map(fis('user_to_id'), array_keys($arr))).')
                 */
                 
-                $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2))
                             order by ok_by asc, prio desc, id desc
@@ -2590,9 +2624,7 @@ a, a:visited {
                 $results = $stmt->fetchAll();
             } else if ($priv_val == 2) {
                 
-                $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                $stmt = $dbConnection->prepare('SELECT * from tickets
                             where arch=:n
                             order by ok_by asc, prio desc, id desc
                             limit :start_pos, :perpage');
@@ -2831,7 +2863,7 @@ a, a:visited {
                     title="<?php
                     echo make_html($row['subj'], 'no'); ?>"
                     data-content="<small><?php
-                    echo str_replace('"', "", make_html(strip_tags($row['msg']) , 'no')); ?></small>" 
+                    echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg']) , 'no'))); ?></small>" 
                     
                     
                     href="ticket?<?php
@@ -2852,7 +2884,9 @@ a, a:visited {
                     echo $row['date_create']; ?>"></time></center></small></td>
                         <td style=" vertical-align: middle; "><small class="<?php
                     echo $muclass; ?>"><center><time id="a" datetime="<?php
-                    echo $t_ago; ?>"></time></center></small></td>
+                    echo $t_ago; ?>"></time>
+<?=get_deadline_label($row['id']);?>
+                    </center></small></td>
 
                         <td style=" vertical-align: middle; "><small class="<?php
                     echo $muclass; ?>">
@@ -3428,6 +3462,51 @@ values
         <?php
         }
         
+
+
+        if ($mode == "conf_edit_email_gate") {
+            /*
+                "&email_gate_status="+$("#email_gate_status").val()+
+                "&email_gate_all="+$("#email_gate_all").val()+
+                "&to="+$("#to").val()+
+                "&users_do="+$("#users_do").val()+
+                "&email_gate_mailbox="+$("#email_gate_mailbox").val()+
+                "&email_gate_filter="+$("#email_gate_filter").val()+
+                "&email_gate_host="+$("#email_gate_host").val()+
+                "&email_gate_cat="+$("#email_gate_cat").val()+
+                "&email_gate_port="+$("#email_gate_port").val()+
+                "&email_gate_login="+$("#email_gate_login").val()+
+                "&email_gate_pass="+$("#email_gate_pass").val(),
+            */
+            update_val_by_key("email_gate_status", $_POST['email_gate_status']);
+            update_val_by_key("email_gate_all", $_POST['email_gate_all']);
+            update_val_by_key("email_gate_unit_id", $_POST['to']);
+            update_val_by_key("email_gate_user_id", $_POST['users_do']);
+            update_val_by_key("email_gate_mailbox", $_POST['email_gate_mailbox']);
+            update_val_by_key("email_gate_host", $_POST['email_gate_host']);
+            update_val_by_key("email_gate_port", $_POST['email_gate_port']);
+            update_val_by_key("email_gate_login", $_POST['email_gate_login']);
+            update_val_by_key("email_gate_pass", $_POST['email_gate_pass']);
+            update_val_by_key("email_gate_filter", $_POST['email_gate_filter']);
+            update_val_by_key("email_gate_cat", $_POST['email_gate_cat']);
+            
+
+            //update_val_by_key("mail_debug", $_POST['debug']);
+            
+            
+?>
+                <div class="alert alert-success">
+                    <?php
+            echo lang('PROFILE_msg_ok'); ?>
+                </div>
+        <?php
+        }
+
+
+
+
+
+
         if ($mode == "conf_edit_mail") {
             update_val_by_key("mail_type", $_POST['type']);
             update_val_by_key("mail_active", $_POST['mail_active']);
@@ -3470,6 +3549,7 @@ values
                 update_val_by_key("file_uploads", $_POST['file_uploads']);
                 update_val_by_key("file_types", $bodytag);
                 update_val_by_key("file_size", $_POST['file_size']);
+                update_val_by_key("ticket_last_time", $_POST['ticket_last_time']);
                 
                 
                 
@@ -5606,6 +5686,9 @@ values (:comment, :n, :user_comment, :tid_comment)');
         if ($mode == "add_ticket") {
             $type = ($_POST['type_add']);
             
+
+            $deadline_time=strip_tags(xss_clean($_POST['deadline_time']));
+if ($deadline_time == "NULL") {$deadline_time=NULL;}
             $user_init_id = ($_POST['user_init_id']);
             $user_to_id = ($_POST['user_do']);
             $subj = strip_tags(xss_clean(($_POST['subj'])));
@@ -5723,7 +5806,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 $max_id_res_ticket = $max_id_ticket[0] + 1;
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
+                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_time) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time)');
                 $stmt->execute(array(
                     ':max_id_res_ticket' => $max_id_res_ticket,
                     ':user_init_id' => $user_init_id,
@@ -5736,7 +5819,8 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     ':hashname' => $hashname,
                     ':prio' => $prio,
                     ':n' => $CONF['now_dt'],
-                    ':nz' => $CONF['now_dt']
+                    ':nz' => $CONF['now_dt'],
+                    ':deadline_time'=>$deadline_time
                 ));
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
@@ -5752,6 +5836,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 
                 //if ($CONF_MAIL['active'] == "true") {
                 send_notification('ticket_create', $max_id_res_ticket);
+                insert_ticket_info ($max_id_res_ticket, 'web');
                 
                 //              }
                 
@@ -5784,7 +5869,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 $max_id_res_ticket = $max_id_ticket[0] + 1;
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
+                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_time) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time)');
                 $stmt->execute(array(
                     ':max_id_res_ticket' => $max_id_res_ticket,
                     ':user_init_id' => $user_init_id,
@@ -5797,7 +5882,8 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     ':hashname' => $hashname,
                     ':prio' => $prio,
                     ':n' => $CONF['now_dt'],
-                    ':nz' => $CONF['now_dt']
+                    ':nz' => $CONF['now_dt'],
+                    ':deadline_time'=>$deadline_time
                 ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];
@@ -5816,6 +5902,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 //echo("dd");
                 //if ($CONF_MAIL['active'] == "true") {
                 send_notification('ticket_create', $max_id_res_ticket);
+                insert_ticket_info ($max_id_res_ticket, 'web');
                 
                 //                }
                 echo ($hashname);
@@ -5867,7 +5954,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 //echo("dd");
                 //if ($CONF_MAIL['active'] == "true") {
                 send_notification('ticket_create', $max_id_res_ticket);
-                
+                insert_ticket_info ($max_id_res_ticket, 'web');
                 //  }
                 echo ($hashname);
             }

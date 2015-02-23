@@ -11,6 +11,31 @@ function echoActiveClassIfRequestMatches($requestUri) {
     if ($current_file_name == $requestUri) echo 'class="active"';
 }
 
+
+
+
+$p1=array('config', 'users', 'deps', 'files', 'scheduler', 'approve', 'posada', 'units', 'subj');
+$p2=array('main_stats', 'user_stats');
+    $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
+    $file = $_SERVER['REQUEST_URI'];
+    $file = explode("?", basename($file));
+    $current_file_name = $file[0];
+
+$tree_admin_class="";
+$tree_stat_class="";
+
+
+if (in_array($current_file_name, $p1)) {
+    $tree_admin_class="active";
+}
+if (in_array($current_file_name, $p2)) {
+    $tree_stat_class="active";
+}
+
+
+
+
+
 $newt = get_total_tickets_free();
 
 if ($newt != 0) {
@@ -272,7 +297,7 @@ foreach ($re as $rews) {
                         <?php
 $priv_val = priv_status($_SESSION['helpdesk_user_id']);
 if (($priv_val == "2") || ($priv_val == "0")) { ?>
- <li class="treeview">
+ <li class="treeview <?=$tree_stat_class;?>">
                             <a href="#">
                                 <i class="fa fa-bar-chart-o"></i><span> <?php echo lang('EXT_graph'); ?></span><i class="fa fa-angle-left pull-right"></i>
                             </a>
@@ -291,8 +316,13 @@ if (($priv_val == "2") || ($priv_val == "0")) { ?>
 
                         
                          <?php
-if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
-                         <li class="treeview">
+if (validate_admin($_SESSION['helpdesk_user_id'])) { 
+
+
+
+
+    ?>
+                         <li class="treeview <?=$tree_admin_class;?>">
                             <a href="#">
                                 <i class="fa fa-shield"></i>
                                 <span><?php echo lang('NAVBAR_admin'); ?> </span>

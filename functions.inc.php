@@ -321,6 +321,58 @@ function generatepassword($length = 8) {
     return $randomString;
 }
 
+function get_deadline_label($in) {
+global $dbConnection;
+    $stmt = $dbConnection->prepare('SELECT status as n, deadline_time from tickets where id = :id');
+    $stmt->execute(array(':id' => $in));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $status=$row['n'];
+    $date_finish=$row['deadline_time'];
+     
+if ($date_finish) {
+
+
+$birthday =strtotime($date_finish);
+$now = strtotime(date("Y-m-d H:i:s"));
+$datediff =  $birthday - $now;
+$hoursRemaining = floor($datediff);
+
+$h=60*60*24;
+//дата наступила
+if ($hoursRemaining <= 0) { 
+    $r="<br><span class=\"label label-danger\">".lang('TICKET_deadline_old')."</span>"; 
+    }
+
+//осталось меньше суток
+else if (($hoursRemaining >0) && ($hoursRemaining <= $h ))  { 
+    $r="<br><span class=\"label label-warning\">".lang('TICKET_deadline_time')." <time id=\"b\" datetime=\"".$date_finish."\"></time></span>";
+    }
+
+//показать дату
+else if ($hoursRemaining > $h) { 
+// You can change to id=\"a\" or id=\"c\" for different date format
+$r="<br><span class=\"label label-primary\">".lang('TICKET_deadline_time')." <time id=\"b\" datetime=\"".$date_finish."\"></time></span>"; 
+    }
+
+
+    if ($status == "1") { 
+        $r="<br><span class=\"label label-success\">".lang('TICKET_deadline_success')."</span>";
+    }
+    else if ($status == "0") { 
+        //do nothing
+    }
+}
+
+
+
+if (get_conf_param('ticket_last_time') == "true") {
+    return $r;
+}
+
+}
+
+
 function get_current_URL_name($requestUri) {
     $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
     $file = $_SERVER['REQUEST_URI'];
@@ -1740,7 +1792,7 @@ function get_client_info_ticket($id) {
             <?php
     if ($loginf) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php
+                    <td style=" width: 50px; "><small><?php
         echo lang('WORKER_login'); ?>:</small></td>
                     <td><small><?php
         echo $loginf
@@ -1750,7 +1802,7 @@ function get_client_info_ticket($id) {
     }
     if ($posada) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php
+                    <td style=" width: 50px; "><small><?php
         echo lang('WORKER_posada'); ?>:</small></td>
                     <td><small><?php
         echo $posada; ?></small></td>
@@ -1759,7 +1811,7 @@ function get_client_info_ticket($id) {
     }
     if ($pod) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php
+                    <td style=" width: 50px; "><small><?php
         echo lang('WORKER_unit'); ?>:</small></td>
                     <td><small><?php
         echo $pod; ?></small></td>
@@ -1768,7 +1820,7 @@ function get_client_info_ticket($id) {
     }
     if ($tel_user) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php
+                    <td style=" width: 50px; "><small><?php
         echo lang('WORKER_tel'); ?>:</small></td>
                     <td><small><?php
         echo $tel_user . " " . $tel_ext; ?></small></td>
@@ -1777,7 +1829,7 @@ function get_client_info_ticket($id) {
     }
     if ($adr) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php
+                    <td style=" width: 50px; "><small><?php
         echo lang('WORKER_room'); ?>:</small></td>
                     <td><small><?php
         echo $adr; ?></small></td>
@@ -1786,7 +1838,7 @@ function get_client_info_ticket($id) {
     }
     if ($email) { ?>
                 <tr>
-                    <td style=" width: 30px; "><small><?php
+                    <td style=" width: 50px; "><small><?php
         echo lang('WORKER_mail'); ?>:</small></td>
                     <td><small><?php
         echo $email; ?></small></td>
@@ -3525,15 +3577,55 @@ function get_total_tickets_ok($in) {
 function get_total_tickets_out_and_success($in) {
     global $dbConnection;
     
+
+
+
+
     if (empty($in)) {
         $uid = $_SESSION['helpdesk_user_id'];
     } else if (!empty($in)) {
         $uid = $in;
     }
+
+    $priv_val = priv_status($uid);
+
+if ($priv_val == "2") {
+
+            $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0'");
+            $res->execute();
+
+}
+else if ($priv_val == "0") {
+        $p=get_users_from_units_by_user();
+//print_r($p);
+
+        
+        //$ee = explode(",", $unit_user);
+        
+        foreach ($p as $key => $value) {
+            $in_query = $in_query . ' :val_' . $key . ', ';
+        }
+        
+        $in_query = substr($in_query, 0, -2);
+        foreach ($p as $key => $value) {
+            $vv[":val_" . $key] = $value;
+        }
+            $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id IN (' . $in_query . ') and arch=0');
+            $res->execute($vv);
+}
+else if ($priv_val == "1") {
     $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:uid and (ok_by='0') and arch='0'");
     $res->execute(array(
         ':uid' => $uid
-    ));
+    )); 
+}
+
+
+
+
+
+
+
     $count = $res->fetch(PDO::FETCH_NUM);
     
     return $count[0];
@@ -3966,13 +4058,128 @@ function get_total_pages($menu, $id) {
         $count = $res->fetch(PDO::FETCH_NUM);
         $count = $count[0];
     }
-    
+     //get_total_tickets_out_and_success()
     if ($menu == "out") {
         $perpage = '10';
         if (isset($_SESSION['hd.rustem_list_out'])) {
             $perpage = $_SESSION['hd.rustem_list_out'];
         }
+        $unit_user = unit_of_user($id);
+        $priv_val = priv_status($id);
+
+
+        if ($priv_val == "2") { 
+        if (isset($_SESSION['hd.rustem_sort_out'])) {
+            
+            if ($_SESSION['hd.rustem_sort_out'] == "ok") {
+                $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0' and status=:s");
+                $res->execute(array(
+                    ':s' => '1'
+                ));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $count = $count[0];
+            } else if ($_SESSION['hd.rustem_sort_out'] == "free") {
+                $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0' and lock_by=:lb and status=:s");
+                $res->execute(array(
+                    ':lb' => '0',
+                    ':s' => '0'
+                ));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $count = $count[0];
+            } else if ($_SESSION['hd.rustem_sort_out'] == "ilock") {
+                $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0' and lock_by=:lb");
+                $res->execute(array(
+                    ':lb' => $id
+                ));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $count = $count[0];
+            } else if ($_SESSION['hd.rustem_sort_out'] == "lock") {
+                $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0' and (lock_by<>:lb and lock_by<>0) and (status=0)");
+                $res->execute(array(
+                    ':lb' => $id
+                ));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $count = $count[0];
+            }
+        }
         
+        if (!isset($_SESSION['hd.rustem_sort_out'])) {
+            
+            $res = $dbConnection->prepare("SELECT count(*) from tickets where arch='0'");
+            $res->execute();
+            $count = $res->fetch(PDO::FETCH_NUM);
+            $count = $count[0];
+        }
+
+        }
+
+
+
+                if ($priv_val == "0") { 
+
+
+$p=get_users_from_units_by_user();
+//print_r($p);
+
+        
+        //$ee = explode(",", $unit_user);
+        
+        foreach ($p as $key => $value) {
+            $in_query = $in_query . ' :val_' . $key . ', ';
+        }
+        
+        $in_query = substr($in_query, 0, -2);
+        foreach ($p as $key => $value) {
+            $vv[":val_" . $key] = $value;
+        }
+
+
+
+
+        if (isset($_SESSION['hd.rustem_sort_out'])) {
+            
+            if ($_SESSION['hd.rustem_sort_out'] == "ok") {
+                $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id IN (' . $in_query . ') and arch=0 and status=:s');
+                $paramss=array(':s' => '1');
+                $res->execute(array_merge($vv, $paramss));
+                    
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $count = $count[0];
+            } else if ($_SESSION['hd.rustem_sort_out'] == "free") {
+                $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id IN (' . $in_query . ') and  arch=0 and lock_by=:lb and status=:s');
+                $paramss=array(':lb' => '0', ':s' => '0');
+                $res->execute(array_merge($vv, $paramss));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $count = $count[0];
+            } else if ($_SESSION['hd.rustem_sort_out'] == "ilock") {
+                $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id IN (' . $in_query . ') and arch=0 and lock_by=:lb');
+                $paramss=array(':lb' => $id);
+                $res->execute(array_merge($vv, $paramss));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $count = $count[0];
+            } else if ($_SESSION['hd.rustem_sort_out'] == "lock") {
+                $res = $dbConnection->prepare('SELECT count(*) from tickets where  user_init_id IN (' . $in_query . ') and  arch=0 and (lock_by<>:lb and lock_by<>0) and (status=0)');
+                $paramss=array(':lb' => $id);
+                $res->execute(array_merge($vv, $paramss));
+                $count = $res->fetch(PDO::FETCH_NUM);
+                $count = $count[0];
+            }
+        }
+        
+        if (!isset($_SESSION['hd.rustem_sort_out'])) {
+            
+            $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id IN (' . $in_query . ') and arch=0');
+            $res->execute($vv);
+            $count = $res->fetch(PDO::FETCH_NUM);
+            $count = $count[0];
+        }
+
+        }
+
+
+
+
+        else if ($priv_val == "1") { 
         if (isset($_SESSION['hd.rustem_sort_out'])) {
             
             if ($_SESSION['hd.rustem_sort_out'] == "ok") {
@@ -4020,6 +4227,11 @@ function get_total_pages($menu, $id) {
             $count = $res->fetch(PDO::FETCH_NUM);
             $count = $count[0];
         }
+
+        }
+
+
+
     }
     if ($menu == "arch") {
         $perpage = '10';
@@ -4095,6 +4307,41 @@ function get_total_pages($menu, $id) {
     
     return $count;
 }
+
+function get_users_from_units_by_user() {
+    global $dbConnection;
+
+    $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+    $unit_user = unit_of_user($user_id);
+    $unit_user_arr=explode(",", $unit_user);
+    
+
+
+$stmt = $dbConnection->prepare('SELECT id, unit FROM users');
+
+$stmt->execute();
+$res1 = $stmt->fetchAll();
+
+$users_id=array();
+foreach ($res1 as $row) {
+
+    $unit_user_item=$row['unit'];
+    $u_r=explode(",", $unit_user_item);
+
+//$unit_user_arr[]
+//$u_r[]
+    $resultss = array_intersect($unit_user_arr, $u_r);
+                        if ($resultss) {
+
+array_push($users_id, $row['id']);
+
+                         }
+
+
+}
+return $users_id;
+}
+
 function name_of_client($input) {
     global $dbConnection;
     
@@ -4287,4 +4534,168 @@ function get_date_ok($d_create, $id) {
     
     return $tt;
 }
+
+function get_ticket_info_source($id) {
+     global $dbConnection;
+
+
+         $stmt = $dbConnection->prepare('select ticket_source from ticket_info where ticket_id=:id');
+    $stmt->execute(array(
+        ':id' => $id
+    ));
+    $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $tt = $total_ticket['ticket_source'];
+$r="from web";
+    if ($tt == "web") { $r="from web"; }
+    else if ($tt == "mail") { $r="from e-mail"; }
+
+    return $r;
+
+}
+
+function get_ticket_info($id) {
+     global $dbConnection;
+
+
+         $stmt = $dbConnection->prepare('select * from ticket_info where ticket_id=:id');
+    $stmt->execute(array(
+        ':id' => $id
+    ));
+    $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $os = $total_ticket['os'];
+    $ip = $total_ticket['ip'];
+    $browser = $total_ticket['browser'];
+
+
+
+$r="";
+
+
+if ($total_ticket['os']) {
+    $r="OS: ".$os." / Browser: ".$browser." / IP:".$ip;
+}
+
+    return $r;
+
+}
+
+
+function get_client_ip() {
+    $ipaddress = '';
+    if ($_SERVER['HTTP_CLIENT_IP'])
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if($_SERVER['HTTP_X_FORWARDED_FOR'])
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if($_SERVER['HTTP_X_FORWARDED'])
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if($_SERVER['HTTP_FORWARDED_FOR'])
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if($_SERVER['HTTP_FORWARDED'])
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if($_SERVER['REMOTE_ADDR'])
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
+
+$user_agent     =   $_SERVER['HTTP_USER_AGENT'];
+
+function getOS() { 
+
+    global $user_agent;
+
+    $os_platform    =   "Unknown OS Platform";
+
+    $os_array       =   array(
+                            '/windows nt 6.3/i'     =>  'Windows 8.1',
+                            '/windows nt 6.2/i'     =>  'Windows 8',
+                            '/windows nt 6.1/i'     =>  'Windows 7',
+                            '/windows nt 6.0/i'     =>  'Windows Vista',
+                            '/windows nt 5.2/i'     =>  'Windows Server 2003/XP x64',
+                            '/windows nt 5.1/i'     =>  'Windows XP',
+                            '/windows xp/i'         =>  'Windows XP',
+                            '/windows nt 5.0/i'     =>  'Windows 2000',
+                            '/windows me/i'         =>  'Windows ME',
+                            '/win98/i'              =>  'Windows 98',
+                            '/win95/i'              =>  'Windows 95',
+                            '/win16/i'              =>  'Windows 3.11',
+                            '/macintosh|mac os x/i' =>  'Mac OS X',
+                            '/mac_powerpc/i'        =>  'Mac OS 9',
+                            '/linux/i'              =>  'Linux',
+                            '/ubuntu/i'             =>  'Ubuntu',
+                            '/iphone/i'             =>  'iPhone',
+                            '/ipod/i'               =>  'iPod',
+                            '/ipad/i'               =>  'iPad',
+                            '/android/i'            =>  'Android',
+                            '/blackberry/i'         =>  'BlackBerry',
+                            '/webos/i'              =>  'Mobile'
+                        );
+
+    foreach ($os_array as $regex => $value) { 
+
+        if (preg_match($regex, $user_agent)) {
+            $os_platform    =   $value;
+        }
+
+    }   
+
+    return $os_platform;
+
+}
+
+function getBrowser() {
+
+    global $user_agent;
+
+    $browser        =   "Unknown Browser";
+
+    $browser_array  =   array(
+                            '/msie/i'       =>  'Internet Explorer',
+                            '/firefox/i'    =>  'Firefox',
+                            '/safari/i'     =>  'Safari',
+                            '/chrome/i'     =>  'Chrome',
+                            '/opera/i'      =>  'Opera',
+                            '/netscape/i'   =>  'Netscape',
+                            '/maxthon/i'    =>  'Maxthon',
+                            '/konqueror/i'  =>  'Konqueror',
+                            '/mobile/i'     =>  'Handheld Browser'
+                        );
+
+    foreach ($browser_array as $regex => $value) { 
+
+        if (preg_match($regex, $user_agent)) {
+            $browser    =   $value;
+        }
+
+    }
+
+
+
+
+    
+    return $browser;
+
+}
+
+
+function insert_ticket_info ($t_id, $source) {
+global $dbConnection;
+
+
+$stmt = $dbConnection->prepare('insert into ticket_info (ticket_id, ticket_source, ip, os, browser) values (:ticket_id, :ticket_source, :ip, :os, :browser)');
+            $stmt->execute(array(
+                ':ticket_id' => $t_id,
+                ':ticket_source'=>$source,
+                ':ip'=>get_client_ip(),
+                ':os'=>getOS(),
+                ':browser'=>getBrowser()
+            ));
+
+
+}
+
+
 ?>

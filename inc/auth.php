@@ -8,11 +8,24 @@ include_once ("head.inc.php");
 
 
 <style type="text/css" media="screen">
+.c {
+background: url(img/login_bg.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  }
+body {
+background-color: transparent;
+}
+
+  /*
 body {
 background: url(img/login_bg.jpg);
-background-size: 100% 100%;
+background-size: 100% 100% auto;
 background-repeat: no-repeat;
-}    
+}   */ 
 </style>
 
 
@@ -116,8 +129,9 @@ if (!is_writable($filename)) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/app.js"></script>
 <script>
 $(document).ready(function() {
-
+$("html").css("display", "none");
 $("body").css("display", "none");
+$("html").fadeIn(800);
 $("body").fadeIn(800);
 });
 </script>
