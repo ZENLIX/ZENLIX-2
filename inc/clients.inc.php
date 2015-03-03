@@ -318,6 +318,27 @@ if (isset($_POST['menu'])) {
                                         
                                         <!--button class="btn btn-default btn-block btn-xs"><i class="fa fa-envelope-o"></i> Отправить сообщение</button-->
                                         
+<?php 
+
+if (get_clients_total_ticket($row['id']) != 0) {
+
+
+if (($row['priv'] == 2) || ($row['priv'] == 0)) {
+?>
+
+
+<a href="<?php
+                echo $CONF['hostname']; ?>userinfo?user=<?php echo $row['uniq_id']; ?>" class="btn btn-default btn-xs btn-block" ><i class="fa fa-tag"></i> <?php echo lang('NAVBAR_all_tickets'); ?> (<?=get_clients_total_ticket($row['id']);?>)</a>
+
+
+    <?php
+
+}
+}
+?>
+
+
+
                                         <?php
             if (get_user_val('priv_edit_client') == "1") { ?>
                                                                                 <a href="<?php

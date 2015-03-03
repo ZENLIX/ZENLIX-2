@@ -633,7 +633,7 @@ if (in_array($row['value'], $mass)) {$st_sel="selected";}
     </div>
   </div>
 
-<button type="submit" id="conf_test_mail" class="btn btn-default btn-sm pull-right"> test</button>
+
 <center>
     <button type="submit" id="conf_edit_email_gate" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
         echo lang('CONF_act_edit'); ?></button>
@@ -1082,7 +1082,7 @@ else if ($menu_opt == "inform") {
                                 <div class="box-body">
  <p class="help-block"><small><?php
         echo lang('CONF_node_info'); ?> <br>
-<pre>forever start <?php
+<pre>pm2 start <?php
         echo realpath(dirname(dirname(__FILE__))) . "/nodejs/server.js" ?></pre></small></p>
 
 

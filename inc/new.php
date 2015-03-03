@@ -99,6 +99,105 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
     <hr>
 <div data-toggle="tooltip" data-placement="right" title="<?php echo lang('NEW_to_desc'); ?>">
+
+
+<?php
+if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') != "0") {
+?>
+
+
+<div class="form-group" id="for_to">
+        <label for="to" class="col-md-2 control-label" ><small><?php echo lang('NEW_to'); ?>: </small></label>
+        <div class="col-md-6">
+            <select data-placeholder="<?php echo lang('NEW_to_unit'); ?>" class="chosen-select form-control" id="to" name="unit_id" disabled>
+                <option value="0"></option>
+                <?php
+        $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
+        $stmt->execute(array(':n' => '0', ':s' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+            
+            //echo($row['label']);
+            $row['label'] = $row['label'];
+            $row['value'] = (int)$row['value'];
+
+
+$s1="";
+if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == $row['value']) {
+  $s1="selected";
+}
+
+?>
+
+                            <option value="<?php echo $row['value'] ?>" <?=$s1;?>><?php echo $row['label'] ?></option>
+
+                        <?php
+        }
+?>
+
+            </select>
+        </div>
+
+
+
+
+        <div class="col-md-4" style="" id="dsd">
+    
+    
+    <select data-placeholder="<?php echo lang('NEW_to_user'); ?>" id="users_do" name="unit_id" class="form-control input-sm" multiple disabled>
+        <option></option>
+
+
+<?php
+        
+        /* $qstring = "SELECT fio as label, id as value FROM users where status='1' and login !='system' order by fio ASC;";
+                $result = mysql_query($qstring);//query the database for entries containing the term
+        while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
+        */
+        
+        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and login !=:system and is_client=0 order by fio ASC');
+        $stmt->execute(array(':n' => '1', ':system' => 'system'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+            
+            //echo($row['label']);
+            $row['label'] = $row['label'];
+            $row['value'] = (int)$row['value'];
+            
+
+$st_sel="";
+$mass=explode(",", get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_user_id'));
+if (in_array($row['value'], $mass)) {$st_sel="selected";}
+
+
+            if (get_user_status_text($row['value']) == "online") {
+                $s = "online";
+            } else if (get_user_status_text($row['value']) == "offline") {
+                $s = "offline";
+            }
+?>
+                    <option data-foo="<?php echo $s; ?>" value="<?php echo $row['value'] ?>" <?=$st_sel;?>><?php echo nameshort($row['label']) ?> </option>
+
+                <?php
+        }
+?>
+    </select>
+            
+
+        </div>
+
+    </div>
+
+
+<?php
+}
+
+else if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == "0")
+ {
+ ?>
+
+
+
     <div class="form-group" id="for_to" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right">
         <label for="to" class="col-md-2 control-label" ><small><?php echo lang('NEW_to'); ?>: </small></label>
         <div class="col-md-6">
@@ -167,6 +266,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         </div>
 
     </div>
+
+<?php
+
+}
+
+ ?>
+
+
 </div>
 
 

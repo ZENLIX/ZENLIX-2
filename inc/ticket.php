@@ -209,7 +209,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             </small>
                                 <a href="print_ticket?<?php echo $hn; ?>" class="btn btn-default btn-xs pull-right"><i class="fa fa-print"></i> <?=lang('TICKET_print');?></a>
                             <?php
-            if (($inituserid_flag == 1) && ($arch == 0)) { ?><button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>  <?php echo lang('CONF_act_edit'); ?></button> <?php
+            if (( ($inituserid_flag == 1) && ($arch == 0)) || (priv_status(id_of_user($_SESSION['helpdesk_user_login'])) == "2") || (priv_status(id_of_user($_SESSION['helpdesk_user_login'])) == "0") ) { ?><button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>  <?php echo lang('CONF_act_edit'); ?></button> <?php
             } ?>
                             </div>
                             </div>                            <?php
@@ -675,7 +675,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 <?php
-            if (($inituserid_flag == 1) && ($arch == 0)) { ?>
+            if (($inituserid_flag == 1) && ($arch == 0) || (priv_status(id_of_user($_SESSION['helpdesk_user_login'])) == "2") || (priv_status(id_of_user($_SESSION['helpdesk_user_login'])) == "0")) { ?>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">

@@ -1,6 +1,6 @@
 
 <div id="footer" style=" padding-bottom: 70px; ">
-    <div class="container" style=" padding: 20px; ">
+    <div class="" style=" padding: 20px; ">
         <div class="col-md-12">
             <p class="text-muted credit pull-right"><small>Developed by <a href="http://zenlix.com/">ZENLIX</a> (с) <?=date('Y');?>.</p>
             </small>

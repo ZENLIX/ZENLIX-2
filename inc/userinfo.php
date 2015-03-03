@@ -7,21 +7,47 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     include ("head.inc.php");
     include ("navbar.inc.php");
     
-    $user_id = ($_GET["user"]);
+    $user_id = get_user_val_by_hash($_GET["user"], 'id');
     $user_ids = id_of_user($_SESSION['helpdesk_user_login']);
     $priv_val = priv_status($user_ids);
     
     if (($priv_val == "2") || ($priv_val == "0")) {
 ?>
-<div class="container">
-<div class="page-header" style="margin-top: -15px;">
-          <h3 ><?php echo lang('userinfo_ticket'); ?> <?php echo name_of_client($user_id); ?></h3>
- </div>
+
+
+
+  <section class="content-header">
+                    <h1>
+                        <i class="fa fa-tag"></i> <?php echo lang('userinfo_ticket'); ?>
+                        <small><?php echo name_of_client($user_id); ?></small>
+                        
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="<?php echo $CONF['hostname'] ?>"><span class="icon-svg"></span>  <?php echo $CONF['name_of_firm'] ?></a></li>
+                        <li class="active"><?php echo lang('userinfo_ticket'); ?></li>
+                    </ol>
+                </section>
+
+
+
+
+
+
+<section class="content">
+
+<div class="row">
+            <div class="col-md-12">
+
+
+
+
+
+
  
  
  
  
-<div class="row" style="padding-bottom:20px;">
+<div >
 <div class="col-md-4">
     <div class="panel panel-info">
       
@@ -209,11 +235,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
   
 </div>
  
+
+
+
+
 </div>
-
-
-
-
+</div>
+</section>
 
 
 

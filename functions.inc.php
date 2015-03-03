@@ -71,6 +71,9 @@ function get_noty_layot() {
 
 }
 
+
+
+
 function generate_timezone_list()
 {
     static $regions = array(
@@ -702,6 +705,31 @@ function get_posada_by_id($id) {
         $admin = '';
     }
     return $admin;
+}
+
+function sel_ldap_attr($param) {
+
+?>
+
+
+
+
+<select data-placeholder="" class="input-sm form-control" id="<?=$param;?>">
+                                                <option value="empty"> <?=lang('LDAP_IMPORT_empty');?>                 </option>
+                                                <option value="name"> name                 </option>
+                                                <option value="mail"> mail                 </option>
+                                                <option value="mobile"> mobile               </option>
+                                                <option value="skype"> skype                </option>
+                                                <option value="telephone"> telephone            </option>
+                                                <option value="department"> department           </option>
+                                                <option value="title"> title                </option>
+                                                <option value="userprincipalname"> userprincipalname    </option>
+                                                <option value="samaccountname"> samaccountname       </option>
+                                                <option value="othertelephone"> othertelephone       </option>
+</select>
+
+
+<?php
 }
 
 function view_log($tid) {
@@ -1529,6 +1557,24 @@ function get_helper() {
 <?php
 }
 
+
+
+
+function get_clients_total_ticket($in) {
+global $dbConnection;
+
+$id=$in;
+        $stmt = $dbConnection->prepare('select count(id) as t1 from tickets where client_id=:id');
+    $stmt->execute(array(
+        ':id' => $id
+    ));
+    $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    return $total_ticket['t1'];
+}
+
+
+
 function get_client_info_client_ticket($id) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,tel_ext,email,login,posada FROM users where id=:id');
@@ -1740,7 +1786,7 @@ function get_client_info_ticket($id) {
                         <?php
     if ($priv_val <> "1") { ?>
                         <a target="_blank" href="userinfo?user=<?php
-        echo $id
+        echo get_user_hash_by_id($id);
 ?>">
                             <?php
     } ?>
@@ -1759,7 +1805,7 @@ function get_client_info_ticket($id) {
         echo lang('WORKER_last'); ?>:</small>
                <small><?php
         if ($priv_val <> "1") { ?><a target="_blank" href="userinfo?user=<?php
-            echo $id
+            echo get_user_hash_by_id($id);
 ?>"><?php
         } ?>
                 
@@ -2134,7 +2180,7 @@ function get_my_info() {
                         <?php
     if ($priv_val <> "1") { ?>
                         <a target="_blank" href="userinfo?user=<?php
-        echo $id
+        echo get_user_hash_by_id($id);
 ?>"><?php
     } ?><?php
     echo $tt; ?><?php
@@ -2150,7 +2196,7 @@ function get_my_info() {
                         <?php
         if ($priv_val <> "1") { ?>
                         <a target="_blank" href="userinfo?user=<?php
-            echo $id
+            echo get_user_hash_by_id($id);
 ?>">
                             <?php
         } ?>
@@ -2252,7 +2298,7 @@ function get_client_info($id) {
                         <?php
         if ($priv_val <> "1") { ?>
                         <a target="_blank" href="userinfo?user=<?php
-            echo $id
+            echo get_user_hash_by_id($id);
 ?>"><?php
         } ?><?php
         echo $tt; ?><?php
@@ -2266,7 +2312,7 @@ function get_client_info($id) {
                         <?php
             if ($priv_val <> "1") { ?>
                         <a target="_blank" href="userinfo?user=<?php
-                echo $id
+                echo get_user_hash_by_id($id);
 ?>">
                             <?php
             } ?>
@@ -2395,7 +2441,7 @@ function get_client_info($id) {
                         <?php
         if ($priv_val <> "1") { ?>
                         <a target="_blank" href="userinfo?user=<?php
-            echo $id
+            echo get_user_hash_by_id($id);
 ?>"><?php
         } ?><?php
         echo $tt; ?><?php
@@ -2412,7 +2458,7 @@ function get_client_info($id) {
                         <?php
             if ($priv_val <> "1") { ?>
                         <a target="_blank" href="userinfo?user=<?php
-                echo $id
+                echo get_user_hash_by_id($id);
 ?>">
                             <?php
             } ?>
@@ -4646,6 +4692,28 @@ function getOS() {
 
 }
 
+function user_browser() {
+global $user_agent;
+$agent=$user_agent;
+
+    preg_match("/(MSIE|Opera|Firefox|Chrome|Version|Opera Mini|Netscape|Konqueror|SeaMonkey|Camino|Minefield|Iceweasel|K-Meleon|Maxthon)(?:\/| )([0-9.]+)/", $agent, $browser_info);
+    list(,$browser,$version) = $browser_info;
+    if (preg_match("/Opera ([0-9.]+)/i", $agent, $opera)) return 'Opera '.$opera[1];
+    if ($browser == 'MSIE') {
+        preg_match("/(Maxthon|Avant Browser|MyIE2)/i", $agent, $ie);
+        if ($ie) return $ie[1].' based on IE '.$version;
+        return 'IE '.$version;
+    }
+    if ($browser == 'Firefox') {
+        preg_match("/(Flock|Navigator|Epiphany)\/([0-9.]+)/", $agent, $ff);
+        if ($ff) return $ff[1].' '.$ff[2];
+    }
+    if ($browser == 'Opera' && $version == '9.80') return 'Opera '.substr($agent,-5);
+    if ($browser == 'Version') return 'Safari '.$version;
+    if (!$browser && strpos($agent, 'Gecko')) return 'Browser based on Gecko';
+    return $browser.' '.$version;
+}
+/*
 function getBrowser() {
 
     global $user_agent;
@@ -4675,10 +4743,17 @@ function getBrowser() {
 
 
 
-    
+
     return $browser;
 
 }
+
+*/
+
+
+
+
+
 
 
 function insert_ticket_info ($t_id, $source) {
@@ -4691,7 +4766,7 @@ $stmt = $dbConnection->prepare('insert into ticket_info (ticket_id, ticket_sourc
                 ':ticket_source'=>$source,
                 ':ip'=>get_client_ip(),
                 ':os'=>getOS(),
-                ':browser'=>getBrowser()
+                ':browser'=>user_browser()
             ));
 
 

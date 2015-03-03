@@ -471,6 +471,8 @@ CREATE TABLE `users` (
   `adr` varchar(1024) DEFAULT NULL,
   `messages_type` int(11) DEFAULT '0',
   `noty_layot` varchar(64) NOT NULL DEFAULT 'bottomRight',
+  `def_unit_id` int(11) NOT NULL DEFAULT '0',
+  `def_user_id` varchar(1024) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 

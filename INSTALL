@@ -1,0 +1,19 @@
+ZENLIX INSTALL INFORMATION
+
+Requirement
+1. Ex. VESTACP or LAMP
+2. PHP (current supported versions): 
+	2.1 php-ldap
+	2.2 php-imap
+	2.3 memory_limit 512M
+
+
+For install ZENLIX system, please:
+
+1. Extract & Copy files to your web-root directory
+2. Go to web-root directory via http
+3. INSTALL-script helped you ;)
+4. After finish, please install nodejs:
+	4.1 install nodejs (sudo apt-get install nodejs)
+	4.2 npm install socket.io mysql pm2 -g 
+5. Go to http://INSTALL-PATH/config?inform for next instruction (CRON)

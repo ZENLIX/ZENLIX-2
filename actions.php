@@ -1391,6 +1391,481 @@ values (:comment, :n, :user_comment, :tid_comment)');
             echo json_encode($row_set);
         }
         
+
+if ($mode == "make_ldap_import") {
+    include_once "library/ldap_import.class.php";
+echo "<br>";
+
+$users_do=$_POST['users_do'];
+$ldap_step3_obj=$_POST['ldap_step3_obj'];
+
+$ldap = new LDAP($_SESSION['zenlix_def_ldap_ip'], $_SESSION['zenlix_def_ldap_domain'], $_SESSION['zenlix_def_ldap_admin_user'], $_SESSION['zenlix_def_ldap_admin_pass']);
+$users = $ldap->get_users();
+//$users = array_slice($users, 0, 5);
+///////////////////////////////////////////////////
+
+
+
+$login=$_SESSION['zenlix_def_ldap_login'];
+$fio=$_SESSION['zenlix_def_ldap_fio'];
+$mail=$_SESSION['zenlix_def_ldap_mail'];
+$tel=$_SESSION['zenlix_def_ldap_tel'];
+$adr=$_SESSION['zenlix_def_ldap_adr'];
+$skype=$_SESSION['zenlix_def_ldap_skype'];
+$unit=$_SESSION['zenlix_def_ldap_unit'];
+
+
+if ($_SESSION['zenlix_def_ldap_priv'] == "4") {
+                $is_client = "1";
+                $privs = "1";
+            } else if ($priv != "4") {
+                $is_client = "0";
+                $privs = $_SESSION['zenlix_def_ldap_priv'];
+            }
+
+            if ($_SESSION['zenlix_def_ldap_priv_add_client'] == "true") {
+                $priv_add_client = 1;
+            } else {
+                $priv_add_client = 0;
+            }
+            if ($_SESSION['zenlix_def_ldap_priv_edit_client'] == "true") {
+                $priv_edit_client = 1;
+            } else {
+                $priv_edit_client = 0;
+            }
+
+
+$res_good =array();
+$res_good['num']=0;
+$res_good['logins']=0;
+$res_good['fios']=0;
+///////////////////////////////////////////////////
+if ($ldap_step3_obj == "all") {
+
+//echo "all";
+
+$i=0;
+
+
+        foreach ($users as $value) {
+
+            $user_login="";
+            $user_fio="";
+            $user_mail="";
+            $user_tel="";
+            $user_adr="";
+            $user_skype="";
+            $user_unit="";
+
+            if ($login != "empty") {
+                $user_login=$value[$login];
+            }
+            if ($fio != "empty") {
+                $user_fio=$value[$fio];
+            }
+            if ($mail != "empty") {
+                $user_mail=$value[$mail];
+            }
+            if ($tel != "empty") {
+                foreach ($value[$tel] as $value1) {
+        $user_tel.=$value1." ";
+    }
+            }
+            if ($adr != "empty") {
+                $user_adr=$value[$adr];
+            }
+            if ($skype != "empty") {
+                $user_skype=$value[$skype];
+            }
+            if ($unit != "empty") {
+                $user_unit=$value[$unit];
+            }
+
+
+
+
+
+            //$value[$login] //поле логина пользователя
+
+
+
+
+
+
+
+
+            if (validate_exist_login($user_login) == true) { 
+
+                $hn = md5(time()).$i;
+
+
+$res_good['num']++;
+
+
+
+            $stmt = $dbConnection->prepare('INSERT INTO users 
+            (fio, 
+            login, 
+            pass, 
+            status, 
+            priv, 
+            unit, 
+            email, 
+            messages, 
+            lang, 
+            priv_add_client, 
+            priv_edit_client, 
+            ldap_key,
+            messages_title,
+            uniq_id,
+            tel,
+            skype,
+            unit_desc,
+            adr,
+            is_client,
+            messages_type
+            )
+values 
+            (:fio, 
+            :login, 
+            :pass, 
+            :one, 
+            :priv, 
+            :unit, 
+            :mail, 
+            :mess, 
+            :lang, 
+            :priv_add_client, 
+            :priv_edit_client, 
+            :lk,
+            :messages_title,
+            :uniq_id,
+            :tel,
+            :skype,
+            :unit_desc,
+            :adr,
+            :is_client,
+            :msg_type
+            )');
+            $stmt->execute(array(
+                ':fio' => $user_fio,
+                ':login' => $user_login,
+                ':pass' => $hn,
+                ':one' => $_SESSION['zenlix_def_ldap_status'],
+                ':priv' => $privs,
+                ':unit' => $_SESSION['zenlix_def_ldap_unit'],
+                ':mail' => $user_mail,
+                ':mess' => $_SESSION['zenlix_def_ldap_mess'],
+                ':lang' => $_SESSION['zenlix_def_ldap_lang'],
+                ':priv_add_client' => $priv_add_client,
+                ':priv_edit_client' => $priv_edit_client,
+                ':lk' => '1',
+                ':messages_title' => $_SESSION['zenlix_def_ldap_mess_t'],
+                ':uniq_id' => $hn,
+                ':tel' => $user_tel,
+                ':skype' => $user_skype,
+                ':unit_desc' => $user_unit,
+                ':adr' => $user_adr,
+                ':is_client' => $is_client,
+                ':msg_type' => $_SESSION['zenlix_def_ldap_msg_type']
+            ));
+
+                }
+                $i++;
+        }
+
+
+}
+
+else if ($ldap_step3_obj == "selected") {
+
+//echo "selected";
+
+
+$i=0;
+
+$arrlogins=explode(",", $users_do);
+
+
+
+
+        foreach ($users as $value) {
+
+
+
+if (in_array($value[$login], $arrlogins))
+{
+            $user_login="";
+            $user_fio="";
+            $user_mail="";
+            $user_tel="";
+            $user_adr="";
+            $user_skype="";
+            $user_unit="";
+
+            if ($login != "empty") {
+                $user_login=$value[$login];
+            }
+            if ($fio != "empty") {
+                $user_fio=$value[$fio];
+            }
+            if ($mail != "empty") {
+                $user_mail=$value[$mail];
+            }
+            if ($tel != "empty") {
+
+
+               // $user_tel=$value[$tel];
+
+
+foreach ($value[$tel] as $value1) {
+        $user_tel.=$value1." ";
+    }
+
+            }
+            if ($adr != "empty") {
+                $user_adr=$value[$adr];
+            }
+            if ($skype != "empty") {
+                $user_skype=$value[$skype];
+            }
+            if ($unit != "empty") {
+                $user_unit=$value[$unit];
+            }
+
+
+
+
+
+            //$value[$login] //поле логина пользователя
+
+
+
+
+
+
+
+
+            if (validate_exist_login($user_login) == true) { 
+
+                $hn = md5(time()).$i;
+
+
+$res_good['num']++;
+
+
+
+            $stmt = $dbConnection->prepare('INSERT INTO users 
+            (fio, 
+            login, 
+            pass, 
+            status, 
+            priv, 
+            unit, 
+            email, 
+            messages, 
+            lang, 
+            priv_add_client, 
+            priv_edit_client, 
+            ldap_key,
+            messages_title,
+            uniq_id,
+            tel,
+            skype,
+            unit_desc,
+            adr,
+            is_client,
+            messages_type
+            )
+values 
+            (:fio, 
+            :login, 
+            :pass, 
+            :one, 
+            :priv, 
+            :unit, 
+            :mail, 
+            :mess, 
+            :lang, 
+            :priv_add_client, 
+            :priv_edit_client, 
+            :lk,
+            :messages_title,
+            :uniq_id,
+            :tel,
+            :skype,
+            :unit_desc,
+            :adr,
+            :is_client,
+            :msg_type
+            )');
+            $stmt->execute(array(
+                ':fio' => $user_fio,
+                ':login' => $user_login,
+                ':pass' => $hn,
+                ':one' => $_SESSION['zenlix_def_ldap_status'],
+                ':priv' => $privs,
+                ':unit' => $_SESSION['zenlix_def_ldap_unit'],
+                ':mail' => $user_mail,
+                ':mess' => $_SESSION['zenlix_def_ldap_mess'],
+                ':lang' => $_SESSION['zenlix_def_ldap_lang'],
+                ':priv_add_client' => $priv_add_client,
+                ':priv_edit_client' => $priv_edit_client,
+                ':lk' => '1',
+                ':messages_title' => $_SESSION['zenlix_def_ldap_mess_t'],
+                ':uniq_id' => $hn,
+                ':tel' => $user_tel,
+                ':skype' => $user_skype,
+                ':unit_desc' => $user_unit,
+                ':adr' => $user_adr,
+                ':is_client' => $is_client,
+                ':msg_type' => $_SESSION['zenlix_def_ldap_msg_type']
+            ));
+
+                }
+                $i++;
+            }
+        }
+
+
+
+
+
+
+
+}
+
+//Импортировано: столько-то, такие-то логины:
+?>
+<?=lang('LDAP_IMPORT_already');?>: <?=$res_good['num'];?>
+<?php
+
+}
+
+
+//ldap_import_next
+if ($mode == "ldap_import_next") {
+
+
+$_SESSION['zenlix_def_ldap_ip']=$_POST['ldap_ip'];
+$_SESSION['zenlix_def_ldap_domain']=$_POST['ldap_domain'];
+$_SESSION['zenlix_def_ldap_admin_user']=$_POST['ldap_admin_user'];
+$_SESSION['zenlix_def_ldap_admin_pass']=$_POST['ldap_admin_pass'];
+
+
+$_SESSION['zenlix_def_ldap_fio']=$_POST['users_fio'];
+$_SESSION['zenlix_def_ldap_login']=$_POST['users_login'];
+$_SESSION['zenlix_def_ldap_mail']=$_POST['users_mail'];
+$_SESSION['zenlix_def_ldap_tel']=$_POST['users_tel'];
+$_SESSION['zenlix_def_ldap_adr']=$_POST['users_adr'];
+$_SESSION['zenlix_def_ldap_skype']=$_POST['users_skype'];
+$_SESSION['zenlix_def_ldap_unit']=$_POST['users_unit'];
+
+
+
+
+}
+//ldap_import_next
+if ($mode == "ldap_import_next_2") {
+
+
+$_SESSION['zenlix_def_ldap_lang']=$_POST['lang'];
+$_SESSION['zenlix_def_ldap_priv']=$_POST['priv'];
+$_SESSION['zenlix_def_ldap_unit']=$_POST['unit'];
+$_SESSION['zenlix_def_ldap_priv_add_client']=$_POST['priv_add_client'];
+$_SESSION['zenlix_def_ldap_priv_edit_client']=$_POST['priv_edit_client'];
+$_SESSION['zenlix_def_ldap_mess']=$_POST['mess'];
+$_SESSION['zenlix_def_ldap_mess_t']=$_POST['mess_t'];
+$_SESSION['zenlix_def_ldap_msg_type']=$_POST['msg_type'];
+$_SESSION['zenlix_def_ldap_status']=$_POST['status'];
+
+}
+
+
+//ldap_import_check
+if ($mode == "ldap_import_check") {
+
+
+$_SESSION['zenlix_def_ldap_ip']=$_POST['ldap_ip'];
+$_SESSION['zenlix_def_ldap_domain']=$_POST['ldap_domain'];
+$_SESSION['zenlix_def_ldap_admin_user']=$_POST['ldap_admin_user'];
+$_SESSION['zenlix_def_ldap_admin_pass']=$_POST['ldap_admin_pass'];
+
+
+  include_once "library/ldap_import.class.php";
+
+
+
+
+
+ $ldap = new LDAP($_POST['ldap_ip'], $_POST['ldap_domain'], $_POST['ldap_admin_user'], $_POST['ldap_admin_pass']);
+$users = $ldap->get_users();
+
+$output = array_slice($users, 0, 5);
+
+
+
+?>
+<br><hr>
+<h4>TOP 5 test result</h4>
+                                        <table class="table table-hover table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th><center><small>name</small></center>    </th>
+                                                <th><center><small>mail </small></center></th>
+                                                <th><center><small>mobile   </small></center></th>
+                                                <th><center><small>skype </small></center></th>
+                                                <th><center><small>telephone </small></center></th>
+                                                <th><center><small>department </small></center></th>
+                                                <th><center><small>title </small></center></th>
+                                                <th><center><small>userprincipalname </small></center></th>
+                                                <th><center><small>samaccountname </small></center></th>
+                                                <th><center><small>othertelephone </small></center></th>
+
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+
+<?php
+foreach ($output as $value) {
+    ?>
+<tr>
+    <td style="vertical-align: inherit;"><small><center><?=$value['name'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?=$value['mail'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?=$value['mobile'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?=$value['skype'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?=$value['telephone'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?=$value['department'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?=$value['title'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?=$value['userprincipalname'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?=$value['samaccountname'];?></center></small></td>
+    <td style="vertical-align: inherit;"><small><center><?php
+
+    foreach ($value['othertelephone'] as $value) {
+        # code...
+        echo $value." ";
+    }
+
+    ?></center></small></td>
+</tr>
+    <?php
+
+
+}
+?>
+
+</tbody>
+</table>
+
+<?php
+
+}
+
+
+
+
+
         if ($mode == "get_client_from_new_t") {
             if (isset($_POST['get_client_info'])) {
                 
@@ -3809,7 +4284,7 @@ echo $msg;
             $_POST = $validator->sanitize($_POST);
             
             $rules = array(
-                'old_pass' => 'required|max_len,100|min_len,6',
+                'old_pass' => 'required|max_len,100',
                 'new_pass' => 'required|max_len,100|min_len,6',
                 'new_pass2' => 'required|max_len,100|min_len,6'
             );
@@ -4443,8 +4918,8 @@ echo $msg;
             GUMP::set_field_name("fio", lang('USERS_fio'));
             GUMP::set_field_name("login", lang('USERS_login'));
             $is_valid = GUMP::is_valid($_POST, array(
-                'fio' => 'required|max_len,100|min_len,6',
-                'login' => 'required|max_len,50|min_len,4|alpha_numeric'
+                'fio' => 'required|max_len,100|min_len,1',
+                'login' => 'required|max_len,50|min_len,1|alpha_numeric'
             ));
             
             if ($is_valid === true) {
@@ -4511,8 +4986,8 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             GUMP::set_field_name("login", lang('USERS_login'));
             
             $is_valid = GUMP::is_valid($_POST, array(
-                'fio' => 'required|max_len,100|min_len,6',
-                'login' => 'required|max_len,50|min_len,4|alpha_numeric'
+                'fio' => 'required|max_len,100|min_len,1',
+                'login' => 'required|max_len,50|min_len,1|alpha_numeric'
             ));
             
             if ($is_valid === true) {
@@ -4868,8 +5343,51 @@ values (:unlock, :n, :unow, :tid)');
             $posada = $_POST['posada'];
             $msg_type = $_POST['msg_type'];
             
+            $def_unit_id=$_POST['def_unit_id'];
+            $def_user_id=$_POST['def_user_id'];
+            $user_to_def=$_POST['user_to_def'];
+
             $unit = ($_POST['unit']);
             
+
+
+if ($user_to_def == "true") {
+
+    if ($def_unit_id != "0") {
+
+
+        $user_2_unit=$def_unit_id;
+
+
+
+        if ($def_user_id != "null") {
+            $user_2_user=$def_user_id;
+        }
+        else if ($def_user_id == "null") {
+            $user_2_user="0";
+        }
+        
+    }
+    else if ($def_unit_id == "0") {
+
+        $user_2_unit="0";
+        $user_2_user="0";
+
+     }
+
+}
+else {
+
+    
+        $user_2_unit="0";
+        $user_2_user="0";
+    
+
+}
+
+
+
+
             if ($priv == "4") {
                 $is_client = "1";
                 $privs = "1";
@@ -4921,7 +5439,9 @@ values (:unlock, :n, :unow, :tid)');
                 unit_desc=:unit_desc,
                 adr=:adr,
                 is_client=:is_client,
-                messages_type=:msg_type
+                messages_type=:msg_type,
+                def_unit_id=:def_unit_id,
+                def_user_id=:def_user_id
                 where uniq_id=:usid
                 ');
                 $stmt->execute(array(
@@ -4947,7 +5467,9 @@ values (:unlock, :n, :unow, :tid)');
                     ':unit_desc' => $pidrozdil,
                     ':adr' => $adr,
                     ':is_client' => $is_client,
-                    ':msg_type' => $msg_type
+                    ':msg_type' => $msg_type,
+                    ':def_unit_id'=>$user_2_unit,
+                    ':def_user_id'=>$user_2_user
                 ));
             } else {
                 $stmt = $dbConnection->prepare('update users set
@@ -4971,7 +5493,9 @@ values (:unlock, :n, :unow, :tid)');
                 unit_desc=:unit_desc,
                 adr=:adr,
                 is_client=:is_client,
-                messages_type=:msg_type
+                messages_type=:msg_type,
+                def_unit_id=:def_unit_id,
+                def_user_id=:def_user_id
                 where uniq_id=:usid
                 ');
                 $stmt->execute(array(
@@ -4996,7 +5520,9 @@ values (:unlock, :n, :unow, :tid)');
                     ':unit_desc' => $pidrozdil,
                     ':adr' => $adr,
                     ':is_client' => $is_client,
-                    ':msg_type' => $msg_type
+                    ':msg_type' => $msg_type,
+                    ':def_unit_id'=>$user_2_unit,
+                    ':def_user_id'=>$user_2_user
                 ));
             }
             
@@ -5077,6 +5603,46 @@ values (:unlock, :n, :unow, :tid)');
             $posada = $_POST['posada'];
             $msg_type = $_POST['msg_type'];
             
+            $def_unit_id=$_POST['def_unit_id'];
+            $def_user_id=$_POST['def_user_id'];
+            $user_to_def=$_POST['user_to_def'];
+
+
+if ($user_to_def == "true") {
+
+    if ($def_unit_id != "0") {
+
+
+        $user_2_unit=$def_unit_id;
+
+
+
+        if ($def_user_id != "null") {
+            $user_2_user=$def_user_id;
+        }
+        else if ($def_user_id == "null") {
+            $user_2_user="0";
+        }
+        
+    }
+    else if ($def_unit_id == "0") {
+
+        $user_2_unit="0";
+        $user_2_user="0";
+
+     }
+
+}
+else {
+
+    
+        $user_2_unit="0";
+        $user_2_user="0";
+    
+
+}
+
+
             //$hidden=array();
             //$hidden = ($_POST['unit']);
             //print_r($hidden);
@@ -5132,7 +5698,9 @@ values (:unlock, :n, :unow, :tid)');
             unit_desc,
             adr,
             is_client,
-            messages_type
+            messages_type,
+            def_unit_id,
+            def_user_id
             )
 values 
             (:fio, 
@@ -5156,7 +5724,9 @@ values
             :unit_desc,
             :adr,
             :is_client,
-            :msg_type
+            :msg_type,
+            :def_unit_id,
+            :def_user_id
             )');
             $stmt->execute(array(
                 ':fio' => $fio,
@@ -5180,7 +5750,9 @@ values
                 ':unit_desc' => $pidrozdil,
                 ':adr' => $adr,
                 ':is_client' => $is_client,
-                ':msg_type' => $msg_type
+                ':msg_type' => $msg_type,
+                ':def_unit_id'=>$user_2_unit,
+                ':def_user_id'=>$user_2_user
             ));
         }
         if ($mode == "save_edit_ticket") {
@@ -5730,6 +6302,11 @@ if ($deadline_time == "NULL") {$deadline_time=NULL;}
                 $client_posada = "";
             }
             
+
+if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') != "0") {
+$user_to_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_user_id');
+$unit_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id');
+            }
             /*
             На этом месте можно дописывать код, для обработки создания заявки.
             Например SMS-информирование, подключать API и тд и тп
@@ -5909,7 +6486,8 @@ if ($deadline_time == "NULL") {$deadline_time=NULL;}
             }
             
             if ($type == "client") {
-                
+                $deadline_time=strip_tags(xss_clean($_POST['deadline_time']));
+if ($deadline_time == "NULL") {$deadline_time=NULL;}
                 $hashname = ($_POST['hashname']);
                 $user_init_id = $_SESSION['helpdesk_user_id'];
                 $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");
@@ -5919,7 +6497,7 @@ if ($deadline_time == "NULL") {$deadline_time=NULL;}
                 $max_id_res_ticket = $max_id_ticket[0] + 1;
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz)');
+                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update,deadline_time) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time)');
                 
                 $stmt->execute(array(
                     ':max_id_res_ticket' => $max_id_res_ticket,
@@ -5933,7 +6511,8 @@ if ($deadline_time == "NULL") {$deadline_time=NULL;}
                     ':hashname' => $hashname,
                     ':prio' => $prio,
                     ':n' => $CONF['now_dt'],
-                    ':nz' => $CONF['now_dt']
+                    ':nz' => $CONF['now_dt'],
+                    ':deadline_time'=>$deadline_time
                 ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];

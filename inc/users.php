@@ -54,7 +54,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 	
 	<a href="?create" class="btn btn-success btn-block"><i class="fa fa-male"></i> <?php echo lang('USERS_create'); ?></a>
 	<a href="?list" class="btn btn-primary btn-block"><i class="fa fa-list-alt"></i> <?php echo lang('USERS_list'); ?></a>
-	
+	<a href="?import" class="btn btn-primary btn-block"><i class="fa fa fa-download"></i> <?php echo lang('LDAP_IMPORT_user_t'); ?></a>
 	
 
 	</div>
@@ -84,7 +84,34 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             //echo "in";
             $_POST['menu'] = "new";
             include_once ("users.inc.php");
-        } else if (isset($_GET['list'])) {
+        } 
+
+
+
+else if (isset($_GET['import'])) {
+
+            $_POST['menu'] = "import";
+            include_once ("users.inc.php"); 
+
+}
+
+
+else if (isset($_GET['import_step_3'])) {
+
+            $_POST['menu'] = "import_step_3";
+            include_once ("users.inc.php"); 
+
+}
+
+else if (isset($_GET['import_step_2'])) {
+
+            $_POST['menu'] = "import_step_2";
+            include_once ("users.inc.php"); 
+
+}
+
+
+        else if (isset($_GET['list'])) {
             
             //echo "in";
             

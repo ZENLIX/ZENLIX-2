@@ -22,11 +22,35 @@ function lang_ru($phrase){
 'NOTY_layot'=>'Расположение уведомления',
 
 
+'LDAP_IMPORT_user_t'=>'LDAP-импорт',
+'LDAP_IMPORT_title_step1'=>'Импорт пользователей из LDAP (шаг 1 из 3)',
+'LDAP_IMPORT_need_admin'=>'Необходима учётная запись LDAP с правами на просмотр других учётных записей.',
+'LDAP_IMPORT_need_val'=>'Сопоставьте данные создаваемых учётных записей ZENLIX с данными LDAP ниже',
+'LDAP_IMPORT_field'=>'Поле',
+'LDAP_IMPORT_next'=>'Далее >>',
+'LDAP_IMPORT_sel_conf'=>'Укажите данные для импортируемых учётных записей по умолчанию ниже',
+'LDAP_IMPORT_title_step2'=>'Импорт пользователей из LDAP (шаг 2 из 3)',
+'LDAP_IMPORT_make'=>'Импортировать',
+'LDAP_IMPORT_info_deactive'=>'Если какой-то логин не активен, значит такой уже есть в системе ZENLIX',
+'LDAP_IMPORT_ad_limit'=>'ActiveDirectory может ограничивать (до 1000) вывод списка учётных записей, обратите внимание на это, так как могут импортироваться не все учётные записи. Это можно исправить в настройках AcriveDirectory.',
+'LDAP_IMPORT_all'=>'Все',
+'LDAP_IMPORT_sel'=>'Выбранные ниже',
+'LDAP_IMPORT_sel_obj'=>'Укажите какие именно учётные записи необходимо перенести',
+'LDAP_IMPORT_title_step3'=>'Импорт пользователей из LDAP (шаг 3 из 3)',
+'LDAP_IMPORT_empty'=>'Не заполнять',
+'LDAP_IMPORT_already'=>'Импортировано',
+
+
+
 
 'TICKET_deadline_text'=>'Крайний срок',
 'TICKET_deadline_old'=>'крайний срок: просрочено',
 'TICKET_deadline_time'=>'крайний срок:',
 'TICKET_deadline_success'=>'крайний срок: выполнено',
+
+
+'CONF_PERF_def_do'=>'Исполнитель по умолчанию',
+'CONF_PERF_def_do_ext'=>'Если активно, то у пользователя по умолчанию исполнителем заявки будут ниже указанные отдел/пользователь',
 
 
 'CONF_EMAIL_GATE_title'=>'Приём заявок по e-mail',
@@ -70,7 +94,7 @@ function lang_ru($phrase){
 'cron_info'=>'В данном разделе Вы можете создать задачу, которая будет выполняться по выбранному расписанию.',     
 'cron_title_list'=>'Список задач',     
     
- 'CONF_node_info'=>'Для работы NodeJS сервера, у Вас должны быть установлены <em>nodejs, socket.io, mysql и forever</em>. А так же запустите команду:',
+ 'CONF_node_info'=>'Для работы NodeJS сервера, у Вас должны быть установлены <em>nodejs, socket.io, mysql и pm2</em>. А так же запустите команду:',
     
  'CONF_logo_image'=>'Логотип ',
 'CONF_messages_type'=>'Тип сообщения',
@@ -82,7 +106,7 @@ function lang_ru($phrase){
     
 'JS_HELPER_error_to_del'=>'Вы не можете удалить категорию, потому что в ней есть информация. Категория должна быть пустой.',
 
-
+'mail_msg_ticket_new'=>'Вы получили это сообщение, потому что была создана заявка',
 'mail_msg_ticket_refer'=>'ЗАЯВКА ПЕРЕАДРЕСОВАНА',
 'mail_msg_ticket_refer_ext'=>'Вы получили это сообщение, потому что заявка была переадресована пользователем',
 'mail_msg_ticket_to_ext'=>'на',
@@ -91,7 +115,7 @@ function lang_ru($phrase){
 'mail_msg_ticket_lock'=>'ЗАЯВКА ЗАБЛОКИРОВАНА',
 'mail_msg_ticket_lock_ext'=>'Вы получили это сообщение, потому что заявка была взята в работу пользователем',
 'mail_msg_ticket_unlock'=>'ЗАЯВКА РАЗБЛОКИРОВАНА',
-'mail_msg_ticket_unlock_ext'=>'Вы получили это сообщение, потому что заявка была взята в работу пользователем',
+'mail_msg_ticket_unlock_ext'=>'Вы получили это сообщение, потому что заявка была разблокирована пользователем',
 'mail_msg_ticket_ok'=>'ЗАЯВКА ВЫПОЛНЕНА',
 'mail_msg_ticket_ok_ext'=>'Вы получили это сообщение, потому что заявка была выполнена пользователем',
 'mail_msg_ticket_no_ok'=>'ЗАЯВКА НЕ ВЫПОЛНЕНА',

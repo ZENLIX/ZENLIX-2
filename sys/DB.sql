@@ -80,6 +80,36 @@ EXECUTE stmt;
 ######################################################
 
 
+
+#######UPDATE users.def_to_unit/user##################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='users' and column_name='def_unit_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE users ADD def_unit_id int(11) NOT NULL DEFAULT '0';"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='users' and column_name='def_user_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE users ADD def_user_id varchar(1024) NOT NULL DEFAULT '0';"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+
+######################################################
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS `helper_cat` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,

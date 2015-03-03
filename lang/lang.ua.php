@@ -41,7 +41,23 @@ function lang_ua($phrase){
 'CONF_EMAIL_GATE_port'=>'Порт IMAP-сервера',
 
 
-
+'LDAP_IMPORT_user_t'=>'LDAP-імпорт',
+'LDAP_IMPORT_title_step1'=>'Імпорт користувачів з LDAP (шаг 1 з 3)',
+'LDAP_IMPORT_need_admin'=>'Необхідний обліковий запис LDAP з правами на перегляд інших облікових записів.',
+'LDAP_IMPORT_need_val'=>'Зіставте дані створюваних облікових записів ZENLIX з даними LDAP нижче',
+'LDAP_IMPORT_field'=>'Поле',
+'LDAP_IMPORT_next'=>'Далі >>',
+'LDAP_IMPORT_sel_conf'=>'Вкажіть дані для імпортованих облікових записів за замовчуванням нижче',
+'LDAP_IMPORT_title_step2'=>'Імпорт користувачів з LDAP (шаг 2 з 3)',
+'LDAP_IMPORT_make'=>'Імпортувати',
+'LDAP_IMPORT_info_deactive'=>'Якщо якийсь логін не активний, значить такий вже є в системі ZENLIX',
+'LDAP_IMPORT_ad_limit'=>'ActiveDirectory може обмежувати (до 1000) виведення списку облікових записів, зверніть увагу на це, тому що можуть імпортуватися не всі облікові записи. Це можна виправити в налаштуваннях AcriveDirectory.',
+'LDAP_IMPORT_all'=>'Всі',
+'LDAP_IMPORT_sel'=>'Обрані нижче',
+'LDAP_IMPORT_sel_obj'=>'Вкажіть які саме облікові записи необхідно перенести',
+'LDAP_IMPORT_title_step3'=>'Імпорт користувачів з LDAP (шаг 3 з 3)',
+'LDAP_IMPORT_empty'=>'Не заповнювати',
+'LDAP_IMPORT_already'=>'Імпортовано',
 
 
 
@@ -76,8 +92,18 @@ function lang_ua($phrase){
 'cron_info' => 'У даному розділі Ви можете створити задачу, яка буде виконуватися за обраним розкладом.',
 'cron_title_list' => 'Список завдань',    
 'CONF_messages_type'=>'Тип повідомлення',
-'CONF_node_info'=>'Для роботи NodeJS серверу, у Вас повинні бути виставлені <em>nodejs, socket.io, mysql и forever</em>. А також запустіть команду:',
+'CONF_node_info'=>'Для роботи NodeJS серверу, у Вас повинні бути виставлені <em>nodejs, socket.io, mysql та pm2</em>. А також запустіть команду:',
      'CONF_logo_image'=>'Логотип ',
+
+'CONF_PERF_def_do'=>'Виконавець',
+'CONF_PERF_def_do_ext'=>'Якщо активно, то у користувача виконавцем заявки будуть нижче вказані відділ/користувач',
+
+
+
+
+
+
+'mail_msg_ticket_new'=>'Ви отримали це повідомлення, тому що заявка була створена',
 'mail_msg_ticket_refer'=>'ЗАЯВКА ПЕРЕАДРЕСОВАНА',
 'mail_msg_ticket_refer_ext'=>'Ви отримали це повідомлення, тому що заявка була переадресована користувачем',
 'mail_msg_ticket_to_ext'=>'на',

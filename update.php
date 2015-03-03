@@ -1,5 +1,7 @@
 <?php
 session_start();
+ini_set('max_execution_time', 300);
+ini_set('memory_limit', '512M');
 //ok!
 include ("functions.inc.php");
 include ("sys/dbu.class.php");
@@ -23,6 +25,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             }
         }
         
+
+
         function Zip($source, $destination) {
             if (!extension_loaded('zip') || !file_exists($source)) {
                 return false;
@@ -146,6 +150,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     
                     ////create files backup///////////
                     Zip($rp . "/", $rp . "/updates/backup/file_zenlix_backup_".$dform.".zip");
+                    //ExtendedZip::zipTree($rp . "/", $rp . "/updates/backup/file_zenlix_backup_".$dform.".zip", ZipArchive::CREATE);
                     $fpp2=$rp . "/updates/backup/file_zenlix_backup_".$dform.".zip";
                     //////////////////////////////////
                     }

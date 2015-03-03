@@ -468,87 +468,9 @@ $MAIL_msg_ok_ext=lang($lang,'mail_msg_ticket_ok_ext');
 $MAIL_msg_no_ok=lang($lang,'mail_msg_ticket_no_ok');
 $MAIL_msg_no_ok_ext=lang($lang,'mail_msg_ticket_no_ok_ext');
 
-/*
-
-1. offline/online check ???
-2. страница пользователи как-то переименовать кнопки
-3. какие страницы обновлять в случае изменения заявки
-4.
-
-arch?????
 
 
 
-Удалить пользователя
-пользователь не удаляется а помечается как удалён. нигде больше не участвует но вся инфа о нём сохраняется.
-
-actions.php:deps_del
-
-
-//online/offline status user - every
-
-///////////////////////////////
-
-
--Перевод языки
--Графики и отчёты
--дизайн и стили
-////////////////////////////////
-
--удаление заявок/пользователей
-
-///////////////////////////////
-
--Справка
--нотификация
--просмотр заявок пользователя
-
-
--учёт времени?
-
-Notifications ON
-
-
-actions: logout, refresh, gotourl
-
-
-nodejs_pool
-
-ticket_create:
-	send_notifications
-
-
-ticket_refer
-	send notification
-
-
-Для извещений нужно:
-в таблицу для каждого получателя узнать uniq_id, и внести его.
-
-`delivers_id` - уникальный хэш пользователя
-  `type_op`   - ticket_create, ticket_refer
-  `ticket_id` - t_id
-  `dt`        - now()
-
-
-
-
-
-ticket_comment
-
-ticket_lock
-
-ticket_unlock
-
-ticket_ok
-
-ticket_no_ok
-
-
-
-
-
-*/
 	 if ($type_op == "ticket_create") {
 
         $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
@@ -579,85 +501,32 @@ ticket_no_ok
 
 	 
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_new;
-$message =<<<EOBODY
-<div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_new}!</p>
-<table width="100%" cellpadding="3" cellspacing="0">
-  <tbody>
-    <tr id="tr_">
-      <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_code}:</td>
-      <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 19px;"><b>#{$ticket_id}</b></td>
-      <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href='{$CONF['hostname']}ticket?{$h}'>{$MAIL_2link}</a>.</p></td>
-    </tr>
-  </tbody>
-</table>
-<br />
-<table width="100%" cellspacing="0" cellpadding="3" style="">
-  <tr style="border: 1px solid #ddd;">
-    <td colspan="2" style="border: 1px solid #ddd; background-color: #f5f5f5; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><center>
-      <strong>{$MAIL_info} </strong>
-    </center></td>
+//$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
+ob_start();
+include($base . "/inc/mail_tmpl/new_ticket.tpl");
+$message = ob_get_clean();
+$message = str_replace("{MAIL_new_ext}", lang('mail_msg_ticket_new'), $message);
+$message = str_replace("{MAIL_new}", $MAIL_new, $message);
+$message = str_replace("{MAIL_code}", $MAIL_code, $message);
+$message = str_replace("{ticket_id}", $ticket_id, $message);
+$message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
+$message = str_replace("{MAIL_info}", $MAIL_info, $message);
+$message = str_replace("{MAIL_created}", $MAIL_created, $message);
+$message = str_replace("{uin}", $uin, $message);
+$message = str_replace("{MAIL_to}", $MAIL_to, $message);
+$message = str_replace("{to_text}", $to_text, $message);
+$message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
+$message = str_replace("{prio}", $prio, $message);
+$message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
+$message = str_replace("{nou}", $nou, $message);
+$message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
 
+$message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
+$message = str_replace("{s}", $s, $message);
+$message = str_replace("{MAIL_text}", $MAIL_text, $message);
+$message = str_replace("{m}", $m, $message);
 
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_created}:</td>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$uin}</td>
-  </tr>
-  <tr>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_to}:</td>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$to_text}</td>
-  </tr>
-    <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_prio}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$prio}</td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_worker}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$nou}</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2"  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px; background-color: #f5f5f5;"><center>
-      <strong>{$MAIL_msg}</strong>
-    </center></td>
-  </tr>
-  <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_subj}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$s}</td>
-  </tr>
-    <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_text}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$m}</td>
-  </tr>
-    <tr>
-    <td colspan="5">&nbsp;</td>
-  </tr>  
- 
-</table>
-</center>
-
-</div>
-EOBODY;
+$message = str_replace("{h}", $h, $message);
 
 		 send_mail($user_mail,$subject,$message);
 		 
@@ -703,86 +572,45 @@ else if ($type_op == "ticket_refer") {
 
 	 
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_refer;
-$message =<<<EOBODY
-<div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_refer}!</p>
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:12px; text-align:center;">{$MAIL_refer_ext} <strong>{$who_init}</strong> {$MAIL_to_w}  <strong>{$to_text}</strong></p>
-<table width="100%" cellpadding="3" cellspacing="0">
-  <tbody>
-    <tr id="tr_">
-      <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_code}:</td>
-      <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 19px;"><b>#{$ticket_id}</b></td>
-      <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href='{$CONF['hostname']}ticket?{$h}'>{$MAIL_2link}</a>.</p></td>
-    </tr>
-  </tbody>
-</table>
-<br />
-<table width="100%" cellspacing="0" cellpadding="3" style="">
-  <tr style="border: 1px solid #ddd;">
-    <td colspan="2" style="border: 1px solid #ddd; background-color: #f5f5f5; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><center>
-      <strong>{$MAIL_info} </strong>
-    </center></td>
 
 
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_created}:</td>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$uin}</td>
-  </tr>
-  <tr>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_to}:</td>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$to_text}</td>
-  </tr>
-    <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_prio}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$prio}</td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_worker}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$nou}</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2"  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px; background-color: #f5f5f5;"><center>
-      <strong>{$MAIL_msg}</strong>
-    </center></td>
-  </tr>
-  <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_subj}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$s}</td>
-  </tr>
-    <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_text}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$m}</td>
-  </tr>
-    <tr>
-    <td colspan="5">&nbsp;</td>
-  </tr>  
- 
-</table>
-</center>
+ob_start();
+include($base . "/inc/mail_tmpl/refer_ticket.tpl");
+$message = ob_get_clean();
 
-</div>
-EOBODY;
+$message = str_replace("{MAIL_refer}", $MAIL_refer, $message);
+$message = str_replace("{MAIL_refer_ext}", $MAIL_refer_ext, $message);
+$message = str_replace("{who_init}", $who_init, $message);
+$message = str_replace("{MAIL_to_w}", $MAIL_to_w, $message);
+
+
+
+
+$message = str_replace("{MAIL_code}", $MAIL_code, $message);
+$message = str_replace("{ticket_id}", $ticket_id, $message);
+
+$message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
+$message = str_replace("{MAIL_info}", $MAIL_info, $message);
+
+$message = str_replace("{MAIL_created}", $MAIL_created, $message);
+$message = str_replace("{uin}", $uin, $message);
+$message = str_replace("{MAIL_to}", $MAIL_to, $message);
+$message = str_replace("{to_text}", $to_text, $message);
+
+$message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
+$message = str_replace("{prio}", $prio, $message);
+$message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
+$message = str_replace("{nou}", $nou, $message);
+
+$message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
+$message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
+$message = str_replace("{s}", $s, $message);
+$message = str_replace("{MAIL_text}", $MAIL_text, $message);
+$message = str_replace("{m}", $m, $message);
+
+$message = str_replace("{h}", $h, $message);
+
+
 
 		 send_mail($user_mail,$subject,$message);
 	
@@ -830,87 +658,42 @@ else if ($type_op == "ticket_comment") {
 
 	 
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_comment;
-$message =<<<EOBODY
-<div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_comment}!</p>
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:12px; text-align:center;">{$MAIL_msg_comment_ext} <strong>{$who_init}</strong>: <strong>{$comment}</strong></p>
-<table width="100%" cellpadding="3" cellspacing="0">
-  <tbody>
-    <tr id="tr_">
-      <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_code}:</td>
-      <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 19px;"><b>#{$ticket_id}</b></td>
-      <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href='{$CONF['hostname']}ticket?{$h}'>{$MAIL_2link}</a>.</p></td>
-    </tr>
-  </tbody>
-</table>
-<br />
-<table width="100%" cellspacing="0" cellpadding="3" style="">
-  <tr style="border: 1px solid #ddd;">
-    <td colspan="2" style="border: 1px solid #ddd; background-color: #f5f5f5; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><center>
-      <strong>{$MAIL_info} </strong>
-    </center></td>
+ob_start();
+include($base . "/inc/mail_tmpl/comment_ticket.tpl");
+$message = ob_get_clean();
+
+$message = str_replace("{MAIL_msg_comment}", $MAIL_msg_comment, $message);
+$message = str_replace("{MAIL_msg_comment_ext}", $MAIL_msg_comment_ext, $message);
+$message = str_replace("{who_init}", $who_init, $message);
+$message = str_replace("{comment}", $comment, $message);
 
 
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_created}:</td>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$uin}</td>
-  </tr>
-  <tr>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_to}:</td>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$to_text}</td>
-  </tr>
-    <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_prio}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$prio}</td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_worker}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$nou}</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2"  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px; background-color: #f5f5f5;"><center>
-      <strong>{$MAIL_msg}</strong>
-    </center></td>
-  </tr>
-  <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_subj}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$s}</td>
-  </tr>
-    <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_text}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$m}</td>
-  </tr>
-    <tr>
-    <td colspan="5">&nbsp;</td>
-  </tr>  
- 
-</table>
-</center>
 
-</div>
-EOBODY;
 
+$message = str_replace("{MAIL_code}", $MAIL_code, $message);
+$message = str_replace("{ticket_id}", $ticket_id, $message);
+
+$message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
+$message = str_replace("{MAIL_info}", $MAIL_info, $message);
+
+$message = str_replace("{MAIL_created}", $MAIL_created, $message);
+$message = str_replace("{uin}", $uin, $message);
+
+$message = str_replace("{MAIL_to}", $MAIL_to, $message);
+$message = str_replace("{to_text}", $to_text, $message);
+
+$message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
+$message = str_replace("{prio}", $prio, $message);
+$message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
+$message = str_replace("{nou}", $nou, $message);
+
+$message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
+$message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
+$message = str_replace("{s}", $s, $message);
+$message = str_replace("{MAIL_text}", $MAIL_text, $message);
+$message = str_replace("{m}", $m, $message);
+
+$message = str_replace("{h}", $h, $message);
 		 send_mail($user_mail,$subject,$message);
 }
 else if ($type_op == "ticket_lock") {
@@ -952,86 +735,43 @@ else if ($type_op == "ticket_lock") {
 
 	 
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_lock;
-$message =<<<EOBODY
-<div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_lock}!</p>
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:12px; text-align:center;">{$MAIL_msg_lock_ext} <strong>{$who_init}</strong></p>
-<table width="100%" cellpadding="3" cellspacing="0">
-  <tbody>
-    <tr id="tr_">
-      <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_code}:</td>
-      <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 19px;"><b>#{$ticket_id}</b></td>
-      <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href='{$CONF['hostname']}ticket?{$h}'>{$MAIL_2link}</a>.</p></td>
-    </tr>
-  </tbody>
-</table>
-<br />
-<table width="100%" cellspacing="0" cellpadding="3" style="">
-  <tr style="border: 1px solid #ddd;">
-    <td colspan="2" style="border: 1px solid #ddd; background-color: #f5f5f5; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><center>
-      <strong>{$MAIL_info} </strong>
-    </center></td>
+
+ob_start();
+include($base . "/inc/mail_tmpl/lock_ticket.tpl");
+$message = ob_get_clean();
+
+$message = str_replace("{MAIL_msg_lock}", $MAIL_msg_lock, $message);
+$message = str_replace("{MAIL_msg_lock_ext}", $MAIL_msg_lock_ext, $message);
+$message = str_replace("{who_init}", $who_init, $message);
 
 
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_created}:</td>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$uin}</td>
-  </tr>
-  <tr>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_to}:</td>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$to_text}</td>
-  </tr>
-    <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_prio}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$prio}</td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_worker}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$nou}</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2"  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px; background-color: #f5f5f5;"><center>
-      <strong>{$MAIL_msg}</strong>
-    </center></td>
-  </tr>
-  <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_subj}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$s}</td>
-  </tr>
-    <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_text}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$m}</td>
-  </tr>
-    <tr>
-    <td colspan="5">&nbsp;</td>
-  </tr>  
- 
-</table>
-</center>
 
-</div>
-EOBODY;
+
+
+$message = str_replace("{MAIL_code}", $MAIL_code, $message);
+$message = str_replace("{ticket_id}", $ticket_id, $message);
+
+$message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
+$message = str_replace("{MAIL_info}", $MAIL_info, $message);
+
+$message = str_replace("{MAIL_created}", $MAIL_created, $message);
+$message = str_replace("{uin}", $uin, $message);
+
+$message = str_replace("{MAIL_to}", $MAIL_to, $message);
+$message = str_replace("{to_text}", $to_text, $message);
+
+$message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
+$message = str_replace("{prio}", $prio, $message);
+$message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
+$message = str_replace("{nou}", $nou, $message);
+
+$message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
+$message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
+$message = str_replace("{s}", $s, $message);
+$message = str_replace("{MAIL_text}", $MAIL_text, $message);
+$message = str_replace("{m}", $m, $message);
+
+$message = str_replace("{h}", $h, $message);
 
 		 send_mail($user_mail,$subject,$message);
 }
@@ -1073,86 +813,44 @@ else if ($type_op == "ticket_unlock") {
 
 	 
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_unlock;
-$message =<<<EOBODY
-<div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_unlock}!</p>
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:12px; text-align:center;">{$MAIL_msg_unlock_ext} <strong>{$who_init}</strong></p>
-<table width="100%" cellpadding="3" cellspacing="0">
-  <tbody>
-    <tr id="tr_">
-      <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_code}:</td>
-      <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 19px;"><b>#{$ticket_id}</b></td>
-      <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href='{$CONF['hostname']}ticket?{$h}'>{$MAIL_2link}</a>.</p></td>
-    </tr>
-  </tbody>
-</table>
-<br />
-<table width="100%" cellspacing="0" cellpadding="3" style="">
-  <tr style="border: 1px solid #ddd;">
-    <td colspan="2" style="border: 1px solid #ddd; background-color: #f5f5f5; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><center>
-      <strong>{$MAIL_info} </strong>
-    </center></td>
+
+ob_start();
+include($base . "/inc/mail_tmpl/unlock_ticket.tpl");
+$message = ob_get_clean();
+
+$message = str_replace("{MAIL_msg_unlock}", $MAIL_msg_unlock, $message);
+$message = str_replace("{MAIL_msg_unlock_ext}", $MAIL_msg_unlock_ext, $message);
+$message = str_replace("{who_init}", $who_init, $message);
 
 
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_created}:</td>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$uin}</td>
-  </tr>
-  <tr>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_to}:</td>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$to_text}</td>
-  </tr>
-    <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_prio}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$prio}</td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_worker}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$nou}</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2"  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px; background-color: #f5f5f5;"><center>
-      <strong>{$MAIL_msg}</strong>
-    </center></td>
-  </tr>
-  <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_subj}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$s}</td>
-  </tr>
-    <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_text}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$m}</td>
-  </tr>
-    <tr>
-    <td colspan="5">&nbsp;</td>
-  </tr>  
- 
-</table>
-</center>
 
-</div>
-EOBODY;
+
+
+$message = str_replace("{MAIL_code}", $MAIL_code, $message);
+$message = str_replace("{ticket_id}", $ticket_id, $message);
+
+$message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
+$message = str_replace("{MAIL_info}", $MAIL_info, $message);
+
+$message = str_replace("{MAIL_created}", $MAIL_created, $message);
+$message = str_replace("{uin}", $uin, $message);
+
+$message = str_replace("{MAIL_to}", $MAIL_to, $message);
+$message = str_replace("{to_text}", $to_text, $message);
+
+$message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
+$message = str_replace("{prio}", $prio, $message);
+$message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
+$message = str_replace("{nou}", $nou, $message);
+
+$message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
+$message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
+$message = str_replace("{s}", $s, $message);
+$message = str_replace("{MAIL_text}", $MAIL_text, $message);
+$message = str_replace("{m}", $m, $message);
+
+$message = str_replace("{h}", $h, $message);
+
 
 		 send_mail($user_mail,$subject,$message);
 }
@@ -1194,86 +892,45 @@ else if ($type_op == "ticket_ok") {
 
 	 
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_ok;
-$message =<<<EOBODY
-<div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_ok}!</p>
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:12px; text-align:center;">{$MAIL_msg_ok_ext} <strong>{$who_init}</strong></p>
-<table width="100%" cellpadding="3" cellspacing="0">
-  <tbody>
-    <tr id="tr_">
-      <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_code}:</td>
-      <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 19px;"><b>#{$ticket_id}</b></td>
-      <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href='{$CONF['hostname']}ticket?{$h}'>{$MAIL_2link}</a>.</p></td>
-    </tr>
-  </tbody>
-</table>
-<br />
-<table width="100%" cellspacing="0" cellpadding="3" style="">
-  <tr style="border: 1px solid #ddd;">
-    <td colspan="2" style="border: 1px solid #ddd; background-color: #f5f5f5; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><center>
-      <strong>{$MAIL_info} </strong>
-    </center></td>
+
+ob_start();
+include($base . "/inc/mail_tmpl/ok_ticket.tpl");
+$message = ob_get_clean();
+
+$message = str_replace("{MAIL_msg_ok}", $MAIL_msg_ok, $message);
+$message = str_replace("{MAIL_msg_ok_ext}", $MAIL_msg_ok_ext, $message);
+$message = str_replace("{who_init}", $who_init, $message);
 
 
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_created}:</td>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$uin}</td>
-  </tr>
-  <tr>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_to}:</td>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$to_text}</td>
-  </tr>
-    <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_prio}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$prio}</td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_worker}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$nou}</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2"  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px; background-color: #f5f5f5;"><center>
-      <strong>{$MAIL_msg}</strong>
-    </center></td>
-  </tr>
-  <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_subj}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$s}</td>
-  </tr>
-    <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_text}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$m}</td>
-  </tr>
-    <tr>
-    <td colspan="5">&nbsp;</td>
-  </tr>  
- 
-</table>
-</center>
 
-</div>
-EOBODY;
+
+
+$message = str_replace("{MAIL_code}", $MAIL_code, $message);
+$message = str_replace("{ticket_id}", $ticket_id, $message);
+
+$message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
+$message = str_replace("{MAIL_info}", $MAIL_info, $message);
+
+$message = str_replace("{MAIL_created}", $MAIL_created, $message);
+$message = str_replace("{uin}", $uin, $message);
+
+$message = str_replace("{MAIL_to}", $MAIL_to, $message);
+$message = str_replace("{to_text}", $to_text, $message);
+
+$message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
+$message = str_replace("{prio}", $prio, $message);
+$message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
+$message = str_replace("{nou}", $nou, $message);
+
+$message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
+$message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
+$message = str_replace("{s}", $s, $message);
+$message = str_replace("{MAIL_text}", $MAIL_text, $message);
+$message = str_replace("{m}", $m, $message);
+
+$message = str_replace("{h}", $h, $message);
+
+
 
 		 send_mail($user_mail,$subject,$message);
 }
@@ -1315,86 +972,46 @@ else if ($type_op == "ticket_no_ok") {
 
 	 
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_no_ok;
-$message =<<<EOBODY
-<div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">{$MAIL_msg_no_ok}!</p>
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:12px; text-align:center;">{$MAIL_msg_no_ok_ext} <strong>{$who_init}</strong></p>
-<table width="100%" cellpadding="3" cellspacing="0">
-  <tbody>
-    <tr id="tr_">
-      <td width="15%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_code}:</td>
-      <td width="36%" align="center" valign="middle" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 19px;"><b>#{$ticket_id}</b></td>
-      <td width="49%" style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><p style="font-family: Arial, Helvetica, sans-serif; font-size:11px; text-align:center;"> <a href='{$CONF['hostname']}ticket?{$h}'>{$MAIL_2link}</a>.</p></td>
-    </tr>
-  </tbody>
-</table>
-<br />
-<table width="100%" cellspacing="0" cellpadding="3" style="">
-  <tr style="border: 1px solid #ddd;">
-    <td colspan="2" style="border: 1px solid #ddd; background-color: #f5f5f5; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;"><center>
-      <strong>{$MAIL_info} </strong>
-    </center></td>
 
 
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_created}:</td>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$uin}</td>
-  </tr>
-  <tr>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_to}:</td>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$to_text}</td>
-  </tr>
-    <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_prio}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$prio}</td>
-  </tr>
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_worker}:</td>
-    <td style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$nou}</td>
-  </tr>
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td colspan="2"  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px; background-color: #f5f5f5;"><center>
-      <strong>{$MAIL_msg}</strong>
-    </center></td>
-  </tr>
-  <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_subj}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$s}</td>
-  </tr>
-    <tr>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$MAIL_text}:</td>
-    <td   style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;">{$m}</td>
-  </tr>
-    <tr>
-    <td colspan="5">&nbsp;</td>
-  </tr>  
- 
-</table>
-</center>
+ob_start();
+include($base . "/inc/mail_tmpl/unok_ticket.tpl");
+$message = ob_get_clean();
 
-</div>
-EOBODY;
+$message = str_replace("{MAIL_msg_no_ok}", $MAIL_msg_no_ok, $message);
+$message = str_replace("{MAIL_msg_no_ok_ext}", $MAIL_msg_no_ok_ext, $message);
+$message = str_replace("{who_init}", $who_init, $message);
+
+
+
+
+
+$message = str_replace("{MAIL_code}", $MAIL_code, $message);
+$message = str_replace("{ticket_id}", $ticket_id, $message);
+
+$message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
+$message = str_replace("{MAIL_info}", $MAIL_info, $message);
+
+$message = str_replace("{MAIL_created}", $MAIL_created, $message);
+$message = str_replace("{uin}", $uin, $message);
+
+$message = str_replace("{MAIL_to}", $MAIL_to, $message);
+$message = str_replace("{to_text}", $to_text, $message);
+
+$message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
+$message = str_replace("{prio}", $prio, $message);
+$message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
+$message = str_replace("{nou}", $nou, $message);
+
+$message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
+$message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
+$message = str_replace("{s}", $s, $message);
+$message = str_replace("{MAIL_text}", $MAIL_text, $message);
+$message = str_replace("{m}", $m, $message);
+
+$message = str_replace("{h}", $h, $message);
+
+
 
 		 send_mail($user_mail,$subject,$message);
 }
