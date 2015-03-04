@@ -99,7 +99,7 @@ if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == "0") {
 
         <div class="col-md-4" style="" id="dsd" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right" data-content="<small><?php echo lang('NEW_to_unit_desc'); ?></small>">
 
-<select data-placeholder="<?php echo lang('NEW_to_user'); ?>"  id="users_do" name="unit_id">
+<select data-placeholder="<?php echo lang('NEW_to_user'); ?>"  id="users_do" name="unit_id" multiple>
         <option></option>
                 <?php
         
@@ -184,7 +184,7 @@ if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == $row['va
 
         <div class="col-md-4" style="" id="dsd" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right" data-content="<small><?php echo lang('NEW_to_unit_desc'); ?></small>">
 
-<select data-placeholder="<?php echo lang('NEW_to_user'); ?>"  id="users_do" name="unit_id" disabled>
+<select data-placeholder="<?php echo lang('NEW_to_user'); ?>"  id="users_do" name="unit_id" disabled multiple>
         <option></option>
                 <?php
         

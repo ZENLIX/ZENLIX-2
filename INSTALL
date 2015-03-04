@@ -16,4 +16,10 @@ For install ZENLIX system, please:
 4. After finish, please install nodejs:
 	4.1 install nodejs (sudo apt-get install nodejs)
 	4.2 npm install socket.io mysql pm2 -g 
+		sudo apt-get nodejs
+		sudo apt-get npm
+		npm install socket.io -g
+		npm install mysql -g
+		npm install pm2 -g
+
 5. Go to http://INSTALL-PATH/config?inform for next instruction (CRON)

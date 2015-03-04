@@ -437,7 +437,8 @@ function lang_en($phrase){
 
 'TICKET_p_add_client'=>'Add client',
 'TICKET_p_edit_client'=>'Edit customer',
-
+'TICKET_action_delete' => 'Remove ticket',
+'TICKET_action_delete_info' => 'Deleting will remove the entire history of the events, mentions in the news, comments, attachments and statistical adjustment ticket.',
 
 'TICKET_status_arch'=>'ticket in the archive',
 'TICKET_status_ok'=>'ticket executed by the user',

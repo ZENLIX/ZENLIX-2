@@ -658,7 +658,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                         //$row['value']; //ID
                         //
                         $usr_id = $row['value'];
-                        $stmt = $dbConnection->prepare('SELECT id, ok_by, ok_date, user_to_id, user_init_id, unit_id from tickets where ok_by=:iud and ok_date between :start AND :end  order by ok_date ASC');
+                        $stmt = $dbConnection->prepare('SELECT * from tickets where ok_by=:iud and ok_date between :start AND :end  order by ok_date ASC');
                         $stmt->execute(array(
                             ':iud' => $usr_id,
                             ':start' => $start,
@@ -709,7 +709,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     <td style=""><small><center><?php echo $i; ?></center></small></td>
                     <td style=""><small><center><?php echo $row['id']; ?> </center>  </small></td>
                     <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['id']);?>">
-                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($row['id']))), 'no')); ?>
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['id']))), 'no')); ?>
                     </a>
                     </small></td>
                     <td style=""><small><time id="c" datetime="<?php echo $row['ok_date'] ?>"></time>   </small></td>
@@ -811,7 +811,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     <td style=""><small><center><?php echo $i; ?></center></small></td>
                     <td style=""><small><center><?php echo $row['id']; ?> </center>  </small></td>
                     <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['id']);?>">
-                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($row['id']))), 'no')); ?>
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['id']))), 'no')); ?>
                     </a>
                     </small></td>
                     <td style=""><small><time id="c" datetime="<?php echo $row['last_update'] ?>"></time>   </small></td>
@@ -6255,6 +6255,71 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 }
             }
         }
+
+
+if ($mode == "del_ticket") {
+
+    $t_hash=$_POST['t_hash'];
+    $t_id=get_ticket_id_by_hash($t_hash);
+
+if (validate_admin($_SESSION['helpdesk_user_id'])) {
+//tickets,comments,files,news,ticket_info,ticket_log
+/*
+            $stmt = $dbConnection->prepare('delete from notes where hashname=:noteid');
+            $stmt->execute(array(
+                ':noteid' => $noteid
+            ));
+*/
+            $stmt = $dbConnection->prepare('delete from tickets where hash_name=:id');
+            $stmt->execute(array(
+                ':id' => $t_hash
+            ));
+
+            $stmt = $dbConnection->prepare('delete from comments where t_id=:id');
+            $stmt->execute(array(
+                ':id' => $t_id
+            ));
+
+
+            //delete files
+            $stmt = $dbConnection->prepare("SELECT *
+                            from files where ticket_hash=:id");
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            if (!empty($result)) {
+            foreach ($result as $row) {
+
+                unlink(realpath(dirname(__FILE__)) . "/upload_files/" . $row['file_hash'] . "." . $row['file_ext']);
+
+            }
+            }
+            $stmt = $dbConnection->prepare('delete from files where ticket_hash=:id');
+            $stmt->execute(array(
+                ':id' => $t_hash
+            ));
+
+            $stmt = $dbConnection->prepare('delete from news where ticket_id=:id');
+            $stmt->execute(array(
+                ':id' => $t_id
+            ));  
+
+            $stmt = $dbConnection->prepare('delete from ticket_info where ticket_id=:id');
+            $stmt->execute(array(
+                ':id' => $t_id
+            ));
+
+            $stmt = $dbConnection->prepare('delete from ticket_log where ticket_id=:id');
+            $stmt->execute(array(
+                ':id' => $t_id
+            ));
+
+
+}
+
+}
+
+
         if ($mode == "add_ticket") {
             $type = ($_POST['type_add']);
             

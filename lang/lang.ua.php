@@ -58,7 +58,8 @@ function lang_ua($phrase){
 'LDAP_IMPORT_title_step3'=>'Імпорт користувачів з LDAP (шаг 3 з 3)',
 'LDAP_IMPORT_empty'=>'Не заповнювати',
 'LDAP_IMPORT_already'=>'Імпортовано',
-
+'TICKET_action_delete' => 'Видалити заявку',
+'TICKET_action_delete_info' => 'Вдалення призведе до видалення всієї історії подій, згадок в новинах, коментарів, прикріплених файлів та коригуванні статистики заявок.',
 
 
 

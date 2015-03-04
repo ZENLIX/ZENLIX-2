@@ -486,7 +486,17 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             
     </div>
 
-    </div></div>
+
+
+
+    </div>
+
+
+    
+
+
+
+    </div>
     
     <div class="row">
     <div class="col-md-12">
@@ -554,9 +564,50 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     
 </div>
 
+
+
+
+<?php
+
+if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
+
 <div class="row">
     
     <div class="col-md-12">
+<div class="box box-danger" >
+<div class="box-body">
+
+
+<button id="del_ticket" type="button" class="btn bg-maroon btn-flat btn-block pops2" data-content="<small><?=lang('TICKET_action_delete_info');?></small>" ><i class="fa fa-trash"></i> <?=lang('TICKET_action_delete');?></button>
+</div>
+</div>
+    </div>
+</div>
+
+<?php 
+
+}
+?>
+
+
+
+
+
+
+<div class="row">
+    
+    <div class="col-md-12">
+
+
+
+
+
+
+
+
+
+
+
     <?php
             
             if ($arch == 1) {

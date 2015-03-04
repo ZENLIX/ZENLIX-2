@@ -238,6 +238,31 @@ $(".right-side").fadeIn(800);
     }
 
     function make_popover() {
+
+        $('.pops2').popover({
+            html: true,
+            trigger: 'manual',
+            container: $(this).attr('id'),
+            placement: 'bottom',
+            content: function() {
+                $return = '<div class="hover-hovercard"></div>';
+            }
+        }).on("mouseenter", function() {
+            var _this = this;
+            $(this).popover("show");
+            $(this).siblings(".popover").on("mouseleave", function() {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function() {
+            var _this = this;
+            setTimeout(function() {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide")
+                }
+            }, 100);
+        });
+
+
         $('.pops').popover({
             html: true,
             trigger: 'manual',
@@ -1750,6 +1775,40 @@ $('body').on('click', 'button#user_stat_make', function(event) {
                 }
             });
         });
+
+
+
+        $('body').on('click', 'button#del_ticket', function(event) {
+            event.preventDefault();
+
+            var t_hash = $('#ticket_hash').val();
+            var lang_del = get_lang_param('JS_del');
+
+
+            bootbox.confirm(lang_del, function(result) {
+                if (result == true) {
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=del_ticket" + "&t_hash=" + t_hash,
+                success: function(html) {
+                    //console.log(html);
+                    //$('#myModal').modal('hide');
+                    //$(elem).removeClass().addClass('success', 1000);
+                    window.location = MyHOSTNAME + "list";
+                }
+            });
+                } else if (result == false) {}
+            });
+
+
+
+
+
+
+});
+
+
         $('body').on('click', 'button#action_ok', function(event) {
             event.preventDefault();
             var status_lock = $("button#action_ok").attr('status');
@@ -3152,6 +3211,7 @@ view_helper_cat();
         }
 
         function enter_ticket_client() {
+            //console.log($("#users_do").val());
             var u_do;
             var deadline_time=$("#d_finish_val").val();
             if ($("#users_do").val() == null) {
@@ -3169,12 +3229,14 @@ view_helper_cat();
                     "&deadline_time="+deadline_time,
                 success: function(html) {
                     //console.log(html);
+
                     window.location = MyHOSTNAME + "create?ok&h=" + html;
                 }
             });
         }
 
         function enter_ticket() {
+             //console.log($("#users_do").val());
             var status_action = $("#status_action").val();
             var u_do;
             var deadline_time=$("#d_finish_val").val();
