@@ -1021,13 +1021,16 @@ if ($_POST['menu'] == 'import') {
                     $priv = lang('USERS_p_3');
                 }
             }
-            if ($statuss != "1") {
+            if ($statuss == "0") {
                 $r = "<span class=\"label label-danger\">disable</span>";
             } else if ($statuss == "1") {
                 $r = "<span class=\"label label-success\">enable</span>";
             }
+            else if ($statuss == "2") {
+                $r = "<span class=\"label label-default\">deleted</span>";
+            }
 ?>
-          <tr class="">
+          <tr class="primary">
             <td><small><?php
             echo $row['login']; ?></small></td>
             <td><small><a href="<?php
@@ -1211,8 +1214,14 @@ if ($_POST['menu'] == 'import') {
    <div class="form-group">
     <label for="lock" class="col-sm-2 control-label"><?php echo lang('USERS_acc'); ?></label>
         <div class="col-sm-10">
-    
-    <select class="form-control input-sm" name="lock" id="lock">
+    <?php
+    $idtag['input']="lock_not_active"; $idtag['select']="lock";
+if ($status == "2") {$sd="disabled"; $idtag['input']="lock"; $idtag['select']="lock_not_active";}
+    ?>
+    <input type="hidden" value="2" id="<?=$idtag['input'];?>">
+    <select class="form-control input-sm" name="lock" id="<?=$idtag['select'];?>" <?=$sd;?>>    
+
+
   <option <?php echo $status_lock ?> value="0"><?php echo lang('USERS_not_active'); ?></option>
   <option <?php echo $status_unlock ?> value="1"><?php echo lang('USERS_active'); ?></option>
     </select>
@@ -1233,7 +1242,14 @@ if ($_POST['menu'] == 'import') {
                   <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><?=lang('USERS_privs');?></a></li>
                   <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false"><?=lang('MAIL_msg');?></a></li>
                   <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="false"><?=lang('PERF_menu_ticket_conf');?></a></li>
-                  
+                  <li class=""><a href="#tab_5" data-toggle="tab" aria-expanded="false">
+<?php 
+
+if ($status != "2") {echo lang('USER_DEL_t');}
+if ($status == "2") {echo lang('USER_RE_t');}
+
+                  ?>
+                  </a></li>
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="tab_1">
@@ -1658,6 +1674,21 @@ if (in_array($row['value'], $mass)) {$st_sel="selected";}
 
 
 
+</div>
+
+<div class="tab-pane" id="tab_5">
+<?php 
+if ($status == "2") {
+  ?>
+<button type="button" class="btn btn-success btn-lg btn-block" value="<?php echo $usid; ?>" id="re_user"><?=lang('USER_RE_button');?></button>
+  <?php
+}
+if ($status != "2") {
+?>
+<button type="button" class="btn btn-danger btn-lg btn-block" value="<?php echo $usid; ?>" id="del_user"><?=lang('USER_DEL_button');?></button>
+<?php
+}
+?>
 </div>
 
                 </div><!-- /.tab-content -->

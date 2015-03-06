@@ -140,8 +140,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
         */
         
-        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and login !=:system and is_client=0 order by fio ASC');
-        $stmt->execute(array(':n' => '1', ':system' => 'system'));
+        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and id !=:system and is_client=0 order by fio ASC');
+        $stmt->execute(array(':n' => '1', ':system' => '1'));
         $res1 = $stmt->fetchAll();
         
         $opts=explode(",", $cron['user_to_id']);
@@ -644,8 +644,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
         */
         
-        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and login !=:system and is_client=0 order by fio ASC');
-        $stmt->execute(array(':n' => '1', ':system' => 'system'));
+        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and id !=:system and is_client=0 order by fio ASC');
+        $stmt->execute(array(':n' => '1', ':system' => '1'));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             

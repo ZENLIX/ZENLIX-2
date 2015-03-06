@@ -202,7 +202,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             //$ee - массив id отделов, на которые у меня есть права
             //$ec - массив id отделов пользователей
             //если какой-то отдел совпадает вывести
-            $stmt = $dbConnection->prepare('SELECT id, unit from users where is_client=0');
+            $stmt = $dbConnection->prepare('SELECT id, unit from users where is_client=0 and status!=2');
             $stmt->execute();
             $result = $stmt->fetchAll();
             if (!empty($result)) {

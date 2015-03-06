@@ -65,7 +65,7 @@ function send_notification($type, $ticket_id) {
                     $user_units = $qrow['unit'];
                     $res_str = explode(",", $user_units);
                     foreach ($res_str as $vals) {
-                        $stmt2 = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and (priv=2 OR priv=0) and is_client=0');
+                        $stmt2 = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and (priv=2 OR priv=0) and is_client=0 and status!=2');
                         $stmt2->execute(array(':id' => $vals));
                         $res2 = $stmt2->fetchAll();
                         foreach ($res2 as $qrow2) {
@@ -151,7 +151,7 @@ function send_notification($type, $ticket_id) {
                     $user_units = $qrow['unit'];
                     $res_str = explode(",", $user_units);
                     foreach ($res_str as $vals) {
-                        $stmt2 = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and (priv=2 OR priv=0) and is_client=0');
+                        $stmt2 = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and (priv=2 OR priv=0) and is_client=0 and status!=2');
                         $stmt2->execute(array(':id' => $vals));
                         $res2 = $stmt2->fetchAll();
                         foreach ($res2 as $qrow2) {

@@ -299,7 +299,7 @@ function get_conf_param($in) {
     ));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    return $fio['value'];
+    return htmlspecialchars($fio['value']);
 }
 
 //$fio_user=$fio['fio'];
@@ -396,7 +396,7 @@ function validate_exist_login($str) {
     global $dbConnection;
     $uid = $_SESSION['helpdesk_user_id'];
     
-    $stmt = $dbConnection->prepare('SELECT count(login) as n from users where login=:str');
+    $stmt = $dbConnection->prepare('SELECT count(login) as n from users where login=:str and status!=2 ');
     $stmt->execute(array(
         ':str' => $str
     ));
@@ -414,7 +414,7 @@ function validate_exist_login_ex($str, $ex) {
     global $dbConnection;
     $uid = $_SESSION['helpdesk_user_id'];
     
-    $stmt = $dbConnection->prepare('SELECT count(login) as n from users where login=:str and login!=:ex');
+    $stmt = $dbConnection->prepare('SELECT count(login) as n from users where login=:str and login!=:ex and status!=2 ');
     $stmt->execute(array(
         ':str' => $str,
         ':ex' => $ex
@@ -432,7 +432,7 @@ function validate_exist_login_ex($str, $ex) {
 function validate_exist_mail_not_auth($str) {
     global $dbConnection;
     
-    $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email=:str');
+    $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email=:str and status!=2');
     $stmt->execute(array(
         ':str' => $str
     ));
@@ -450,7 +450,7 @@ function validate_exist_mail($str) {
     global $dbConnection;
     $uid = $_SESSION['helpdesk_user_id'];
     
-    $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email=:str and id != :uid');
+    $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email=:str and id != :uid and status!=2 ');
     $stmt->execute(array(
         ':str' => $str,
         ':uid' => $uid
@@ -498,7 +498,7 @@ function randomPassword() {
 function check_admin_user_priv($in) {
     global $dbConnection;
     
-    $stmt = $dbConnection->prepare('SELECT id, unit from users where id=:in');
+    $stmt = $dbConnection->prepare('SELECT id, unit from users where id=:in and status!=2 ');
     $stmt->execute(array(
         ':in' => $in
     ));
@@ -636,7 +636,7 @@ function get_file_icon($in) {
 function validate_admin($user_id) {
     global $dbConnection;
     
-    $stmt = $dbConnection->prepare('SELECT is_admin from users where id=:user_id LIMIT 1');
+    $stmt = $dbConnection->prepare('SELECT is_admin from users where id=:user_id and status!=2 LIMIT 1');
     $stmt->execute(array(
         ':user_id' => $user_id
     ));
@@ -653,7 +653,7 @@ function validate_admin($user_id) {
 function get_user_authtype($login) {
     global $dbConnection;
     
-    $stmt = $dbConnection->prepare('SELECT ldap_key from users where login=:user_login LIMIT 1');
+    $stmt = $dbConnection->prepare('SELECT ldap_key from users where login=:user_login and status!=2 LIMIT 1');
     $stmt->execute(array(
         ':user_login' => $login
     ));
@@ -965,33 +965,32 @@ FROM
         
         $ct = make_html($rews['msg'], true);
 ?>
-                                            <!-- chat item -->
-                                    <div class="item" style=" min-height: 35px; <?php
-        echo $s; ?>">
-                                        <img src="<?php
-        echo get_user_img_by_id($rews['user_from']); ?>" alt="user image" class="<?php
-        echo get_user_status_text($rews['user_from']); ?>"/>
-                                        <div class="message">
-                                        <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 
-                                                <time id="b" datetime="<?php
-        echo $rews['date_op']; ?>"></time> <time id="c" datetime="<?php
-        echo $rews['date_op']; ?>"></time>
-                                                </small>
-                                            <a href="view_user?<?php
+
+                                    
+                                    
+                                    
+                                    
+                            <div class="direct-chat-msg">
+                      <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-name pull-left"><a href="view_user?<?php
         echo get_user_hash_by_id($rews['user_from']); ?>" class="name">
                                                 
                                                 <?php
         echo $ru; ?>
-                                            </a><br>
-                                            <?php
-        echo $ct; ?>
-                                        </div>
-                                    </div><!-- /.item -->
-                                    
-                                    
-                                    
-                                    
-        
+                                            </a></span>
+                        <span class="direct-chat-timestamp pull-right"><small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 
+                                                <time id="b" datetime="<?php
+        echo $rews['date_op']; ?>"></time> <time id="c" datetime="<?php
+        echo $rews['date_op']; ?>"></time>
+                                                </small></span>
+                      </div><!-- /.direct-chat-info -->
+                      <img class="direct-chat-img <?php
+        echo get_user_status_text($rews['user_from']); ?>"  src="<?php
+        echo get_user_img_by_id($rews['user_from']); ?>" alt=""><!-- /.direct-chat-img -->
+                      <div class="direct-chat-text">
+                     <small>    <?=$ct; ?></small>
+                      </div><!-- /.direct-chat-text -->
+                    </div><!-- /.direct-chat-msg -->
         
         
         
@@ -1016,11 +1015,11 @@ function view_comment($tid) {
 ?>
     
     
+
+
     
     
-    
-    
-        <div class="" id="comment_body" style="min-height: 10px; max-height: 400px; scroll-behavior: initial; overflow-y: scroll;">
+        <div class="direct-chat-messages" id="comment_body" style="min-height: 10px; max-height: 400px; scroll-behavior: initial; overflow-y: scroll;">
     
         
         <?php
@@ -1066,27 +1065,34 @@ function view_comment($tid) {
             $ct = make_html($rews['comment_text'], true);
         }
 ?>
-                                            <!-- chat item -->
-                                    <div class="item" style=" min-height: 35px; ">
-                                        <img src="<?php
-        echo get_user_img_by_id($rews['user_id']); ?>" alt="user image" class="<?php
-        echo get_user_status_text($rews['user_id']); ?>"/>
-                                        <div class="message">
-                                        <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 
-                                                <time id="b" datetime="<?php
-        echo $rews['dt']; ?>"></time> <time id="c" datetime="<?php
-        echo $rews['dt']; ?>"></time>
-                                                </small>
-                                            <a href="view_user?<?php
+
+
+ <!-- Message. Default to the left -->
+                    <div class="direct-chat-msg">
+                      <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-name pull-left"><a href="view_user?<?php
         echo get_user_hash_by_id($rews['user_id']); ?>" class="name">
                                                 
                                                 <?php
         echo $ru; ?>
-                                            </a><br>
-                                            <?php
-        echo $ct; ?>
-                                        </div>
-                                    </div><!-- /.item -->
+                                            </a></span>
+                        <span class="direct-chat-timestamp pull-right"><small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 
+                                                <time id="b" datetime="<?php
+        echo $rews['dt']; ?>"></time> <time id="c" datetime="<?php
+        echo $rews['dt']; ?>"></time>
+                                                </small></span>
+                      </div><!-- /.direct-chat-info -->
+                      <img class="direct-chat-img <?php
+        echo get_user_status_text($rews['user_id']); ?>"  src="<?php
+        echo get_user_img_by_id($rews['user_id']); ?>" alt=""><!-- /.direct-chat-img -->
+                      <div class="direct-chat-text">
+                     <small>    <?=$ct; ?></small>
+                      </div><!-- /.direct-chat-text -->
+                    </div><!-- /.direct-chat-msg -->
+
+
+                                            <!-- chat item -->
+                                    
                                     
                                     
                                     
@@ -1226,7 +1232,7 @@ function validate_client($user_id, $input) {
 
 function get_userlogin_byid($in) {
     global $dbConnection;
-    $stmt = $dbConnection->prepare('SELECT login from users where id=:user_id LIMIT 1');
+    $stmt = $dbConnection->prepare('SELECT login from users where id=:user_id and status!=2 LIMIT 1');
     $stmt->execute(array(
         ':user_id' => $in
     ));
@@ -1242,7 +1248,7 @@ function validate_user_by_api($input) {
     global $dbConnection, $CONF;
     $result = false;
 
-    $stmt = $dbConnection->prepare('SELECT login, fio from users where uniq_id=:ls LIMIT 1');
+    $stmt = $dbConnection->prepare('SELECT login, fio from users where uniq_id=:ls and status!=2 LIMIT 1');
             $stmt->execute(array(
                 ':ls' => $input
             ));
@@ -1577,7 +1583,7 @@ $id=$in;
 
 function get_client_info_client_ticket($id) {
     global $dbConnection;
-    $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,tel_ext,email,login,posada FROM users where id=:id');
+    $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,tel_ext,email,login,posada FROM users where id=:id and status!=2');
     $stmt->execute(array(
         ':id' => $id
     ));
@@ -1721,7 +1727,7 @@ function get_client_info_client_ticket($id) {
 
 function get_client_info_ticket($id) {
     global $dbConnection, $CONF;
-    $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,email,login,posada,usr_img FROM users where id=:id');
+    $stmt = $dbConnection->prepare('SELECT fio,tel,unit_desc,adr,email,login,posada,usr_img FROM users where id=:id and status!=2');
     $stmt->execute(array(
         ':id' => $id
     ));
@@ -3828,7 +3834,7 @@ function get_total_pages_clients() {
     global $dbConnection;
     $perpage = '15';
     
-    $res = $dbConnection->prepare("SELECT count(*) from users where is_client=1");
+    $res = $dbConnection->prepare("SELECT count(*) from users where is_client=1 and status!=2");
     $res->execute();
     $count = $res->fetch(PDO::FETCH_NUM);
     $count = $count[0];
@@ -3848,7 +3854,7 @@ function get_total_pages_workers() {
     global $dbConnection;
     $perpage = '15';
     
-    $res = $dbConnection->prepare("SELECT count(*) from users");
+    $res = $dbConnection->prepare("SELECT count(*) from users where status!=2");
     $res->execute();
     $count = $res->fetch(PDO::FETCH_NUM);
     $count = $count[0];
@@ -4363,7 +4369,7 @@ function get_users_from_units_by_user() {
     
 
 
-$stmt = $dbConnection->prepare('SELECT id, unit FROM users');
+$stmt = $dbConnection->prepare('SELECT id, unit FROM users where status!=2');
 
 $stmt->execute();
 $res1 = $stmt->fetchAll();

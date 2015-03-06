@@ -419,6 +419,12 @@ function lang_en($phrase){
 'PROFILE_priv'=>'Your powers in the system',
 'PROFILE_priv_unit'=>'access to the departments',
 
+'USER_DEL_main'=>'This user has been deleted',
+'USER_DEL_info'=>'This user has been deleted from the system. For more information, please contact your system administrator.',
+'USER_DEL_button'=>'Delete user',
+'USER_DEL_t'=>'Remove user',
+'USER_RE_button'=>'Restore user',
+'USER_RE_t'=>'Restore user',
 
 'TABLE_name'=>'Name',
 'TABLE_action'=>'Action',

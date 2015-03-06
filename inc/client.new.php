@@ -108,8 +108,8 @@ if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == "0") {
         while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
         */
         
-        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and is_client=0 and login !=:system order by fio ASC');
-        $stmt->execute(array(':n' => '1', ':system' => 'system'));
+        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and is_client=0 and id !=:system order by fio ASC');
+        $stmt->execute(array(':n' => '1', ':system' => '1'));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             
@@ -193,8 +193,8 @@ if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == $row['va
         while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
         */
         
-        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and is_client=0 and login !=:system order by fio ASC');
-        $stmt->execute(array(':n' => '1', ':system' => 'system'));
+        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and is_client=0 and id !=:system order by fio ASC');
+        $stmt->execute(array(':n' => '1', ':system' => '1'));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             

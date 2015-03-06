@@ -60,8 +60,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             
 
             
-            $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where login !=:system and is_client=0 order by fio ASC');
-            $stmt->execute(array(':system' => 'system'));
+            $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where id !=:system and is_client=0 and status!=2 order by fio ASC');
+            $stmt->execute(array(':system' => '1'));
             $res1 = $stmt->fetchAll();
             foreach ($res1 as $row) {
                 $unit_user = unit_of_user($_SESSION['helpdesk_user_id']);

@@ -94,7 +94,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 
                 $tmp_id = $row['client_id'];
                 
-                $stmt = $dbConnection->prepare('select fio, tel, login, unit_desc, adr, email, posada,skype from users where id=:tmp_id');
+                $stmt = $dbConnection->prepare('select fio, tel, login, unit_desc, adr, email, posada,skype from users where id=:tmp_id and status!=2');
                 $stmt->execute(array(':tmp_id' => $tmp_id));
                 $info = $stmt->fetch(PDO::FETCH_ASSOC);
                 

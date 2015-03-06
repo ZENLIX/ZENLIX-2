@@ -533,9 +533,9 @@ values (:comment, :n, :user_comment, :tid_comment)');
 
 <?php
                 
-                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where login !=:system and is_client=0 order by fio ASC');
+                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where id !=:system and is_client=0 order by fio ASC');
                 $stmt->execute(array(
-                    ':system' => 'system'
+                    ':system' => '1'
                 ));
                 $res1 = $stmt->fetchAll();
                 $i = 1;
@@ -643,9 +643,9 @@ values (:comment, :n, :user_comment, :tid_comment)');
 
 <?php
                 
-                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where login !=:system and is_client=0 order by fio ASC');
+                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where id !=:system and is_client=0 order by fio ASC');
                 $stmt->execute(array(
-                    ':system' => 'system'
+                    ':system' => '1'
                 ));
                 $res1 = $stmt->fetchAll();
                 $i = 1;
@@ -1344,7 +1344,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
             
             $term = trim(strip_tags(($_POST['name'])));
             
-            $stmt = $dbConnection->prepare('SELECT id FROM users WHERE ((fio = :term) or (login = :term2) or (tel = :term3)) and id!=1 and is_client=1 limit 1');
+            $stmt = $dbConnection->prepare('SELECT id FROM users WHERE ((fio = :term) or (login = :term2) or (tel = :term3)) and id!=1 and is_client=1 and status!=2 limit 1');
             $stmt->execute(array(
                 ':term' => $term,
                 ':term2' => $term,
@@ -3953,6 +3953,7 @@ values
                 "&email_gate_login="+$("#email_gate_login").val()+
                 "&email_gate_pass="+$("#email_gate_pass").val(),
             */
+                //echo $_POST['email_gate_filter'];
             update_val_by_key("email_gate_status", $_POST['email_gate_status']);
             update_val_by_key("email_gate_all", $_POST['email_gate_all']);
             update_val_by_key("email_gate_unit_id", $_POST['to']);
@@ -3962,7 +3963,7 @@ values
             update_val_by_key("email_gate_port", $_POST['email_gate_port']);
             update_val_by_key("email_gate_login", $_POST['email_gate_login']);
             update_val_by_key("email_gate_pass", $_POST['email_gate_pass']);
-            update_val_by_key("email_gate_filter", $_POST['email_gate_filter']);
+            update_val_by_key("email_gate_filter", stripslashes($_POST['email_gate_filter']));
             update_val_by_key("email_gate_cat", $_POST['email_gate_cat']);
             
 
@@ -3979,7 +3980,30 @@ values
 
 
 
+if ($mode == "re_user") {
 
+$uhash=$_POST['id'];
+
+            $stmt = $dbConnection->prepare('update users set status=:s where uniq_id=:id');
+            $stmt->execute(array(
+                ':id' => $uhash,
+                ':s' => '1'
+            ));
+
+}
+
+
+if ($mode == "del_user") {
+
+$uhash=$_POST['id'];
+
+            $stmt = $dbConnection->prepare('update users set status=:s where uniq_id=:id');
+            $stmt->execute(array(
+                ':id' => $uhash,
+                ':s' => '2'
+            ));
+
+}
 
 
         if ($mode == "conf_edit_mail") {
@@ -3991,7 +4015,7 @@ values
             update_val_by_key("mail_auth_type", $_POST['auth_type']);
             update_val_by_key("mail_username", $_POST['username']);
             update_val_by_key("mail_password", $_POST['password']);
-            update_val_by_key("mail_from", $_POST['from']);
+            update_val_by_key("mail_from", stripslashes($_POST['from']));
             
             //update_val_by_key("mail_debug", $_POST['debug']);
             
@@ -4064,7 +4088,7 @@ if ($_POST['to_msg'] == "0") {update_val_by_key("global_msg_to", $_POST['usr_lis
 else if ($_POST['to_msg'] == "1") {update_val_by_key("global_msg_to", "all");}
 
 update_val_by_key("global_msg_status", $_POST['status']);
-update_val_by_key("global_msg_data", $_POST['gm_text']);
+update_val_by_key("global_msg_data", stripslashes($_POST['gm_text']));
 
 if ($_POST['msg_type'] == "0") {update_val_by_key("global_msg_type", 'info');}
 if ($_POST['msg_type'] == "1") {update_val_by_key("global_msg_type", 'warning');}
@@ -4096,12 +4120,12 @@ echo $msg;
                 
                 update_val_by_key("ldap_ip", $_POST['ldap']);
                 update_val_by_key("ldap_domain", $_POST['ldapd']);
-                update_val_by_key("name_of_firm", $_POST['name_of_firm']);
-                update_val_by_key("title_header", $_POST['title_header']);
+                update_val_by_key("name_of_firm", stripslashes($_POST['name_of_firm']));
+                update_val_by_key("title_header", stripslashes($_POST['title_header']));
                 update_val_by_key("hostname", $_POST['hostname']);
                 
                 update_val_by_key("node_port", $_POST['node_port']);
-                update_val_by_key("time_zone", $_POST['time_zone']);
+                update_val_by_key("time_zone", stripslashes($_POST['time_zone']));
                 update_val_by_key("allow_register", $_POST['allow_register']);
                 update_val_by_key("lang_def", $_POST['lang']);
                 //$bodytag = str_replace(",", "|", $_POST['file_types']);
@@ -5919,7 +5943,7 @@ values (:edit_msg, :n, :unow, :pk)');
         if ($mode == "message_user_list") {
             $t = $_POST['t'];
             if ($_POST['t']) {
-                $stmt = $dbConnection->prepare('SELECT id, fio from users where fio like :t and id!=:uid order by fio ASC limit 10');
+                $stmt = $dbConnection->prepare('SELECT id, fio from users where fio like :t and id!=:uid and status!=2  order by fio ASC limit 10');
                 $stmt->execute(array(
                     ':t' => '%' . $t . '%',
                     ':uid' => $_SESSION['helpdesk_user_id']

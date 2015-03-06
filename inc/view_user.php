@@ -45,6 +45,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             $user_mail = $row['email'];
             $user_adr = $row['adr'];
             $uniq_id = $row['uniq_id'];
+
+            $user_status=$row['status'];
             
             if ($row['usr_img']) {
                 $user_img = $CONF['hostname'] . '/upload_files/avatars/' . $row['usr_img'];
@@ -68,6 +70,83 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 <section class="content">
 
+
+<?php 
+if ($user_status == "2") {
+?>
+
+<div class="row">
+                            <div class="col-md-3">
+                                <div class="box box-warning">
+                                <div class="box-header">
+                                <h4 style="text-align:center;"><?php echo $user_fio; ?></h4>
+                                </div>
+                                <div class="box-body">
+                                  
+                        <center>
+                            <img  src="<?php echo $user_img; ?>" class="img-rounded" alt="User Image">
+                        </center>
+                        
+        
+                           
+                                    
+                                    
+                                </div><!-- /.box-body -->
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            </div>
+
+
+
+ <div class="col-md-9">
+                                
+                                <div class="row">
+                                    
+                                    <div class="col-md-12"><div class="box box-solid">
+                                
+                                <div class="box-body">
+                                    
+                                    
+     
+      <div class="panel-body">
+      <section class="content">
+
+          <div class="error-page">
+            
+            <div class="">
+              <h3><i class="fa fa-warning text-red"></i> <?=lang('USER_DEL_main');?></h3>
+              <p>
+                <?=lang('USER_DEL_info');?>
+              </p>
+              
+            </div>
+          </div><!-- /.error-page -->
+
+        </section>
+      </div>
+      </div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+
+
+
+
+</div>
+<?php 
+}
+
+if ($user_status != "2") {
+?>
                     <!-- row -->
                     <div class="row">
                     
@@ -362,7 +441,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     </div>
                     
                     
-                     
+                     <?php 
+
+}
+                     ?>
                     
                     
                     
