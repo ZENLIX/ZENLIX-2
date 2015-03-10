@@ -1742,6 +1742,65 @@ values
 
 }
 
+if ($mode == "reset_sort") {
+
+    $pt=$_POST['pt'];
+
+    if ($pt == "in") { unset($_SESSION['zenlix_list_in_sort']); unset($_SESSION['zenlix_list_in_sort_var']);}
+    if ($pt == "out") { unset($_SESSION['zenlix_list_out_sort']); unset($_SESSION['zenlix_list_out_sort_var']);} 
+
+}
+
+if ($mode == "make_sort") {
+
+    $pt=$_POST['pt'];
+    $st=$_POST['st'];
+
+
+
+if ($pt == "in") {
+
+if ($_SESSION['zenlix_list_in_sort'] == $st) {
+
+    if ($_SESSION['zenlix_list_in_sort_var'] == "asc") {$sort_val="desc";}
+    else if ($_SESSION['zenlix_list_in_sort_var'] == "desc") {$sort_val="asc";}
+    else {$sort_val="asc";}
+}
+else {
+    $sort_val="asc";
+}
+
+
+
+//<mark>
+
+    $_SESSION['zenlix_list_in_sort']=$st;
+    $_SESSION['zenlix_list_in_sort_var'] = $sort_val;
+    
+}
+
+else if ($pt == "out") {
+
+if ($_SESSION['zenlix_list_out_sort'] == $st) {
+
+    if ($_SESSION['zenlix_list_out_sort_var'] == "asc") {$sort_val="desc";}
+    else if ($_SESSION['zenlix_list_out_sort_var'] == "desc") {$sort_val="asc";}
+    else {$sort_val="asc";}
+}
+else {
+    $sort_val="asc";
+}
+
+
+
+//<mark>
+
+    $_SESSION['zenlix_list_out_sort']=$st;
+    $_SESSION['zenlix_list_out_sort_var'] = $sort_val;
+    
+}
+
+}
 
 //ldap_import_next
 if ($mode == "ldap_import_next") {

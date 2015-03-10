@@ -45,6 +45,59 @@ if user - only his tickets
 
 
 
+        $order_l="id desc";
+        $order_l_var="";
+        if (isset($_SESSION['zenlix_list_out_sort'])) {
+
+            switch ($_SESSION['zenlix_list_out_sort']) {
+                case 'id':
+                    $order_l="id";
+                    break;
+                case 'prio':
+                    $order_l="prio";
+                    break;
+                case 'subj':
+                    $order_l="subj";
+                    break;
+                case 'client_id':
+                    $order_l="client_id";
+                    break;
+                case 'date_create':
+                    $order_l="date_create";
+                    break;
+                case 'date_create':
+                    $order_l="date_create";
+                    break;
+                case 'user_init_id':
+                    $order_l="user_init_id";
+                    break;
+                     default:
+                     $order_l="id desc";
+        }
+
+
+
+
+
+
+    }
+
+    if (isset($_SESSION['zenlix_list_out_sort_var'])) {
+             switch ($_SESSION['zenlix_list_out_sort_var']) {
+
+                case 'asc':
+                    $order_l_var="asc";
+                    break;
+                case 'desc':
+                    $order_l_var="desc";
+                    break;
+
+             }
+
+    }
+
+    $order_l=$order_l." ".$order_l_var;
+
 
 
         
@@ -78,7 +131,7 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
             
             $stmt = $dbConnection->prepare('SELECT * from tickets 
         where arch=:n 
-        order by id desc limit :start_pos, :perpage');
+        order by '.$order_l.' limit :start_pos, :perpage');
             $stmt->execute(array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
         }
              }
@@ -152,7 +205,7 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
             
             $stmt = $dbConnection->prepare('SELECT * from tickets 
         where user_init_id IN (' . $in_query . ') and arch=:n 
-        order by id desc limit :start_pos, :perpage');
+        order by '.$order_l.' limit :start_pos, :perpage');
             $paramss=array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
             $stmt->execute(array_merge($vv, $paramss));
         }
@@ -184,7 +237,7 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
             
             $stmt = $dbConnection->prepare('SELECT * from tickets 
         where user_init_id=:user_id and arch=:n 
-        order by id desc limit :start_pos, :perpage');
+        order by '.$order_l.' limit :start_pos, :perpage');
             $stmt->execute(array(':user_id' => $user_id, ':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
         }
 
@@ -218,7 +271,50 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
             ?>
 
 
+<?php
 
+if (!isset($_SESSION['hd.rustem_sort_out'])) {
+        if (isset($_SESSION['zenlix_list_out_sort'])) {
+
+
+         if (isset($_SESSION['zenlix_list_out_sort_var'])) {
+
+            if ($_SESSION['zenlix_list_out_sort_var'] == "asc") { $r=" <i class='fa fa-sort-asc'></i>";}
+            if ($_SESSION['zenlix_list_out_sort_var'] == "desc") { $r=" <i class='fa fa-sort-desc'></i>";}
+         }
+
+
+            switch ($_SESSION['zenlix_list_out_sort']) {
+                    case 'id':
+                        $sort_type_start['id']="<mark>";
+                        $sort_type_stop['id']=$r."</mark>";
+                    break;
+                    case 'prio':
+                        $sort_type_start['prio']="<mark>";
+                        $sort_type_stop['prio']=$r."</mark>";
+                    break;
+                    case 'subj':
+                        $sort_type_start['subj']="<mark>";
+                        $sort_type_stop['subj']=$r."</mark>";
+                    break;
+                    case 'client_id':
+                        $sort_type_start['client_id']="<mark>";
+                        $sort_type_stop['client_id']=$r."</mark>";
+                    break;
+                    case 'date_create':
+                        $sort_type_start['date_create']="<mark>";
+                        $sort_type_stop['date_create']=$r."</mark>";
+                    break;
+                    case 'user_init_id':
+                        $sort_type_start['user_init_id']="<mark>";
+                        $sort_type_stop['user_init_id']=$r."</mark>";
+                    break;
+            }
+        }
+
+    }
+
+?>
 
 
 
@@ -229,13 +325,43 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
             <table class="table table-bordered table-hover" style=" font-size: 14px; ">
                 <thead>
                 <tr>
-                    <th><center>#</center></th>
-                    <th><center><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_LIST_prio'); ?>"></i></center></th>
-                    <th><center><?php echo lang('t_LIST_subj'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_worker'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_create'); ?></center></th>
+                    <th><center>
+
+                    <a href="#" style="color: black;" value="id" id="make_sort"> <?=$sort_type_start['id'];?>#<?=$sort_type_stop['id'];?>
+                    </a>
+                    </center></th>
+                    <th><center>
+                    <a href="#" style="color: black;" value="prio" id="make_sort"> 
+                    <?=$sort_type_start['prio'];?>
+                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_LIST_prio'); ?>"></i>
+                    <?=$sort_type_stop['prio'];?>
+                    </a></center></th>
+                    <th><center>
+                    <a href="#" style="color: black;" value="subj" id="make_sort"> 
+                    <?=$sort_type_start['subj'];?>
+                    <?php echo lang('t_LIST_subj'); ?>
+                    <?=$sort_type_stop['subj'];?>
+                    </a></center></th>
+                    <th><center>
+                    <a href="#" style="color: black;" value="client_id" id="make_sort"> 
+                    <?=$sort_type_start['client_id'];?>
+                    <?php echo lang('t_LIST_worker'); ?>
+                    <?=$sort_type_stop['client_id'];?>
+                    </a>
+                    </center></th>
+                    <th><center>
+<a href="#" style="color: black;" value="date_create" id="make_sort"> 
+<?=$sort_type_start['date_create'];?>
+<?php echo lang('t_LIST_create'); ?>
+<?=$sort_type_stop['date_create'];?>
+</a></center></th>
                     <th><center><?php echo lang('t_LIST_ago'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_init') ?></center></th>
+                    <th><center>
+                        <a href="#" style="color: black;" value="user_init_id" id="make_sort"> 
+                        <?=$sort_type_start['user_init_id'];?>
+                    <?php echo lang('t_LIST_init') ?>
+                    <?=$sort_type_stop['user_init_id'];?>
+                    </a></center></th>
                     <th><center><?php echo lang('t_LIST_to'); ?></center></th>
                     <th><center><?php echo lang('t_LIST_status'); ?></center></th>
                     <th><center><?php echo lang('t_LIST_action'); ?></center></th>
@@ -664,8 +790,11 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
 ?>
                 <tr id="tr_<?php
                 echo $row['id']; ?>" class="<?php echo $style ?>">
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php
-                echo $row['id']; ?></center></small></td>
+                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center>
+                   <?=$row['id'];?>
+
+
+                </center></small></td>
                     <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php echo $prio ?></center></small></td>
                     <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
                     title="<?php echo make_html($row['subj'], 'no'); ?>"
@@ -742,6 +871,61 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
             $vv[":val_" . $key] = $value;
         }
         
+
+
+        $order_l="ok_by asc, prio desc, id desc";
+        $order_l_var="";
+        if (isset($_SESSION['zenlix_list_in_sort'])) {
+
+            switch ($_SESSION['zenlix_list_in_sort']) {
+                case 'id':
+                    $order_l="id";
+                    break;
+                case 'prio':
+                    $order_l="prio";
+                    break;
+                case 'subj':
+                    $order_l="subj";
+                    break;
+                case 'client_id':
+                    $order_l="client_id";
+                    break;
+                case 'date_create':
+                    $order_l="date_create";
+                    break;
+                case 'date_create':
+                    $order_l="date_create";
+                    break;
+                case 'user_init_id':
+                    $order_l="user_init_id";
+                    break;
+                     default:
+                     $order_l="ok_by asc, prio desc, id desc";
+        }
+
+
+
+
+
+
+    }
+
+    if (isset($_SESSION['zenlix_list_in_sort_var'])) {
+             switch ($_SESSION['zenlix_list_in_sort_var']) {
+
+                case 'asc':
+                    $order_l_var="asc";
+                    break;
+                case 'desc':
+                    $order_l_var="desc";
+                    break;
+
+             }
+
+    }
+
+    $order_l=$order_l." ".$order_l_var;
+
         if ($priv_val == 0) {
             
             /*
@@ -793,7 +977,7 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
             if (!isset($_SESSION['hd.rustem_sort_in'])) {
                 $stmt = $dbConnection->prepare('SELECT * from tickets
                             where unit_id IN (' . $in_query . ')  and arch=:n
-                            order by ok_by asc, prio desc, id desc
+                            order by '.$order_l.'
                             limit :start_pos, :perpage');
                 
                 $paramss = array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
@@ -839,7 +1023,7 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
                 $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2))
-                            order by ok_by asc, prio desc, id desc
+                            order by '.$order_l.'
                             limit :start_pos, :perpage');
                 $paramss = array(':user_id' => $user_id, ':n' => '0', ':n1' => '0', ':n2' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage);
                 $stmt->execute(array_merge($vv, $paramss));
@@ -881,9 +1065,13 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
             }
             
             if (!isset($_SESSION['hd.rustem_sort_in'])) {
+
+
+
+
                 $stmt = $dbConnection->prepare('SELECT * from tickets
                             where arch=:n
-                            order by ok_by asc, prio desc, id desc
+                            order by '.$order_l.'
                             limit :start_pos, :perpage');
                 $stmt->execute(array(':n' => '0', ':start_pos' => $start_pos, ':perpage' => $perpage));
             }
@@ -915,20 +1103,106 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
 
 
 
+<?php
+
+if (!isset($_SESSION['hd.rustem_sort_in'])) {
+        if (isset($_SESSION['zenlix_list_in_sort'])) {
 
 
+         if (isset($_SESSION['zenlix_list_in_sort_var'])) {
+
+            if ($_SESSION['zenlix_list_in_sort_var'] == "asc") { $r=" <i class='fa fa-sort-asc'></i>";}
+            if ($_SESSION['zenlix_list_in_sort_var'] == "desc") { $r=" <i class='fa fa-sort-desc'></i>";}
+         }
 
 
+            switch ($_SESSION['zenlix_list_in_sort']) {
+                    case 'id':
+                        $sort_type_start['id']="<mark>";
+                        $sort_type_stop['id']=$r."</mark>";
+                    break;
+                    case 'prio':
+                        $sort_type_start['prio']="<mark>";
+                        $sort_type_stop['prio']=$r."</mark>";
+                    break;
+                    case 'subj':
+                        $sort_type_start['subj']="<mark>";
+                        $sort_type_stop['subj']=$r."</mark>";
+                    break;
+                    case 'client_id':
+                        $sort_type_start['client_id']="<mark>";
+                        $sort_type_stop['client_id']=$r."</mark>";
+                    break;
+                    case 'date_create':
+                        $sort_type_start['date_create']="<mark>";
+                        $sort_type_stop['date_create']=$r."</mark>";
+                    break;
+                    case 'user_init_id':
+                        $sort_type_start['user_init_id']="<mark>";
+                        $sort_type_stop['user_init_id']=$r."</mark>";
+                    break;
+            }
+        }
+
+    }
+
+?>
+
+
+ 
             <table class="table table-bordered table-hover" style=" font-size: 14px; ">
             <thead>
             <tr>
-                <th><center><div id="sort_id" action="<?php echo $_SESSION['helpdesk_sort_id']; ?>">#<?php echo $id_icon; ?></div></center></th>
-                <th><center><div id="sort_prio" action="<?php echo $_SESSION['helpdesk_sort_prio']; ?>"><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_LIST_prio'); ?>"></i><?php echo $prio_icon; ?></div></center></th>
-                <th><center><div id="sort_subj" action="<?php echo $_SESSION['helpdesk_sort_subj']; ?>"><?php echo lang('t_LIST_subj'); ?><?php echo $subj_icon; ?></div></center></th>
-                <th><center><div id="sort_cli" action="<?php echo $_SESSION['helpdesk_sort_clientid']; ?>"><?php echo lang('t_LIST_worker'); ?><?php echo $cli_icon; ?></div></center></th>
-                <th><center><?php echo lang('t_LIST_create'); ?></center></th>
+                <th><center><div id="sort_id" action="<?php echo $_SESSION['helpdesk_sort_id']; ?>">
+<a href="#" style="color: black;" value="id" id="make_sort"> 
+<?=$sort_type_start['id'];?>
+                #<?php echo $id_icon; ?>
+<?=$sort_type_stop['id'];?>
+</a>
+
+                </div></center></th>
+                <th><center><div id="sort_prio" action="<?php echo $_SESSION['helpdesk_sort_prio']; ?>">
+
+                    <a href="#" style="color: black;" value="prio" id="make_sort"> 
+                    <?=$sort_type_start['prio'];?>
+                <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_LIST_prio'); ?>"></i>
+                <?=$sort_type_stop['prio'];?>
+                </a>
+                <?php echo $prio_icon; ?></div></center></th>
+                <th><center><div id="sort_subj" action="<?php echo $_SESSION['helpdesk_sort_subj']; ?>">
+
+                <a href="#" style="color: black;" value="subj" id="make_sort">
+<?=$sort_type_start['subj'];?>
+                <?php echo lang('t_LIST_subj'); ?>
+<?=$sort_type_stop['subj'];?>
+</a>
+                <?php echo $subj_icon; ?>
+
+                </div></center></th>
+                <th><center><div id="sort_cli" action="<?php echo $_SESSION['helpdesk_sort_clientid']; ?>">
+                    <a href="#" style="color: black;" value="client_id" id="make_sort">
+                    <?=$sort_type_start['client_id'];?>
+                <?php echo lang('t_LIST_worker'); ?>
+                <?=$sort_type_stop['client_id'];?>
+                    </a>
+
+                <?php echo $cli_icon; ?></div></center></th>
+                <th><center>
+                <a href="#" style="color: black;" value="date_create" id="make_sort">
+                <?=$sort_type_start['date_create'];?>
+                <?php echo lang('t_LIST_create'); ?>
+                <?=$sort_type_stop['date_create'];?>
+                </a>
+                </center></th>
                 <th><center><?php echo lang('t_LIST_ago'); ?></center></th>
-                <th><center><div id="sort_init" action="<?php echo $_SESSION['helpdesk_sort_userinitid']; ?>"><?php echo lang('t_LIST_init'); ?><?php echo $init_icon; ?></div></center></th>
+                <th><center><div id="sort_init" action="<?php echo $_SESSION['helpdesk_sort_userinitid']; ?>">
+<a href="#" style="color: black;" value="user_init_id" id="make_sort">
+<?=$sort_type_start['user_init_id'];?>
+                <?php echo lang('t_LIST_init'); ?>
+<?=$sort_type_stop['user_init_id'];?>
+</a>
+
+                <?php echo $init_icon; ?></div></center></th>
                 <th><center><?php echo lang('t_LIST_to'); ?></center></th>
                 <th><center><?php echo lang('t_LIST_status'); ?></center></th>
                 <th style="width:60px;"><center><?php echo lang('t_LIST_action'); ?></center></th>

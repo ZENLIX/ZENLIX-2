@@ -21,7 +21,9 @@ function lang_en($phrase){
 'TICKET_deadline_time'=>'deadline:',
 'TICKET_deadline_success'=>'deadline: success',
  'CONF_false'=>'Disable',  
-
+'SORT_BY'=>'Sort by field: ',
+'SORT_BY_asc'=>'(asc <i class=\'fa fa-sort-asc\'></i>)',
+'SORT_BY_desc'=>'(desc <i class=\'fa fa-sort-desc\'></i>)',
 
 'LDAP_IMPORT_user_t' => 'LDAP-import',
 'LDAP_IMPORT_title_step1' => 'Import users from LDAP (step 1 of 3)',

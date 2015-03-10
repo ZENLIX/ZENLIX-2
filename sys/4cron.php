@@ -783,7 +783,7 @@ if (get_conf_param('email_gate_user_id')) {
 
 
 $subj=strip_tags(xss_clean($message->subject));
-$msg=strip_tags(xss_clean($message->textPlain));
+$msg=strip_tags(xss_clean($message->textHtml));
 
 
 
@@ -883,7 +883,7 @@ if (get_conf_param('email_gate_user_id')) {
 
 
 $subj=strip_tags(xss_clean($message->subject));
-$msg=strip_tags(xss_clean($message->textPlain));
+$msg=strip_tags(xss_clean($message->textHtml));
 
 
 

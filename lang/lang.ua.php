@@ -25,7 +25,9 @@ function lang_ua($phrase){
 
 
 
-
+'SORT_BY'=>'Сортування за полем: ',
+'SORT_BY_asc'=>'(зростання <i class=\'fa fa-sort-asc\'></i>)',
+'SORT_BY_desc'=>'(спадання <i class=\'fa fa-sort-desc\'></i>)',
 
 
 'CONF_EMAIL_GATE_title'=>'Отримання заявок з e-mail',

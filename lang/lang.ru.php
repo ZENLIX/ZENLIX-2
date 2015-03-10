@@ -10,6 +10,9 @@ function lang_ru($phrase){
 'STAT_MAIN_t2'=>'Заявки, выполненные пользователями отдела',
 'STAT_MAIN_t3'=>'Заявки, не выполненные пользователями отдела',
 
+'SORT_BY'=>'Сортировка по полю: ',
+'SORT_BY_asc'=>'(возрастание <i class=\'fa fa-sort-asc\'></i> )',
+'SORT_BY_desc'=>'(убывание <i class=\'fa fa-sort-desc\'></i> )',
 
 'PERF_menu_main_conf'=>'Общие настройки',
 'PERF_menu_ticket_conf'=>'Параметры заявок',

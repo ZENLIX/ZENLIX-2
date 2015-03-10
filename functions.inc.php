@@ -903,6 +903,148 @@ function make_html($in, $type) {
     return $content;
 }
 
+
+function get_current_sort_p($val) {
+
+$pre="<span type=\"button\" class=\"label label-success\"><a href=\"#\" id=\"reset_sort\"><span aria-hidden=\"true\">&times;</span></a> ".lang('SORT_BY');
+$r="";
+    if ($val == "in") {
+if (!isset($_SESSION['hd.rustem_sort_in'])) {
+        if (isset($_SESSION['zenlix_list_in_sort'])) {
+            switch ($_SESSION['zenlix_list_in_sort']) {
+                    case 'id':
+                    $r=$pre."<mark>ID</mark>";
+                    break;
+                    case 'prio':
+                    $r=$pre."<mark>".lang('t_LIST_prio')."</mark>";
+                    break;
+                    case 'subj':
+                    $r=$pre."<mark>".lang('t_LIST_subj')."</mark>";
+                    break;
+                    case 'client_id':
+                    $r=$pre."<mark>".lang('t_LIST_worker')."</mark>";
+                    break;
+                    case 'date_create':
+                    $r=$pre."<mark>".lang('t_LIST_create')."</mark>";
+                    break;
+                    case 'user_init_id':
+                    $r=$pre."<mark>".lang('t_LIST_init')."</mark>";
+                    break;
+            }
+        }
+         if (isset($_SESSION['zenlix_list_in_sort_var'])) {
+
+            if ($_SESSION['zenlix_list_in_sort_var'] == "asc") { $r=$r." <small>".lang('SORT_BY_asc')."</small>";}
+            if ($_SESSION['zenlix_list_in_sort_var'] == "desc") { $r=$r." <small>".lang('SORT_BY_desc')."</small>";}
+         }
+    }
+}
+     if ($val == "out") {
+if (!isset($_SESSION['hd.rustem_sort_out'])) {
+        if (isset($_SESSION['zenlix_list_out_sort'])) {
+            switch ($_SESSION['zenlix_list_out_sort']) {
+                    case 'id':
+                    $r=$pre."<mark>ID</mark>";
+                    break;
+                    case 'prio':
+                    $r=$pre."<mark>".lang('t_LIST_prio')."</mark>";
+                    break;
+                    case 'subj':
+                    $r=$pre."<mark>".lang('t_LIST_subj')."</mark>";
+                    break;
+                    case 'client_id':
+                    $r=$pre."<mark>".lang('t_LIST_worker')."</mark>";
+                    break;
+                    case 'date_create':
+                    $r=$pre."<mark>".lang('t_LIST_create')."</mark>";
+                    break;
+                    case 'user_init_id':
+                    $r=$pre."<mark>".lang('t_LIST_init')."</mark>";
+                    break;
+            }
+        }
+         if (isset($_SESSION['zenlix_list_out_sort_var'])) {
+
+            if ($_SESSION['zenlix_list_out_sort_var'] == "asc") { $r=$r." <small>".lang('SORT_BY_asc')."</small>";}
+            if ($_SESSION['zenlix_list_out_sort_var'] == "desc") { $r=$r." <small>".lang('SORT_BY_desc')."</small>";}
+         }
+    }
+}
+
+return $r;
+}
+
+
+function get_current_sort($val) {
+
+
+if ($val == "in") {
+
+            if (isset($_SESSION['hd.rustem_sort_in'])) {
+            
+            switch ($_SESSION['hd.rustem_sort_in']) {
+                case 'ok':
+                    $r=lang('CONF_EMAIL_GATE_filter').": "."<span class=\"label label-success\">".lang('ticket_sort_ok')."</span>";
+                    break;
+
+                case 'free':
+                    $r=lang('CONF_EMAIL_GATE_filter').": "."<span class=\"label label-info\">".lang('STATS_t_free')."</span>";
+                    break;
+
+                case 'ilock':
+                    $r=lang('CONF_EMAIL_GATE_filter').": "."<span class=\"label label-warning\">".lang('ticket_sort_ilock')."</span>";
+                    break;
+
+                case 'lock':
+                    $r=lang('CONF_EMAIL_GATE_filter').": "."<span class=\"label label-default\">".lang('ticket_sort_lock')."</span>";
+                    break;
+
+                default:
+                    $r="";
+            }
+        }
+        else {
+            $r="";
+        }
+
+}
+
+
+else if ($val == "out") {
+                if (isset($_SESSION['hd.rustem_sort_out'])) {
+            
+            switch ($_SESSION['hd.rustem_sort_out']) {
+                case 'ok':
+                    $r=lang('CONF_EMAIL_GATE_filter').": "."<span class=\"label label-success\">".lang('ticket_sort_ok')."</span>";
+                    break;
+
+                case 'free':
+                    $r=lang('CONF_EMAIL_GATE_filter').": "."<span class=\"label label-info\">".lang('STATS_t_free')."</span>";
+                    break;
+
+                case 'ilock':
+                    $r=lang('CONF_EMAIL_GATE_filter').": "."<span class=\"label label-warning\">".lang('ticket_sort_ilock')."</span>";
+                    break;
+
+                case 'lock':
+                    $r=lang('CONF_EMAIL_GATE_filter').": "."<span class=\"label label-default\">".lang('ticket_sort_lock')."</span>";
+                    break;
+
+                default:
+                    $r="";
+            }
+        }
+        else {
+            $r="";
+        }
+}
+
+return $r;
+}
+
+
+
+
 function view_messages($in) {
     global $dbConnection;
     

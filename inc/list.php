@@ -112,7 +112,25 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                     
                                     <div class="box-tools">
                                     
-                                    
+                                    <div class="pull-left" >
+
+
+<?php
+
+if (isset($_GET['in'])) {
+    echo get_current_sort('in');
+    echo get_current_sort_p('in');
+
+ }
+if (isset($_GET['out'])) {
+    echo get_current_sort('out');
+    echo get_current_sort_p('out');
+}
+
+
+?>
+
+                                    </div>
 
                                     
                                     
