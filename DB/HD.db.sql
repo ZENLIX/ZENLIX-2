@@ -79,6 +79,30 @@ CREATE TABLE `messages` (
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 
 
+
+DROP TABLE IF EXISTS `ticket_data`;
+CREATE TABLE `ticket_data` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ticket_hash` varchar(512) DEFAULT NULL,
+  `field_id` int(11) DEFAULT NULL,
+  `field_val` longtext,
+  `field_name` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `ticket_fields`;
+CREATE TABLE `ticket_fields` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `t_type` varchar(512) NOT NULL DEFAULT 'text',
+  `name` varchar(512) DEFAULT NULL,
+  `placeholder` varchar(512) DEFAULT NULL,
+  `value` varchar(2048) NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL DEFAULT '1',
+  `hash` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 # Дамп таблицы comments
 # ------------------------------------------------------------
 

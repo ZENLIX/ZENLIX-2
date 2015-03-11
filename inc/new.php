@@ -87,7 +87,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
                 <div class="input-group">
                 <input  type="text" name="fio" class="form-control input-sm" id="fio" placeholder="<?php echo lang('NEW_fio'); ?>" autofocus data-toggle="popover" data-trigger="manual" data-html="true" data-placement="right" data-content="<small><?php echo lang('NEW_fio_desc'); ?></small>">
-                <a id="select_init_user" param-hash="<?php echo get_user_val('uniq_id'); ?>" href='#' class="input-group-addon">Я</a>
+                <a id="select_init_user" param-hash="<?php echo get_user_val('uniq_id'); ?>" href='#' class="input-group-addon"><?=lang('CREATE_TICKET_ME');?></a>
                 </div>
 
 
@@ -472,6 +472,105 @@ else if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == "0"
 
 <?php
         } ?>
+
+<!--######### ADDITIONAL FIELDS ############## -->
+
+<form id="add_field_form">
+    <div >
+<?php
+        $stmt = $dbConnection->prepare('SELECT * FROM ticket_fields where status=:n');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+
+
+?>
+
+                      <div class="control-group" id="">
+    <div class="controls">
+        <div class="form-group">
+            <label for="<?=$row['hash'];?>" class="col-sm-2 control-label"><small><?=$row['name'];?>: </small></label>
+
+            <div class="col-sm-10" style=" padding-top: 5px; ">
+
+<?php 
+if ($row['t_type'] == "text") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+<input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
+<?php } ?>
+
+<?php 
+if ($row['t_type'] == "select") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+<select data-placeholder="<?=$row['placeholder'];?>" class="chosen-select form-control" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>">
+
+<?php 
+$v=explode(",", $row['value']);
+ foreach ($v as $value) {
+     # code...
+ 
+?>
+                            <option value="<?=$value;?>"><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+
+<?php 
+if ($row['t_type'] == "multiselect") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+
+
+
+
+
+<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple="multiple" >
+
+<?php 
+$v=explode(",", $row['value']);
+ foreach ($v as $value) {
+     # code...
+ 
+?>
+                            <option value="<?=$value;?>"><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    </div> 
+
+    <?php
+}
+    ?>
+</div>
+    </form>
+    
+<!--######### ADDITIONAL FIELDS ############## -->
+
+
+
+
+
 
 <div class="col-md-2"></div>
 <div class="col-md-10" id="processing">

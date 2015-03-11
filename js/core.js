@@ -2170,6 +2170,15 @@ $("#noty").on("change", function(){
         $.fn.editable.defaults.mode = 'inline';
 
 
+        $(".multi_field").select2({
+            allowClear: true,
+            maximumSelectionSize: 15,
+            width: '100%',
+            formatNoMatches: get_lang_param('JS_not_found')
+        });
+
+
+
 
 
         $('#d_finish').daterangepicker({
@@ -2312,6 +2321,9 @@ $('#d_finish').on('apply.daterangepicker', function(ev, picker) {
         });
         $('body').on('click', 'button#enter_ticket', function(event) {
             event.preventDefault();
+
+//console.log($('#add_field_form').serialize());
+
             if (check_form_ticket() == 0) {
                 enter_ticket();
             }
@@ -3126,6 +3138,10 @@ view_helper_cat();
         });
 
         function check_form_ticket() {
+
+
+//console.log('da');
+
             var z = $("#username").text();
             var s = $("#subj").val();
             var to = $("select#to").val();
@@ -3214,6 +3230,7 @@ view_helper_cat();
             //console.log($("#users_do").val());
             var u_do;
             var deadline_time=$("#d_finish_val").val();
+            var add_from=$('#add_field_form').serialize();
             if ($("#users_do").val() == null) {
                 u_do = '0';
             } else if ($("#users_do").val() != null) {
@@ -3226,7 +3243,7 @@ view_helper_cat();
                 //async: false,
                 url: ACTIONPATH,
                 data: "mode=add_ticket" + "&type_add=client" + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val())+
-                    "&deadline_time="+deadline_time,
+                    "&deadline_time="+deadline_time+"&"+add_from,
                 success: function(html) {
                     //console.log(html);
 
@@ -3237,9 +3254,15 @@ view_helper_cat();
 
         function enter_ticket() {
              //console.log($("#users_do").val());
+
+
+             //console.log('da');
             var status_action = $("#status_action").val();
             var u_do;
             var deadline_time=$("#d_finish_val").val();
+
+            var add_from=$('#add_field_form').serialize();
+
             if (status_action == 'add') {
                 //uploadObj.startUpload();
                 $('#enter_ticket').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
@@ -3254,10 +3277,11 @@ view_helper_cat();
                     //async: false,
                     url: ACTIONPATH,
                     data: "mode=add_ticket" + "&type_add=add" + "&fio=" + encodeURIComponent($("#username").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&login=" + encodeURIComponent($("#new_login").text()) + "&pod=" + encodeURIComponent($("#new_unit").text()) + "&adr=" + encodeURIComponent($("#new_adr").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&mail=" + encodeURIComponent($("#new_mail").text()) + "&posada=" + encodeURIComponent($("#new_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val())+
-                    "&deadline_time="+deadline_time,
+                    "&deadline_time="+deadline_time+"&"+add_from,
                     success: function(html) {
                         //window.location = "new.php?ok&h="+html;
                         window.location = MyHOSTNAME + "create?ok&h=" + html;
+                       // console.log(html);
                     }
                 });
             }
@@ -3275,10 +3299,11 @@ view_helper_cat();
                     //async: false,
                     url: ACTIONPATH,
                     data: "mode=add_ticket" + "&type_add=edit" + "&client_id_param=" + encodeURIComponent($("#client_id_param").val()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&login=" + encodeURIComponent($("#edit_login").text()) + "&pod=" + encodeURIComponent($("#edit_unit").text()) + "&adr=" + encodeURIComponent($("#edit_adr").text()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&mail=" + encodeURIComponent($("#edit_mail").text()) + "&posada=" + encodeURIComponent($("#edit_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val())+
-                    "&deadline_time="+deadline_time,
+                    "&deadline_time="+deadline_time+"&"+add_from,
                     success: function(html) {
                         //console.log(html);
                         window.location = MyHOSTNAME + "create?ok&h=" + html;
+                        //console.log(html);
                     }
                 });
             }
@@ -3977,6 +4002,154 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
         } else if ($('select#mail_type').val() == "SMTP") {
             $('#smtp_div').show();
         }
+
+
+$(document).on('ifChanged', '#field_perf_client', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).prop('checked');
+
+$.post( ACTIONPATH, { mode: "change_field_client", hash: hash, name: name } );
+
+
+
+
+    });
+
+
+$(document).on('ifChanged', '#field_perf_check', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).prop('checked');
+
+$.post( ACTIONPATH, { mode: "change_field_check", hash: hash, name: name } );
+
+
+
+
+    });
+
+$(document).on('change', 'select#field_perf_select', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).val();
+
+$.post( ACTIONPATH, { mode: "change_field_select", hash: hash, name: name } );
+
+
+
+
+    });
+
+
+$(document).on('change', 'input#field_perf_value', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).val();
+
+$.post( ACTIONPATH, { mode: "change_field_value", hash: hash, name: name } );
+
+
+
+
+    });
+
+//field_perf_name
+$(document).on('change', 'input#field_perf_name', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).val();
+
+$.post( ACTIONPATH, { mode: "change_field_name", hash: hash, name: name } );
+
+
+
+
+    });
+$(document).on('change', 'input#field_perf_placeholder', function() {
+//$("input#field_perf_placeholder").on('change', function() {
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).val();
+
+$.post( ACTIONPATH, { mode: "change_field_placeholder", hash: hash, name: name } );
+
+
+    });
+
+
+
+//del_field_item
+        $('body').on('click', 'button#del_field_item', function(event) {
+            event.preventDefault();
+            //console.log($(this).closest('tr').attr('id'));
+
+            var hash=$(this).closest('tr').attr('id');
+
+            bootbox.confirm(get_lang_param('JS_del'), function(result) {
+                if (result == true) {
+
+
+                        $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=del_field_item"+
+                "&hash="+hash,
+                success: function(html) {
+                    $("#ticket_fields_res").html(html);
+                        $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+        checkboxClass: 'icheckbox_minimal',
+        radioClass: 'iradio_minimal'
+    });
+                }
+            });
+}
+});
+
+        });
+
+
+//
+
+
+
+
+//conf_edit_ticket_res
+        $('body').on('click', 'button#ticket_field_plus', function(event) {
+            event.preventDefault();
+
+
+                        $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=add_additional_tickets_perf",
+                success: function(html) {
+                    $("#ticket_fields_res").html(html);
+                        $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+        checkboxClass: 'icheckbox_minimal',
+        radioClass: 'iradio_minimal'
+    });
+                }
+            });
+
+});
+
+
     }
     if (ispath('deps')) {
         $.fn.editable.defaults.mode = 'inline';

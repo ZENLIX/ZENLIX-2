@@ -411,6 +411,108 @@ if (in_array($row['value'], $mass)) {$st_sel="selected";}
 <?php
         } ?>
 
+
+
+
+<!--######### ADDITIONAL FIELDS ############## -->
+
+<form id="add_field_form">
+    <div >
+<?php
+        $stmt = $dbConnection->prepare('SELECT * FROM ticket_fields where status=:n and for_client=:c');
+        $stmt->execute(array(':n' => '1',':c' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+
+
+?>
+
+                      <div class="control-group" id="">
+    <div class="controls">
+        <div class="form-group">
+            <label for="<?=$row['hash'];?>" class="col-sm-2 control-label"><small><?=$row['name'];?>: </small></label>
+
+            <div class="col-sm-10" style=" padding-top: 5px; ">
+
+<?php 
+if ($row['t_type'] == "text") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+<input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
+<?php } ?>
+
+<?php 
+if ($row['t_type'] == "select") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+<select data-placeholder="<?=$row['placeholder'];?>" class="chosen-select form-control" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>">
+
+<?php 
+$v=explode(",", $row['value']);
+ foreach ($v as $value) {
+     # code...
+ 
+?>
+                            <option value="<?=$value;?>"><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+
+<?php 
+if ($row['t_type'] == "multiselect") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+
+
+
+
+
+<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple="multiple" >
+
+<?php 
+$v=explode(",", $row['value']);
+ foreach ($v as $value) {
+     # code...
+ 
+?>
+                            <option value="<?=$value;?>"><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    </div> 
+
+    <?php
+}
+    ?>
+</div>
+    </form>
+    
+<!--######### ADDITIONAL FIELDS ############## -->
+
+
+
+
+
+
 <div class="col-md-2"></div>
 <div class="col-md-10" id="processing">
     <div class="btn-group btn-group-justified">

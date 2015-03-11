@@ -3,6 +3,20 @@ function lang_ru($phrase){
     static $lang = array(
     
     
+'CREATE_TICKET_ME'=>'Я',
+
+'FIELD_status'=>'статус',
+'FIELD_name'=>'имя',
+'FIELD_value'=>'значение',
+'FIELD_type'=>'тип',
+'FIELD_type_text'=>'Текст',
+'FIELD_type_select'=>'Список',
+'FIELD_type_multiselect'=>'Мульти список',
+'FIELD_client'=>'для клиента',
+'FIELD_del'=>'удалить',
+'FIELD_new'=>'Новое поле',
+'FIELD_title'=>'Дополнительные поля',
+'FIELD_add_title'=>'Дополнительная информация',
 
 
 'STAT_MAIN_t1'=>'Заявки, созданные пользователями отдела',

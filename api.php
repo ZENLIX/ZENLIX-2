@@ -99,18 +99,20 @@ if (isset($data_json->mode)) {
     }
 
     else if ($mode == "ticket_list") {
-        if (isset($data_json->uniq_id)) {
+        if (isset($data_json->uniq_id, $data_json->type)) {
 
             if (validate_user_by_api($data_json->uniq_id)) {
 
 
-        $user_id 	= get_user_val_by_hash($data_json->uniq_id, 'id');
-        $unit_user 	= unit_of_user($user_id);
-        $priv_val 	= priv_status($user_id);
+
+if ($data_json->type == "in") {
+        $user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
+        $unit_user  = unit_of_user($user_id);
+        $priv_val   = priv_status($user_id);
         
-        $units 		= explode(",", $unit_user);
-        $units 		= implode("', '", $units);
-        $ee 		= explode(",", $unit_user);
+        $units      = explode(",", $unit_user);
+        $units      = implode("', '", $units);
+        $ee         = explode(",", $unit_user);
 
         foreach ($ee as $key => $value) {
             $in_query = $in_query . ' :val_' . $key . ', ';
@@ -121,38 +123,182 @@ if (isset($data_json->mode)) {
         }
 
         if ($priv_val == 0) { 
-        		$stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
+                $stmt = $dbConnection->prepare('SELECT *
                             from tickets
-                            where unit_id IN (' . $in_query . ')  and arch=:n order by ok_by asc, prio desc, id desc limit 10');
+                            where unit_id IN (' . $in_query . ') and arch=:n order by ok_by asc, prio desc, id desc limit 10');
                 
                 $paramss = array(':n' => '0');
                 $stmt->execute(array_merge($vv, $paramss));
             }
         else if ($priv_val == 1) { 
-        		$stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
-                            from tickets
+                $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2)) order by ok_by asc, prio desc, id desc limit 10');
                 $paramss = array(':user_id' => $user_id, ':n' => '0', ':n1' => '0', ':n2' => '0');
                 $stmt->execute(array_merge($vv, $paramss));
             }
         else if ($priv_val == 2) {
-                $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, prio, last_update
+                $stmt = $dbConnection->prepare('SELECT *
                             from tickets
                             where arch=:n
                             order by ok_by asc, prio desc, id desc limit 10');
                 $stmt->execute(array(':n' => '0'));
                  }
+}
+else if ($data_json->type == "out") {
+$user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
+        $unit_user  = unit_of_user($user_id);
+        $priv_val   = priv_status($user_id);
+        
+        $units      = explode(",", $unit_user);
+        $units      = implode("', '", $units);
+        $ee         = explode(",", $unit_user);
+
+        foreach ($ee as $key => $value) {
+            $in_query = $in_query . ' :val_' . $key . ', ';
+        }
+        $in_query = substr($in_query, 0, -2);
+        foreach ($ee as $key => $value) {
+            $vv[":val_" . $key] = $value;
+        }
+
+        if ($priv_val == 0) { 
+
+
+            $p=get_users_from_units_by_user();
+//print_r($p);
+
+        
+        //$ee = explode(",", $unit_user);
+        
+        foreach ($p as $key => $value) {
+            $in_query = $in_query . ' :val_' . $key . ', ';
+        }
+        
+        $in_query = substr($in_query, 0, -2);
+        foreach ($p as $key => $value) {
+            $vv[":val_" . $key] = $value;
+        }
+
+
+
+////
+                $stmt = $dbConnection->prepare('SELECT * from tickets 
+        where user_init_id IN (' . $in_query . ') and arch=:n 
+        order by id desc');
+            $paramss=array(':n' => '0');
+            $stmt->execute(array_merge($vv, $paramss));
+
+
+            }
+        else if ($priv_val == 1) { 
+    
+
+            $stmt = $dbConnection->prepare('SELECT * from tickets 
+        where user_init_id=:user_id and arch=:n 
+        order by id desc ');
+            $stmt->execute(array(':user_id' => $user_id, ':n' => '0'));
+
+
+
+            }
+        else if ($priv_val == 2) {
+
+
+            $stmt = $dbConnection->prepare('SELECT * from tickets 
+        where arch=:n 
+        order by id desc ');
+            $stmt->execute(array(':n' => '0'));
+
+
+                 }
+}
+else if ($data_json->type == "arch") {
+
+
+$user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
+        
+
+        //$user_id = id_of_user($_SESSION['helpdesk_user_login']);
+        $unit_user = unit_of_user($user_id);
+        $units = explode(",", $unit_user);
+        $units = implode("', '", $units);
+        $priv_val = priv_status($user_id);
+        
+        $ee = explode(",", $unit_user);
+        $s = 1;
+        foreach ($ee as $key => $value) {
+            $in_query = $in_query . ' :val_' . $key . ', ';
+            $s++;
+        }
+        $c = ($s - 1);
+        foreach ($ee as $key => $value) {
+            $in_query2 = $in_query2 . ' :val_' . ($c + $key) . ', ';
+        }
+        $in_query = substr($in_query, 0, -2);
+        $in_query2 = substr($in_query2, 0, -2);
+        foreach ($ee as $key => $value) {
+            $vv[":val_" . $key] = $value;
+        }
+        foreach ($ee as $key => $value) {
+            $vv2[":val_" . ($c + $key) ] = $value;
+        }
+        
+        //$pp2=array_merge($vv,$vv2);
+        
+        if ($priv_val == 0) {
+            
+            $stmt = $dbConnection->prepare('SELECT 
+                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, ok_date
+                            from tickets
+                            where (unit_id IN (' . $in_query . ') or user_init_id=:user_id) and arch=:n
+                            order by id DESC');
+            
+            $paramss = array(':n' => '1', ':user_id' => $user_id);
+            $stmt->execute(array_merge($vv, $paramss));
+            
+        } else if ($priv_val == 1) {
+            
+            $stmt = $dbConnection->prepare('
+            SELECT 
+                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, ok_date
+                            from tickets
+                            where (
+                            (find_in_set(:user_id,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n) or
+                            (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query2 . ') and arch=:n2)
+                            ) or (user_init_id=:user_id2 and arch=:n3)
+                            order by id DESC');
+            
+            $paramss = array(':n' => '1', ':n1' => '0', ':n2' => '1', ':n3' => '1', ':user_id' => $user_id, ':user_id2' => $user_id);
+            
+            $stmt->execute(array_merge($vv, $vv2, $paramss));
+            
+        } else if ($priv_val == 2) {
+            
+            $stmt = $dbConnection->prepare('SELECT 
+                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, ok_date
+                            from tickets
+                            where arch=:n
+                            order by id DESC');
+            
+            $stmt->execute(array(':n' => '1'));
+        }
+
+
+}
+
+/*
+lock_priv=lock/unlock
+ok_priv=ok/unok
+*/
+        
                 
                 $res1 = $stmt->fetchAll();
 				
 				$r['tickets'] = array();
                 foreach ($res1 as $row) {
                 	array_push($r['tickets'], array(
-                    'id_ticket' 			=> $row['id'],
+                    'id_ticket' 	=> $row['id'],
                     'ticket_hash' 	=> $row['hash_name'],
                     'subj' 			=> $row['subj'],
                     'text' 			=> $row['msg'],
@@ -189,9 +335,7 @@ if (isset($data_json->mode)) {
 
             if (validate_user_by_api($data_json->uniq_id)) {
             	$user_id 	= get_user_val_by_hash($data_json->uniq_id, 'id');
-            	$stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, comment, last_edit, is_read, lock_by, ok_by, arch, ok_date, prio, last_update
-                            from tickets
+            	$stmt = $dbConnection->prepare('SELECT * from tickets
                             where hash_name=:hn');
     						$stmt->execute(array(':hn' => $data_json->ticket_hash));
     						$res1 = $stmt->fetchAll();

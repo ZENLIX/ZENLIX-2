@@ -1,6 +1,7 @@
 <?php
 session_start();
 include ("../functions.inc.php");
+include_once ("library/SimpleImage.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     
@@ -8,71 +9,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     include ("head.inc.php");
     include ("navbar.inc.php");
     
-    class SimpleImage
-    {
-        
-        var $image;
-        var $image_type;
-        
-        function load($filename) {
-            $image_info = getimagesize($filename);
-            $this->image_type = $image_info[2];
-            if ($this->image_type == IMAGETYPE_JPEG) {
-                $this->image = imagecreatefromjpeg($filename);
-            } elseif ($this->image_type == IMAGETYPE_GIF) {
-                $this->image = imagecreatefromgif($filename);
-            } elseif ($this->image_type == IMAGETYPE_PNG) {
-                $this->image = imagecreatefrompng($filename);
-            }
-        }
-        function save($filename, $image_type = IMAGETYPE_JPEG, $compression = 70, $permissions = null) {
-            if ($image_type == IMAGETYPE_JPEG) {
-                imagejpeg($this->image, $filename, $compression);
-            } elseif ($image_type == IMAGETYPE_GIF) {
-                imagegif($this->image, $filename);
-            } elseif ($image_type == IMAGETYPE_PNG) {
-                imagepng($this->image, $filename);
-            }
-            if ($permissions != null) {
-                chmod($filename, $permissions);
-            }
-        }
-        function output($image_type = IMAGETYPE_JPEG) {
-            if ($image_type == IMAGETYPE_JPEG) {
-                imagejpeg($this->image);
-            } elseif ($image_type == IMAGETYPE_GIF) {
-                imagegif($this->image);
-            } elseif ($image_type == IMAGETYPE_PNG) {
-                imagepng($this->image);
-            }
-        }
-        function getWidth() {
-            return imagesx($this->image);
-        }
-        function getHeight() {
-            return imagesy($this->image);
-        }
-        function resizeToHeight($height) {
-            $ratio = $height / $this->getHeight();
-            $width = $this->getWidth() * $ratio;
-            $this->resize($width, $height);
-        }
-        function resizeToWidth($width) {
-            $ratio = $width / $this->getWidth();
-            $height = $this->getheight() * $ratio;
-            $this->resize($width, $height);
-        }
-        function scale($scale) {
-            $width = $this->getWidth() * $scale / 100;
-            $height = $this->getheight() * $scale / 100;
-            $this->resize($width, $height);
-        }
-        function resize($width, $height) {
-            $new_image = imagecreatetruecolor($width, $height);
-            imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
-            $this->image = $new_image;
-        }
-    }
+    
     
     if ($_FILES["file"]) {
         $output_dir = "upload_files/avatars/";
@@ -97,11 +34,24 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 move_uploaded_file($_FILES["file"]["tmp_name"], $output_dir . $fileName_norm);
                 $nf = $output_dir . $fileName_norm;
                 
+
+                /*
                 $image = new SimpleImage();
                 $image->load($nf);
                 $image->resizeToHeight(200);
+
                 $image->save($nf);
-                
+                */
+
+
+
+
+                $image = new abeautifulsite\SimpleImage($nf);
+                $image->adaptive_resize(250, 250)->save($nf);
+                //$image->save($nf);
+
+
+
                 $u = $_SESSION['helpdesk_user_id'];
                 $stmt = $dbConnection->prepare('update users set usr_img = :uimg where id=:uid ');
                 $stmt->execute(array(':uimg' => $fileName_norm, ':uid' => $u));

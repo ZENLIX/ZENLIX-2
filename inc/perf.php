@@ -385,7 +385,7 @@ if ($menu_opt == "ti_conf") {
   
 <center>
     <button type="submit" id="conf_edit_ticket" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
-        echo lang('CONF_act_edit'); ?></button>
+        echo lang('JS_save'); ?></button>
     
 </center>
       </form>
@@ -395,6 +395,27 @@ if ($menu_opt == "ti_conf") {
       </div>
 
 
+<div class="col-md-12">
+<div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-bookmark-o"></i> <?=lang('FIELD_title');?></h3>
+<div class="box-tools pull-right"><button id="ticket_field_plus" class="btn btn-success btn-xs" type="submit"><?=lang('FIELD_new');?></button></div>
+</div>
+      <div class="box-body">
+      <form class="form-horizontal" role="form">
+
+<div id="ticket_fields_res">
+<?=get_ticket_form_view();?> 
+</div>
+
+<!--center>
+    <button type="submit" id="conf_edit_ticket_fields" class="btn btn-success"><i class="fa fa-pencil"></i> </button>
+    
+</center-->
+      </form>
+      </div>
+      </div>
+      </div>
 
 
 <div class="col-md-12">
@@ -636,7 +657,7 @@ if (in_array($row['value'], $mass)) {$st_sel="selected";}
 
 <center>
     <button type="submit" id="conf_edit_email_gate" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
-        echo lang('CONF_act_edit'); ?></button>
+        echo lang('JS_save'); ?></button>
 </center>
 
 
@@ -830,7 +851,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['2']="checked"
 <div class="">
 <center>
     <button type="submit" id="conf_edit_global_message" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
-        echo lang('CONF_act_edit'); ?></button>
+        echo lang('JS_save'); ?></button>
 <div class="" id="conf_edit_gm_res"></div>
 </center>
 </div>
@@ -982,7 +1003,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['2']="checked"
   <button type="submit" id="conf_test_mail" class="btn btn-default btn-sm pull-right"> test</button>
 <center>
     <button type="submit" id="conf_edit_mail" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
-        echo lang('CONF_act_edit'); ?></button>
+        echo lang('JS_save'); ?></button>
 </center>
 
 
@@ -1016,7 +1037,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['2']="checked"
 <div class="">
 <center>
     <button type="submit" id="conf_edit_pb" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
-        echo lang('CONF_act_edit'); ?></button>
+        echo lang('JS_save'); ?></button>
 <div class="" id="conf_edit_pb_res"></div>
 </center>
 </div>
@@ -1294,7 +1315,7 @@ else {
   
 <center>
     <button type="submit" id="conf_edit_main" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
-        echo lang('CONF_act_edit'); ?></button>
+        echo lang('JS_save'); ?></button>
     
 </center>
 

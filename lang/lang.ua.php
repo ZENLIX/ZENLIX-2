@@ -3,6 +3,25 @@ function lang_ua($phrase){
     static $lang = array(
     
     
+'CREATE_TICKET_ME'=>'Я',
+
+'FIELD_status' => 'статус',
+'FIELD_name' => 'ім\'я',
+'FIELD_value' => 'значення',
+'FIELD_type' => 'тип',
+'FIELD_type_text' => 'Текст',
+'FIELD_type_select' => 'Список',
+'FIELD_type_multiselect' => 'Мульти список',
+'FIELD_client' => 'для клієнта',
+'FIELD_del' => 'вилучити',
+'FIELD_new' => 'Нове поле',
+'FIELD_title' => 'Додаткові поля',
+'FIELD_add_title' => 'Додаткова інформація',
+
+
+
+
+
 
 'STAT_MAIN_t1'=>'Заявки, створені користувачами відділу',
 'STAT_MAIN_num'=>'№ п/п',

@@ -1742,6 +1742,111 @@ values
 
 }
 
+
+if ($mode == "change_field_client") {
+
+if ($_POST['name'] == "false") {
+    $s=0;
+}
+if ($_POST['name'] == "true") {
+    $s=1;
+}
+
+
+            $stmt = $dbConnection->prepare('update ticket_fields set for_client=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $s
+                ));
+
+}
+
+
+if ($mode == "change_field_check") {
+
+if ($_POST['name'] == "false") {
+    $s=0;
+}
+if ($_POST['name'] == "true") {
+    $s=1;
+}
+
+
+            $stmt = $dbConnection->prepare('update ticket_fields set status=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $s
+                ));
+
+}
+
+if ($mode == "change_field_select") {
+
+            $stmt = $dbConnection->prepare('update ticket_fields set t_type=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $_POST['name']
+                ));
+
+}
+
+
+if ($mode == "change_field_value") {
+
+            $stmt = $dbConnection->prepare('update ticket_fields set value=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $_POST['name']
+                ));
+
+}
+
+if ($mode == "change_field_name") {
+
+            $stmt = $dbConnection->prepare('update ticket_fields set name=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $_POST['name']
+                ));
+
+}
+
+if ($mode == "change_field_placeholder") {
+
+            $stmt = $dbConnection->prepare('update ticket_fields set placeholder=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $_POST['name']
+                ));
+
+}
+
+if ($mode == "add_additional_tickets_perf") {
+
+
+            $stmt = $dbConnection->prepare('INSERT into ticket_fields (name, placeholder, hash) values (:n,:p, :h)');
+            $stmt->execute(array(
+                ':n' => '',
+                ':p' => '',
+                ':h' => randomhash()
+            ));
+
+
+
+    get_ticket_form_view();
+
+}
+
+if ($mode == "del_field_item") {
+
+            $stmt = $dbConnection->prepare('delete from ticket_fields where hash=:h');
+            $stmt->execute(array(':h'=>$_POST['hash']));
+
+get_ticket_form_view();
+
+}
+
+
 if ($mode == "reset_sort") {
 
     $pt=$_POST['pt'];
@@ -6353,6 +6458,9 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                 ':noteid' => $noteid
             ));
 */
+
+
+
             $stmt = $dbConnection->prepare('delete from tickets where hash_name=:id');
             $stmt->execute(array(
                 ':id' => $t_hash
@@ -6363,6 +6471,10 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                 ':id' => $t_id
             ));
 
+            $stmt = $dbConnection->prepare('delete from ticket_data where ticket_hash=:id');
+            $stmt->execute(array(
+                ':id' => $t_hash
+            ));
 
             //delete files
             $stmt = $dbConnection->prepare("SELECT *
@@ -6406,6 +6518,52 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
         if ($mode == "add_ticket") {
             $type = ($_POST['type_add']);
             
+
+
+        
+            ########################### ADDITIONAL FIELDS ###############################
+
+
+
+
+
+        $stmt = $dbConnection->prepare('SELECT * FROM ticket_fields where status=:n');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+
+            $cur_hash=$row['hash'];
+
+        if ($_POST[$cur_hash]) {
+            //insert
+
+$v_field=$_POST[$cur_hash];
+if ($row['t_type'] == "multiselect") {
+    # code...
+    $v_field=implode(", ", $_POST[$cur_hash]);
+}
+
+
+            $stmt = $dbConnection->prepare('insert into ticket_data (ticket_hash,field_id,field_val, field_name) VALUES (:ticket_hash,:field_id,:field_val,:field_name)');
+            $stmt->execute(array(
+                ':ticket_hash' => $_POST['hashname'],
+                ':field_id' => $row['id'],
+                ':field_val'=> $v_field,
+                ':field_name'=>$row['name']
+            ));
+        }
+
+        }
+
+
+
+
+            ########################### ADDITIONAL FIELDS ###############################
+
+
+
+
+
 
             $deadline_time=strip_tags(xss_clean($_POST['deadline_time']));
 if ($deadline_time == "NULL") {$deadline_time=NULL;}

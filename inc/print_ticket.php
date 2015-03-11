@@ -108,6 +108,56 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
                     <div class="row">
                         <!-- accepted payments column -->
+<div class="col-xs-12">
+<?php
+        $stmts = $dbConnection->prepare('SELECT * FROM ticket_data where ticket_hash=:n');
+        $stmts->execute(array(':n' => $hn));
+        $res11 = $stmts->fetchAll();
+
+
+if (!empty($res11)) {
+?><br>
+<small class="text-muted"><?=lang('FIELD_add_title');?>: </small>
+<table class="table table-bordered">
+                <tbody>
+<?php
+        foreach ($res11 as $rown) { 
+
+    $stmt2 = $dbConnection->prepare('SELECT name from ticket_fields where id=:tm and status=:s');
+    $stmt2->execute(array(
+        ':tm' => $rown['field_id'],
+        ':s'=>'1'
+    ));
+    
+    $tt = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+    
+
+
+?>
+
+        <tr>
+                    <td style="width:150px"><small class="text-muted"><?php echo $rown['field_name']; ?>: </small></td>
+                    <td><small><?php echo $rown['field_val']; ?> </small></td>
+                    
+                    
+                </tr>
+
+
+<?php
+
+}
+?>
+ </tbody>
+            </table>
+<?php
+}
+?>
+</div>
+<div class="col-xs-12">
+<hr>
+</div>
+
                         <div class="col-xs-12">
                             <div class="lead"><?php echo make_html($row['subj']) ?></div>
                            

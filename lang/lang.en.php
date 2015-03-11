@@ -3,6 +3,25 @@ function lang_en($phrase){
     static $lang = array(
 	    
 
+
+'CREATE_TICKET_ME'=>'Me',
+
+'FIELD_status' => 'status',
+'FIELD_name' => 'name',
+'FIELD_value' => 'value',
+'FIELD_type' => 'type',
+'FIELD_type_text' => 'Text',
+'FIELD_type_select' => 'List',
+'FIELD_type_multiselect' => 'Multiple',
+'FIELD_client' => 'client',
+'FIELD_del' => 'delete',
+'FIELD_new' => 'New Field',
+'FIELD_title' => 'Additional fields',
+'FIELD_add_title' => 'Additional information',
+
+
+
+
 'STAT_MAIN_t1'=>'Tickets, created by departments\' user',
 'STAT_MAIN_num'=>'№',
 'STAT_MAIN_t2'=>'Tickets, success by departments\' user',

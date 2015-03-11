@@ -28,6 +28,7 @@ For install ZENLIX system, please:
 
 Ex. For UBUNTU 14.04.x: 
 
+sudo apt-get update
 
 curl -O http://vestacp.com/pub/vst-install.sh
 sudo bash vst-install.sh
@@ -36,7 +37,7 @@ sudo nano /etc/php5/apache2/php.ini
 	to memory_limit 512M
 	short_open_tag on
 
-sudo apt-get update
+
 apt-get install php5-imap
 php5enmod imap
 sudo apt-get install php5-ldap

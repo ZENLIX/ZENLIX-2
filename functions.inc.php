@@ -904,6 +904,10 @@ function make_html($in, $type) {
 }
 
 
+
+
+
+
 function get_current_sort_p($val) {
 
 $pre="<span type=\"button\" class=\"label label-success\"><a href=\"#\" id=\"reset_sort\"><span aria-hidden=\"true\">&times;</span></a> ".lang('SORT_BY');
@@ -1590,6 +1594,106 @@ function get_user_hash_by_id($in) {
     $tt = $total_ticket['uniq_id'];
     return $tt;
 }
+
+
+
+function get_ticket_form_view() {
+        global $dbConnection;
+
+    $stmt = $dbConnection->prepare("SELECT * from ticket_fields");
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+
+?>
+    <table class="table table-hover" id="">
+        <?php
+    if (empty($result)) {
+?>
+            <div id="" class="well well-large well-transparent lead">
+                <center>
+                    <?php
+        echo lang('MSG_no_records'); ?>
+                </center>
+            </div>
+        <?php
+    } else if (!empty($result)) {
+        ?>
+<tr><th><center><small> <?=lang('FIELD_status');?>     </small></center></th>
+<th><center><small>     <?=lang('FIELD_name');?>     </small></center></th>
+<th><center><small>     placeholder                   </small></center></th>
+<th><center><small>     <?=lang('FIELD_value');?>     </small></center></th>
+<th><center><small>     <?=lang('FIELD_type');?>     </small></center></th> 
+<th><center><small>     <?=lang('FIELD_client');?>     </small></center></th> 
+<th><center><small>     <?=lang('FIELD_del');?>     </center></small></center></th></tr>
+        <?php
+        foreach ($result as $row) {
+
+
+if ($row['status'] == "0") {$st="";}
+if ($row['status'] == "1") {$st="checked";}
+if ($row['for_client'] == "0") {$st_c="";}
+if ($row['for_client'] == "1") {$st_c="checked";}
+
+if ($row['t_type'] == "text") { $sel['text']="selected";}
+if ($row['t_type'] == "select") { $sel['select']="selected";}
+if ($row['t_type'] == "multiselect") { $sel['multiselect']="selected";}
+
+$input['value']=$row['value'];
+$input['name']=$row['name'];
+$input['placeholder']=$row['placeholder'];
+
+if ($row['value'] == "0") {$input['value']="";}
+if ($row['name'] == "0") {$input['name']="";}
+if ($row['placeholder'] == "0") {$input['placeholder']="";}
+
+?>
+                    <tr id ="<?=$row['hash'];?>">
+                    <td>    <div class="checkbox">
+    <label>
+      <input type="checkbox" id="field_perf_check" class="icheck field_perf_check" value="1" <?=$st;?>>
+    </label>
+  </div></td>
+ <td> 
+ <input autocomplete="off" name="" type="text" class="form-control input-sm" id="field_perf_name" placeholder="name" 
+ value="<?=$input['name']; ?>">
+ </td>
+ <td> 
+ <input autocomplete="off" name="" type="text" class="form-control input-sm" id="field_perf_placeholder" placeholder="placeholder" value="<?php echo $input['placeholder']; ?>">
+ </td>
+  <td> 
+ <input autocomplete="off" name="" type="text" class="form-control input-sm" id="field_perf_value" placeholder="value" value="<?php echo $input['value']; ?>">
+ </td>
+  <td> 
+<select id="field_perf_select" name="" class="form-control input-sm">
+
+<option value="text" <?=$sel['text'];?>><?=lang('FIELD_type_text');?></option>
+<option value="select" <?=$sel['select'];?>><?=lang('FIELD_type_select');?></option>
+<option value="multiselect" <?=$sel['multiselect'];?>><?=lang('FIELD_type_multiselect');?></option>
+</select>
+ </td>
+ <td>    <div class="checkbox">
+    <label>
+      <input type="checkbox" id="field_perf_client" class="icheck field_perf_client" value="1" <?=$st_c;?>>
+    </label>
+  </div></td>
+  <td> 
+<button id="del_field_item" class="btn btn-danger btn-sm" type="submit"><i class="fa fa-trash"></i></button>
+ </td>
+
+</tr>
+                   
+
+                <?php
+        }
+    }
+?>
+    </table>
+
+    <br>
+<?php
+        
+}
+
 
 function get_client_helper() {
     global $dbConnection;
