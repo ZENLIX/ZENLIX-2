@@ -106,7 +106,7 @@ foreach ($re as $rews) {
 <li><!-- start message -->
                                             <a href="view_user?<?php echo $rews['uniq_id']; ?>">
                                                 <div class="pull-left">
-                                                    <img src="<?php echo get_user_img_by_id($rews['id']); ?>" class="img-circle" alt="User Image"/>
+                                                    <img src="<?php echo get_user_img_by_id($rews['id']); ?>" class="img-circle" alt="User Image" />
                                                 </div>
                                                 <h4>
                                                     <?php echo nameshort(name_of_user_ret_nolink($rews['id'])); ?>
@@ -196,7 +196,9 @@ foreach ($re as $rews) {
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
-                                    <img src="<?php echo get_user_img(); ?>" class="img-circle" alt="User Image" />
+                                    <img src="<?php echo get_user_img(); ?>" class="img-circle" alt="User Image" style="border: 2px solid;
+border-color: transparent;
+border-color: rgba(255, 255, 255, 0.2);" />
                                     <p>
                                         <?php echo get_user_val('fio'); ?>
                                         <small><?php echo get_user_val('posada'); ?></small>
@@ -369,3 +371,4 @@ if (get_current_URL_name('print_ticket')) {
 ?>
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side" style="<?=$style_hide;?> ">
+           

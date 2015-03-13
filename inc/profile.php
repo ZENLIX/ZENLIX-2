@@ -465,6 +465,27 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 <?php
     } ?>
 </div>
+
+<div class="col-md-12">
+<?php
+
+if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'api_key')) {
+?>
+
+
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-key"></i> API code</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                <div class="panel-body">
+                                <pre><?=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'api_key');?></pre>
+                                </div>
+                                </div>
+
+
+<? } ?>
+</div>
 </div>
 
 

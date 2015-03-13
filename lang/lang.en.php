@@ -736,7 +736,7 @@ function lang_en($phrase){
 't_LIST_worker_to' => 'employee',
 't_LIST_person' => 'personal',
 
-'HELP_title' => 'instructions how to work with tickets',
+'HELP_title' => 'Manual',
 'HELP_new' => 'Create ticket',
 'HELP_review' => 'Display ticket',
 'HELP_edit_user' => 'Change user information',

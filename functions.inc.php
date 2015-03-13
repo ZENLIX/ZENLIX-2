@@ -1389,12 +1389,14 @@ function get_userlogin_byid($in) {
     return $r;
 }
 
+
+
 function validate_user_by_api($input) {
     
     global $dbConnection, $CONF;
     $result = false;
 
-    $stmt = $dbConnection->prepare('SELECT login, fio from users where uniq_id=:ls and status!=2 LIMIT 1');
+    $stmt = $dbConnection->prepare('SELECT login, fio from users where api_key=:ls and status!=2 LIMIT 1');
             $stmt->execute(array(
                 ':ls' => $input
             ));
@@ -1582,9 +1584,69 @@ function get_ticket_val_by_hash($what, $in) {
     return $fior[0];
 }
 
+function get_user_id_by_hash($in) {
+    global $dbConnection;
+    
+
+if (strpos($in,',') !== false) {
+    $ar=explode(",", $in);
+
+    $p=array();
+    foreach ($ar as $value) {
+        # code...
+    $stmt = $dbConnection->prepare('select id from users where uniq_id=:in');
+    $stmt->execute(array(
+        ':in' => $value
+    ));
+    $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    array_push($p, $total_ticket['id']);
+
+    }
+
+$tt=implode(",", $p);
+
+}
+
+else if (strpos($in,',') !== true) {
+    $stmt = $dbConnection->prepare('select id from users where uniq_id=:in');
+    $stmt->execute(array(
+        ':in' => $in
+    ));
+    $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $tt = $total_ticket['id'];
+}
+
+    return $tt;
+}
+
+
 function get_user_hash_by_id($in) {
     global $dbConnection;
     
+
+if (strpos($in,',') !== false) {
+    $ar=explode(",", $in);
+
+    $p=array();
+    foreach ($ar as $value) {
+        # code...
+    $stmt = $dbConnection->prepare('select uniq_id from users where id=:in');
+    $stmt->execute(array(
+        ':in' => $value
+    ));
+    $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    array_push($p, $total_ticket['uniq_id']);
+
+    }
+
+$tt=implode(",", $p);
+
+}
+
+else if (strpos($in,',') !== true) {
     $stmt = $dbConnection->prepare('select uniq_id from users where id=:in');
     $stmt->execute(array(
         ':in' => $in
@@ -1592,9 +1654,10 @@ function get_user_hash_by_id($in) {
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     
     $tt = $total_ticket['uniq_id'];
-    return $tt;
 }
 
+    return $tt;
+}
 
 
 function get_ticket_form_view() {
@@ -2159,6 +2222,49 @@ function get_client_info_ticket($id) {
 <?php
 }
 
+
+/*
+/////////////////////////////////////
+function api_back($type_op, $lang, $user_id, $ticket_id) {
+    global $dbConnection,$base,$CONF;
+  //API Url
+$url = 'http://example.com/api/JSON/create';
+ 
+//Initiate cURL.
+$ch = curl_init($url);
+ 
+
+        $stmt = $dbConnection->prepare('SELECT * FROM tickets where id=:tid');
+        $stmt->execute(array(':tid' => $ticket_id));
+        $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+
+//The JSON data.
+$jsonData = array(
+    'username' => 'MyUsername',
+    'password' => 'MyPassword'
+);
+ 
+//Encode the array into JSON.
+$jsonDataEncoded = json_encode($jsonData);
+ 
+//Tell cURL that we want to send a POST request.
+curl_setopt($ch, CURLOPT_POST, 1);
+ 
+//Attach our encoded JSON string to the POST fields.
+curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonDataEncoded);
+ 
+//Set the content type to application/json
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
+ 
+//Execute the request
+$result = curl_exec($ch);
+return $result;
+}
+/////////////////////////////////////
+*/
+
 function get_unit_name_return4news($input) {
     global $dbConnection;
     
@@ -2213,6 +2319,22 @@ function view_array($in) {
     // делаем что-либо с последним элементом $end_element
     
     return $res;
+}
+
+function get_user_val_by_api($id, $in) {
+    
+    //val.id
+    global $CONF;
+    global $dbConnection;
+    
+    $stmt = $dbConnection->prepare('SELECT ' . $in . ' FROM users where api_key=:id');
+    $stmt->execute(array(
+        ':id' => $id
+    ));
+    
+    $fior = $stmt->fetch(PDO::FETCH_NUM);
+    
+    return $fior[0];
 }
 
 function get_user_val_by_hash($id, $in) {
@@ -4724,6 +4846,20 @@ function name_of_user($input) {
     echo ($res);
 }
 
+function gen_new_api($user_id) {
+global $dbConnection;
+$message=md5(randomPassword());
+
+            $stmt = $dbConnection->prepare('update users set api_key=:message where id=:noteid');
+            $stmt->execute(array(
+                ':message' => $message,
+                ':noteid' => $user_id
+            ));
+
+    return $message;
+
+}
+
 function name_of_user_ret_nolink($input) {
     global $dbConnection;
     
@@ -4847,6 +4983,7 @@ function get_ticket_info_source($id) {
 $r="from web";
     if ($tt == "web") { $r="from web"; }
     else if ($tt == "mail") { $r="from e-mail"; }
+    else if ($tt == "api") {$r="from api";}
 
     return $r;
 

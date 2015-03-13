@@ -33,6 +33,12 @@ code на status (ok, error)
 msg на error_description
 id на ticket_id
 date_create на date_created
+================================
+
+
+После авторизации дать клиенту uniq_id
+функция validate_user_by_api - проверять эти uniq_id
+
 
 */
 
@@ -49,13 +55,14 @@ if (isset($data_json->mode)) {
             if (get_user_authtype($login)) {
                 if (ldap_auth($login, $data_json->pass)) {
                     
-                    $stmt = $dbConnection->prepare('SELECT id,login,fio from users where login=:login AND status=1');
+                    $stmt = $dbConnection->prepare('SELECT * from users where login=:login AND status=1');
                     $stmt->execute(array(
                         ':login' => $login
                     ));
                     if ($stmt->rowCount() == 1) {
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
                         $code = "ok";
+                        $fio=$row['fio'];
                     }
                 } else {
                     $code = "error";
@@ -66,7 +73,7 @@ if (isset($data_json->mode)) {
             //SYSTEM auth
             else if (get_user_authtype($login) == false) {
                 
-                $stmt = $dbConnection->prepare('SELECT id,login,fio from users where login=:login AND pass=:pass AND status=1');
+                $stmt = $dbConnection->prepare('SELECT * from users where login=:login AND pass=:pass AND status=1');
                 $stmt->execute(array(
                     ':login' => $login,
                     ':pass' => $password
@@ -76,6 +83,7 @@ if (isset($data_json->mode)) {
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     $user_id = $row['id'];
                     $code = "ok";
+                    $fio=$row['fio'];
                 } else {
                     $code = "error";
                     $error_msg = "system auth error";
@@ -91,11 +99,23 @@ if (isset($data_json->mode)) {
         }
         
         $status = "ok";
-        $r['uniq_id'] = get_user_val_by_id($user_id, 'uniq_id');
-        $r['status'] = $code;
-        $r['error_description'] = $error_msg;
-        $row_set[] = $r;
-        print json_encode($row_set);
+
+
+if (get_user_val_by_id($user_id, 'api_key')) {
+    $ap_key=get_user_val_by_id($user_id, 'api_key');
+}
+if (!get_user_val_by_id($user_id, 'api_key')) {
+    $ap_key=gen_new_api($user_id);
+}
+
+$r=array(
+    'uniq_id'=>$ap_key,
+    'status'=>$code,
+    'error_description'=>$error_msg,
+    'fio'=>$fio
+    );
+
+        print json_encode($r);
     }
 
     else if ($mode == "ticket_list") {
@@ -103,10 +123,21 @@ if (isset($data_json->mode)) {
 
             if (validate_user_by_api($data_json->uniq_id)) {
 
+$is_client    = get_user_val_by_api($data_json->uniq_id, 'is_client');
+
+if ($is_client == "1") {$data_json->type = "client";}
+
+if ($data_json->type == "client") {
+$user_id    = get_user_val_by_api($data_json->uniq_id, 'id');
+$stmt = $dbConnection->prepare('SELECT * from tickets where user_init_id=:user_id and arch=:n and client_id=:cid
+        order by id desc');
+        $stmt->execute(array(':user_id' => $user_id, ':cid' => $user_id, ':n' => '0'));
+
+ }
 
 
 if ($data_json->type == "in") {
-        $user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
+        $user_id    = get_user_val_by_api($data_json->uniq_id, 'id');
         $unit_user  = unit_of_user($user_id);
         $priv_val   = priv_status($user_id);
         
@@ -146,7 +177,7 @@ if ($data_json->type == "in") {
                  }
 }
 else if ($data_json->type == "out") {
-$user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
+$user_id    = get_user_val_by_api($data_json->uniq_id, 'id');
         $unit_user  = unit_of_user($user_id);
         $priv_val   = priv_status($user_id);
         
@@ -216,7 +247,7 @@ $user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
 else if ($data_json->type == "arch") {
 
 
-$user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
+$user_id    = get_user_val_by_api($data_json->uniq_id, 'id');
         
 
         //$user_id = id_of_user($_SESSION['helpdesk_user_login']);
@@ -248,9 +279,7 @@ $user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
         
         if ($priv_val == 0) {
             
-            $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, ok_date
-                            from tickets
+            $stmt = $dbConnection->prepare('SELECT * from tickets
                             where (unit_id IN (' . $in_query . ') or user_init_id=:user_id) and arch=:n
                             order by id DESC');
             
@@ -260,9 +289,7 @@ $user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
         } else if ($priv_val == 1) {
             
             $stmt = $dbConnection->prepare('
-            SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, ok_date
-                            from tickets
+            SELECT * from tickets
                             where (
                             (find_in_set(:user_id,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n) or
                             (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query2 . ') and arch=:n2)
@@ -275,9 +302,7 @@ $user_id    = get_user_val_by_hash($data_json->uniq_id, 'id');
             
         } else if ($priv_val == 2) {
             
-            $stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read, lock_by, ok_by, ok_date
-                            from tickets
+            $stmt = $dbConnection->prepare('SELECT * from tickets
                             where arch=:n
                             order by id DESC');
             
@@ -294,15 +319,52 @@ ok_priv=ok/unok
         
                 
                 $res1 = $stmt->fetchAll();
+
+
+
+
 				
 				$r['tickets'] = array();
                 foreach ($res1 as $row) {
+
+
+if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    $st = 'ok';
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+
+
                 	array_push($r['tickets'], array(
                     'id_ticket' 	=> $row['id'],
                     'ticket_hash' 	=> $row['hash_name'],
                     'subj' 			=> $row['subj'],
                     'text' 			=> $row['msg'],
-                    'date_created' 	=> $row['date_create']
+                    'date_created' 	=> $row['date_create'],
+                    'status'        => $st,
+                    'prio'          => $row['prio'],
+                    'user_init_hash'=> get_user_hash_by_id($row['user_init_id']),
+                    'client_hash'   => get_user_hash_by_id($row['client_id']),
+                    'to_user_hash'  => get_user_hash_by_id($row['user_to_id']),
+                    'to_unit_id'    => $row['unit_id']
                 	));
                 }
 
@@ -334,7 +396,7 @@ ok_priv=ok/unok
     	if (isset($data_json->uniq_id, $data_json->ticket_hash)) {
 
             if (validate_user_by_api($data_json->uniq_id)) {
-            	$user_id 	= get_user_val_by_hash($data_json->uniq_id, 'id');
+            	$user_id 	= get_user_val_by_api($data_json->uniq_id, 'id');
             	$stmt = $dbConnection->prepare('SELECT * from tickets
                             where hash_name=:hn');
     						$stmt->execute(array(':hn' => $data_json->ticket_hash));
@@ -360,7 +422,12 @@ ok_priv=ok/unok
 
 
         		foreach ($res1 as $row) {
-        							if ($row['status'] == 1) {
+        		
+if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
                     $st = 'ok';
                 }
                 if ($row['status'] == 0) {
@@ -378,6 +445,7 @@ ok_priv=ok/unok
                         $st = "free";
                     }
                 }
+            }
 
         			array_push($r['ticket'], array(
                     'id_ticket' 	=> $row['id'],
@@ -385,13 +453,16 @@ ok_priv=ok/unok
                     'subj' 			=> $row['subj'],
                     'text' 			=> $row['msg'],
                     'date_created' 	=> $row['date_create'], 
-                    'user_init_id'	=> nameshort(name_of_user_ret_nolink($row['user_init_id'])),
-                    'client_id'		=> nameshort(name_of_user_ret_nolink($row['client_id'])),
-                    'unit_id'		=> view_array(get_unit_name_return($row['unit_id'])),
-                    'user_to_id'	=> nameshort(name_of_user_ret_nolink($row['user_to_id'])),
+                    'user_init_id'	=> get_user_hash_by_id($row['user_init_id']),
+                    'client_id'		=> get_user_hash_by_id($row['client_id']),
+                    'unit_id'		=> $row['unit_id'],
+                    'user_to_id'	=> get_user_hash_by_id($row['user_to_id']),
                     'status'		=> $st,
-                    'lock_by'		=> nameshort(name_of_user_ret_nolink($row['lock_by'])),
-                    'ok_by'			=> nameshort(name_of_user_ret_nolink($row['ok_by']))
+                    'lock_by'		=> get_user_hash_by_id($row['lock_by']),
+                    'ok_by'			=> get_user_hash_by_id($row['ok_by']),
+                    'prio'          => $row['prio'],
+                    'ok_date'       => $row['ok_date'],
+                    'deadline_time' => $row['deadline_time']
                 	));
             }
                 $code = "ok";
@@ -420,15 +491,41 @@ else {
     	if (isset($data_json->uniq_id, $data_json->ticket_hash)) {
 
             if (validate_user_by_api($data_json->uniq_id)) {
-            	$user_id 	= get_user_val_by_hash($data_json->uniq_id, 'id');
-
+            	$user_id 	= get_user_val_by_api($data_json->uniq_id, 'id');
+                $priv_val   = priv_status($user_id);
             	//check
-            $stmt = $dbConnection->prepare('SELECT lock_by, id FROM tickets where hash_name=:tid');
+            $stmt = $dbConnection->prepare('SELECT * FROM tickets where hash_name=:tid');
             $stmt->execute(array(':tid' => $data_json->ticket_hash));
-            $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-            $lb = $fio['lock_by'];
-            $t_id = $fio['id'];
-             if ($lb == "0") {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $t_id=$row['id'];
+if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    $st = 'ok';
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+
+
+
+             if (in_array($st, array('free'))) {
                 
                 $stmt = $dbConnection->prepare('update tickets set lock_by=:user, last_update=:n where hash_name=:tid');
                 $stmt->execute(array(':tid' => $data_json->ticket_hash, ':user' => $user_id, ':n' => $CONF['now_dt']));
@@ -442,58 +539,12 @@ values (:lock, :n, :unow, :tid)');
                 send_notification('ticket_lock', $t_id);
             }
 
-            	$stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, comment, last_edit, is_read, lock_by, ok_by, arch, ok_date, prio, last_update
-                            from tickets
-                            where hash_name=:hn');
-    						$stmt->execute(array(':hn' => $data_json->ticket_hash));
-    						$res1 = $stmt->fetchAll();
-    			if (!empty($res1)) {
-    				$r['ticket'] = array();
+            	
+    			
 
-
-
-
-
-
-
-        		foreach ($res1 as $row) {
-        							if ($row['status'] == 1) {
-                    $st = 'ok';
-                }
-                if ($row['status'] == 0) {
-                    if ($row['lock_by'] <> 0) {
-                        
-                        if ($row['lock_by'] == $user_id) {
-                            $st = "lock_by_me";
-                        }
-                        
-                        if ($row['lock_by'] <> $user_id) {
-                            $st = $st = "lock_by_other";
-                        }
-                    }
-                    if ($row['lock_by'] == 0) {
-                        $st = "free";
-                    }
-                }
-
-        			array_push($r['ticket'], array(
-                    'id_ticket' 	=> $row['id'],
-                    'ticket_hash' 	=> $row['hash_name'],
-                    'subj' 			=> $row['subj'],
-                    'text' 			=> $row['msg'],
-                    'date_created' 	=> $row['date_create'], 
-                    'user_init_id'	=> nameshort(name_of_user_ret_nolink($row['user_init_id'])),
-                    'client_id'		=> nameshort(name_of_user_ret_nolink($row['client_id'])),
-                    'unit_id'		=> view_array(get_unit_name_return($row['unit_id'])),
-                    'user_to_id'	=> nameshort(name_of_user_ret_nolink($row['user_to_id'])),
-                    'status'		=> $st,
-                    'lock_by'		=> nameshort(name_of_user_ret_nolink($row['lock_by'])),
-                    'ok_by'			=> nameshort(name_of_user_ret_nolink($row['ok_by']))
-                	));
-            }
+            
                 $code = "ok";
-        }
+        
     }
     else { 
                 $code = "error";
@@ -514,20 +565,143 @@ else {
 
 
 
+
+
+
+
+    else if ($mode == "ticket_unlock") {
+        if (isset($data_json->uniq_id, $data_json->ticket_hash)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                $user_id    = get_user_val_by_api($data_json->uniq_id, 'id');
+                $priv_val   = priv_status($user_id);
+                //check
+            $stmt = $dbConnection->prepare('SELECT * FROM tickets where hash_name=:tid');
+            $stmt->execute(array(':tid' => $data_json->ticket_hash));
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+$t_id=$row['id'];
+
+if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    $st = 'ok';
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+$p="";
+if (in_array($priv_val, array('2','0'))) {
+    $p="lock_by_other";
+}
+
+             if (in_array($st, array('lock_by_me',$p))) {
+                
+                $stmt = $dbConnection->prepare('update tickets set lock_by=:user, last_update=:n where hash_name=:tid');
+                $stmt->execute(array(':tid' => $data_json->ticket_hash, ':user' => '0', ':n' => $CONF['now_dt']));
+                
+                $unow = $user_id;
+                
+                $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
+values (:lock, :n, :unow, :tid)');
+                $stmt->execute(array(':tid' => $t_id, ':unow' => $unow, ':lock' => 'unlock', ':n' => $CONF['now_dt']));
+                
+                send_notification('ticket_unlock', $t_id);
+            }
+
+                
+                
+
+            
+                $code = "ok";
+        
+    }
+    else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+
+}
+else { 
+                $code = "error";
+                $error_msg = "not all params";
+}
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+}
+
+
+
+
+
+
+
+
+
 else if ($mode == "ticket_ok") {
     	if (isset($data_json->uniq_id, $data_json->ticket_hash)) {
 
             if (validate_user_by_api($data_json->uniq_id)) {
-            	$user_id 	= get_user_val_by_hash($data_json->uniq_id, 'id');
-
+            	$user_id 	= get_user_val_by_api($data_json->uniq_id, 'id');
+                $priv_val   = priv_status($user_id);
             	//check
-            $stmt = $dbConnection->prepare('SELECT ok_by, status, id FROM tickets where hash_name=:tid');
+            $stmt = $dbConnection->prepare('SELECT * FROM tickets where hash_name=:tid');
             $stmt->execute(array(':tid' => $data_json->ticket_hash));
-            $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-            $ob = $fio['ok_by'];
-            $t_id = $fio['id'];
-            $status = $fio['status'];
-             if ($status == "0") {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$t_id=$row['id'];
+
+
+if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    $st = 'ok';
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+
+
+
+$p="";
+if (in_array($priv_val, array('2','0'))) {
+    $p="lock_by_other";
+}
+
+
+             if (in_array($st, array('lock_by_me', 'free', $p))) {
                 $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=:n, last_update=:nz where id=:tid');
                 $stmt->execute(array(':s' => '1', ':tid' => $t_id, ':user' => $user_id, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
                 
@@ -540,59 +714,14 @@ else if ($mode == "ticket_ok") {
                 send_notification('ticket_ok', $t_id);
             }
 
-            	$stmt = $dbConnection->prepare('SELECT 
-                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, comment, last_edit, is_read, lock_by, ok_by, arch, ok_date, prio, last_update
-                            from tickets
-                            where hash_name=:hn');
-    						$stmt->execute(array(':hn' => $data_json->ticket_hash));
-    						$res1 = $stmt->fetchAll();
-    			if (!empty($res1)) {
-    				$r['ticket'] = array();
 
 
 
+    				
 
-
-
-
-        		foreach ($res1 as $row) {
-        							if ($row['status'] == 1) {
-                    $st = 'ok';
-                }
-                if ($row['status'] == 0) {
-                    if ($row['lock_by'] <> 0) {
-                        
-                        if ($row['lock_by'] == $user_id) {
-                            $st = "lock_by_me";
-                        }
-                        
-                        if ($row['lock_by'] <> $user_id) {
-                            $st = $st = "lock_by_other";
-                        }
-                    }
-                    if ($row['lock_by'] == 0) {
-                        $st = "free";
-                    }
-                }
-
-        			array_push($r['ticket'], array(
-                    'id_ticket' 	=> $row['id'],
-                    'ticket_hash' 	=> $row['hash_name'],
-                    'subj' 			=> $row['subj'],
-                    'text' 			=> $row['msg'],
-                    'date_created' 	=> $row['date_create'], 
-                    'user_init_id'	=> nameshort(name_of_user_ret_nolink($row['user_init_id'])),
-                    'client_id'		=> nameshort(name_of_user_ret_nolink($row['client_id'])),
-                    'unit_id'		=> view_array(get_unit_name_return($row['unit_id'])),
-                    'user_to_id'	=> nameshort(name_of_user_ret_nolink($row['user_to_id'])),
-                    'status'		=> $st,
-                    'lock_by'		=> nameshort(name_of_user_ret_nolink($row['lock_by'])),
-                    'ok_by'			=> nameshort(name_of_user_ret_nolink($row['ok_by']))
-                	));
-            }
                 $code = "ok";
                 
-        }
+        
     }
     else { 
                 $code = "error";
@@ -610,6 +739,944 @@ else {
         $row_set[] = $r;
         print json_encode($row_set);
 }
+
+
+
+
+
+
+else if ($mode == "ticket_no_ok") {
+        if (isset($data_json->uniq_id, $data_json->ticket_hash)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                $user_id    = get_user_val_by_api($data_json->uniq_id, 'id');
+                $priv_val   = priv_status($user_id);
+                //check
+            $stmt = $dbConnection->prepare('SELECT * FROM tickets where hash_name=:tid');
+            $stmt->execute(array(':tid' => $data_json->ticket_hash));
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$t_id=$row['id'];
+
+
+if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    //$st = 'ok';
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st="ok_by_me";
+                        }
+                                                if ($row['ok_by'] != $user_id) {
+                            $st="ok_by_other";
+                        }
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+
+
+
+$p="";
+if (in_array($priv_val, array('2','0'))) {
+    $p="ok_by_other";
+}
+
+
+             if (in_array($st, array('ok_by_me', $p))) {
+                $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=:n, last_update=:nz where id=:tid');
+                $stmt->execute(array(':s' => '0', ':tid' => $t_id, ':user' => $user_id, ':n' => $CONF['now_dt'], ':nz' => $CONF['now_dt']));
+                
+                $unow = $user_id;
+                
+                $stmt = $dbConnection->prepare('INSERT INTO ticket_log 
+            (msg, date_op, init_user_id, ticket_id)
+            values (:ok, :n, :unow, :tid)');
+                $stmt->execute(array(':ok' => 'no_ok', ':tid' => $t_id, ':unow' => $user_id, ':n' => $CONF['now_dt']));
+                send_notification('ticket_no_ok', $t_id);
+            }
+
+
+
+
+                    
+
+                $code = "ok";
+                
+        
+    }
+    else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+
+}
+else { 
+                $code = "error";
+                $error_msg = "not all params";
+}
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+}
+
+
+
+
+
+
+else if ($mode == "get_user_info") {
+        if (isset($data_json->uniq_id, $data_json->user_hash)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                $user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+$r['info'] = array();
+
+$def_unit=0;
+if (get_user_val_by_hash($data_json->uniq_id, 'def_unit_id') != "0") {
+
+    $def_unit=get_user_val_by_hash($data_json->uniq_id, 'def_unit_id');
+}
+
+$def_user=0;
+if (get_user_val_by_hash($data_json->uniq_id, 'def_user_id') != "0") {
+
+    $def_user=get_user_hash_by_id(get_user_val_by_hash($data_json->uniq_id, 'def_user_id'));
+}
+
+    array_push($r['info'], array(
+            'fio'           =>get_user_val_by_hash($data_json->user_hash, 'fio'),
+            'status'        =>get_user_val_by_hash($data_json->user_hash, 'status'),
+            'priv'          =>get_user_val_by_hash($data_json->user_hash, 'priv'),
+            'unit'          =>get_user_val_by_hash($data_json->user_hash, 'unit'),
+            'is_client'     =>get_user_val_by_hash($data_json->user_hash, 'is_client'),
+            'email'         =>get_user_val_by_hash($data_json->user_hash, 'email'),
+            'lang'          =>get_user_val_by_hash($data_json->user_hash, 'lang'),
+            'last_time'     =>get_user_val_by_hash($data_json->user_hash, 'last_time'),
+            'usr_img'       =>get_user_val_by_hash($data_json->user_hash, 'usr_img'),
+            'posada'        =>get_user_val_by_hash($data_json->user_hash, 'posada'),
+            'tel'           =>get_user_val_by_hash($data_json->user_hash, 'tel'),
+            'skype'         =>get_user_val_by_hash($data_json->user_hash, 'skype'),
+            'unit_desc'     =>get_user_val_by_hash($data_json->user_hash, 'unit_desc'),
+            'adr'           =>get_user_val_by_hash($data_json->user_hash, 'adr'),
+            'def_unit_id'   =>$def_unit,
+            'def_user_id'   =>$def_user
+
+        ));
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+else if ($mode == "get_unit_info") {
+        if (isset($data_json->uniq_id, $data_json->unit_code)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+$r['info'] = array();
+
+
+
+        $stmt = $dbConnection->prepare('SELECT id, name FROM deps where id=:val');
+        $stmt->execute(array(
+            ':val' => $data_json->unit_code
+        ));
+        $dep = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+
+    array_push($r['info'], array(
+            'id'    =>$dep['id'],
+            'name'           =>$dep['name']
+
+        ));
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+else if ($mode == "get_unit_list") {
+        if (isset($data_json->uniq_id)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+
+
+
+
+        $stmt = $dbConnection->prepare('SELECT id, name FROM deps where status=:val');
+        $stmt->execute(array(
+            ':val' => '1'
+        ));
+        $dep = $stmt->fetchAll();
+
+
+$r['list'] = array();
+foreach ($dep as $value) {
+       array_push($r['list'], array(
+            'id'=>$value['id'],
+            'name' =>$value['name']
+
+        )); 
+
+        # code...
+}
+
+
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+else if ($mode == "get_subj_list") {
+        if (isset($data_json->uniq_id)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+
+
+
+
+        $stmt = $dbConnection->prepare('SELECT id, name FROM subj');
+        $stmt->execute();
+        $dep = $stmt->fetchAll();
+
+
+$r['list'] = array();
+foreach ($dep as $value) {
+       array_push($r['list'], array(
+            'id' =>$value['id'],
+            'name' =>$value['name']
+
+        )); 
+
+        # code...
+}
+
+
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+
+
+
+else if ($mode == "get_posada_list") {
+        if (isset($data_json->uniq_id)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+
+
+
+
+        $stmt = $dbConnection->prepare('SELECT id, name FROM posada');
+        $stmt->execute();
+        $dep = $stmt->fetchAll();
+
+
+$r['list'] = array();
+foreach ($dep as $value) {
+       array_push($r['list'], array(
+            'id'    => $value['id'],
+            'name' =>$value['name']
+
+        )); 
+
+        # code...
+}
+
+
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+
+else if ($mode == "get_users_list") {
+        if (isset($data_json->uniq_id, $data_json->find_param)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+$r['users'] = array();
+
+$term=trim(strip_tags($data_json->find_param));
+
+$stmt = $dbConnection->prepare('SELECT * FROM users WHERE ((fio LIKE :term) or (login LIKE :term2) or (tel LIKE :term3)) and id!=1 and status!=2 limit 10');
+    $stmt->execute(array(':term' => '%' . $term . '%', ':term2' => '%' . $term . '%', ':term3' => '%' . $term . '%'));
+
+        $u = $stmt->fetchAll();
+
+foreach ($u as $dep) {
+
+    array_push($r['users'], array(
+
+
+
+            'uniq_id'       =>$dep['uniq_id'],
+            'fio'           =>$dep['fio'],
+            'status'        =>$dep['status'],
+            'priv'          =>$dep['priv'],
+            'unit'          =>$dep['unit'],
+            'is_client'     =>$dep['is_client'],
+            'email'         =>$dep['email']
+            
+
+
+
+        ));
+}
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+else if ($mode == "get_user_by_dep") {
+        if (isset($data_json->uniq_id, $data_json->dep_code)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+$r['users'] = array();
+
+
+
+    $stmt = $dbConnection->prepare('SELECT * from users where find_in_set(:uid,unit)');
+    $stmt->execute(array(':uid' => $data_json->dep_code));
+
+        $u = $stmt->fetchAll();
+
+foreach ($u as $dep) {
+
+    array_push($r['users'], array(
+
+
+
+            'uniq_id'       =>$dep['uniq_id'],
+            'fio'           =>$dep['fio'],
+            'status'        =>$dep['status'],
+            'priv'          =>$dep['priv'],
+            'unit'          =>$dep['unit'],
+            'is_client'     =>$dep['is_client'],
+            'email'         =>$dep['email']
+            
+
+
+
+        ));
+}
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+else if ($mode == "get_ticket_comments") {
+        if (isset($data_json->uniq_id, $data_json->ticket_hash)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+$r['comments'] = array();
+
+
+
+        $stmt = $dbConnection->prepare('SELECT * FROM comments where t_id=:val order by id asc');
+        $stmt->execute(array(
+            ':val' => get_ticket_id_by_hash($data_json->ticket_hash)
+        ));
+        $dep_r = $stmt->fetchAll();
+
+foreach ($dep_r as $dep) {
+
+    array_push($r['comments'], array(
+            'author'           =>get_user_hash_by_id($dep['user_id']),
+            'text'              => $dep['comment_text'],
+            'dt'                => $dep['dt']
+
+        ));
+}
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+else if ($mode == "add_ticket_comment") {
+        if (isset($data_json->uniq_id, $data_json->ticket_hash, $data_json->msg)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+
+$tid_comment = get_ticket_id_by_hash($data_json->ticket_hash);
+$user_comment=get_user_val_by_api($data_json->uniq_id, 'id');
+$text_comment=$data_json->msg;
+
+            $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
+values (:tid_comment, :user_comment, :text_comment, :n)');
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':user_comment' => $user_comment,
+                ':text_comment' => $text_comment,
+                ':n' => $CONF['now_dt']
+            ));
+            
+            $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
+values (:comment, :n, :user_comment, :tid_comment)');
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':user_comment' => $user_comment,
+                ':comment' => 'comment',
+                ':n' => $CONF['now_dt']
+            ));
+            
+            send_notification('ticket_comment', $tid_comment);
+            
+            //}
+            
+            $stmt = $dbConnection->prepare('update tickets set last_update=:n where id=:tid_comment');
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':n' => $CONF['now_dt']
+            ));
+
+
+
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+
+
+else if ($mode == "refer_ticket") {
+        if (isset($data_json->uniq_id, $data_json->ticket_hash,$data_json->user_to_id,$data_json->unit_id,$data_json->msg)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+
+
+
+                $author=get_user_val_by_api($data_json->uniq_id, 'id');
+
+            $tid = get_ticket_id_by_hash($data_json->ticket_hash);
+            $to = $data_json->unit_id;
+           // $tou = get_user_val_by_api($data_json->user_to_id, 'id');
+            $tou=get_user_id_by_hash($data_json->user_to_id);
+            $tom = $data_json->msg;
+
+            if (strlen($tom) > 2) {
+                
+                $x_refer_comment = '<strong><small class=\'text-danger\'>' . nameshort(name_of_user_ret($author)) . ' ' . lang('REFER_comment_add') . ' (' . date(' d.m.Y h:i:s') . '):</small> </strong>' . strip_tags(xss_clean(($tom)));
+                
+                $stmt = $dbConnection->prepare('update tickets set 
+            unit_id=:to, 
+            user_to_id=:tou, 
+            msg=concat(msg,:br,:x_refer_comment), 
+            lock_by=:n, 
+            last_update=:nz where id=:tid');
+                $stmt->execute(array(
+                    ':to' => $to,
+                    ':tou' => $tou,
+                    ':br' => '<br>',
+                    ':x_refer_comment' => $x_refer_comment,
+                    ':tid' => $tid,
+                    ':n' => '0',
+                    ':nz' => $CONF['now_dt']
+                ));
+            } else if (strlen($tom) <= 2) {
+                
+                $stmt = $dbConnection->prepare('update tickets set 
+            unit_id=:to, 
+            user_to_id=:tou, 
+            lock_by=:n, 
+            last_update=:nz where id=:tid');
+                $stmt->execute(array(
+                    ':to' => $to,
+                    ':tou' => $tou,
+                    ':tid' => $tid,
+                    ':n' => '0',
+                    ':nz' => $CONF['now_dt']
+                ));
+            }
+
+
+            $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, to_user_id, ticket_id, to_unit_id) values (:refer, :n, :unow, :tou, :tid, :to)');
+            $stmt->execute(array(
+                ':to' => $to,
+                ':tou' => $tou,
+                ':refer' => 'refer',
+                ':tid' => $tid,
+                ':unow' => $author,
+                ':n' => $CONF['now_dt']
+            ));
+            
+            send_notification('ticket_refer', $tid);
+
+
+
+
+$code = "ok";
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+
+
+        
+
+
+
+
+else if ($mode == "create_ticket") {
+        if (isset($data_json->uniq_id, $data_json->user_to_id, $data_json->subj, $data_json->msg, $data_json->client_id, $data_json->unit_id, $data_json->prio)) {
+
+            if (validate_user_by_api($data_json->uniq_id)) {
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+
+
+
+
+
+
+
+                //$user_id    = get_user_val_by_api($data_json->user_hash, 'id');
+
+
+
+//???///////////////////////////////////////////////////////////
+/*
+user_to_id (0 def)
+!subj
+!msg
+!client_id
+!unit_id
+prio (1 def)
+
+*/
+$error_code=true;
+
+if (iconv_strlen($data_json->subj, 'UTF-8') > 2 ) {
+   $subj=$data_json->subj; 
+}
+if (iconv_strlen($data_json->subj, 'UTF-8') <= 2 ) {
+   $error_code=false;
+}
+
+//проверить длину
+
+//msg$msg=$data_json->msg;
+if (iconv_strlen($data_json->msg, 'UTF-8') > 2 ) {
+   $msg=$data_json->msg;
+}
+if (iconv_strlen($data_json->msg, 'UTF-8') <= 2 ) {
+   $error_code=false;
+}
+//проверить длину
+
+
+//$client_id_param=$data_json->client_id;
+//есть ли вообще такой?
+
+if (get_user_val_by_hash($data_json->client_id, 'id')) {
+    $client_id_param=get_user_val_by_hash($data_json->client_id, 'id');
+}
+if (!get_user_val_by_hash($data_json->client_id, 'id')) {
+    $error_code=false;
+}
+
+
+
+
+$unit_id=$data_json->unit_id;
+
+
+$prio=1;
+if (in_array($data_json->prio, array('0','1','2'))) {
+    $prio=$data_json->prio;
+}
+
+
+if ($data_json->user_to_id == "0") {
+
+    $user_to_id="0";
+}
+if ($data_json->user_to_id != "0") {
+
+$user_to_id=get_user_id_by_hash($data_json->user_to_id);
+
+}
+
+
+$hashname = md5(time());
+$now_date_time=$CONF['now_dt'];
+
+
+if ($error_code == false)
+{
+                $code = "error";
+                $error_msg = "error data in fields";
+}
+
+else if ($error_code == true)
+{
+    
+                $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");
+                $stmt->execute();
+                $max_id_ticket = $stmt->fetch(PDO::FETCH_NUM);
+                $max_id_res_ticket = $max_id_ticket[0] + 1;
+                
+                $user_init_id=get_user_val_by_api($data_json->uniq_id, 'id');
+                $dl=Null;
+                $stmt = $dbConnection->prepare('INSERT INTO tickets
+                                (id,
+                                 user_init_id,
+                                 user_to_id,
+                                 date_create,
+                                 subj,
+                                 msg,
+                                 client_id,
+                                 unit_id,
+                                 status,
+                                 hash_name,
+                                 prio,
+                                 last_update,
+                                 deadline_time
+                                 ) VALUES (
+                                  :max_id_res_ticket,
+                                  :user_init_id,
+                                  :user_to_id,
+                                  :n,
+                                  :subj,
+                                  :msg,
+                                  :max_id,
+                                  :unit_id,
+                                  :status,
+                                  :hashname,
+                                  :prio,
+                                  :nz,
+                                  :deadline_time)');
+                $stmt->execute(array(
+                    ':max_id_res_ticket' => $max_id_res_ticket,
+                    ':user_init_id' => $user_init_id,
+                    ':user_to_id' => $user_to_id,
+                    ':subj' => $subj,
+                    ':msg' => $msg,
+                    ':max_id' => $client_id_param,
+                    ':unit_id' => $unit_id,
+                    ':status' => '0',
+                    ':hashname' => $hashname,
+                    ':prio' => $prio,
+                    ':n' => $now_date_time,
+                    ':nz' => $now_date_time,
+                    ':deadline_time'=> $dl
+                ));
+
+
+                $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
+                
+                $stmt->execute(array(
+                    ':create' => 'create',
+                    ':unow' => $user_init_id,
+                    ':max_id_res_ticket' => $max_id_res_ticket,
+                    ':user_to_id' => $user_to_id,
+                    ':unit_id' => $unit_id,
+                    ':n' => $now_date_time
+                ));
+
+                send_notification('ticket_create', $max_id_res_ticket);
+                insert_ticket_info ($max_id_res_ticket, 'api');
+//}
+
+/////////////////////////////////////////////////////////////
+
+$code = "ok";
+$r['ticket_hash']=$hashname;
+        }
+
+
+
+            }
+                else { 
+                $code = "error";
+                $error_msg = "validate error";
+}
+        }
+        else {
+                $code = "error";
+                $error_msg = "not all params";
+        }
+
+
+
+
+        $r['status'] = $code;
+        $r['error_description'] = $error_msg;
+        $row_set[] = $r;
+        print json_encode($row_set);
+
+    }
+
+
+
+
+
+
 else {
         $code = "error";
         $error_msg = "mode-param is not valid";

@@ -26,6 +26,26 @@ $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
 
+/*
+кому?
+
+получатель будет получать весь лог только тому кому надо
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function send_pushbullet($type_op, $lang, $user_mail, $ticket_id) {
 	global $dbConnection,$base,$CONF;
 	

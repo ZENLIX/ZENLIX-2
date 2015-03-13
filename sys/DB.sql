@@ -87,6 +87,22 @@ EXECUTE stmt;
 ######################################################
 
 
+#######UPDATE users.api_key####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='users' and column_name='api_key'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE users ADD api_key varchar(1024) DEFAULT NULL;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
+
+
 #######UPDATE users.noty_layot####################
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)

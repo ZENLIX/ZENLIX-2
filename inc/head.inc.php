@@ -75,7 +75,7 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/AdminLTE.css?<?=get_conf_param('version');?>">
 <body class="skin-blue" style="">
   
-         
+
   
   
   

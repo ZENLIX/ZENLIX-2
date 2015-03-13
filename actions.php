@@ -87,7 +87,8 @@ if (isset($_POST['mode'])) {
              is_client,
              uniq_id,
              status,
-             pass) 
+             pass,
+             api_key) 
              VALUES         
              (
              :client_fio, 
@@ -97,7 +98,8 @@ if (isset($_POST['mode'])) {
              :is_client,
              :uniq_id,
              :status,
-             :pass)');
+             :pass,
+             :api_key)');
         
         $stmt->execute(array(
             ':client_fio' => $fio,
@@ -107,7 +109,8 @@ if (isset($_POST['mode'])) {
             ':is_client' => '1',
             ':uniq_id' => $hn,
             ':status' => '1',
-            ':pass' => md5($pass)
+            ':pass' => md5($pass),
+            ':api_key'=>md5($pass."zen")
         ));
         
         //send mail to user & admin
@@ -1523,7 +1526,8 @@ $res_good['num']++;
             unit_desc,
             adr,
             is_client,
-            messages_type
+            messages_type,
+            api_key
             )
 values 
             (:fio, 
@@ -1545,7 +1549,8 @@ values
             :unit_desc,
             :adr,
             :is_client,
-            :msg_type
+            :msg_type,
+            :api_key
             )');
             $stmt->execute(array(
                 ':fio' => $user_fio,
@@ -1562,6 +1567,7 @@ values
                 ':lk' => '1',
                 ':messages_title' => $_SESSION['zenlix_def_ldap_mess_t'],
                 ':uniq_id' => $hn,
+                ':api_key' => md5($hn),
                 ':tel' => $user_tel,
                 ':skype' => $user_skype,
                 ':unit_desc' => $user_unit,
@@ -1675,7 +1681,8 @@ $res_good['num']++;
             unit_desc,
             adr,
             is_client,
-            messages_type
+            messages_type,
+            api_key
             )
 values 
             (:fio, 
@@ -1697,7 +1704,8 @@ values
             :unit_desc,
             :adr,
             :is_client,
-            :msg_type
+            :msg_type,
+            :api_key
             )');
             $stmt->execute(array(
                 ':fio' => $user_fio,
@@ -1714,6 +1722,7 @@ values
                 ':lk' => '1',
                 ':messages_title' => $_SESSION['zenlix_def_ldap_mess_t'],
                 ':uniq_id' => $hn,
+                ':api_key'  => md5($hn),
                 ':tel' => $user_tel,
                 ':skype' => $user_skype,
                 ':unit_desc' => $user_unit,
@@ -4045,7 +4054,8 @@ a, a:visited {
             skype,
             unit_desc,
             adr,
-            is_client
+            is_client,
+            api_key
             )
 values 
             (
@@ -4060,7 +4070,8 @@ values
             :skype,
             :unit_desc,
             :adr,
-            :is_client
+            :is_client,
+            :api_key
             )');
                 $stmt->execute(array(
                     ':fio' => $q_fio,
@@ -4074,7 +4085,8 @@ values
                     ':skype' => $q_skype,
                     ':unit_desc' => $q_pod,
                     ':adr' => $q_adr,
-                    ':is_client' => '1'
+                    ':is_client' => '1',
+                    ':api_key' => md5($hn)
                 ));
             }
             
@@ -5880,6 +5892,7 @@ else {
             pb,
             messages_title,
             uniq_id,
+            api_key,
             posada,
             tel,
             skype,
@@ -5906,6 +5919,7 @@ values
             :pb,
             :messages_title,
             :uniq_id,
+            :api_key,
             :posada,
             :tel,
             :skype,
@@ -5932,6 +5946,7 @@ values
                 ':pb' => $push,
                 ':messages_title' => $mess_title,
                 ':uniq_id' => $hn,
+                ':api_key' => md5($hn),
                 ':posada' => $posada,
                 ':tel' => $tel,
                 ':skype' => $skype,
@@ -6654,7 +6669,8 @@ $unit_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id');
              posada,
              priv,
              is_client,
-             uniq_id) 
+             uniq_id,
+             api_key) 
              VALUES         
              (:max_id, 
              :client_fio, 
@@ -6666,7 +6682,8 @@ $unit_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id');
              :client_posada,
              :priv,
              :is_client,
-             :uniq_id)');
+             :uniq_id,
+             :api_key)');
                 
                 $stmt->execute(array(
                     ':max_id' => $max_id,
@@ -6679,7 +6696,8 @@ $unit_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id');
                     ':client_posada' => $client_posada,
                     ':priv' => '1',
                     ':is_client' => '1',
-                    ':uniq_id' => $hn
+                    ':uniq_id' => $hn,
+                    ':api_key' => md5($hn)
                 ));
                 
                 $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");
