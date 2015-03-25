@@ -1,3 +1,20 @@
+<?php
+session_start();
+include_once ("../functions.inc.php");
+$CONF['title_header'] = lang('DASHBOARD_TITLE') . " - " . $CONF['name_of_firm'];
+
+if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
+    if ($_SESSION['helpdesk_user_id']) {
+        include ("head.inc.php");
+        include ("navbar.inc.php");
+        
+        //check_unlinked_file();
+        //echo get_userlogin_byid($_SESSION['helpdesk_user_id']);
+        
+?>
+
+
+
                 <section class="content-header">
                     <h1>
                     
@@ -228,4 +245,10 @@ get_helper(); ?>
        
 </div>
 </section>
-
+<?php
+include ("footer.inc.php");
+    }
+} else {
+    include 'auth.php';
+}
+?>

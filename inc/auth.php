@@ -27,7 +27,14 @@ background-size: 100% 100% auto;
 background-repeat: no-repeat;
 }   */ 
 </style>
-
+<?php
+if ($CONF['main_portal'] == true) {
+$link="auth";
+}
+else if ($CONF['main_portal'] == false) {
+    $link="index.php";
+}
+?>
 
 <body class="bg-navy">
 
@@ -35,7 +42,7 @@ background-repeat: no-repeat;
             <div class="header bg-light-blue" style="">
             <center><img src="<?=get_logo_img(); ?>" width="128"></center>
             <?php echo lang('MAIN_TITLE'); ?></div>
-            <form class="form-signin" action="<?php echo $CONF['hostname'] ?>index.php" method="POST" autocomplete="off">
+            <form class="form-signin" action="<?php echo $CONF['hostname'] . $link; ?>" method="POST" autocomplete="off">
                 <div class="body bg-gray">
                     <div class="form-group">
                         <input type="text" name="login" autocomplete="off" autocapitalize="off" autocorrect="off" class="form-control" placeholder="<?php echo lang('login'); ?>"/>

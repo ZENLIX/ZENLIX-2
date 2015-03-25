@@ -1,3 +1,17 @@
+<?php
+session_start();
+include_once ("../functions.inc.php");
+$CONF['title_header'] = lang('DASHBOARD_TITLE') . " - " . $CONF['name_of_firm'];
+if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
+    if ($_SESSION['helpdesk_user_id']) {
+        include ("head.inc.php");
+        include ("client.navbar.inc.php");
+        
+        //check_unlinked_file();
+        
+        
+?>
+
                 <section class="content-header">
                     <h1>
                     
@@ -13,10 +27,43 @@
 
 
 <section class="content">
-    
+
     
     <div class="row">
   
+<div class="col-md-12">
+    <?php
+$view_right=false;
+if (get_conf_param('global_msg_status') == "1") {
+
+    if (get_conf_param('global_msg_to') == "all") {$view_right=true;}
+    else if (get_conf_param('global_msg_to') != "all") {
+        $list_viewers=explode(",", get_conf_param('global_msg_to'));
+        if (in_array($_SESSION['helpdesk_user_id'], $list_viewers)) {$view_right=true;}
+    }
+
+}
+
+if (get_conf_param('global_msg_type') == "info") {$gm_type['icon']="info";}
+else if (get_conf_param('global_msg_type') == "warning") {$gm_type['icon']="warning";}
+else if (get_conf_param('global_msg_type') == "danger") {$gm_type['icon']="ban";}
+
+
+ ?>
+
+    <div class="row">
+<?php if ($view_right == true) { ?>
+<div class="col-md-12">
+<div class="alert alert-<?=get_conf_param('global_msg_type');?> alert-dismissable">
+                                        <i class="fa fa-<?=$gm_type['icon'];?>"></i>
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <?=get_conf_param('global_msg_data');?>
+                                    </div>
+</div>
+<?php } ?>
+</div>
+</div>
+
   <div class="col-md-6">
       <div class="row">
           <div class="col-lg-4 col-xs-6">
@@ -158,4 +205,10 @@ get_client_helper(); ?>
 </div>
 </section>
 
-
+<?php
+include ("footer.inc.php");
+    }
+} else {
+    include 'auth.php';
+}
+?>

@@ -653,7 +653,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
 
 
 
-    <?php
+    <?php 
             
             if ($arch == 1) {
 ?>

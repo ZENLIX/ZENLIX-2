@@ -501,6 +501,16 @@ if ($row['t_type'] == "text") {
 <input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
 <?php } ?>
 
+
+<?php 
+if ($row['t_type'] == "textarea") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+<textarea rows="3" class="form-control input-sm animated" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>"><?=$v;?></textarea>
+<?php } ?>
+
+
 <?php 
 if ($row['t_type'] == "select") {
     $v=$row['value'];

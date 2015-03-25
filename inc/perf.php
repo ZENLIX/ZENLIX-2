@@ -839,9 +839,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['2']="checked"
     <label for="from" class="col-sm-4 control-label"><small><?php
         echo lang('MAIL_msg'); ?></small></label>
     <div class="col-sm-8">
-    <textarea placeholder="" class="form-control input-sm" name="gm_text" id="gm_text" rows="3">
-    <?=get_conf_param('global_msg_data');?>
-    </textarea>
+    <textarea placeholder="" class="form-control input-sm" name="gm_text" id="gm_text" rows="3"><?=get_conf_param('global_msg_data');?></textarea>
 
     </div>
   </div>

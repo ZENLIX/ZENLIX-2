@@ -5,6 +5,7 @@ include_once ('sys/Parsedown.php');
 require 'library/HTMLPurifier.auto.php';
 include_once ('library/gump.class.php');
 
+include_once('inc/main_portal/portal.functions.inc.php');
 //include_once('integration/PushBullet.class.php');
 
 $dbConnection = new PDO('mysql:host=' . $CONF_DB['host'] . ';dbname=' . $CONF_DB['db_name'], $CONF_DB['username'], $CONF_DB['password'], array(
@@ -39,7 +40,8 @@ $CONF = array(
     'file_size' => get_conf_param('file_size') ,
     'update_server' => 'http://update.zenlix.com/',
     'timezone' => get_conf_param('time_zone') ,
-    'now_dt' => $now_date_time
+    'now_dt' => $now_date_time,
+    'main_portal'=>get_conf_param('portal_status')
 );
 $CONF_MAIL = array(
     'active' => get_conf_param('mail_active') ,
@@ -1700,6 +1702,7 @@ if ($row['for_client'] == "1") {$st_c="checked";}
 if ($row['t_type'] == "text") { $sel['text']="selected";}
 if ($row['t_type'] == "select") { $sel['select']="selected";}
 if ($row['t_type'] == "multiselect") { $sel['multiselect']="selected";}
+if ($row['t_type'] == "textarea") { $sel['textarea']="selected";}
 
 $input['value']=$row['value'];
 $input['name']=$row['name'];
@@ -1730,6 +1733,7 @@ if ($row['placeholder'] == "0") {$input['placeholder']="";}
 <select id="field_perf_select" name="" class="form-control input-sm">
 
 <option value="text" <?=$sel['text'];?>><?=lang('FIELD_type_text');?></option>
+<option value="textarea" <?=$sel['textarea'];?>><?=lang('FIELD_type_textarea');?></option>
 <option value="select" <?=$sel['select'];?>><?=lang('FIELD_type_select');?></option>
 <option value="multiselect" <?=$sel['multiselect'];?>><?=lang('FIELD_type_multiselect');?></option>
 </select>

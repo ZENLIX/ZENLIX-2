@@ -262,13 +262,7 @@ if (1 == 0) { ?>
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
-                                <li class="user-body">
- 
-                                    <div class="col-xs-12 text-center">
-                                        <a href="<?php echo $CONF['hostname'] ?>help"><?php echo lang('NAVBAR_help'); ?></a>
-                                    </div>
-                                    
-                                </li>
+
                                 <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
@@ -320,8 +314,8 @@ if (1 == 0) { ?>
                     
                     
                     <ul class="sidebar-menu">
-                        <li <?php echo echoActiveClassIfRequestMatches("index.php") ?> >
-                            <a  href="<?php echo $CONF['hostname'] ?>index.php">
+                        <li <?php echo echoActiveClassIfRequestMatches("dashboard") ?> >
+                            <a  href="<?php echo $CONF['hostname'] ?>dashboard">
                                 <i class="fa fa-dashboard"></i> <span><?php echo lang('DASHBOARD_TITLE'); ?></span>
                             </a>
                         </li>

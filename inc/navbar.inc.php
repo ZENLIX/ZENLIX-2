@@ -265,8 +265,8 @@ border-color: rgba(255, 255, 255, 0.2);" />
                     
                     
                     <ul class="sidebar-menu">
-                        <li <?php echo echoActiveClassIfRequestMatches("index.php") ?> >
-                            <a  href="<?php echo $CONF['hostname'] ?>index.php">
+                        <li <?php echo echoActiveClassIfRequestMatches("dashboard") ?> >
+                            <a  href="<?php echo $CONF['hostname'] ?>dashboard">
                                 <i class="fa fa-dashboard"></i> <span><?php echo lang('DASHBOARD_TITLE'); ?></span>
                             </a>
                         </li>
@@ -332,6 +332,11 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                             </a>
                             <ul class="treeview-menu">
                              <li <?php echo echoActiveClassIfRequestMatches("config") ?>><a href="<?php echo $CONF['hostname'] ?>config"><i class="fa fa-cog"></i> <?php echo lang('NAVBAR_conf'); ?></a></li>
+
+                             <li <?php echo echoActiveClassIfRequestMatches("portal") ?>><a href="<?php echo $CONF['hostname'] ?>portal"><i class="icon-svg" style=" padding-right: 6px;"></i> <?php echo lang('PORTAL_title'); ?></a></li>
+
+
+
                     <li <?php echo echoActiveClassIfRequestMatches("users") ?>><a href="<?php echo $CONF['hostname'] ?>users"><i class="fa fa-users"></i> <?php echo lang('NAVBAR_users'); ?></a></li>
                     <li <?php echo echoActiveClassIfRequestMatches("deps") ?>><a href="<?php echo $CONF['hostname'] ?>deps"><i class="fa fa-sitemap"></i> <?php echo lang('NAVBAR_deps'); ?></a></li>
                     
@@ -371,4 +376,3 @@ if (get_current_URL_name('print_ticket')) {
 ?>
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="right-side" style="<?=$style_hide;?> ">
-           

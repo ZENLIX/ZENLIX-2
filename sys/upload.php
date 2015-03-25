@@ -7,6 +7,12 @@ $maxsize    = 30097152;
 
 
 
+        $acceptable = array(
+            'image/jpeg',
+            'image/jpg',
+            'image/png'
+        );
+
 
 
 if(isset($_FILES["myfile"]))

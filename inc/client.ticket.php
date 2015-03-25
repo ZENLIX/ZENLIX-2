@@ -313,7 +313,8 @@ if (!empty($res11)) {
                                     <div class="input-group" id="for_msg">
                                         <input name="msg" id="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="&lt;small&gt;<?php echo lang('TICKET_t_det_ticket'); ?>&lt;/small&gt;" placeholder="<?php echo lang('TICKET_t_comm_ph'); ?>"/>
                                         <div class="input-group-btn">
-                                            <button value="<?php echo $hn ?>" id="do_comment" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                                            <button value="<?php echo $hn ?>" id="do_comment" class="btn btn-success"><i class="fa fa-comment"></i></button>
+                                            <input type="file" id="do_comment_file" value="<?php echo $hn ?>" class="file-inputs" title="+">
                                         </div>
                                     </div>
                                 </div>

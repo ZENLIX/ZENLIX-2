@@ -57,16 +57,19 @@ if (isset($_POST['mode'])) {
             $msg.= "</div>";
         } else if ($errors == false) {
             $check_error = "true";
-            $msg = "<div class=\"body bg-gray\">";
-            $msg.= "<div class=\"callout callout-info\">";
-            $msg.= lang('REG_msg');
+
+
+
+            $msg = "<div class=\"col-md-12\">";
+            $msg.= "<div class=\"alert alert-success alert-dismissable\"> <h4>    <i class=\"icon fa fa-check\"></i> ".lang('REG_msg')."</h4><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>";
+            //$msg.= lang('REG_msg');
             $msg.= "</div>";
             $msg.= "</div>";
         }
         
         $results[] = array(
             'check_error' => $check_error,
-            'msg' => $msg
+            'msg' => "<br>".$msg
         );
         print json_encode($results);
         
@@ -322,7 +325,7 @@ EOBODY;
             }
             
             if ($validated === true) {
-                $check_error = true;
+                $check_error = true; 
                 $stmt = $dbConnection->prepare('insert into scheduler_ticket
         (user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, period, period_arr, action_time, dt_start, dt_stop, prio) values (
         :user_init_id, 
@@ -4104,11 +4107,33 @@ values
             ));
         }
         
+
+
+if ($mode == "conf_edit_portal") {
+            update_val_by_key("portal_status", $_POST['status']);
+            update_val_by_key("portal_msg_type", $_POST['msg_type']);
+            update_val_by_key("portal_msg_title", $_POST['msg_title']);
+            update_val_by_key("portal_msg_text", $_POST['msg_text']);
+            //portal_msg_status
+            update_val_by_key("portal_msg_status", $_POST['portal_msg_status']);
+?>
+                <div class="alert alert-success">
+                    <?php
+            echo lang('PROFILE_msg_ok'); ?>
+                </div>
+        <?php
+        }
+        
+
+
+
+
         if ($mode == "conf_edit_pb") {
             update_val_by_key("pb_api", $_POST['api']);
 ?>
                 <div class="alert alert-success">
-                    Ok!
+                    <?php
+            echo lang('PROFILE_msg_ok'); ?>
                 </div>
         <?php
         }
@@ -5523,6 +5548,11 @@ values (:unlock, :n, :unow, :tid)');
             echo lang('TICKET_msg_refer'); ?></div>
         <?php
         }
+
+
+
+
+
         if ($mode == "edit_user") {
             $usid = ($_POST['idu']);
             $status = ($_POST['status']);
@@ -6494,7 +6524,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
             //delete files
             $stmt = $dbConnection->prepare("SELECT *
                             from files where ticket_hash=:id");
-            $stmt->execute();
+            $stmt->execute(array( ':id' => $t_hash));
             $result = $stmt->fetchAll();
 
             if (!empty($result)) {

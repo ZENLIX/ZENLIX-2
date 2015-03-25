@@ -3,10 +3,14 @@ session_start();
 
 include_once ("conf.php");
 
+
+
+
+
 if (isset($CONF_DB)) {
     
     include ("functions.inc.php");
-    
+    $main_portal=$CONF['main_portal'];
     if (isset($_GET['logout'])) {
         session_destroy();
         unset($_SESSION);
@@ -20,7 +24,14 @@ if (isset($CONF_DB)) {
     }
     
     if ($_GET['page'] == "register") {
-        include ('inc/register.php');
+
+        if ($main_portal == "true") {
+include ('inc/main_portal/register.php');
+        }
+        else if ($main_portal == "false") {
+include ('inc/register.php');
+        }
+        
     } else if ($_GET['page'] == "forgot") {
         include ('inc/forgot.php');
     } else {
@@ -30,6 +41,9 @@ if (isset($CONF_DB)) {
         if (isset($_POST['login']) && isset($_POST['password'])) {
             
             $rq = 1;
+
+
+
             $req_url = $_POST['req_url'];
             $rm = $_POST['remember_me'];
             
@@ -102,16 +116,28 @@ if (isset($CONF_DB)) {
             $url = parse_url($CONF['hostname']);
             
             if ($rq == 1) {
+                if ($main_portal == "false") {
                 header("Location: http://" . $url['host'] . $req_url);
+            }
+            else if ($main_portal == "true") {
+                header("Location: " . site_proto() . get_conf_param('hostname') . "dashboard");
+            }
             }
             if ($rq == 0) {
                 
                 if (!isset($_GET['page'])) {
                     
-                    include ("inc/head.inc.php");
-                    include ("inc/navbar.inc.php");
-                    include ("inc/dashboard.php");
-                    include ("inc/footer.inc.php");
+
+if ($main_portal == "true") {
+    include 'inc/main_portal/index.php';
+}
+
+else if ($main_portal == "false") {
+    include ("inc/dashboard.php");
+    }
+                    //
+                    
+              
                 }
                 
                 if (isset($_GET['page'])) {
@@ -217,6 +243,38 @@ if (isset($CONF_DB)) {
                             include ('inc/print_ticket.php');
                             break;
 
+                        case 'dashboard':
+                            include ('inc/dashboard.php');
+                            break;
+
+                                                case 'portal':
+                            include ('inc/portal.php');
+                            break;
+
+
+
+                        case 'manual':
+                        include 'inc/main_portal/manual.php';
+                            break;
+
+
+
+                        case 'version':
+                        include 'inc/main_portal/version.php';
+                            break;
+                       
+                            case 'feed':
+                        include 'inc/main_portal/feed.php';
+                            break;
+                            case 'cat':
+                        include 'inc/main_portal/cat.php';
+                            break;
+                        case 'new_post':
+                            include ('inc/main_portal/new_post.php');
+                            break;
+                            case 'thread':
+                            include ('inc/main_portal/post.php');
+                            break;
                         default:
                             include ('inc/404.inc.php');
                     }
@@ -226,21 +284,36 @@ if (isset($CONF_DB)) {
             $url = parse_url($CONF['hostname']);
             
             if ($rq == 1) {
+                if ($main_portal == "false") {
                 header("Location: http://" . $url['host'] . $req_url);
+            }
+            else if ($main_portal == "true") {
+                header("Location: " . site_proto() . get_conf_param('hostname') . "index.php");
+            }
             }
             if ($rq == 0) {
                 
                 if (!isset($_GET['page'])) {
                     
-                    include ("inc/head.inc.php");
-                    include ("inc/client.navbar.inc.php");
-                     //client
-                    include ("inc/client.dashboard.php");
-                     //client
-                    include ("inc/footer.inc.php");
+
+                    //include ("inc/client.dashboard.php");
+
+                    if ($main_portal == "true") {
+    include 'inc/main_portal/index.php';
+}
+
+else if ($main_portal == "false") {
+    include ("inc/client.dashboard.php");
+    }
+
                 }
                 
                 if (isset($_GET['page'])) {
+
+
+
+
+
                     
                     switch ($_GET['page']) {
                         case 'create':
@@ -263,14 +336,138 @@ if (isset($CONF_DB)) {
                             include ('inc/client.profile.php');
                             break;
 
+                        case 'view_user':
+                            include ('inc/client.view_user.php');
+                            break;
+                        case 'dashboard':
+                            include ('inc/client.dashboard.php');
+                            break;
+
+
+                        case 'version':
+                        include 'inc/main_portal/version.php';
+                            break;
+                        case 'manual':
+                        include 'inc/main_portal/manual.php';
+                            break;
+                             case 'cat':
+                        include 'inc/main_portal/cat.php';
+                            break;
+                            case 'feed':
+            //include ("inc/head.inc.php");
+                        include 'inc/main_portal/feed.php';
+                            break;
+                        case 'new_post':
+                            include ('inc/main_portal/new_post.php');
+                            break;
+                            case 'thread':
+                            include ('inc/main_portal/post.php');
+                            break;
                         default:
-                            include ('inc/404.inc.php');
+                            include ('inc/client.404.inc.php');
                     }
                 }
             }
         } else {
+
+            //if ($main_portal == false) {
+
+
+
+            
+
+
+if ($main_portal == "true") {
+
+if (!isset($_GET['page'])) {
+include 'inc/main_portal/index.php';
+}
+
+
+if (isset($_GET['page'])) {
+                    switch ($_GET['page']) {
+                        case 'auth':
+                      /*  if ($main_portal == false) {
             include ("inc/head.inc.php");
             include 'inc/auth.php';
+        }*/
+       // if ($main_portal == true) {
+ include 'inc/main_portal/auth.php';
+        //}
+                            break;
+
+                        case 'manual':
+                        include 'inc/main_portal/manual.php';
+                            break;
+
+                        case 'cat':
+                        include 'inc/main_portal/cat.php';
+                            break;
+
+                        
+                    case 'version':
+                        include 'inc/main_portal/version.php';
+                            break;
+
+                            
+                        case 'feed':
+            //include ("inc/head.inc.php");
+            include 'inc/main_portal/feed.php';
+                            break;
+                        case 'new_post':
+                            include ('inc/main_portal/new_post.php');
+                            break;
+
+                                                    case 'thread':
+                            include ('inc/main_portal/post.php');
+                            break;
+
+                          default:
+                            include 'inc/main_portal/index.php'; 
+
+                        }
+}
+
+
+}
+if ($main_portal == "false") {
+            include ("inc/head.inc.php");
+            include 'inc/auth.php';
+}
+
+
+
+
+
+
+            /*
+}
+
+
+else  if ($main_portal == true) {
+
+
+
+    if (!isset($_GET['page'])) {
+        include 'inc/main_portal/index.php';
+    }
+    if (isset($_GET['page'])) {
+                    
+                    switch ($_GET['page']) {
+                        case 'auth':
+            include ("inc/head.inc.php");
+            include 'inc/auth.php';
+                            break;
+
+                        }
+                    }
+
+
+}
+
+*/
+
+            
         }
     }
 } else {

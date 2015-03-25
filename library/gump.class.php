@@ -31,7 +31,7 @@ class GUMP
 
 	// ** ------------------------- Validation Data ------------------------------- ** //
 
-	public static $basic_tags     = "<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup>";
+	public static $basic_tags     = "<br><p><a><strong><b><i><em><img><blockquote><code><dd><dl><hr><h1><h2><h3><h4><h5><h6><label><ul><li><span><sub><sup><table><td><tr><tbody><pre>";
 
 	public static $en_noise_words = "about,after,all,also,an,and,another,any,are,as,at,be,because,been,before,
 				  				  	 being,between,both,but,by,came,can,come,could,did,do,each,for,from,get,

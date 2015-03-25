@@ -21,7 +21,9 @@ $(".right-side").fadeIn(800);
             case 'ticket_create':
                 active_noty_msg('ticket_create', data.t_id);
                 update_labels();
-                if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                   // if ((def_filename == "dashboard")) {
+                    if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
                     update_page_dashboard();
                     makemytime(true);
                     update_dashboard_labels();
@@ -35,7 +37,9 @@ $(".right-side").fadeIn(800);
             case 'ticket_refer':
                 active_noty_msg('ticket_refer', data.t_id);
                 update_labels();
-                if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                  //  if ((def_filename == "dashboard")) {
+                    if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
                     update_page_dashboard();
                     makemytime(true);
                     update_dashboard_labels();
@@ -51,7 +55,9 @@ $(".right-side").fadeIn(800);
                 break;
             case 'ticket_ok':
                 active_noty_msg('ticket_ok', data.t_id);
-                if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                    //if ((def_filename == "dashboard")) {
+                        if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
                     update_page_dashboard();
                     makemytime(true);
                     update_labels();
@@ -70,7 +76,9 @@ $(".right-side").fadeIn(800);
                 break;
             case 'ticket_no_ok':
                 active_noty_msg('ticket_no_ok', data.t_id);
-                if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                    //if ((def_filename == "dashboard")) {
+                        if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
                     update_page_dashboard();
                     makemytime(true);
                     update_labels();
@@ -89,7 +97,9 @@ $(".right-side").fadeIn(800);
                 break;
             case 'ticket_lock':
                 active_noty_msg('ticket_lock', data.t_id);
-                if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                    //if ((def_filename == "dashboard")) {
+                        if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
                     update_page_dashboard();
                     makemytime(true);
                     update_dashboard_labels();
@@ -105,7 +115,9 @@ $(".right-side").fadeIn(800);
                 break;
             case 'ticket_unlock':
                 active_noty_msg('ticket_unlock', data.t_id);
-                if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                   // if ((def_filename == "dashboard")) {
+                    if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
                     update_page_dashboard();
                     makemytime(true);
                     update_dashboard_labels();
@@ -3689,6 +3701,39 @@ if(jQuery().fileupload) {
         $('#example_arch').bootstrapPaginator(options_arch);
         $('#client_example_out').bootstrapPaginator(options_client_out);
     }
+
+if (ispath('portal')) {
+//conf_edit_global_message
+$('body').on('click', 'button#conf_edit_portal', function(event) {
+            event.preventDefault();
+
+
+//console.log($('#to_msg').val());
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=conf_edit_portal" + 
+                "&status=" + encodeURIComponent($("#portal_status").val())+
+                "&msg_type="+ encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
+                "&msg_title="+ encodeURIComponent($("#msg_title").val())+
+                "&msg_text="+ encodeURIComponent($("#mess").val())+
+                "&portal_msg_status=" + encodeURIComponent($("#portal_msg_status").val())
+                ,
+                success: function(html) {
+                    $("#conf_edit_portal_res").hide().html(html).fadeIn(500);
+                    setTimeout(function() {
+                        $('#conf_edit_portal_res').children('.alert').fadeOut(500);
+                    }, 3000);
+                }
+            });
+
+
+
+        });
+}
+
+
     if (ispath('config')) {
 
 
@@ -5069,7 +5114,9 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
             });
         });
     }
-    if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+    if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
+
+         //if ((def_filename == "dashboard")) {
         $('body').on('click', 'button#dashboard_set_ticket', function(event) {
             event.preventDefault();
             var p = $(this).text();

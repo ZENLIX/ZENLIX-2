@@ -1510,8 +1510,7 @@ if ($status == "2") {echo lang('USER_RE_t');}
       <div class="form-group">
     <label for="mess" class="col-sm-2 control-label"><?php echo lang('MAIL_msg'); ?></label>
         <div class="col-sm-10">
-        <textarea placeholder="<?php echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"><?php echo $messages; ?>
-        </textarea>
+        <textarea placeholder="<?php echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"><?php echo $messages; ?></textarea>
         
 
         </div>

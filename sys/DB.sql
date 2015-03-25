@@ -1,4 +1,135 @@
 
+
+CREATE TABLE IF NOT EXISTS `portal_manual_cat` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(512) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `sort_id` int(11) DEFAULT NULL,
+  `main` int(11) NOT NULL DEFAULT '0',
+  `msg` longtext,
+  `uniq_id` varchar(512) DEFAULT NULL,
+  `author_id` int(11) DEFAULT NULL,
+  `type` int(11) NOT NULL DEFAULT '0',
+  `dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE IF NOT EXISTS `portal_manual_qa` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `question` varchar(2048) DEFAULT NULL,
+  `answer` longtext,
+  `parent_id` int(11) DEFAULT NULL,
+  `sort_id` int(11) DEFAULT NULL,
+  `uniq_id` varchar(512) DEFAULT NULL,
+  `author_id` int(11) DEFAULT NULL,
+  `dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `portal_news` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `subj` varchar(2048) DEFAULT NULL,
+  `msg` longtext,
+  `title` varchar(2048) DEFAULT NULL,
+  `author_id` int(11) NOT NULL DEFAULT '0',
+  `dt` datetime DEFAULT NULL,
+  `uniq_id` varchar(128) DEFAULT NULL,
+  `rates` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+
+CREATE TABLE IF NOT EXISTS `portal_posts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `subj` varchar(2048) DEFAULT NULL,
+  `msg` longtext,
+  `type` int(11) NOT NULL DEFAULT '1',
+  `author_id` int(11) NOT NULL DEFAULT '0',
+  `dt` datetime DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `uniq_id` varchar(128) DEFAULT NULL,
+  `cat_id` int(11) NOT NULL DEFAULT '0',
+  `rates` int(11) NOT NULL DEFAULT '0',
+  `official` int(11) NOT NULL DEFAULT '0',
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `portal_todo` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(2048) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `sort_id` int(11) DEFAULT NULL,
+  `uniq_id` varchar(512) DEFAULT NULL,
+  `author_id` int(11) DEFAULT NULL,
+  `res_num` int(11) NOT NULL DEFAULT '0',
+  `dt` datetime DEFAULT NULL,
+  `is_success` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `portal_versions` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `subj` varchar(2048) DEFAULT NULL,
+  `msg` longtext,
+  `title` varchar(2048) DEFAULT NULL,
+  `author_id` int(11) NOT NULL DEFAULT '0',
+  `dt` datetime DEFAULT NULL,
+  `uniq_id` varchar(128) DEFAULT NULL,
+  `rates` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `post_comments` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `p_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `comment_text` longtext,
+  `dt` datetime DEFAULT NULL,
+  `official` int(11) NOT NULL DEFAULT '0',
+  `uniq_hash` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `post_files` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `post_hash` varchar(512) DEFAULT NULL,
+  `original_name` varchar(512) DEFAULT NULL,
+  `file_hash` varchar(512) DEFAULT NULL,
+  `file_type` varchar(512) DEFAULT NULL,
+  `file_size` varchar(512) DEFAULT NULL,
+  `file_ext` varchar(512) DEFAULT NULL,
+  `p_type` int(11) NOT NULL DEFAULT '0',
+  `is_tmp` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `post_likes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `post_id` int(11) DEFAULT NULL,
+  `likes` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+
+
+
+
+
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS `scheduler_ticket` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_init_id` int(11) DEFAULT NULL,
@@ -70,8 +201,14 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (42, 'email_gate_port', '') O
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (43, 'email_gate_login', '') ON DUPLICATE KEY UPDATE `value` = `value`;
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (44, 'email_gate_pass', '') ON DUPLICATE KEY UPDATE `value` = `value`;
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (45, 'email_gate_filter', 'UNSEEN') ON DUPLICATE KEY UPDATE `value` = `value`;
-
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (46, 'email_gate_cat', 'INBOX') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (47, 'portal_status', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (48, 'portal_msg_type', 'info') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (49, 'portal_msg_title', 'Info') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (50, 'portal_msg_text', 'Some text') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (51, 'portal_msg_status', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
+
 
 #######UPDATE users.messages_type####################
 SET @sql = (SELECT IF(
