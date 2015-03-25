@@ -2,6 +2,15 @@
 function lang_en($phrase){
     static $lang = array(
 	    
+
+
+'MAIL_REG_title' => 'Successfully logged in!',
+'MAIL_REG_title_ext' => 'You are receiving this email because you have been registered in the system. Use the data below to access the system. ',
+'MAIL_REG_title_data' => 'Data access',
+
+
+
+
 'PORTAL_title' => 'The main portal',
 'PORTAL_title_ext' => 'Settings for the external portal',
 'PORTAL_helper' => 'On this page, you can customize the portal, specify its parameters. Other settings are on the external portal. The portal replaces the main login page for customer support portal-users of the system. ',

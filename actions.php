@@ -119,32 +119,22 @@ if (isset($_POST['mode'])) {
         //send mail to user & admin
         
         $subject = $CONF['name_of_firm'] . " - registration successfull";
-        $message = <<<EOBODY
-<div style="background: #ffffff; border: 1px solid gray; border-radius: 6px; font-family: Arial,Helvetica,sans-serif; font-size: 12px; margin: 9px 17px 13px 17px; padding: 11px;">
-<p style="font-family: Arial, Helvetica, sans-serif; font-size:18px; text-align:center;">REGISTRATION INFORMATION!</p>
 
-<br />
-<table width="100%" cellspacing="0" cellpadding="3" style="">
-  
-  <tr>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;">Login:</td>
-    <td style="border: 1px solid #ddd; font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;">{$login}</td>
-  </tr>
-  <tr>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;">Password:</td>
-    <td  style="border: 1px solid #ddd;font-family: Arial, Helvetica, sans-serif;
-    font-size: 12px;">{$pass}</td>
-  </tr>
-   
- 
-</table>
-</center>
 
-</div>
-EOBODY;
+ob_start();
+$base = dirname(__FILE__); 
+include($base . "/inc/mail_tmpl/register_mail.tpl");
+$message = ob_get_clean();
+
+$message = str_replace("{MAIL_new_reg}", lang('MAIL_REG_title'), $message);
+$message = str_replace("{MAIL_new_reg_ext}", lang('MAIL_REG_title_ext'), $message);
+
+$message = str_replace("{MAIL_info}", lang('MAIL_REG_title_data'), $message);
+$message = str_replace("{MAIL_new_reg_login}", lang('CONF_mail_login'), $message);
+$message = str_replace("{MAIL_new_reg_pass}", lang('CONF_mail_pass'), $message);
+$message = str_replace("{login}", $login, $message);
+$message = str_replace("{pass}", $pass, $message);
+
         
         send_mail_reg($mail, $subject, $message);
 
