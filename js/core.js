@@ -3805,7 +3805,7 @@ $('body').on('click', 'button#send_mail', function(event) {
 
 var data = {
                 'mode': 'mailers_send',
-                'subj_mailers': encodeURIComponent($('#subj_mailers').val()),
+                'subj_mailers': $('#subj_mailers').val(),
                 'msg': sHTML,
                 'type_to_mail':encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()),
                 'users_priv':$("#users_priv").val(),
