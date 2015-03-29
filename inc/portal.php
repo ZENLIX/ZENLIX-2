@@ -35,7 +35,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     <div class="col-md-9">
  <div class="box box-solid">
                                 <div class="box-header">
-<h3 class="box-title"><i class="fa fa-cog"></i> Общие настройки портала </h3>
+<h3 class="box-title"><i class="fa fa-cog"></i> <?=lang('PERF_menu_main_conf');?> </h3>
 </div>
                                 <div class="box-body">
                                 

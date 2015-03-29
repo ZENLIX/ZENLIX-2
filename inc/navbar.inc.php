@@ -14,7 +14,7 @@ function echoActiveClassIfRequestMatches($requestUri) {
 
 
 
-$p1=array('config', 'users', 'deps', 'files', 'scheduler', 'approve', 'posada', 'units', 'subj');
+$p1=array('config', 'users', 'deps', 'files', 'scheduler', 'approve', 'posada', 'units', 'subj', 'portal', 'mailers');
 $p2=array('main_stats', 'user_stats');
     $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
     $file = $_SERVER['REQUEST_URI'];
@@ -338,6 +338,9 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 
 
                     <li <?php echo echoActiveClassIfRequestMatches("users") ?>><a href="<?php echo $CONF['hostname'] ?>users"><i class="fa fa-users"></i> <?php echo lang('NAVBAR_users'); ?></a></li>
+
+                    <li <?php echo echoActiveClassIfRequestMatches("mailers") ?>><a href="<?php echo $CONF['hostname'] ?>mailers"><i class="fa fa-paper-plane-o"></i> <?php echo lang('NAVBAR_mailers'); ?></a></li>
+
                     <li <?php echo echoActiveClassIfRequestMatches("deps") ?>><a href="<?php echo $CONF['hostname'] ?>deps"><i class="fa fa-sitemap"></i> <?php echo lang('NAVBAR_deps'); ?></a></li>
                     
                     <li <?php echo echoActiveClassIfRequestMatches("files") ?>><a href="<?php echo $CONF['hostname'] ?>files"><i class="fa fa-files-o"></i>  <?php echo lang('NAVBAR_files'); ?></a></li>

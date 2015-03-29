@@ -38,19 +38,19 @@ include "navbar.inc.php";
 <form class="form-horizontal" id="main_form_register">
 
 
-<div class="col-sm-6 col-sm-offset-3">
+<div class="col-sm-4 col-sm-offset-4">
  <input id="login_fio" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_fio');?>"><br>
 </div>
 
-<div class="col-sm-6 col-sm-offset-3">
+<div class="col-sm-4 col-sm-offset-4">
  <input id="login_name" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_login_name');?>"><br>
 </div>
 
-<div class="col-sm-6 col-sm-offset-3">
+<div class="col-sm-4 col-sm-offset-4">
  <input id="login_mail" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_email');?>"><br>
 </div>
 
-<div class="col-sm-6 col-sm-offset-3">
+<div class="col-sm-4 col-sm-offset-4">
   <button class="btn btn-block btn-success btn-lg" id="register_new"><?=lang('PORTAL_reg');?> </button>
 </div>
 

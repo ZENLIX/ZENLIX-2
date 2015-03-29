@@ -209,6 +209,53 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (49, 'portal_msg_title', 'Inf
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (50, 'portal_msg_text', 'Some text') ON DUPLICATE KEY UPDATE `value` = `value`;
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (51, 'portal_msg_status', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
 
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (52, 'portal_box_version_n', '2.x') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (53, 'portal_box_version_text', 'Some text') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (54, 'portal_box_version_icon', 'icon-svg') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (55, 'mailers_subj', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (56, 'mailers_text', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+#######UPDATE perf.value####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='perf' and column_name='value'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE perf MODIFY value longtext;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+#######UPDATE notification_pool.delivers_id####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='notification_pool' and column_name='delivers_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE notification_pool MODIFY delivers_id longtext;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+#######UPDATE notification_msg_pool.delivers_id####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='notification_msg_pool' and column_name='delivers_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE notification_msg_pool MODIFY delivers_id longtext;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
 
 #######UPDATE users.messages_type####################
 SET @sql = (SELECT IF(

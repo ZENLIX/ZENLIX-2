@@ -46,15 +46,15 @@ else if ($CONF['main_portal'] == false) {
 <form class="form-horizontal" action="<?php echo $CONF['hostname'] . $link; ?>" method="POST" autocomplete="off">
 
 
-<div class="col-sm-6 col-sm-offset-3">
+<div class="col-sm-4 col-sm-offset-4">
 <input type="text" name="login" autocomplete="off" autocapitalize="off" autocorrect="off" class="form-control input-lg" placeholder="<?php echo lang('login'); ?>"/><br>
 </div>
 
-<div class="col-sm-6 col-sm-offset-3">
+<div class="col-sm-4 col-sm-offset-4">
  <input type="password" name="password" class="form-control input-lg" placeholder="<?php echo lang('pass'); ?>"/>
 </div>
 
-<div class="col-sm-6 col-sm-offset-3">
+<div class="col-sm-4 col-sm-offset-4">
  <div class="form-group">
 
 
@@ -70,7 +70,7 @@ else if ($CONF['main_portal'] == false) {
                     </div>
 </div>
 
-<div class="col-sm-6 col-sm-offset-3">
+<div class="col-sm-4 col-sm-offset-4">
   <button class="btn btn-block btn-success btn-lg"><i class="fa fa-sign-in"></i>  <?php echo lang('log_in'); ?> </button>
 </div>
 

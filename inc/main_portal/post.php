@@ -377,7 +377,7 @@ else if ($validate == true) {
 
 <div class="box box-default">
                 <div class="box-header with-border">
-                  <h4 class="box-title"><?=lang('PORTAL_add_com');?></h4>
+                  <h4 class="box-title"><?=lang('PORTAL_add_comm');?></h4>
 <div class="box-tools pull-right">
                     
                   </div>

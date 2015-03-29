@@ -3,6 +3,52 @@
 	
 //include_once ($base .'/sys/class.phpmailer.php');
 
+
+function send_notification_portal($type, $post_id) {
+    global $CONF, $CONF_MAIL, $dbConnection;
+
+if ($type == "portal_post_comment") {
+$su = array();
+//Узнать кто прокомментировал заявку что бы исключить его из рассылки
+//Узнать кто вообще создал пост
+// показать всех пользователей комменты к этому посту
+    $stmt = $dbConnection->prepare('SELECT * FROM post_comments where p_id=:tid ORDER BY id DESC LIMIT 1');
+    $stmt->execute(array(':tid' => $post_id));
+    $res_post_comment = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user_init_comment=$res_post_comment['user_id'];
+
+    $stmt2 = $dbConnection->prepare('SELECT * FROM portal_posts where id=:tid');
+    $stmt2->execute(array(':tid' => $post_id));
+    $res_post = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $user_author_post=$res_post['author_id'];
+    
+    array_push($su, $user_author_post);
+
+    $stmt3 = $dbConnection->prepare('SELECT user_id FROM post_comments where p_id=:tid');
+    $stmt3->execute(array(':tid' => $post_id));
+    $res_users = $stmt3->fetchAll();
+            foreach ($res_users as $qrow) {
+                array_push($su, $qrow['user_id']);
+            }
+    
+    //Исключить дубликаты
+    $nr = array_unique($su);
+
+    //Удалить инициатора комментария
+    if (($key = array_search($user_init_comment, $nr)) !== false) {
+                unset($nr[$key]);
+            }
+
+ $su = implode(",", $nr);
+            
+            if ($su) {
+            $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+            $stmt->execute(array(':delivers_id' => $su, ':type_op' => $type, ':tid' => $post_id, ':n' => $CONF['now_dt']));
+}
+}
+}
+
+
 function send_notification($type, $ticket_id) {
     global $CONF, $CONF_MAIL, $dbConnection;
     
@@ -78,6 +124,21 @@ function send_notification($type, $ticket_id) {
             // array_merge($users,$su);
             $nr = array();
             $nr = array_unique(array_merge($users, $su));
+
+//если id пользователя клиент то удалить его отсюда
+
+//Убрать всех клиентов вообще
+            /*
+            foreach ($nr as $uniq_id_row) {
+            if (get_user_val_by_id($uniq_id_row, 'is_client') == '1') {
+            if (($key = array_search($user_init_id, $nr)) !== false) {
+                unset($nr[$key]);
+            }
+            }
+            }
+
+*/
+
             if (($key = array_search($user_init_id, $nr)) !== false) {
                 unset($nr[$key]);
             }
@@ -265,6 +326,9 @@ function send_notification($type, $ticket_id) {
         
         $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
         $stmt->execute(array(':delivers_id' => $delivers_ids, ':type_op' => $type, ':tid' => $ticket_id, ':n' => $CONF['now_dt']));
+
+
+
     } else if ($type == "ticket_lock") {
         
         //отправить автору

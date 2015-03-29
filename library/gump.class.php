@@ -420,23 +420,23 @@ class GUMP
 					$resp[] = "There is no validation rule for <span class=\"$field_class\">$field</span>";
 					break;
 				case 'validate_required':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required";
+					$resp[] = lang('GUMP_field')." <span class=\"$field_class\">$field</span> ".lang('GUMP_validate_required');
 					break;
 				case 'validate_valid_email':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field is required to be a valid email address";
+					$resp[] = lang('GUMP_field')." <span class=\"$field_class\">$field</span> ".lang('GUMP_validate_valid_email');
 					break;
 				case 'validate_max_len':
 					if($param == 1) {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param character";
+						$resp[] = lang('GUMP_field')." <span class=\"$field_class\">$field</span> ".lang('GUMP_validate_validate_max_len')." $param ".lang('GUMP_validate_char');
 					} else {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be shorter than $param characters";
+						$resp[] = lang('GUMP_field')." <span class=\"$field_class\">$field</span> ".lang('GUMP_validate_validate_max_len')." $param ".lang('GUMP_validate_char');
 					}
 					break;
 				case 'validate_min_len':
 					if($param == 1) {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param character";
+						$resp[] = lang('GUMP_field')." <span class=\"$field_class\">$field</span> ".lang('GUMP_validate_validate_min_len')." $param ".lang('GUMP_validate_char');
 					} else {
-						$resp[] = "The <span class=\"$field_class\">$field</span> field needs to be longer than $param characters";
+						$resp[] = lang('GUMP_field')." <span class=\"$field_class\">$field</span> ".lang('GUMP_validate_validate_min_len')." $param ".lang('GUMP_validate_char');
 					}
 					break;
 				case 'validate_exact_len':
@@ -450,7 +450,7 @@ class GUMP
 					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters(a-z)";
 					break;
 				case 'validate_alpha_numeric':
-					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha-numeric characters";
+					$resp[] = lang('GUMP_field')." <span class=\"$field_class\">$field</span> ".lang('GUMP_validate_alpha_numeric');
 					break;
 				case 'validate_alpha_dash':
 					$resp[] = "The <span class=\"$field_class\">$field</span> field may only contain alpha characters &amp; dashes";

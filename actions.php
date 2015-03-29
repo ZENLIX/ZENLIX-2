@@ -5291,8 +5291,9 @@ values (:ar, :n, :unow, :tid)');
         if ($mode == "status_no_ok") {
             $user = ($_POST['user']);
             $tid = ($_POST['tid']);
-            
-            $stmt = $dbConnection->prepare('SELECT status, ok_by FROM tickets where id=:tid');
+            $hs=explode(",", get_ticket_action_priv($tid));
+if (in_array("ok", $hs)) {
+            $stmt = $dbConnection->prepare('SELECT status, ok_by,lock_by FROM tickets where id=:tid');
             $stmt->execute(array(
                 ':tid' => $tid
             ));
@@ -5301,9 +5302,13 @@ values (:ar, :n, :unow, :tid)');
             $st = $fio['status'];
             $ob = $fio['ok_by'];
             
+                $lb = $fio['lock_by'];
+
             $ps = priv_status($ob);
             
             if ($st == "0") {
+
+                if ($lb != "0") {
                 $stmt = $dbConnection->prepare('update tickets set ok_by=:user, status=:s, ok_date=:n, last_update=:nz where id=:tid');
                 $stmt->execute(array(
                     ':s' => '1',
@@ -5331,8 +5336,19 @@ values (:ar, :n, :unow, :tid)');
                 echo lang('TICKET_msg_OK'); ?></div>
 
             <?php
+        }
+else if ($lb == "0") {
+?>
+<div class="alert alert-danger"><?php
+                echo lang('TICKET_msg_OK_error'); ?> <?php
+                echo name_of_user($ob); ?></div>
+<?php
+}
+
+
+
             }
-            if ($st == "1") {
+            else if ($st == "1") {
 ?>
 
                 <div class="alert alert-danger"><?php
@@ -5340,13 +5356,189 @@ values (:ar, :n, :unow, :tid)');
                 echo name_of_user($ob); ?></div>
 
             <?php
+        }
             }
         }
+
+
+/*
+                'mode': 'mailers_send',
+                'subj_mailers': encodeURIComponent($('#subj_mailers').val()),
+                'msg': sHTML,
+                'type_to_mail':encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()),
+                'users_priv':encodeURIComponent($("#users_priv").val()),
+                'users_units':encodeURIComponent($("#users_units").val()),
+                'users_list':encodeURIComponent($("#users_list").val())
+*/
+
+if ($mode == "mailers_send") {
+
+
+$s=$_POST['subj_mailers'];
+$m=$_POST['msg'];
+$ulist=$_POST['users_list'];
+$upriv_arr=$_POST['users_priv'];
+$u_units=$_POST['users_units'];
+
+
+
+
+
+
+
+//print_r($_POST);
+if ($_POST['type_to_mail'] == "1") {
+
+if (!$ulist) {
+    //не указал получаталей
+
+}
+else if ($ulist) {
+
+    //список всех получателей
+    //$ulist=implode(',', $ulist);
+
+}
+
+}
+
+else if ($_POST['type_to_mail'] == "2") {
+        
+
+
+$ulist_arr=array();
+
+
+//$result = array_intersect($ee, $ec);
+
+            $stmt = $dbConnection->prepare('SELECT id,unit,is_client,priv FROM users where email REGEXP :r');
+            $stmt->execute(array(':r'=>'^[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$'));
+            $res1 = $stmt->fetchAll();
+            foreach ($res1 as $v) {
+  
+$ec=explode(",", $v['unit']);
+
+
+                if ($upriv_arr) {
+                    if (in_array("client", $upriv_arr))
+                    {
+                        if ($v['is_client'] == "1") {array_push($ulist_arr, $v['id']);}
+
+                    }
+
+                    if (in_array($v['priv'], $upriv_arr)) {
+                        //array_push($ulist_arr, $v['id']);
+
+                        if ($u_units) {
+                            $r=array_intersect($u_units, $ec);
+                        if ($r) { array_push($ulist_arr, $v['id']); }
+                        }
+                        else if (!$u_units) {
+                            array_push($ulist_arr, $v['id']);
+                        }
+
+                        
+                    }
+
+                }
+
+                else  if (!$upriv_arr) {
+
+                        if ($u_units) {
+                            $r=array_intersect($u_units, $ec);
+                        if ($r) { array_push($ulist_arr, $v['id']); }
+                        }
+                        else if (!$u_units) {
+                            //echo "ok";
+                            array_push($ulist_arr, $v['id']);
+                        }
+
+                }
+
+
+
+
+            }
+
+
+$ulist=$ulist_arr;
+//$ulist=implode(",", $ulist_arr);
+
+}
+
+$ulist = array_unique($ulist);
+
+if ($_POST['check'] != "true") {
+    echo "<ul>";
+foreach ($ulist as $k) {
+    # code...
+echo "<li>".nameshort(name_of_user_ret_nolink($k))." (".get_user_val_by_id($k, 'email').")</li>";
+}
+echo "</ul>";
+}
+
+
+if ($_POST['check'] == "true") {
+    //echo "ok";
+
+if ($ulist) {
+$su=implode(",", $ulist);
+
+
+update_val_by_key('mailers_subj', $s);
+update_val_by_key('mailers_text', $m);
+
+$stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+$stmt->execute(array(':delivers_id' => $su, ':type_op' => 'mailers', ':tid' => '0', ':n' => $CONF['now_dt']));
+?>
+<div class="alert alert-success"><i class="fa fa-check"></i> 
+<?=lang('MAILERS_OK');?>
+</div>
+    <?php
+}
+else if (!$ulist) {
+    ?>
+<div class="alert alert-danger"><?=lang('MAILERS_ERROR');?>
+</div>
+<?php
+    }
+
+
+}
+
+
+//echo "ПОКАЗАТЬ КОМУ БУДЕТ РАССЫЛКА И ТОЛЬКО ПОТОМ ПОДТВЕРЖИТЬ";
+
+
+
+
+
+//print_r($_POST['users_list']);
+//Список получателей
+//$ulist
+
+//Тема
+//$s
+
+//Сообщение
+//$m
+
+}
+
+
+
+
+
+
         if ($mode == "status_ok") {
             
             $user = ($_POST['user']);
             $tid = ($_POST['tid']);
-            
+
+
+
+    $hs=explode(",", get_ticket_action_priv($tid));
+    if (in_array("un_ok", $hs)) {
             $stmt = $dbConnection->prepare('SELECT status, ok_by, user_init_id FROM tickets where id=:tid');
             $stmt->execute(array(
                 ':tid' => $tid
@@ -5398,11 +5590,17 @@ values (:no_ok, :n, :unow, :tid)');
             <?php
             }
         }
+        }
         
         if ($mode == "lock") {
             $user = ($_POST['user']);
             $tid = ($_POST['tid']);
             
+
+
+$hs=explode(",", get_ticket_action_priv($tid));
+if (in_array("lock", $hs)) {
+
             $stmt = $dbConnection->prepare('SELECT lock_by FROM tickets where id=:tid');
             $stmt->execute(array(
                 ':tid' => $tid
@@ -5447,11 +5645,13 @@ values (:lock, :n, :unow, :tid)');
                 echo lang('TICKET_msg_lock_error'); ?> <?php
                 echo name_of_user($lb); ?></div>
             <?php
+        }
             }
         }
         if ($mode == "unlock") {
             $tid = ($_POST['tid']);
-            
+            $hs=explode(",", get_ticket_action_priv($tid));
+if (in_array("unlock", $hs)) {
             $stmt = $dbConnection->prepare('update tickets set lock_by=:n, last_update=:nz where id=:tid');
             $stmt->execute(array(
                 ':tid' => $tid,
@@ -5477,9 +5677,14 @@ values (:unlock, :n, :unow, :tid)');
 
         <?php
         }
+    }
         
         if ($mode == "update_to") {
             
+$hs=explode(",", get_ticket_action_priv($tid));
+if (in_array("ref", $hs)) {
+
+
             $tid = ($_POST['ticket_id']);
             $to = ($_POST['to']);
             $tou = ($_POST['tou']);
@@ -5521,7 +5726,14 @@ values (:unlock, :n, :unow, :tid)');
             }
             
             $unow = $_SESSION['helpdesk_user_id'];
-            
+  $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
+values (:unlock, :n, :unow, :tid)');
+            $stmt->execute(array(
+                ':tid' => $tid,
+                ':unow' => $unow,
+                ':unlock' => 'unlock',
+                ':n' => $CONF['now_dt']
+            ));          
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, to_user_id, ticket_id, to_unit_id) values (:refer, :n, :unow, :tou, :tid, :to)');
             $stmt->execute(array(
                 ':to' => $to,
@@ -5532,11 +5744,18 @@ values (:unlock, :n, :unow, :tid)');
                 ':n' => $CONF['now_dt']
             ));
             
+
+
+
+
+
+
             send_notification('ticket_refer', $tid);
 ?>
             <div class="alert alert-success"><?php
             echo lang('TICKET_msg_refer'); ?></div>
         <?php
+    }
         }
 
 

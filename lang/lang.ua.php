@@ -2,13 +2,50 @@
 function lang_ua($phrase){
     static $lang = array(
     
+
+
+
+
+'PORTAL_mailers' => 'Розсилка листів',
+'PORTAL_mailers_ext' => 'Майстер розсилки',
+'PORTAL_mailers_help' => 'На даній сторінці Ви можете зробити розсилку листів по задній критеріям',
+'MAILERS_p_master' => 'Майстер розсилки',
+'MAILERS_p_u_list' => 'Певним користувачам',
+'MAILERS_p_u_list_ext' => 'Розсилка буде по кожному окремо обраному користувачу окремим листом.',
+'MAILERS_p_all' => 'Всім користувачам',
+'MAILERS_p_all_ext' => 'Розсилка буде по кожному користувачеві, який відповідає вибраним критеріям.',
+'MAILERS_p_priv' => 'За привілеям',
+'MAILERS_p_help' => 'Якщо не вказано кому, то всім.',
+'MAILERS_p_units' => 'За відділам',
+'MAILERS_p_make' => 'Поставити в чергу',
+'PORTAL_mailers_priv2' => 'Начальники управління',
+'PORTAL_mailers_priv0' => 'Начальники відділів',
+'PORTAL_mailers_priv1' => 'Користувачі системи',
+'PORTAL_mailers_privclient' => 'Клієнти',
+
+'PORTAL_mailers_check'=>'Дивитись отримувачiв',
+
+'MAILERS_OK' => 'Завдання поставлене в чергу! Найближчим часом буде проведена розсилка. ',
+'MAILERS_ERROR' => 'Список одержувачів порожній.',
     
 'MAIL_REG_title' => 'Успішно зареєстровані!',
 'MAIL_REG_title_ext' => 'Ви отримали це повідомлення, тому як були зареєстровані в системі. Використовуйте дані нижче для доступу в систему. ',
 'MAIL_REG_title_data' => 'Дані для доступу',
+'MAILERS_ERROR2' => 'Є необроблена чергу. Дочекайтеся її виконання і тоді зможете створити нову розсилку. ',
 
+'GUMP_field' => 'Поле',
+'GUMP_validate_required' => 'є обов\'язковим',
+'GUMP_validate_valid_email' => 'має складатися з коректного email-адреси',
+'GUMP_validate_validate_max_len' => 'повинно бути не більше ніж',
+'GUMP_validate_validate_min_len' => 'повинно бути не менше ніж',
+'GUMP_validate_alpha_numeric' => 'має складатися з нормальних символів',
+'GUMP_validate_char' => 'символів',
 
-
+'POST_MAIL_COMMENT' => 'Новий коментар на порталі',
+'POST_created_author' => 'Автор поста',
+'POST_MAIL_subj' => 'Тема',
+'PORTAL_post_comment_ext' => 'Ви отримали це повідомлення тому що пост був прокоментований користувачем',
+'PORTAL_post_MAIL_2link' => 'посилання на пост',
 
 'PORTAL_title' => 'Головний портал',
 
@@ -115,7 +152,8 @@ function lang_ua($phrase){
 'PORTAL_author' => 'Автор',
 
 
-
+'PORTAL_version_box_title' => 'Налаштування банера-боксу',
+'PORTAL_icon' => 'Іконка',
 
 
 

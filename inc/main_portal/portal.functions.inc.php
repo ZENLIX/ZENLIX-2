@@ -224,11 +224,13 @@ function view_release_bar() {
 ?>
 <div class="small-box bg-maroon">
                 <div class="inner">
-                  <h3>2.6</h3>
-                  <p>Текущая версия</p>
+                  <h3><?=get_conf_param('portal_box_version_n');?></h3>
+                  <p>
+                  <?=get_conf_param('portal_box_version_text');?>
+                  </p>
                 </div>
                 <div class="icon">
-                  <span class="icon-svg"></span>
+                  <span class="<?=get_conf_param('portal_box_version_icon');?>"></span>
                 </div>
                 <a href="version" class="small-box-footer">
                   <?=lang('PORTAL_more');?> <i class="fa fa-arrow-circle-right"></i>

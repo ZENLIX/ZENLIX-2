@@ -49,7 +49,7 @@ $validator = new GUMP();
             //$_POST = $validator->sanitize($_POST);
             
             $rules = array(
-                'msg' => 'required'
+                'msg' => 'required|min_len,15'
             );
             $filters = array(
                 'msg' => 'trim|basic_tags'
@@ -104,6 +104,7 @@ else if ($_POST['type'] == "false") {
 			':official'=>$of,
 			':p_id' => get_post_val_by_hash($_POST['ph'],'id')
 		));
+		send_notification_portal('portal_post_comment', get_post_val_by_hash($_POST['ph'],'id'));
 
 		verify_uploaded_files($_POST['ch']);
 
@@ -918,7 +919,18 @@ if ($validated === true) {
 }
 
 
+if ($mode == "conf_edit_version_banner") {
 
+update_val_by_key("portal_box_version_n", $_POST['portal_box_version_n']);
+update_val_by_key("portal_box_version_text", $_POST['portal_box_version_text']);
+update_val_by_key("portal_box_version_icon", $_POST['portal_box_version_icon']);
+	?>
+                <div class="alert alert-success">
+                    <?php
+            echo lang('PROFILE_msg_ok'); ?>
+                </div>
+        <?php
+}
 
 
 
@@ -934,7 +946,7 @@ $validator = new GUMP();
             
             $rules = array(
                 'subj' => 'required',
-                'msg'=> 'required'
+                'msg'=> 'required|min_len,15'
             );
             $filters = array(
                 'subj' => 'trim|sanitize_string',
@@ -947,7 +959,8 @@ $validator = new GUMP();
 
 
             GUMP::set_field_name("subj", lang('NEW_subj'));
-            
+            GUMP::set_field_name("msg", lang('PORTAL_msg'));
+
             $_POST = $validator->filter($_POST, $filters);
             
             $validated = $validator->validate($_POST, $rules);

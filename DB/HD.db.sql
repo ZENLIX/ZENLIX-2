@@ -339,7 +339,7 @@ DROP TABLE IF EXISTS `notification_msg_pool`;
 
 CREATE TABLE `notification_msg_pool` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `delivers_id` varchar(512) DEFAULT NULL,
+  `delivers_id` longtext,
   `type_op` varchar(512) DEFAULT NULL,
   `ticket_id` int(11) DEFAULT NULL,
   `dt` datetime DEFAULT NULL,
@@ -356,7 +356,7 @@ DROP TABLE IF EXISTS `notification_pool`;
 
 CREATE TABLE `notification_pool` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `delivers_id` varchar(512) DEFAULT NULL,
+  `delivers_id` longtext,
   `status` int(11) NOT NULL DEFAULT '0',
   `type_op` varchar(512) DEFAULT NULL,
   `ticket_id` int(11) DEFAULT NULL,
@@ -375,7 +375,7 @@ DROP TABLE IF EXISTS `perf`;
 CREATE TABLE `perf` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `param` varchar(512) NOT NULL DEFAULT '',
-  `value` varchar(512) NOT NULL DEFAULT '',
+  `value` longtext,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -434,7 +434,12 @@ VALUES
   (48, 'portal_msg_type', 'info'),
   (49, 'portal_msg_title', 'Info'),
   (50, 'portal_msg_text', 'Some text'),
-  (51, 'portal_msg_status', 'true');
+  (51, 'portal_msg_status', 'true'),
+  (52, 'portal_box_version_n', '2.x'),
+  (53, 'portal_box_version_text', 'Some Text'),
+  (54, 'portal_box_version_icon', 'icon-svg'),
+  (55, 'mailers_subj', ''),
+  (56, 'mailers_text', '');
 
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;

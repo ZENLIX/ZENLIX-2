@@ -113,7 +113,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_cur
 
 
 <?php
-if ((get_current_URL_name('helper')) || get_current_URL_name('notes')) { ?>
+if ((get_current_URL_name('helper')) || get_current_URL_name('notes') || get_current_URL_name('mailers')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/summernote.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/summernote-lang.js?<?=get_conf_param('version');?>"></script>
 <?php
@@ -133,7 +133,7 @@ if (get_current_URL_name('view_user')) { ?>
 } ?>
 
 <?php
-if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') ) { ?>
+if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('mailers') ) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/daterangepicker.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/s2/select2.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jqueryKnob/jquery.knob.js?<?=get_conf_param('version');?>"></script>

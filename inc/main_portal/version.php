@@ -229,6 +229,55 @@ if (!$hn) {
 
 
 ?><?php if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) { ?> 
+
+
+<div class="box box-primary">
+                <div class="box-header with-border">
+                  <h3 class="box-title"><?=lang('PORTAL_version_box_title');?></h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                
+      <form class="form-horizontal" role="form">
+    <div class="form-group">
+    <label for="file_size" class="col-sm-4 control-label"><small><?php
+        echo lang('PORTAL_t'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="portal_box_version_n" placeholder="<?php
+        echo lang('PORTAL_t'); ?>" value="<?php
+        echo get_conf_param('portal_box_version_n'); ?>">
+    </div>
+  </div>
+      <div class="form-group">
+    <label for="file_size" class="col-sm-4 control-label"><small><?php
+        echo lang('FIELD_type_text'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="portal_box_version_text" placeholder="<?php
+        echo lang('FIELD_type_text'); ?>" value="<?php
+        echo get_conf_param('portal_box_version_text'); ?>">
+    </div>
+  </div>
+    <div class="form-group">
+    <label for="file_size" class="col-sm-4 control-label"><small><?php
+        echo lang('PORTAL_icon'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="portal_box_version_icon" placeholder="<?php
+        echo lang('PORTAL_icon');?>" value="<?php
+        echo get_conf_param('portal_box_version_icon'); ?>">
+    </div>
+  </div>
+  <center>
+    <button type="submit" id="conf_edit_version_banner" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
+        echo lang('JS_save'); ?></button>
+    
+</center>
+      </form>
+
+
+                </div>
+                <div id="conf_edit_version_banner_res"></div>
+                </div>
+
+
 <div class="box box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title"><?=lang('PORTAL_todo_1');?></h3>

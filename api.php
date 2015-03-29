@@ -6,41 +6,7 @@ include ("functions.inc.php");
 $data_json = json_decode( file_get_contents('php://input') );
 
 
-/*
-API ZENLIX script
 
-Авторизация:  
-request params: { mode:«auth», login: [login], pass: [pass], device_token:[token] } 
-answer params: { status:«ok», device_hash:[hash]} или { status:«error»}
-
-Получитьсписокзаявок: 
-request params: { mode:«ticket_list», uniq_id:[hash] } 
-answer params: { array_of_tickets(id, subj, text)}
-
-Просмотретьзаявку: 
-request params: { mode:«ticket_view», uniq_id:[hash], ticket_hash:[t_hash] } 
-answer params: { array_of_tickets(id, subj, text)}
-
-Заблокироватьзаявку:  
-request params: { mode:«ticket_lock», uniq_id:[hash], ticket_hash:[t_hash] } 
-answer params: { array_of_tickets(id, subj, text)}
-
-Выполнитьзаявку: 
-request params: { mode:«ticket_ok», uniq_id:[hash], ticket_hash:[t_hash] } 
-answer params: { array_of_tickets(id, subj, text)}
-
-code на status (ok, error)
-msg на error_description
-id на ticket_id
-date_create на date_created
-================================
-
-
-После авторизации дать клиенту uniq_id
-функция validate_user_by_api - проверять эти uniq_id
-
-
-*/
 
 if (isset($data_json->mode)) {
 
@@ -491,6 +457,10 @@ else {
     	if (isset($data_json->uniq_id, $data_json->ticket_hash)) {
 
             if (validate_user_by_api($data_json->uniq_id)) {
+
+
+
+
             	$user_id 	= get_user_val_by_api($data_json->uniq_id, 'id');
                 $priv_val   = priv_status($user_id);
             	//check
@@ -499,6 +469,11 @@ else {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $t_id=$row['id'];
+
+    $hs=explode(",", get_ticket_action_priv_api($t_id, $user_id));
+    if (in_array("lock", $hs)) {
+
+
 if ($row['arch'] == 1) {
     $st = 'arch';
 }
@@ -546,12 +521,18 @@ values (:lock, :n, :unow, :tid)');
                 $code = "ok";
         
     }
+    else if (!in_array("lock", $hs)) {
+                    $code = "error";
+                $error_msg = "you have no priviliges";
+}
+}
     else { 
                 $code = "error";
                 $error_msg = "validate error";
 }
 
 }
+
 else { 
                 $code = "error";
                 $error_msg = "not all params";
@@ -580,6 +561,13 @@ else {
             $stmt->execute(array(':tid' => $data_json->ticket_hash));
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 $t_id=$row['id'];
+
+
+
+    $hs=explode(",", get_ticket_action_priv_api($t_id, $user_id));
+    if (in_array("unlock", $hs)) {
+
+
 
 if ($row['arch'] == 1) {
     $st = 'arch';
@@ -630,12 +618,20 @@ values (:lock, :n, :unow, :tid)');
                 $code = "ok";
         
     }
+    else if (!in_array("unlock", $hs)) {
+                    $code = "error";
+                $error_msg = "you have no priviliges";
+}
+
+}
     else { 
                 $code = "error";
                 $error_msg = "validate error";
 }
 
 }
+
+
 else { 
                 $code = "error";
                 $error_msg = "not all params";
@@ -668,6 +664,8 @@ else if ($mode == "ticket_ok") {
 
 $t_id=$row['id'];
 
+    $hs=explode(",", get_ticket_action_priv_api($t_id, $user_id));
+    if (in_array("ok", $hs)) {
 
 if ($row['arch'] == 1) {
     $st = 'arch';
@@ -723,6 +721,11 @@ if (in_array($priv_val, array('2','0'))) {
                 
         
     }
+    else if (!in_array("ok", $hs)) {
+                    $code = "error";
+                $error_msg = "you have no priviliges";
+}
+}
     else { 
                 $code = "error";
                 $error_msg = "validate error";
@@ -758,7 +761,8 @@ else if ($mode == "ticket_no_ok") {
 
 $t_id=$row['id'];
 
-
+    $hs=explode(",", get_ticket_action_priv_api($t_id, $user_id));
+    if (in_array("un_ok", $hs)) {
 if ($row['arch'] == 1) {
     $st = 'arch';
 }
@@ -820,12 +824,18 @@ if (in_array($priv_val, array('2','0'))) {
                 
         
     }
+    else if (!in_array("un_ok", $hs)) {
+                    $code = "error";
+                $error_msg = "you have no priviliges";
+}
+}
     else { 
                 $code = "error";
                 $error_msg = "validate error";
 }
 
 }
+
 else { 
                 $code = "error";
                 $error_msg = "not all params";
@@ -1398,6 +1408,11 @@ else if ($mode == "refer_ticket") {
             $tou=get_user_id_by_hash($data_json->user_to_id);
             $tom = $data_json->msg;
 
+
+
+    $hs=explode(",", get_ticket_action_priv_api($tid, $author));
+    if (in_array("ref", $hs)) {
+
             if (strlen($tom) > 2) {
                 
                 $x_refer_comment = '<strong><small class=\'text-danger\'>' . nameshort(name_of_user_ret($author)) . ' ' . lang('REFER_comment_add') . ' (' . date(' d.m.Y h:i:s') . '):</small> </strong>' . strip_tags(xss_clean(($tom)));
@@ -1453,11 +1468,19 @@ $code = "ok";
 
 
             }
+            else if (!in_array("ref", $hs)) {
+
+                            $code = "error";
+                            $error_msg = "you have no priviliges";
+
+        }
+    }
                 else { 
                 $code = "error";
                 $error_msg = "validate error";
 }
         }
+        
         else {
                 $code = "error";
                 $error_msg = "not all params";

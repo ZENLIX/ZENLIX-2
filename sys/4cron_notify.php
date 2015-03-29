@@ -491,7 +491,81 @@ $MAIL_msg_no_ok_ext=lang($lang,'mail_msg_ticket_no_ok_ext');
 
 
 
-	 if ($type_op == "ticket_create") {
+
+   if ($type_op == "mailers") {
+
+
+            $stmt22 = $dbConnection->prepare('SELECT value FROM perf where param=:tid');
+            $stmt22->execute(array(
+                ':tid' => 'mailers_text'
+            ));
+            $mm = $stmt22->fetch(PDO::FETCH_ASSOC);
+            $mmm=$mm['value'];
+
+
+$subject=get_conf_param('mailers_subj');
+$message=$mmm;
+
+    send_mail($user_mail,$subject,$message);
+
+   }
+
+
+
+
+   if ($type_op == "portal_post_comment") {
+
+
+        $stmt = $dbConnection->prepare('SELECT subj, author_id, uniq_id FROM portal_posts where id=:tid');
+        $stmt->execute(array(':tid' => $ticket_id));
+        $post_res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$SUBJ_POST=$post_res['subj'];
+$AUTHOR_POST=name_of_user_ret($post_res['author_id']);
+$THREAD_HASH=$post_res['uniq_id'];
+
+    $stmt2 = $dbConnection->prepare('SELECT * FROM post_comments where p_id=:tid ORDER BY id DESC LIMIT 1');
+    $stmt2->execute(array(':tid' => $ticket_id));
+    $res_post_comment = $stmt2->fetch(PDO::FETCH_ASSOC);
+    //$user_init_comment=$res_post_comment['user_id'];
+
+$USER_AUTHOR_COMMENT=name_of_user_ret($res_post_comment['user_id']);
+$POST_COMMENT=$res_post_comment['comment_text'];
+
+
+   
+$subject = $SUBJ_POST.' - '.lang($lang, 'POST_MAIL_COMMENT');
+//$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
+ob_start();
+include($base . "/inc/mail_tmpl/portal_post_comment.tpl");
+$message = ob_get_clean();
+
+
+$message = str_replace("{PORTAL_post_comment}", lang($lang, 'POST_MAIL_COMMENT').' '.get_conf_param('name_of_firm'), $message);
+$message = str_replace("{MAIL_info}", lang($lang,'MAIL_info'), $message);
+$message = str_replace("{POST_created_author}", lang($lang,'POST_created_author'), $message);
+$message = str_replace("{POST_MAIL_subj}", lang($lang,'POST_MAIL_subj'), $message);
+$message = str_replace("{PORTAL_post_comment_ext}", lang($lang,'PORTAL_post_comment_ext'), $message);
+$message = str_replace("{MAIL_2link}", lang($lang,'PORTAL_post_MAIL_2link'), $message);
+
+
+
+
+
+$message = str_replace("{uin}", $AUTHOR_POST, $message);
+$message = str_replace("{to_text}", $SUBJ_POST, $message);
+$message = str_replace("{who_init}", $USER_AUTHOR_COMMENT, $message);
+$message = str_replace("{comment}", $POST_COMMENT, $message);
+$message = str_replace("{h}", $THREAD_HASH, $message);
+
+
+     send_mail($user_mail,$subject,$message);
+
+   }
+
+
+
+	 else if ($type_op == "ticket_create") {
 
         $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
@@ -1066,7 +1140,7 @@ $ticket_id=$qrow['ticket_id'];
 						//$val
 						
 						
-			$stmt = $dbConnection->prepare('SELECT email, pb, lang FROM users where id=:tid and is_client=0');
+			$stmt = $dbConnection->prepare('SELECT email, pb, lang FROM users where id=:tid');
             $stmt->execute(array(':tid' => $val));
             $usr_info = $stmt->fetch(PDO::FETCH_ASSOC);
             $pb=$usr_info['pb'];

@@ -364,7 +364,7 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
                     </a></center></th>
                     <th><center><?php echo lang('t_LIST_to'); ?></center></th>
                     <th><center><?php echo lang('t_LIST_status'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_action'); ?></center></th>
+                    <!--th><center><?php echo lang('t_LIST_action'); ?></center></th-->
                 </tr>
                 </thead>
                 <tbody>
@@ -510,14 +510,14 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
                         
                         <td style=" vertical-align: middle; "><small><center><?php echo $st; ?></center>
                             </small></td>
-                        <td style=" vertical-align: middle; ">
+                        <!--td style=" vertical-align: middle; ">
                             <center>
                                 <div class="btn-group btn-group-xs actions">
                                     <button data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_list_a_ok_no'); ?>" type="button" <?php echo $dis_status; ?> class="btn btn-success" user="<?php echo $user_id ?>" value="<?php
                 echo $row['id']; ?>" id="action_list_ok" status="<?php echo $ob_status ?>"><?php echo $ob_text ?></button>
                                 </div>
                             </center>
-                        </td>
+                        </td-->
                     </tr>
                 <?php
             }
@@ -1270,7 +1270,15 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
                 }
                 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                            if ($row['status'] == "1") {
+               
+                $status_ok_status = "ok";
+            }
+            
+            if ($row['status'] == "0") {
                 
+                $status_ok_status = "no_ok";
+            }
                 ////////////////////////////Показывает кому/////////////////////////////////////////////////////////////////
                 if ($row['user_to_id'] <> 0) {
                     $to_text = "<div class=''>" . nameshort(name_of_user_ret($row['user_to_id'])) . "</div>";
@@ -1411,10 +1419,11 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
                     <td style=" vertical-align: middle; ">
                         <center>
                             <div class="btn-group btn-group-xs actions">
-                                <button <?php echo $lock_st ?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $lb_tooltip ?>" type="button" class="btn btn-warning" user="<?php echo $user_id ?>" value="<?php
+                                <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $lb_status);?>
+                                 data-toggle="tooltip" data-placement="bottom" title="<?php echo $lb_tooltip ?>" type="button" class="btn btn-warning" user="<?php echo $user_id ?>" value="<?php
                 echo $row['id']; ?>" id="action_list_lock" status="<?php echo $lb_status ?>"><?php echo $lb_text ?></button>
 
-                                <button <?php echo $lock_st ?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $ob_tooltip ?>" type="button" class="btn btn-success" user="<?php echo $user_id ?>" value="<?php
+                                <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $status_ok_status);?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $ob_tooltip ?>" type="button" class="btn btn-success" user="<?php echo $user_id ?>" value="<?php
                 echo $row['id']; ?>" id="action_list_ok" status="<?php echo $ob_status ?>"><?php echo $ob_text ?></button>
                             </div>
                         </center>

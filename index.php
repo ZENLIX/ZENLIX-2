@@ -250,7 +250,9 @@ else if ($main_portal == "false") {
                                                 case 'portal':
                             include ('inc/portal.php');
                             break;
-
+case 'mailers':
+                            include ('inc/mailers.php');
+                            break;
 
 
                         case 'manual':

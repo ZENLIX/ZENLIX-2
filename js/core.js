@@ -1827,6 +1827,12 @@ $('body').on('click', 'button#user_stat_make', function(event) {
             var ok_val = $("button#action_ok").attr("value");
             var ok_val_tid = $("button#action_ok").attr("tid");
             var lang_ok = get_lang_param('JS_ok');
+                        var st = $("#action_refer_to").attr('value');
+
+            if (st == '1') {
+                $("#refer_to").fadeOut(500);
+                $("#action_refer_to").removeClass('active').attr('value', '0');
+            }
             if (status_lock == 'ok') {
                 $("button#action_ok").attr('status', "no_ok").html("<i class=\"fa fa-check\"></i> " + lang_ok);
                 $("button#action_lock").removeAttr('disabled');
@@ -1867,6 +1873,16 @@ $('body').on('click', 'button#user_stat_make', function(event) {
             var lock_val_tid = $("button#action_lock").attr("tid");
             var status_lock = $("button#action_lock").attr('status');
             var lang_unlock = get_lang_param('JS_unlock');
+
+
+            var st = $("#action_refer_to").attr('value');
+
+            if (st == '1') {
+                $("#refer_to").fadeOut(500);
+                $("#action_refer_to").removeClass('active').attr('value', '0');
+            }
+
+
             if (status_lock == 'lock') {
                 $("button#action_lock").attr('status', "unlock").html("<i class='fa fa-unlock'></i> " + lang_unlock);
                 $("#msg_e").hide();
@@ -1876,6 +1892,9 @@ $('body').on('click', 'button#user_stat_make', function(event) {
                     data: "mode=lock" + "&tid=" + lock_val_tid + "&user=" + encodeURIComponent(lock_val),
                     success: function(html) {
                         $("#msg").hide().html(html).fadeIn(500);
+
+                        //$("#action_ok").attr('disabled', "disabled");
+                        $("#action_ok").removeAttr('disabled');
                         setTimeout(function() {
                             $('#msg').children('.alert').fadeOut(500);
                         }, 3000);
@@ -1892,6 +1911,7 @@ $('body').on('click', 'button#user_stat_make', function(event) {
                     data: "mode=unlock" + "&tid=" + lock_val_tid,
                     success: function(html) {
                         $("#msg").hide().html(html).fadeIn(500);
+                        $("#action_ok").attr('disabled', "disabled");
                         setTimeout(function() {
                             $('#msg').children('.alert').fadeOut(500);
                         }, 3000);
@@ -3438,6 +3458,8 @@ if(jQuery().fileupload) {
             var elem = '#tr_' + tr_id;
             var us = $(this).attr('user');
             if (status_ll == "ok") {
+                                        $("#action_list_lock").attr('disabled', "disabled");
+                        //$("#action_list_lock").removeAttr('disabled');
                 $(this).attr("status", "unok");
                 $(this).html('<i class=\"fa fa-check-circle-o\"></i>');
                 $.ajax({
@@ -3450,6 +3472,8 @@ if(jQuery().fileupload) {
                 });
             }
             if (status_ll == "unok") {
+                                        //$("#action_list_lock").attr('disabled', "disabled");
+                        $("#action_list_lock").removeAttr('disabled');
                 $(this).attr("status", "ok");
                 $(this).html('<i class=\"fa fa-circle-o\"></i>');
                 $.ajax({
@@ -3489,6 +3513,10 @@ if(jQuery().fileupload) {
                     url: ACTIONPATH,
                     data: "mode=lock" + "&tid=" + tr_id + "&user=" + encodeURIComponent(us),
                     success: function() {
+
+                        //$("#action_list_ok").attr('disabled', "disabled");
+                        $("#action_list_ok").removeAttr('disabled');
+
                         $(elem).removeClass().addClass('warning', 1000);
                         $(elem).addClass('pops');
                     }
@@ -3502,6 +3530,9 @@ if(jQuery().fileupload) {
                     url: ACTIONPATH,
                     data: "mode=unlock" + "&tid=" + tr_id,
                     success: function() {
+                        $("#action_list_ok").attr('disabled', "disabled");
+                        //$("#action_list_ok").removeAttr('disabled');
+
                         $(elem).removeClass('warning', 1000);
                     }
                 });
@@ -3733,6 +3764,122 @@ $('body').on('click', 'button#conf_edit_portal', function(event) {
         });
 }
 
+    if (ispath('mailers')) {
+
+$('body').on('click', 'button#check_mailers', function(event) {
+            event.preventDefault();
+            var sHTML = $('#mailers_msg').code();
+
+var data = {
+                'mode': 'mailers_send',
+                'subj_mailers': encodeURIComponent($('#subj_mailers').val()),
+                'msg': sHTML,
+                'type_to_mail':encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()),
+                'users_priv':$("#users_priv").val(),
+                'users_units':$("#users_units").val(),
+                'users_list':$("#users_list").val()
+            };
+
+//console.log($('#to_msg').val());
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: data
+                ,
+                success: function(html) {
+                    $("#mailers_check_res").html(html);
+                
+                }
+            });
+
+
+
+        });
+
+
+
+$('body').on('click', 'button#send_mail', function(event) {
+            event.preventDefault();
+            var sHTML = $('#mailers_msg').code();
+
+var data = {
+                'mode': 'mailers_send',
+                'subj_mailers': encodeURIComponent($('#subj_mailers').val()),
+                'msg': sHTML,
+                'type_to_mail':encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()),
+                'users_priv':$("#users_priv").val(),
+                'users_units':$("#users_units").val(),
+                'users_list':$("#users_list").val(),
+                'check':'true'
+            };
+
+//console.log($('#to_msg').val());
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: data
+                ,
+                success: function(html) {
+                    $("#conf_edit_portal_res").hide().html(html).fadeIn(500);
+                    setTimeout(function() {
+                        $('#conf_edit_portal_res').children('.alert').fadeOut(500);
+                    }, 3000);
+                }
+            });
+
+
+
+        });
+
+
+
+$('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
+        
+            //console.log(this.value);
+            if (this.value == '1') {
+                $('#users_priv').prop('disabled', true);
+                $('#users_units').prop('disabled', true);
+                $('#users_list').prop('disabled', false);
+            } else if (this.value == '2') {
+                $('#users_priv').prop('disabled', false);
+                $('#users_units').prop('disabled', false);
+                $('#users_list').prop('disabled', true);
+            } 
+        });
+
+
+
+
+        $(".msel").select2({
+            allowClear: true,
+            maximumSelectionSize: 15,
+            width: '100%',
+            formatNoMatches: get_lang_param('JS_not_found')
+        });
+
+
+        $('#mailers_msg').summernote({
+                        height: 300,
+                        focus: true,
+                        lang: get_lang_param('summernote_lang'),
+                        disableDragAndDrop: false,
+                        toolbar: [
+    //['style', ['style']], // no style button
+    ['style', ['bold', 'italic', 'underline', 'clear']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['link', ['link']],
+    ['codeview', ['codeview']]],
+                        oninit: function() {
+                        }
+                    });
+
+    }
 
     if (ispath('config')) {
 

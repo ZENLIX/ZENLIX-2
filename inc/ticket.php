@@ -360,6 +360,10 @@ if (!empty($res11)) {
             } else if ($lo == "yes") {
                 $lock_disabled = "";
             }
+
+
+//echo get_ticket_action_priv($row['id']);
+
 ?>
     
     <div class="row">
@@ -373,15 +377,15 @@ if (!empty($res11)) {
 
                 <div class="btn-group btn-group-justified">
                     <div class="btn-group">
-                        <button <?php echo $lock_disabled ?> id="action_refer_to" value="0" type="button" class="btn btn btn-danger"><i class="fa fa-share"></i> <?php echo lang('TICKET_t_refer'); ?></button>
+                        <button <?=get_button_act_status(get_ticket_action_priv($row['id']), 'refer');?> id="action_refer_to" value="0" type="button" class="btn btn btn-danger"><i class="fa fa-share"></i> <?php echo lang('TICKET_t_refer'); ?></button>
                     </div>
 
 
 
                     <div class="btn-group">
-                        <button <?php echo $lock_disabled ?> id="action_lock" status="<?php echo $lock_status ?>" value="<?php echo $_SESSION['helpdesk_user_id'] ?>" tid="<?php echo $tid ?>" type="button" class="btn btn btn-danger"> <?php echo $lock_text ?></button>
+                        <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $lock_status);?> id="action_lock" status="<?php echo $lock_status ?>" value="<?php echo $_SESSION['helpdesk_user_id'] ?>" tid="<?php echo $tid ?>" type="button" class="btn btn btn-danger"> <?php echo $lock_text ?></button>
                     </div><div class="btn-group">
-                        <button <?php echo $lock_disabled ?> id="action_ok" status="<?php echo $status_ok_status ?>" value="<?php echo $_SESSION['helpdesk_user_id'] ?>" tid="<?php echo $tid ?>" type="button" class="btn btn btn-danger"><?php echo $status_ok_text ?> </button>
+                        <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $status_ok_status);?> id="action_ok" status="<?php echo $status_ok_status ?>" value="<?php echo $_SESSION['helpdesk_user_id'] ?>" tid="<?php echo $tid ?>" type="button" class="btn btn btn-danger"><?php echo $status_ok_text ?> </button>
                     </div>
                 </div>
                 </div><!-- /.box-body -->

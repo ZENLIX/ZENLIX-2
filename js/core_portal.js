@@ -1446,6 +1446,9 @@ $('#note').summernote({
 if(ispath('version')) {
 
 
+
+
+
 $(document).on('ifChanged', '#make_todo_success', function() {
 //$("input#field_perf_name").on('change', function() {
 
@@ -1484,6 +1487,36 @@ view_todo();
                 }
             });
         });
+
+
+
+//conf_edit_version_banner
+
+        $('body').on('click', 'button#conf_edit_version_banner', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH_PORTAL,
+                data: "mode=conf_edit_version_banner"+
+                "&portal_box_version_n="+encodeURIComponent($("#portal_box_version_n").val())+
+                "&portal_box_version_text="+encodeURIComponent($("#portal_box_version_text").val())+
+                "&portal_box_version_icon="+encodeURIComponent($("#portal_box_version_icon").val()),
+                success: function(html) {
+
+                    //$('#conf_edit_version_banner_res').html(html);
+                    
+                    $('#conf_edit_version_banner_res').hide().html(html).fadeIn(500);
+                    setTimeout(function() {
+                        $('#conf_edit_version_banner_res').children('.alert').fadeOut(500);
+                    }, 3000);
+   
+                }
+            });
+
+        });
+
+
 
         $('body').on('click', 'button#add_todo_item', function(event) {
             event.preventDefault();

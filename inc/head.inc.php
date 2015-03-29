@@ -34,7 +34,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('deps') || get_curr
 
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('config')  ) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('config') || get_current_URL_name('mailers')  ) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2-bootstrap.css?<?=get_conf_param('version');?>">
 <?php
@@ -45,7 +45,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_cu
 </style>
 
 <?php
-if ((get_current_URL_name('helper')) || get_current_URL_name('notes')) { ?>
+if ((get_current_URL_name('helper')) || get_current_URL_name('notes') || get_current_URL_name('mailers')) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote-bs3.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote.css?v2.5">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css?<?=get_conf_param('version');?>">

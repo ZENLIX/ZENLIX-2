@@ -4,11 +4,46 @@ function lang_en($phrase){
 	    
 
 
+
+
+'PORTAL_mailers' => 'Mail Merge',
+'PORTAL_mailers_ext' => 'master list',
+'PORTAL_mailers_help' => 'On this page you can make the e-mail messages on the back of the criteria',
+'MAILERS_p_master' => 'master list',
+'MAILERS_p_u_list' => 'user-defined',
+'MAILERS_p_u_list_ext' => 'Newsletter will be separately for each selected user a separate letter.',
+'MAILERS_p_all' => 'All users',
+'MAILERS_p_all_ext' => 'Newsletter will be for each user, which corresponds to the selected criteria.',
+'MAILERS_p_priv' => 'by privilege',
+'MAILERS_p_help' => 'If someone is not specified, then all.',
+'MAILERS_p_units' => 'departmental',
+'MAILERS_p_make' => 'Queue',
+'PORTAL_mailers_priv2' => 'head of department',
+'PORTAL_mailers_priv0' => 'department heads',
+'PORTAL_mailers_priv1' => 'Users of the system',
+'PORTAL_mailers_privclient' => 'Customers',
+'PORTAL_mailers_check'=>'View delivers',
+
 'MAIL_REG_title' => 'Successfully logged in!',
 'MAIL_REG_title_ext' => 'You are receiving this email because you have been registered in the system. Use the data below to access the system. ',
 'MAIL_REG_title_data' => 'Data access',
+'MAILERS_OK' => 'The message is in the queue! In the near future will be made delivery. ',
+'MAILERS_ERROR' => 'The recipient list is empty.',
 
+'GUMP_field' => 'Field',
+'GUMP_validate_required' => 'is required',
+'GUMP_validate_valid_email' => 'should consist of a correct email-address',
+'GUMP_validate_validate_max_len' => 'should be no more than',
+'GUMP_validate_validate_min_len' => 'must not be less than',
+'GUMP_validate_alpha_numeric' => 'must consist of normal characters',
+'GUMP_validate_char' => 'characters',
+'MAILERS_ERROR2' => 'There are all unprocessed. Wait for her performance and then be able to create a new e-mail. ',
 
+'POST_MAIL_COMMENT' => 'A new comment on the portal',
+'POST_created_author' => 'Author fasting',
+'POST_MAIL_subj' => 'Theme',
+'PORTAL_post_comment_ext' => 'You received this message because the post was commented on by the user',
+'PORTAL_post_MAIL_2link' => 'link on the post',
 
 
 'PORTAL_title' => 'The main portal',
@@ -113,7 +148,8 @@ function lang_en($phrase){
 'PORTAL_add_comm' => 'Add a comment',
 'PORTAL_stay_comm' => 'Leave a Comment',
 'PORTAL_author' => 'Author',
-
+'PORTAL_version_box_title' => 'Setting up a banner-box',
+'PORTAL_icon' => 'Icon',
 
 
 
