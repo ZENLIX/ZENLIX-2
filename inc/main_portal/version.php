@@ -84,7 +84,7 @@ if ($hn == "new_feed") {
 
 <div class="col-sm-6 col-sm-offset-3">
 <br>
-<button class="btn btn-block btn-info" id="make_new_feed" ><?=lang('PORTAL_news_create');?></button>
+<button class="btn btn-block btn-info" id="make_new_version" ><?=lang('PORTAL_news_create');?></button>
 <input type="hidden" value="<?php echo md5(time()); ?>" id="news_hash">
 </div>
 

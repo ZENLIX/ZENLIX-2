@@ -850,6 +850,72 @@ if ($validated === true) {
 
 }
 
+if ($mode == "add_version") {
+
+
+
+$validator = new GUMP();
+
+
+
+            //$_POST = $validator->sanitize($_POST);
+            
+            $rules = array(
+                'subj' => 'required',
+                'msg'=> 'required',
+                'title'=>'required'
+            );
+            $filters = array(
+                'subj' => 'trim|sanitize_string',
+                'title'=>'trim|sanitize_string'
+            );
+            
+            $validator->set_field_name(array(
+                "subj" => lang('NEW_subj')
+            ));
+
+
+            GUMP::set_field_name("subj", lang('NEW_subj'));
+            
+            $_POST = $validator->filter($_POST, $filters);
+            
+            $validated = $validator->validate($_POST, $rules);
+
+
+if ($validated === true) {
+	$check_error = true;
+ 		$stmt = $dbConnection->prepare('insert into portal_versions 
+ 		(subj, msg, title, uniq_id, dt, author_id) values 
+ 		(:subj, :msg, :title, :uniq_id, :dt, :uid)');
+		$stmt->execute(array(
+			':subj' => $_POST['subj'],
+			':msg' => $_POST['msg'],
+			':title' => $_POST['title'],
+			':uniq_id' => $_POST['hn'],
+			':dt'=> $CONF['now_dt'],
+			':uid'=>$_SESSION['helpdesk_user_id']
+		));
+	}
+	else {
+                
+                //print_r($is_valid);
+                $check_error = false;
+                $msg.= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($validator->get_readable_errors(false) as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+            }
+            $results[] = array(
+                'check_error' => $check_error,
+                'msg' => $msg,
+                'm2'=>$_POST['msg']
+            );
+            print json_encode($results);
+
+
+}
+
 
 
 if ($mode == "add_news") {

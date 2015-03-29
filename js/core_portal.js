@@ -1537,7 +1537,51 @@ view_todo();
         });
 
 
+//make_new_feed
+        $('body').on('click', 'button#make_new_version', function(event) {
+            event.preventDefault();
 
+            var v=$("#news_hash").val();
+            var sHTML = $('#note').code();
+            var title = $("#title").val();
+            var subj = $("#subj").val();
+                         
+ var data = {
+                'mode': 'add_version',
+                'subj': subj,
+                'msg': sHTML,
+                'hn':v,
+                'title':title
+            };
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH_PORTAL,
+                
+                data: data,
+                dataType: "json",
+                success: function(html) {
+                    console.log(html);
+ $.each(html, function(i, item) {
+            if (item.check_error == true) {
+                window.location = MyHOSTNAME + "version?"+v;
+            }
+            else if (item.check_error == false) { 
+                            //$('#res').html(item.msg); 
+                            $("#post_res").hide().html(item.msg).fadeIn(500);
+                           
+                            }
+ });
+                               
+
+
+
+                }
+            }); 
+
+
+            
+
+        });
 
    $('body').on('click', 'button#make_edit_version', function(event) {
             event.preventDefault();
