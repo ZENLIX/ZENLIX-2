@@ -149,9 +149,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     ///////////////////////
                     
                     ////create files backup///////////
-                    Zip($rp . "/", $rp . "/updates/backup/file_zenlix_backup_".$dform.".zip");
+                    //Zip($rp . "/", $rp . "/updates/backup/file_zenlix_backup_".$dform.".zip");
                     //ExtendedZip::zipTree($rp . "/", $rp . "/updates/backup/file_zenlix_backup_".$dform.".zip", ZipArchive::CREATE);
-                    $fpp2=$rp . "/updates/backup/file_zenlix_backup_".$dform.".zip";
+                    //$fpp2=$rp . "/updates/backup/file_zenlix_backup_".$dform.".zip";
                     //////////////////////////////////
                     }
                     else {
@@ -212,18 +212,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     unlink($zipFile);
                     
 ?>
-   <table class="table table-bordered">
-                                        <tbody><tr>
-<td><?php echo lang('UPGRADE_dbu'); ?></td>
-<td><?php echo $fpp; ?></td>
 
-                                        </tr>
-<tr>
-<td>Files backup</td>
-<td><?php echo $fpp2; ?></td>
-
-                                        </tr>
-                                    </tbody></table>
    <?php
                  
                 
@@ -442,7 +431,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                 
                                                                    </div><!-- /.box-body -->
                             </div></div>
-                            <div class="col-md-12"><hr></div>
+                            <div class="col-md-12"><hr>
+
+<div class="alert alert-danger"><?php
+                echo lang('BU_INFO_DNM'); ?></div>
+
+                            </div>
                             <div class="col-md-6 col-md-offset-3">
                               <div class="box">
                               <div class="box-body"><a href="update.php?update_now=true" class="btn btn-success btn-block btn-sm " <?php echo $s; ?>><?php echo lang('UPGRADE_now'); ?></a></div>

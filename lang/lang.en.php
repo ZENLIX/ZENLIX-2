@@ -4,7 +4,7 @@ function lang_en($phrase){
 	    
 
 
-
+'BU_INFO_DNM' => 'Warning! Before you upgrade, we strongly recommend that you make a backup copy of the database and files. ',
 
 'PORTAL_mailers' => 'Mail Merge',
 'PORTAL_mailers_ext' => 'master list',
