@@ -4,7 +4,26 @@ include_once ("head.inc.php");
 //include("dbconnect.inc.php");
 
 ?>
+<style type="text/css" media="screen">
+.c {
+background: url(img/login_bg.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 
+  }
+body {
+background-color: transparent;
+}
+
+  /*
+body {
+background: url(img/login_bg.jpg);
+background-size: 100% 100% auto;
+background-repeat: no-repeat;
+}   */ 
+</style>
 <?php if (get_conf_param('allow_register') == "true") { ?>
 <body class="bg-navy">
 

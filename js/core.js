@@ -1605,6 +1605,14 @@ $('body').on('click', 'button#user_stat_make', function(event) {
             upl();
         });
 
+
+$('.fancybox').fancybox(
+    {
+        openEffect  : 'elastic',
+        closeEffect : 'elastic'
+    });
+
+
         function upl() {
             var file_data = $('#do_comment_file').prop('files')[0];
             var t_id = $('#ticket_hash').val();
@@ -1702,8 +1710,8 @@ $('body').on('click', 'button#user_stat_make', function(event) {
                 $("#for_msg").addClass('has-error');
             }
         });
-        $('input#msg').bind('keypress', function(e) {
-            if (e.keyCode == 13) {
+        $('textarea#msg').bind('keypress', function(e) {
+            if (e.ctrlKey && e.keyCode == 13) {
                 $("button#do_comment").click();
             }
         });
@@ -1953,17 +1961,17 @@ $('body').on('click', 'button#user_stat_make', function(event) {
             event.preventDefault();
             var tid = $(this).attr('value');
             var usr = $(this).attr('user');
-            var m = $("input#msg").val().length;
-            if ($("input#msg").val().replace(/ /g, '').length > 1) {
-                $("input#msg").popover('hide');
+            var m = $("textarea#msg").val().length;
+            if ($("textarea#msg").val().replace(/ /g, '').length > 1) {
+                $("textarea#msg").popover('hide');
                 $("#for_msg").removeClass('has-error').addClass('has-success');
                 $.ajax({
                     type: "POST",
                     url: ACTIONPATH,
-                    data: "mode=add_comment" + "&user=" + encodeURIComponent(usr) + "&textmsg=" + encodeURIComponent(($("input#msg").val())) + "&tid=" + tid,
+                    data: "mode=add_comment" + "&user=" + encodeURIComponent(usr) + "&textmsg=" + encodeURIComponent(($("textarea#msg").val())) + "&tid=" + tid,
                     success: function(html) {
                         $("#comment_content").html(html);
-                        $("input#msg").val('')
+                        $("textarea#msg").val('')
                         makemytime(true);
                         //comment_body
                         var scroll = $('#comment_body');
@@ -1973,10 +1981,10 @@ $('body').on('click', 'button#user_stat_make', function(event) {
                     }
                 });
             } else {
-                $("input#msg").popover('show');
+                $("textarea#msg").popover('show');
                 $("#for_msg").addClass('has-error');
                 setTimeout(function() {
-                    $("input#msg").popover('hide');
+                    $("textarea#msg").popover('hide');
                 }, 2000);
             }
         });

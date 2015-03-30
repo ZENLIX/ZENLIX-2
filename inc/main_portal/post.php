@@ -143,7 +143,7 @@ else if ($_GET['p']) {
  
 ?>
 
-<div class="box box-success direct-chat direct-chat-primary">
+<div class="box box-success box-solid direct-chat direct-chat-primary">
                 <div class="box-header with-border">
                   <h4 class="box-title"><?=lang('PORTAL_oa');?></h4>
 <div class="box-tools pull-right">

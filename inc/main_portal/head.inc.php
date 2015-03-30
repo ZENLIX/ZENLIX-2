@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/chosen.min.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet"type="text/css" media="print" href="<?php echo $CONF['hostname'] ?>/css/print.css?<?=get_conf_param('version');?>"><link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote-bs3.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote.css?v2.5">
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/inc/main_portal/css/AdminLTE.min.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/inc/main_portal/css/skins/_all-skins.min.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/dropzone.css?<?=get_conf_param('version');?>">

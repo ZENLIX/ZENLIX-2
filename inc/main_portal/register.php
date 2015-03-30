@@ -54,8 +54,8 @@ include "navbar.inc.php";
 <div class="col-sm-4 col-sm-offset-4">
   <button class="btn btn-block btn-success btn-lg" id="register_new"><?=lang('PORTAL_reg');?> </button>
 </div>
-
-<div class="col-sm-12" id="error_result">
+<div class="col-sm-4 col-sm-offset-4"><br><br></div>
+<div class="col-sm-4 col-sm-offset-4" id="error_result">
 
 </div>
 

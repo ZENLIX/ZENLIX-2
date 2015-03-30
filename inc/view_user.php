@@ -328,7 +328,7 @@ if ($user_status != "2") {
         
         if (empty($result)) {
 ?>
-            <div class="box-body no-padding">
+            <div class="box-body ">
             <div id="" class="well well-large well-transparent lead">
                 <center>
                     <?php echo lang('MSG_no_records'); ?>
@@ -387,10 +387,12 @@ if ($user_status != "2") {
         
         if (empty($result)) {
 ?>
+<div class="box-body">
             <div id="" class="well well-large well-transparent lead">
                 <center>
                     <?php echo lang('MSG_no_records'); ?>
                 </center>
+            </div>
             </div>
         <?php
         } else if (!empty($result)) { ?>

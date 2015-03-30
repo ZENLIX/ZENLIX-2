@@ -1193,7 +1193,7 @@ function view_comment($tid) {
             ));
             $file_arr = $stmt2->fetch(PDO::FETCH_ASSOC);
             
-            $ct = '<div class=\'text-muted well well-sm no-shadow\' style=\'margin-bottom: 5px;\'><em><small>' . lang('EXT_attach_file') . '</small> <br></em>';
+            $ct = '<div class=\'text-muted\' style=\'margin-bottom: 5px;\'><em><small>' . lang('EXT_attach_file') . '</small> <br></em>';
             
             $fts = array(
                 'image/jpeg',
@@ -1203,7 +1203,7 @@ function view_comment($tid) {
             
             if (in_array($file_arr['file_type'], $fts)) {
                 
-                $ct.= ' <small><a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $f_hash . '\'><img style=\'max-height:100px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'></a>  </small>';
+                $ct.= ' <small><a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'><img style=\'max-height:100px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'></a>  </small>';
             } else {
                 $ct.= get_file_icon($f_hash) . ' <small><a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $f_hash . '\'>' . $file_arr['original_name'] . '</a> ' . round(($file_arr['file_size'] / (1024 * 1024)) , 2) . ' Mb </small>';
             }

@@ -1117,7 +1117,7 @@ function view_attach_files($id, $type) {
 	global $dbConnection;
 
             
-            $stmt = $dbConnection->prepare('SELECT file_hash, original_name, file_size FROM post_files where post_hash=:tid');
+            $stmt = $dbConnection->prepare('SELECT * FROM post_files where post_hash=:tid');
             $stmt->execute(array(':tid' => $id));
             $res1 = $stmt->fetchAll();
             if (!empty($res1)) {
@@ -1127,13 +1127,31 @@ function view_attach_files($id, $type) {
                             <table class="table table-hover" style="margin-bottom: 0px;">
                                     <tbody>
                                 <?php
-                foreach ($res1 as $r) { ?>
+                foreach ($res1 as $r) { 
+
+
+$fts = array(
+                'image/jpeg',
+                'image/gif',
+                'image/png'
+            );
+
+
+            if (in_array($r['file_type'], $fts)) {
+                
+                $ct= ' <a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'>'.$r['original_name'].'</a> ';
+            } else {
+                $ct= $r['original_name'];
+            }
+
+
+                	?>
                                     
                                     
                                     
                     <tr>
                         <td style="width:20px;"><small><?php echo get_file_icon($r['file_hash']); ?></small></td>
-                        <td><small><?php echo $r['original_name']; ?></small><small> (<?php
+                        <td><small><?php echo $ct; ?></small><small> (<?php
                     echo round(($r['file_size'] / (1024 * 1024)), 2); ?> Mb)</small></td>
                         <td class="pull-right">
 

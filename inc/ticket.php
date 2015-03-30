@@ -259,7 +259,7 @@ if (!empty($res11)) {
                             </div>
                             </div>                            <?php
             
-            $stmt = $dbConnection->prepare('SELECT file_hash, original_name, file_size FROM files where ticket_hash=:tid');
+            $stmt = $dbConnection->prepare('SELECT * FROM files where ticket_hash=:tid');
             $stmt->execute(array(':tid' => $hn));
             $res1 = $stmt->fetchAll();
             if (!empty($res1)) {
@@ -273,13 +273,33 @@ if (!empty($res11)) {
                             <table class="table table-hover">
                                     <tbody>
                                 <?php
-                foreach ($res1 as $r) { ?>
+                foreach ($res1 as $r) { 
+
+
+$fts = array(
+                'image/jpeg',
+                'image/gif',
+                'image/png'
+            );
+
+
+
+            if (in_array($r['file_type'], $fts)) {
+                
+                $ct= ' <a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'><img style=\'max-height:50px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'></a> ';
+            } else {
+                $ct= ' <a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $r['file_hash'] . '\'>' . $r['original_name'] . '</a>';
+            }
+
+
+
+                    ?>
                                     
                                     
                                     
                     <tr>
                         <td style="width:20px;"><small><?php echo get_file_icon($r['file_hash']); ?></small></td>
-                        <td><small><a href='<?php echo $CONF['hostname']; ?>sys/download.php?<?php echo $r['file_hash']; ?>'><?php echo $r['original_name']; ?></a></small></td>
+                        <td><small><?=$ct;?></small></td>
                         <td><small><?php
                     echo round(($r['file_size'] / (1024 * 1024)), 2); ?> Mb</small></td>
                     </tr>
@@ -367,6 +387,7 @@ if (!empty($res11)) {
 ?>
     
     <div class="row">
+    <div class="col-md-12">s</div>
     <div class="col-md-12">
     
     <div class="box box-danger">
@@ -570,17 +591,22 @@ if (!empty($res11)) {
                                     
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
-                                    <div class="input-group" id="for_msg">
-                                        <input name="msg" id="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="&lt;small&gt;<?php echo lang('TICKET_t_det_ticket'); ?>&lt;/small&gt;" placeholder="<?php echo lang('TICKET_t_comm_ph'); ?>"/>
-                                        <div class="input-group-btn">
-                                            <button value="<?php echo $hn ?>" id="do_comment" class="btn btn-success"><i class="fa fa-comment"></i></button>
+                                    <div class="" id="for_msg">
+                                        
+
+
+<textarea id="msg" name="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="&lt;small&gt;<?php echo lang('TICKET_t_det_ticket'); ?>&lt;/small&gt;" placeholder="<?php echo lang('TICKET_t_comm_ph'); ?>"></textarea>
+</div>
+<div class="">
+<div style="height: 30px;" class="">
+
+                                        <div class="btn-group pull-right">
+                                            <button value="<?php echo $hn ?>" id="do_comment" class="btn btn-success btn-sm"><i class="fa fa-comment"></i></button>
+                                            
+  <input type="file" id="do_comment_file" value="<?php echo $hn ?>" class="file-inputs" title="+">
                                             
                                             
-                                            
-<input type="file" id="do_comment_file" value="<?php echo $hn ?>" class="file-inputs" title="+">
-                                            
-                                            
-                                            
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

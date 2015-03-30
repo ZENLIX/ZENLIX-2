@@ -286,9 +286,9 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 
 
   </tr>
+      <tr> <td colspan="2" style="">{MAIL_forgot_link}:</td></tr>
   <tr>
-    <td style="">{MAIL_forgot_link}:</td>
-    <td style="">{link}</td>
+    <td colspan="2" style="">{link}</td>
   </tr>
     
     <tr>

@@ -97,9 +97,9 @@ $check_error="true";
                     
                     
 $loginname=get_user_val_by_hash($uniq_code,'login');
+$mail=get_user_val_by_hash($uniq_code,'email');
 
-
-$subject=$CONF['name_of_firm'] . " - password changed successfull";;
+$subject=$CONF['name_of_firm'] . " - password changed successfull";
 
 
 
@@ -124,9 +124,7 @@ $message = str_replace("{pass}", $_POST['p2'], $message);
 
         send_mail_reg($mail, $subject, $message);
 
-?>
 
-            <?php
                 }
                 if ($ec == 1) {
                     $check_error="false";
@@ -199,7 +197,7 @@ foreach ($r as $k) {
 $link4mail=$CONF['hostname'].'/forgot?uc='.$uc.'&ph='.$ph.'&m=true';
 
 
-$subject=$CONF['name_of_firm'] . " - password recovery";;
+$subject=$CONF['name_of_firm'] . " - password recovery";
 
 
 

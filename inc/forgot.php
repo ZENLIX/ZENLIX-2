@@ -5,6 +5,26 @@ include_once ("head.inc.php");
 
 ?>
 
+<style type="text/css" media="screen">
+.c {
+background: url(img/login_bg.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  }
+body {
+background-color: transparent;
+}
+
+  /*
+body {
+background: url(img/login_bg.jpg);
+background-size: 100% 100% auto;
+background-repeat: no-repeat;
+}   */ 
+</style>
 <?php if (get_conf_param('allow_forgot') == "true") { 
 
 
@@ -104,6 +124,7 @@ echo $_SERVER['REQUEST_URI']; ?>">
 $(document).ready(function() {
             $('body').on('click', 'button#change_pw', function(event) {
             event.preventDefault();
+            $('button#change_pw').prop('disabled', true);
                 $.ajax({
                     type: "POST",
                     url: "actions.php",
@@ -118,11 +139,14 @@ $(document).ready(function() {
                         if (html) {
                              $.each(html, function(i, item) {
                                 if (item.check_error == "true") {
-                                    $("#main_form_register").html(item.msg);
+                                    $("#error_result").html(item.msg);
+                                    $('#pass_new').prop('disabled', true);
+                                    $('#pass_new2').prop('disabled', true);
                                     setTimeout(function() {window.location = "./";}, 5000);
                                 }
                                 else if (item.check_error == "false") {
                                     $("#error_result").html(item.msg);
+                                    $('button#change_pw').prop('disabled', false);
                                 }
                             });
                             
@@ -208,6 +232,8 @@ echo $_SERVER['REQUEST_URI']; ?>">
 $(document).ready(function() {
             $('body').on('click', 'button#forgot', function(event) {
             event.preventDefault();
+
+            $('button#forgot').prop('disabled', true);
                 $.ajax({
                     type: "POST",
                     url: "actions.php",
@@ -220,11 +246,14 @@ $(document).ready(function() {
                         if (html) {
                              $.each(html, function(i, item) {
                                 if (item.check_error == "true") {
-                                    $("#main_form_register").html(item.msg);
+                                    $("#error_result").html(item.msg);
+                                    $('#login_name').prop('disabled', true);
+                                    $('#login_mail').prop('disabled', true);
                                     setTimeout(function() {window.location = "./";}, 5000);
                                 }
                                 else if (item.check_error == "false") {
                                     $("#error_result").html(item.msg);
+                                    $('button#forgot').prop('disabled',false);
                                 }
                             });
                             

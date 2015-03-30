@@ -49,6 +49,6 @@ echo $lang; ?>";
 
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.mjs.nestedSortable.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap3-editable/js/bootstrap-editable.min.js?<?=get_conf_param('version');?>"></script>
-
+<script src="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/core_portal.js?<?=get_conf_param('version');?>"></script>
 </html>

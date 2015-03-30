@@ -5,7 +5,11 @@
 });
 
 
-
+$('.fancybox').fancybox(
+    {
+        openEffect  : 'elastic',
+        closeEffect : 'elastic'
+    });
 
    function view_todo() {
 $.fn.editable.defaults.mode = 'inline';

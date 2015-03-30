@@ -86,6 +86,7 @@ if (get_current_URL_name('ticket')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.autosize.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap.file-input.js?<?=get_conf_param('version');?>"></script>
 
+<script src="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.js?<?=get_conf_param('version');?>"></script>
 <?php
 } ?>
 

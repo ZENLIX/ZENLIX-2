@@ -37,6 +37,9 @@ if ((get_current_URL_name('create')) || get_current_URL_name('deps') || get_curr
 if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('config') || get_current_URL_name('mailers')  ) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2-bootstrap.css?<?=get_conf_param('version');?>">
+
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.css?<?=get_conf_param('version');?>">
+
 <?php
 } ?>
 
@@ -72,6 +75,8 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 
 
 <link rel="stylesheet"type="text/css" media="print" href="<?php echo $CONF['hostname'] ?>/css/print.css?<?=get_conf_param('version');?>">
+
+
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/AdminLTE.css?<?=get_conf_param('version');?>">
 <body class="skin-blue" style="">
   

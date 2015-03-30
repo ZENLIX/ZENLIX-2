@@ -74,7 +74,7 @@ else if ($CONF['main_portal'] == false) {
   <button class="btn btn-block btn-success btn-lg"><i class="fa fa-sign-in"></i>  <?php echo lang('log_in'); ?> </button>
 </div>
 
-<div class="col-sm-12">
+<div class="col-sm-4 col-sm-offset-4">
   <br>
 <center>
                     <small>
@@ -87,7 +87,7 @@ else if ($CONF['main_portal'] == false) {
                     </small>
                     </center>
 </div>
-<div class="col-sm-12" id="error_result">
+<div class="col-sm-4 col-sm-offset-4" id="error_result">
 
 
 <?php
