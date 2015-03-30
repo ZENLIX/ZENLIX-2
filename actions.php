@@ -16,6 +16,258 @@ if (isset($_POST['mode'])) {
         print ($r);
     }
     
+
+
+//forgot_pass_change
+    if ($mode == "forgot_pass_change") {
+
+$ct=false;
+$uniq_code=$_POST['uc'];
+$pass_md=$_POST['ph'];
+
+            $stmt = $dbConnection->prepare('select id, pass from users where uniq_id=:uniq_id limit 1');
+            $stmt->execute(array(
+                ':uniq_id' => $uniq_code
+            ));
+            $r = $stmt->fetchAll();
+
+if (!empty($r)) {
+    foreach ($r as $v) {
+        //echo md5($v['pass'])." == ".$pass_md;
+        if (md5($v['pass']) == $pass_md) {
+            $ct=true;
+            
+        }
+
+    }
+}
+
+if ($ct == true) {
+
+$ec=0;
+
+$validator = new GUMP();
+            $_POST = $validator->sanitize($_POST);
+            
+            $rules = array(
+                'p1' => 'required|max_len,100|min_len,6',
+                'p2' => 'required|max_len,100|min_len,6'
+            );
+            $filters = array(
+                'p1' => 'sanitize_string|trim',
+                'p2' => 'sanitize_string|trim',
+            );
+            
+
+            GUMP::set_field_name("p1", lang('P_pass_new'));
+            GUMP::set_field_name("p2", lang('P_pass_new_re'));
+            
+            $_POST = $validator->filter($_POST, $filters);
+            
+            $validated = $validator->validate($_POST, $rules);
+            
+            if ($validated === true) {
+                
+                $p_new = md5(($_POST['p1']));
+                $p_new2 = md5(($_POST['p2']));
+
+                
+                if ($p_new <> $p_new2) {
+                    $ec = 1;
+                    $text.= lang('PROFILE_msg_pass_err2');
+                }
+                
+                if (strlen($p_new) < 3) {
+                    $ec = 1;
+                    $text.= lang('PROFILE_msg_pass_err3');
+                }
+                
+                if ($ec == 0) {
+
+$check_error="true";
+                    $msg= " <div class=\"body bg-gray\"> <div class=\"alert alert-success\">";
+                    $msg.=lang('PROFILE_msg_pass_ok');
+                    $msg.= "</div></div>";
+                    
+                    $stmt = $dbConnection->prepare('update users set pass=:p_new where uniq_id=:id');
+                    $stmt->execute(array(
+                        ':id' => $uniq_code,
+                        ':p_new' => $p_new
+                    ));
+                    
+                    
+$login=get_user_val_by_hash($uniq_code,'login');
+
+
+$subject=$CONF['name_of_firm'] . " - password changed successfull";;
+
+
+
+ob_start();
+$base = dirname(__FILE__); 
+include($base . "/inc/mail_tmpl/forgot_mail_success.tpl");
+$message = ob_get_clean();
+
+$message = str_replace("{MAIL_forgot_success}", lang('MAIL_forgot_success'), $message);
+$message = str_replace("{MAIL_forgot_success_ext}", lang('MAIL_forgot_success_ext'), $message);
+
+$message = str_replace("{MAIL_info}", lang('MAIL_REG_title_data'), $message);
+$message = str_replace("{MAIL_login}", lang('PORTAL_login_name'), $message);
+$message = str_replace("{login}", $login, $message);
+$message = str_replace("{MAIL_pass}", lang('CONF_mail_pass'), $message);
+$message = str_replace("{pass}", $_POST['p2'], $message);
+
+
+//$message = str_replace("{link}", '<a href=\''.$link4mail.'\'>'.$link4mail.'</a>', $message);
+
+
+        send_mail_reg($mail, $subject, $message);
+
+?>
+
+            <?php
+                }
+                if ($ec == 1) {
+                    $check_error="false";
+
+               $msg= " <div class=\"alert alert-danger\"><strong>";
+                    
+                $msg.= lang('PROFILE_msg_te')."!</strong><br>"; 
+                 $msg.=  $text; 
+                $msg.= "</div>";
+            
+                }
+            } else {
+                $check_error="false";
+                $msg= "<div class=\"callout callout-danger\"><p><ul>";
+                foreach ($validator->get_readable_errors(false) as $key => $value) {
+                    $msg.= "<li>" . $value . "</li>";
+                }
+                $msg.= "</ul></p></div>";
+                //echo $msg;
+            }
+
+
+
+}
+
+//true - норм
+//false - ошибка
+
+        $results[] = array(
+            'check_error' => $check_error,
+            'msg' => "<br>".$msg
+        );
+        print json_encode($results);
+
+
+    }
+
+if ($mode == "forgot_pass") {
+
+        $login = $_POST['login'];
+        $mail = $_POST['mail'];
+        $hn = md5(time());
+        $check_error = "true";
+
+if (!empty($login) && !empty($mail)) {
+
+            $stmt = $dbConnection->prepare('select id, uniq_id,pass from users where email=:mail and login=:login limit 1');
+            $stmt->execute(array(
+                ':mail' => $mail,
+                ':login'=> $login
+            ));
+            $r = $stmt->fetchAll();
+
+
+if (empty($r)) {
+    $check_error = "false"; $msge=lang( 'CREATE_ACC_error');
+}
+else if (!empty($r)) {
+$check_error = "true"; $msge=lang('FORGOT_instr');
+
+foreach ($r as $k) {
+    # code...
+    $uc=$k['uniq_id'];
+    $ph=md5($k['pass']);
+}
+
+//$pass = generatepassword();
+
+
+$link4mail=$CONF['hostname'].'/forgot?uc='.$uc.'&ph='.$ph.'&m=true';
+
+
+$subject=$CONF['name_of_firm'] . " - password recovery";;
+
+
+
+ob_start();
+$base = dirname(__FILE__); 
+include($base . "/inc/mail_tmpl/forgot_mail.tpl");
+$message = ob_get_clean();
+
+$message = str_replace("{MAIL_forgot}", lang('MAIL_forgot'), $message);
+$message = str_replace("{MAIL_forgot_ext}", lang('MAIL_forgot_ext'), $message);
+
+$message = str_replace("{MAIL_info}", lang('MAIL_REG_title_data'), $message);
+$message = str_replace("{MAIL_forgot_link}", lang('MAIL_forgot_link'), $message);
+$message = str_replace("{link}", '<a href=\''.$link4mail.'\'>'.$link4mail.'</a>', $message);
+
+
+        send_mail_reg($mail, $subject, $message);
+//$msge.=$message;
+
+//отправить ссылку на смену пароля
+//открываешь страницу где указываешь новые логин/пароль
+
+//forgot?{uniq_code}&q={md5(pass)}&m=true
+
+//если есть такая строка то предоставить форму смены пароля
+
+/*
+
+            $stmts = $dbConnection->prepare('update users set pass=:pass where email=:mail and login=:login');
+            $stmts->execute(array(
+                ':mail' => $mail,
+                ':login'=> $login,
+                ':pass'=>md5($pass)
+            ));
+*/
+
+
+}
+
+
+}
+else if (empty($login) || empty($mail)) {
+$check_error = "true"; $msge="empty login & mail ";
+}
+
+
+
+
+$msg = "<div class=\"col-md-12\">";
+            $msg.= "<div class=\"alert alert-warning alert-dismissable\"> <h4> ";
+            $msg.=" </h4>";
+            $msg.= $msge;
+            $msg.= "</div>";
+            $msg.= "</div>";
+
+
+        $results[] = array(
+            'check_error' => $check_error,
+            'msg' => "<br>".$msg
+        );
+        print json_encode($results);
+
+
+
+
+}
+
+
+
     if ($mode == "register_new") {
         
         $fio = $_POST['fio'];
@@ -4320,7 +4572,7 @@ echo $msg;
                 update_val_by_key("allow_register", $_POST['allow_register']);
                 update_val_by_key("lang_def", $_POST['lang']);
                 //$bodytag = str_replace(",", "|", $_POST['file_types']);
-                
+                update_val_by_key("allow_forgot", $_POST['allow_forgot']);
                 
                 update_val_by_key("mail", $_POST['mail']);
                 $msg.= "<div class=\"alert alert-success\">" . lang('PROFILE_msg_ok') . "</div>";

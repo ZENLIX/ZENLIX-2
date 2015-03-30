@@ -9,6 +9,7 @@ include "navbar.inc.php";
 
 
 ?>
+<?php if (get_conf_param('allow_register') == "true") { ?>
 <div class="content-wrapper">
 <section class="content">
 
@@ -84,5 +85,6 @@ include "navbar.inc.php";
 
 
 <?php
+}
 include "footer.inc.php";
 ?>

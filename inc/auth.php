@@ -62,10 +62,16 @@ else if ($CONF['main_portal'] == false) {
                 </div>
                 <div class="footer bg-gray">         
                                                                      
-                    <button type="submit" class="btn btn-success btn-block"><i class="fa fa-sign-in"></i>  <?php echo lang('log_in'); ?></button>  
+                    <button type="submit" class="btn btn-success btn-block"><i class="fa fa-sign-in"></i>  <?php echo lang('log_in'); ?></button>  <center>
+                    <small>
                     <?php if (get_conf_param('allow_register') == "true") { ?>
-                    <center> <a href="register" class="text-center"><?php echo lang('REG_new'); ?></a> </center>
+                     <a href="register" class="text-center"><?php echo lang('REG_new'); ?></a> 
                     <?php } ?>
+                    <?php if (get_conf_param('allow_forgot') == "true") { ?>
+                     | <a href="forgot" class="text-center"><?php echo lang('Forgot_pass_me'); ?></a> 
+                    <?php } ?>
+                    </small>
+                    </center>
                     <!--p>Используйте Ваши LDAP-учётные данные для входа</p-->
                     <?php
 if ($va == 'error') { ?>

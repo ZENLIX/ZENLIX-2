@@ -439,7 +439,8 @@ VALUES
   (53, 'portal_box_version_text', 'Some Text'),
   (54, 'portal_box_version_icon', 'icon-svg'),
   (55, 'mailers_subj', ''),
-  (56, 'mailers_text', '');
+  (56, 'mailers_text', ''),
+  (57, 'allow_forgot', 'true');
 
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;

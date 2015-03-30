@@ -1305,7 +1305,23 @@ else {
   </div>
 
 
-
+  <div class="form-group">
+    <label for="allow_forgot" class="col-sm-4 control-label"><small><?php echo lang('MAIL_forgot'); ?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="allow_forgot">
+  <option value="true" <?php
+        if (get_conf_param('allow_forgot') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('allow_forgot') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>    
+</div>
+  </div>
 
 
 

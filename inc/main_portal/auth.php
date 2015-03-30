@@ -74,6 +74,19 @@ else if ($CONF['main_portal'] == false) {
   <button class="btn btn-block btn-success btn-lg"><i class="fa fa-sign-in"></i>  <?php echo lang('log_in'); ?> </button>
 </div>
 
+<div class="col-sm-12">
+  <br>
+<center>
+                    <small>
+                    <?php if (get_conf_param('allow_register') == "true") { ?>
+                     <a href="register" class="text-center"><?php echo lang('REG_new'); ?></a> 
+                    <?php } ?>
+                    <?php if (get_conf_param('allow_forgot') == "true") { ?>
+                     | <a href="forgot" class="text-center"><?php echo lang('Forgot_pass_me'); ?></a> 
+                    <?php } ?>
+                    </small>
+                    </center>
+</div>
 <div class="col-sm-12" id="error_result">
 
 

@@ -5,7 +5,7 @@ include_once ("head.inc.php");
 
 ?>
 
-
+<?php if (get_conf_param('allow_register') == "true") { ?>
 <body class="bg-navy">
 
         <div class="form-box" id="login-box">
@@ -98,3 +98,6 @@ $(document).ready(function() {
 });
 </script>
 
+<?php
+}
+?>

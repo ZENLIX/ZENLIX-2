@@ -4096,7 +4096,7 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) +"&allow_register=" + encodeURIComponent($("#allow_register").val())+"&lang="+encodeURIComponent($("#lang").val()),
+                data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) +"&allow_register=" + encodeURIComponent($("#allow_register").val())+"&lang="+encodeURIComponent($("#lang").val())+"&allow_forgot=" + encodeURIComponent($("#allow_forgot").val()),
                 dataType: "json",
                 success: function(html) {
 

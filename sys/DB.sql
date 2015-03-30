@@ -216,6 +216,8 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (54, 'portal_box_version_icon
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (55, 'mailers_subj', '') ON DUPLICATE KEY UPDATE `value` = `value`;
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (56, 'mailers_text', '') ON DUPLICATE KEY UPDATE `value` = `value`;
 
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (57, 'allow_forgot', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
+
 #######UPDATE perf.value####################
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)

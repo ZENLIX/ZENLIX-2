@@ -2,10 +2,13 @@
 function lang_en($phrase){
     static $lang = array(
 	    
-
-
+'Forgot_pass_me' => 'Password recovery',
+'MAIL_forgot' => 'Password recovery',
+'MAIL_forgot_ext' => 'You are receiving this email because you requested a password change for account',
+'MAIL_forgot_link' => 'Click on the link that would change the password',
+'FORGOT_instr' => 'In your e-mail sent email with a link to change your password',
 'BU_INFO_DNM' => 'Warning! Before you upgrade, we strongly recommend that you make a backup copy of the database and files. ',
-
+'FORGOT_button'=>'Forgot my password',
 'PORTAL_mailers' => 'Mail Merge',
 'PORTAL_mailers_ext' => 'master list',
 'PORTAL_mailers_help' => 'On this page you can make the e-mail messages on the back of the criteria',
