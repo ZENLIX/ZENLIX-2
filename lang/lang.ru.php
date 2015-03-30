@@ -5,6 +5,9 @@ function lang_ru($phrase){
     
 'Forgot_pass_me'=>'Восстановление пароля',
 
+'MAIL_forgot_success'=>'Пароль успешно изменён',
+'MAIL_forgot_success_ext'=>'Вы получили это письмо, потому что пароль был успешно изменён.',
+
 
 
 'MAIL_forgot'=>'Восстановление пароля',

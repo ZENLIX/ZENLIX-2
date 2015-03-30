@@ -96,7 +96,7 @@ $check_error="true";
                     ));
                     
                     
-$login=get_user_val_by_hash($uniq_code,'login');
+$loginname=get_user_val_by_hash($uniq_code,'login');
 
 
 $subject=$CONF['name_of_firm'] . " - password changed successfull";;
@@ -113,13 +113,14 @@ $message = str_replace("{MAIL_forgot_success_ext}", lang('MAIL_forgot_success_ex
 
 $message = str_replace("{MAIL_info}", lang('MAIL_REG_title_data'), $message);
 $message = str_replace("{MAIL_login}", lang('PORTAL_login_name'), $message);
-$message = str_replace("{login}", $login, $message);
+$message = str_replace("{login}", $loginname, $message);
 $message = str_replace("{MAIL_pass}", lang('CONF_mail_pass'), $message);
 $message = str_replace("{pass}", $_POST['p2'], $message);
 
 
 //$message = str_replace("{link}", '<a href=\''.$link4mail.'\'>'.$link4mail.'</a>', $message);
 
+//$msg.=$message;
 
         send_mail_reg($mail, $subject, $message);
 

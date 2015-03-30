@@ -2,6 +2,11 @@
 function lang_en($phrase){
     static $lang = array(
 	    
+
+
+'MAIL_forgot_success' => 'Password successfully changed',
+'MAIL_forgot_success_ext' => 'You are receiving this email because the password has been changed successfully.',
+
 'Forgot_pass_me' => 'Password recovery',
 'MAIL_forgot' => 'Password recovery',
 'MAIL_forgot_ext' => 'You are receiving this email because you requested a password change for account',

@@ -2,6 +2,13 @@
 function lang_ua($phrase){
     static $lang = array(
     
+
+
+
+'MAIL_forgot_success' => 'Пароль успішно змінено',
+'MAIL_forgot_success_ext' => 'Ви отримали цей лист, тому що пароль успішно змінено.',
+
+    
 'Forgot_pass_me' => 'Відновлення пароля',
 'MAIL_forgot' => 'Відновлення пароля',
 'MAIL_forgot_ext' => 'Ви отримали цей лист, тому що запросили зміну пароля для облікового запису',
