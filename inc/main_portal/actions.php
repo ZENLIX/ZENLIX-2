@@ -247,7 +247,6 @@ else if ($_POST['name'] == "false") {$h=0;}
 
 }
 
-if ($mode == "change_manual_cat_type") {
 
 
 if ($_POST['name'] == "true") {$h=1;}

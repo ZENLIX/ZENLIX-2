@@ -23,6 +23,13 @@
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/chosen.min.css?<?=get_conf_param('version');?>">
 
 
+
+
+<?php
+if ( get_current_URL_name('subj') || get_current_URL_name('config') ) {?>
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css?<?=get_conf_param('version');?>">
+<?php }
+?>
 <?php
 if ((get_current_URL_name('create')) || get_current_URL_name('deps') || get_current_URL_name('scheduler')) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css?<?=get_conf_param('version');?>">

@@ -48,7 +48,7 @@ $news_item=get_qa_obj($_GET['edit_some_qa']);
                 <div class="box-header with-border">
                   <h3 class="box-title"><?=lang('PORTAL_edit_qa');?></h3>
 <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
+                    <h4> <i class="fa fa-file-text-o"></i></h4>
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -269,7 +269,7 @@ else if ($hn == "edit_qa") {
                 <div class="box-header with-border">
                   <h3 class="box-title"><?=lang('PORTAL_q_manag');?></h3>
 <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
+                    <h4> <i class="fa fa-file-text-o"></i></h4>
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -454,7 +454,7 @@ else if ($hn == "edit_cat") {
                 <div class="box-header with-border">
                   <h3 class="box-title"><?=lang('PORTAL_cat_manag');?></h3>
 <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
+                    <h4> <i class="fa fa-file-text-o"></i></h4>
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -735,7 +735,7 @@ if (isset($_GET['edit_manual'])) {
                 <div class="box-header with-border">
                   <h3 class="box-title"><?=lang('PORTAL_edit_n');?></h3>
 <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
+                    <h4> <i class="fa fa-file-text-o"></i></h4>
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -868,7 +868,7 @@ else if (!isset($_GET['edit_manual'])) {
                 <div class="box-header with-border">
                   <h3 class="box-title"><?=$news_item['name'];?></h3>
 <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
+                    <h4> <i class="fa fa-file-text-o"></i></h4>
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">

@@ -235,8 +235,10 @@ foreach ($res1 as $r) {
             $stmt->execute(array(':pid' => $post['id'],
               ':start_pos' => $start_pos, ':perpage' => $perpage));
             $res1 = $stmt->fetchAll();
+
             if (!empty($res1)) {
  
+
 ?>
 
 
@@ -257,7 +259,17 @@ foreach ($res1 as $r) {
                   <div class="direct-chat-messages">
                     <!-- Message. Default to the left -->
 
-<?php  foreach ($res1 as $r) { ?>
+<?php  
+
+
+$h=0; 
+foreach ($res1 as $r) { 
+$line="<hr>";
+if ($h == 0) { $line="";}
+
+
+echo $line;
+  ?>
                     <div class="direct-chat-msg">
                     <a name="<?=$r['uniq_hash'];?>"></a>
                       <div class="direct-chat-info clearfix">
@@ -311,7 +323,9 @@ foreach ($res1 as $r) {
 </div>
                       </div><!-- /.direct-chat-text -->
                     </div><!-- /.direct-chat-msg -->
-<?php } ?>
+<?php 
+$h++;
+} ?>
 
 
 

@@ -31,6 +31,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             $status_ok = $row['status'];
             $ms = $row['msg'];
             $pr = $row['prio'];
+            $dcr=$row['date_create'];
+
+            $sla_plan=$row['sla_plan_id'];
             
             if ($arch == 1) {
                 $st = "<span class=\"label label-default\"><i class=\"fa fa-archive\"></i> " . lang('TICKET_status_arch') . "</span>";
@@ -287,8 +290,10 @@ $fts = array(
             if (in_array($r['file_type'], $fts)) {
                 
                 $ct= ' <a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'><img style=\'max-height:50px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'></a> ';
+                $ic='';
             } else {
                 $ct= ' <a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $r['file_hash'] . '\'>' . $r['original_name'] . '</a>';
+                $ic=get_file_icon($r['file_hash']);
             }
 
 
@@ -298,7 +303,7 @@ $fts = array(
                                     
                                     
                     <tr>
-                        <td style="width:20px;"><small><?php echo get_file_icon($r['file_hash']); ?></small></td>
+                        <td style="width:20px;"><small><?php echo $ic; ?></small></td>
                         <td><small><?=$ct;?></small></td>
                         <td><small><?php
                     echo round(($r['file_size'] / (1024 * 1024)), 2); ?> Mb</small></td>
@@ -387,7 +392,87 @@ $fts = array(
 ?>
     
     <div class="row">
-    <div class="col-md-12">s</div>
+    <div class="col-md-12">
+<style>
+.info-box {
+  display: block;
+  min-height: 90px;
+  background: #fff;
+  width: 100%;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  border-radius: 2px;
+  margin-bottom: 15px;
+}
+.info-box-icon {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+  display: block;
+  float: left;
+  height: 90px;
+  width: 90px;
+  text-align: center;
+  font-size: 45px;
+  line-height: 90px;
+  background: rgba(0,0,0,0.2);
+}
+.info-box-content {
+  padding: 5px 10px;
+  margin-left: 90px;
+}
+.info-box-text {
+  text-transform: uppercase;
+}
+.progress-description, .info-box-text {
+  display: block;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.info-box-number {
+  display: block;
+  font-weight: bold;
+  font-size: 17px;
+}
+.info-box .progress, .info-box .progress .progress-bar {
+  border-radius: 0;
+}
+.info-box .progress {
+  background: rgba(0,0,0,0.2);
+  margin: 5px -10px 5px -10px;
+  height: 2px;
+}
+.progress-description {
+  margin: 0;
+}
+.progress-description, .info-box-text {
+  display: block;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.info-box .progress .progress-bar {
+  background: #fff;
+}
+.info-box .progress, .info-box .progress .progress-bar {
+  border-radius: 0;
+}
+</style>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
     <div class="col-md-12">
     
     <div class="box box-danger">
@@ -639,11 +724,171 @@ $fts = array(
     
 </div>
 
+<?php
+if (get_conf_param('sla_system') == "true") {
+
+
+if ($sla_plan != "0") {
+
+
+    $stmt_sla = $dbConnection->prepare('SELECT * from sla_plans where id=:uid');
+    $stmt_sla->execute(array(':uid' => $sla_plan));
+    $row_sla = $stmt_sla->fetch(PDO::FETCH_ASSOC);
+
+if ($pr == "0") {
+$sla_react=$row_sla['reaction_time_low_prio'];
+$sla_work=$row_sla['work_time_low_prio'];
+$sla_deadline=$row_sla['deadline_time_low_prio'];
+}
+else if ($pr == "1") {
+$sla_react=$row_sla['reaction_time_def'];
+$sla_work=$row_sla['work_time_def'];
+$sla_deadline=$row_sla['deadline_time_def'];
+}
+
+else if ($pr == "2") {
+$sla_react=$row_sla['reaction_time_high_prio'];
+$sla_work=$row_sla['work_time_high_prio'];
+$sla_deadline=$row_sla['deadline_time_high_prio'];
+}
+
+if (get_ticket_time_reaction_sec($tid) == 0) {
+$per=floor((get_ticket_time_reaction_sec_no_lock($tid)*100)/$sla_react);
+}
+else if (get_ticket_time_reaction_sec($tid) != 0) {
+    $per=floor((get_ticket_time_reaction_sec($tid)*100)/$sla_react);
+}
+if ($per > 100) { $per=100;}
 
 
 
+if (get_ticket_time_lock_sec($tid) == 0) {
+$perw=0;
+}
+else if (get_ticket_time_lock_sec($tid) != 0) {
+    $perw=floor((get_ticket_time_lock_sec($tid)*100)/$sla_work);
+}
+if ($perw > 100) { $perw=100;}
+
+
+
+
+
+
+//сейчас - дата создания = сколько времени с момент создания
+
+//дата создания + деадлайн = крайник срок 
+
+//крайний срок - сейчас = осталось
+
+
+
+
+
+//если выполнена то таймер остановить
+//если не выполнена то считать 
+
+
+
+
+if ($sla_deadline == 0) {
+    $left_secr=lang('SLA_not_sel');
+    $ls="false";
+}
+else if ($sla_deadline != 0) {
+    
+
+$left_sec=(strtotime($dcr)+$sla_deadline)-time();
+
+
+//Если выполнено
+
+
+if ($left_sec < 0) {
+    $left_secr=lang('SLA_time_old');
+    $ls="false";
+}
+if ($left_sec >= 0) {
+    $left_secr=lang('SLA_deadline_t').": "."<time id=\"f\" datetime=\"".$left_sec."\"></time>";
+    $ls="true";
+}
+}
+    ?>
+<div class="row">
+    
+    <div class="col-md-12">
+<div class="info-box bg-aqua">
+                <span class="info-box-icon"><i class="fa fa-bolt"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text"><?=lang('SLA_perf_reaction');?></span>
+                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;">
+<?=get_ticket_time_reaction($tid);?>
+                  </span>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: <?=$per;?>%"></div>
+                  </div>
+                  <span class="progress-description">
+                    <?=lang('SLA_REGLAMENT');?>: <time id="f" datetime="<?=$sla_react;?>"></time>
+                  </span>
+                </div><!-- /.info-box-content -->
+              </div>
+
+
+<div class="info-box bg-yellow">
+                <span class="info-box-icon"><i class="fa fa-lock"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text"><?=lang('SLA_perf_work_a');?></span>
 <?php
 
+if ($status_ok == 1) {
+    $sl="false";
+}
+if ($status_ok == 0) {
+if ($lock_status == "lock") {
+    $sl="false";
+}
+else if ($lock_status == "unlock") {
+    $sl="true";
+}
+}
+    ?>
+                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="work_timer" value="<?=$sl;?>"><?=get_ticket_time_lock($tid);?></span>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: <?=$perw;?>%"></div>
+                  </div>
+                  <span class="progress-description">
+                    <?=lang('SLA_REGLAMENT');?>: <time id="f" datetime="<?=$sla_work;?>"></time>
+                  </span>
+                </div><!-- /.info-box-content -->
+              </div>
+
+
+
+
+<div class="info-box bg-orange " style="background-color: #D81B60 !important;">
+                <span class="info-box-icon"><i class="fa fa-check-square"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text"><?=lang('SLA_perf_deadline_short');?></span>
+                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="deadline_timer" value="<?=$ls;?>"><?=$left_secr;?>
+                  </span>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: <?=$per;?>%"></div>
+                  </div>
+                  <span class="progress-description">
+                    <?=lang('SLA_REGLAMENT');?>: <time id="f" datetime="<?=$sla_deadline;?>"></time>
+                  </span>
+                </div><!-- /.info-box-content -->
+              </div>
+
+
+
+
+</div>
+</div>
+
+<?php
+}
+}
 if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
 
 <div class="row">
@@ -961,7 +1206,6 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
     <?php
     }
 ?>
-
 
     <?php
     include ("footer.inc.php");

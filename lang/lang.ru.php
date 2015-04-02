@@ -3,6 +3,42 @@ function lang_ru($phrase){
     static $lang = array(
     
     
+
+
+
+
+'SLA_perf_reaction'=>'Время реакции на заявку',
+'SLA_perf_1'=>'При низком приоритете',
+'SLA_perf_2'=>'При среднем приоритете',
+'SLA_perf_3'=>'При высоком приоритете',
+'SLA_perf_work'=>'Время на выполнение заявки',
+
+
+'SLA_perf_deadline'=>'Крайний срок выполнения заявки',
+
+'SLA_perf_deadline_short'=>'Крайний срок заявки',
+'SLA_deadline_t'=>'Осталось',
+
+ 
+'SLA_not_sel'=>'не задано',
+'SLA_time_old'=>'просрочено',
+
+
+'SLA_perf_work_a'=>'Время выполнения заявки',
+'SLA_activate_info'=>'Активация системы учёта времени на реакцию заявки и времени выполнения заявки.',
+
+
+'PERF_menu_sla'=>'SLA-планы',
+
+'MOMENTJS_DAY'=>'дн',
+'MOMENTJS_HOUR'=>'час',
+'MOMENTJS_MINUTE'=>'мин',
+'MOMENTJS_SEC'=>'сек',
+
+'SLA_NOT_LOCK'=>'ещё не взята',
+'SLA_REGLAMENT'=>'Регламент',
+
+
 'Forgot_pass_me'=>'Восстановление пароля',
 
 'MAIL_forgot_success'=>'Пароль успешно изменён',

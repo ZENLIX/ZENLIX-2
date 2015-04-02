@@ -21,7 +21,7 @@ echo $lang; ?>";
     var VALIDATE="<?=check_validate();?>";
     
     var NODE_URL = "<?php echo get_conf_param('node_port'); ?>";
-   
+    
 </script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-2.1.3.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js?<?=get_conf_param('version');?>"></script>

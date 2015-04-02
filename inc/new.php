@@ -311,6 +311,38 @@ else if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == "0"
         
         */
         
+if (get_conf_param('sla_system') == "true") { ?>
+
+<div class="control-group " >
+    <div class="controls">
+        <div class="form-group " id="for_subj" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right" data-content="<small><?php echo lang('NEW_subj_msg'); ?></small>">
+            <label for="subj" class="col-sm-2 control-label"><small><?php echo lang('NEW_subj'); ?>: </small></label>
+            <div class="col-sm-10 " style="">
+                <select data-placeholder="<?php echo lang('NEW_subj_det'); ?>" class="chosen-select form-control input-sm " id="subj" name="subj">
+               
+                    <option value="0"></option>
+                    <?php
+            echo get_sla_view_select_box();
+
+?>
+
+
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<?php
+
+}
+
+else if (get_conf_param('sla_system') == "false") {
+
+
         if ($CONF['fix_subj'] == "false") {
 ?>
 
@@ -363,7 +395,11 @@ else if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == "0"
 
 
 <?php
-        } ?>
+        } 
+
+        }
+
+    ?>
 
 
 
@@ -387,6 +423,7 @@ else if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == "0"
             <!--######### INPUT FOR DATE-FINISH ############## -->
 
     <?php
+    if (get_conf_param('sla_system') == "false") {
         if (get_conf_param('ticket_last_time') == "true") { ?>
 
             
@@ -411,7 +448,9 @@ else if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') == "0"
     
     </div>  
             
-            <?php }?>
+            <?php }
+            }
+            ?>
      
             
             <!--######### INPUT FOR DATE-FINISH ############## -->

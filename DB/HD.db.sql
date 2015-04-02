@@ -224,6 +224,7 @@ CREATE TABLE `ticket_fields` (
   `value` varchar(2048) NOT NULL DEFAULT '0',
   `status` int(11) NOT NULL DEFAULT '1',
   `hash` varchar(512) DEFAULT NULL,
+  `for_client` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -440,7 +441,8 @@ VALUES
   (54, 'portal_box_version_icon', 'icon-svg'),
   (55, 'mailers_subj', ''),
   (56, 'mailers_text', ''),
-  (57, 'allow_forgot', 'true');
+  (57, 'allow_forgot', 'true'),
+  (58, 'sla_system', 'true');
 
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;
@@ -504,6 +506,10 @@ DROP TABLE IF EXISTS `subj`;
 CREATE TABLE `subj` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `sort_id` int(11) DEFAULT NULL,
+  `uniq_id` varchar(1024) DEFAULT NULL,
+  `type` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -542,6 +548,26 @@ CREATE TABLE `ticket_log` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `sla_plans`;
+
+CREATE TABLE IF NOT EXISTS `sla_plans` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(512) DEFAULT NULL,
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `sort_id` int(11) DEFAULT NULL,
+  `uniq_id` varchar(1024) DEFAULT NULL,
+  `type` int(11) NOT NULL DEFAULT '0',
+  `reaction_time_def` int(11) NOT NULL DEFAULT '0',
+  `reaction_time_low_prio` int(11) NOT NULL DEFAULT '0',
+  `reaction_time_high_prio` int(11) NOT NULL DEFAULT '0',
+  `work_time_def` int(11) NOT NULL DEFAULT '0',
+  `work_time_low_prio` int(11) NOT NULL DEFAULT '0',
+  `work_time_high_prio` int(11) NOT NULL DEFAULT '0',
+  `deadline_time_def` int(11) NOT NULL DEFAULT '0',
+  `deadline_time_low_prio` int(11) NOT NULL DEFAULT '0',
+  `deadline_time_high_prio` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 # Дамп таблицы tickets
 # ------------------------------------------------------------
@@ -569,6 +595,7 @@ CREATE TABLE `tickets` (
   `ok_date` datetime NOT NULL,
   `last_update` datetime DEFAULT NULL,
   `deadline_time` datetime DEFAULT NULL,
+  `sla_plan_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

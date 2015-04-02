@@ -1,5 +1,29 @@
 
 
+
+
+CREATE TABLE IF NOT EXISTS `sla_plans` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(512) DEFAULT NULL,
+  `parent_id` int(11) NOT NULL DEFAULT '0',
+  `sort_id` int(11) DEFAULT NULL,
+  `uniq_id` varchar(1024) DEFAULT NULL,
+  `type` int(11) NOT NULL DEFAULT '0',
+  `reaction_time_def` int(11) NOT NULL DEFAULT '0',
+  `reaction_time_low_prio` int(11) NOT NULL DEFAULT '0',
+  `reaction_time_high_prio` int(11) NOT NULL DEFAULT '0',
+  `work_time_def` int(11) NOT NULL DEFAULT '0',
+  `work_time_low_prio` int(11) NOT NULL DEFAULT '0',
+  `work_time_high_prio` int(11) NOT NULL DEFAULT '0',
+  `deadline_time_def` int(11) NOT NULL DEFAULT '0',
+  `deadline_time_low_prio` int(11) NOT NULL DEFAULT '0',
+  `deadline_time_high_prio` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+
+
 CREATE TABLE IF NOT EXISTS `portal_manual_cat` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,
@@ -12,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `portal_manual_cat` (
   `type` int(11) NOT NULL DEFAULT '0',
   `dt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 
@@ -26,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `portal_manual_qa` (
   `author_id` int(11) DEFAULT NULL,
   `dt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `portal_news` (
@@ -39,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `portal_news` (
   `uniq_id` varchar(128) DEFAULT NULL,
   `rates` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 
@@ -57,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `portal_posts` (
   `official` int(11) NOT NULL DEFAULT '0',
   `parent_id` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `portal_todo` (
@@ -71,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `portal_todo` (
   `dt` datetime DEFAULT NULL,
   `is_success` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `portal_versions` (
@@ -84,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `portal_versions` (
   `uniq_id` varchar(128) DEFAULT NULL,
   `rates` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `post_comments` (
@@ -96,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `post_comments` (
   `official` int(11) NOT NULL DEFAULT '0',
   `uniq_hash` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `post_files` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -109,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `post_files` (
   `p_type` int(11) NOT NULL DEFAULT '0',
   `is_tmp` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `post_likes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -117,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `post_likes` (
   `post_id` int(11) DEFAULT NULL,
   `likes` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 
@@ -168,6 +192,7 @@ CREATE TABLE IF NOT EXISTS `ticket_fields` (
   `value` varchar(2048) NOT NULL DEFAULT '0',
   `status` int(11) NOT NULL DEFAULT '1',
   `hash` varchar(512) DEFAULT NULL,
+  `for_client` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -218,6 +243,7 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (56, 'mailers_text', '') ON D
 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (57, 'allow_forgot', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
 
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (58, 'sla_system', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
 #######UPDATE perf.value####################
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)
@@ -258,6 +284,62 @@ EXECUTE stmt;
 ######################################################
 
 
+#######UPDATE subj.uniq_id####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='subj' and column_name='uniq_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE subj ADD uniq_id varchar(1024) DEFAULT NULL;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
+#######UPDATE subj.type####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='subj' and column_name='type'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE subj ADD type int(11) DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+#######UPDATE subj.sort_id####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='subj' and column_name='sort_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE subj ADD sort_id int(11) DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+#######UPDATE subj.parent_id####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='subj' and column_name='parent_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE subj ADD parent_id int(11) DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
+
+
 
 #######UPDATE users.messages_type####################
 SET @sql = (SELECT IF(
@@ -271,6 +353,37 @@ SET @sql = (SELECT IF(
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
 ######################################################
+
+
+#######UPDATE tickets.sla_plan_id####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='tickets' and column_name='sla_plan_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE tickets ADD sla_plan_id int(11) NOT NULL DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
+
+
+#######UPDATE ticket_fields.for_client####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='ticket_fields' and column_name='for_client'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE ticket_fields ADD for_client int(11) NOT NULL DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
 
 
 #######UPDATE users.api_key####################

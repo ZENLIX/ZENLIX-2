@@ -3,10 +3,27 @@ function lang_en($phrase){
     static $lang = array(
 	    
 
+'SLA_NOT_LOCK'=>'not locked',
+'SLA_REGLAMENT'=>'Reglament',
 
+'SLA_perf_reaction' => 'ticket response time',
+'SLA_perf_1' => 'With a low priority',
+'SLA_perf_2' => 'When a medium priority',
+'SLA_perf_3' => 'When high priority',
+'SLA_perf_work' => 'Time for performance of the ticket',
+'SLA_perf_work_a'=>'Time of work with ticket',
+'PERF_menu_sla'=>'SLA-plans',
+'SLA_perf_deadline' => 'The deadline for applications perform',
+'MOMENTJS_DAY'=>'day',
+'MOMENTJS_HOUR'=>'hour',
+'MOMENTJS_MINUTE'=>'min',
+'MOMENTJS_SEC'=>'sec',
+'SLA_perf_deadline_short' => 'The deadline for ticket',
+'SLA_deadline_t' => 'Left',
 'MAIL_forgot_success' => 'Password successfully changed',
 'MAIL_forgot_success_ext' => 'You are receiving this email because the password has been changed successfully.',
-
+'SLA_not_sel' => 'not specified',
+'SLA_time_old' => 'overdue',
 'Forgot_pass_me' => 'Password recovery',
 'MAIL_forgot' => 'Password recovery',
 'MAIL_forgot_ext' => 'You are receiving this email because you requested a password change for account',

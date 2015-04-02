@@ -171,7 +171,7 @@ if ($mode == "forgot_pass") {
 
 if (!empty($login) && !empty($mail)) {
 
-            $stmt = $dbConnection->prepare('select id, uniq_id,pass from users where email=:mail and login=:login limit 1');
+            $stmt = $dbConnection->prepare('select id, uniq_id,pass from users where email=:mail and login=:login and ldap_key=0 limit 1');
             $stmt->execute(array(
                 ':mail' => $mail,
                 ':login'=> $login
@@ -408,9 +408,312 @@ $message = str_replace("{pass}", $pass, $message);
 
 
 
+if ($mode == "sort_sla") {
+            $list = $_POST['list'];
+            
+            echo $list;
+            
+            $orderlist = explode('&', $list);
+            
+            $n = 0;
+            foreach ($orderlist as $order) {
+                
+                $a = explode("=", $order);
+                
+                //echo $a[0];
+                
+                $b = explode("[", $a['0']);
+                
+                $с = substr($b[1], 0, -1);
+                 //?
+                $rest = substr($b[1], 0, -1);
+                
+                //echo $a[1];
+                //echo "ID:".$rest."  Parent:".$a[1]."  Pos:".$n."                              ////";
+                if ($a[1] == "null") {
+                    $a[1] = get_max_helper_parent();
+                }
+                echo "parent_id=" . $a[1] . " where id=" . $rest . ";\r\n";
+                
+                $stmt = $dbConnection->prepare('UPDATE subj set sort_id=:s_id,parent_id=:p_id where id=:el_id');
+                $stmt->execute(array(
+                    ':s_id' => $n,
+                    ':p_id' => $a[1],
+                    ':el_id' => $rest
+                ));
+                
+                $n++;
+            }
+        }
+
+
+if ($mode == "sort_sla_plans") {
+            $list = $_POST['list'];
+            
+            echo $list;
+            
+            $orderlist = explode('&', $list);
+            
+            $n = 0;
+            foreach ($orderlist as $order) {
+                
+                $a = explode("=", $order);
+                
+                //echo $a[0];
+                
+                $b = explode("[", $a['0']);
+                
+                $с = substr($b[1], 0, -1);
+                 //?
+                $rest = substr($b[1], 0, -1);
+                
+                //echo $a[1];
+                //echo "ID:".$rest."  Parent:".$a[1]."  Pos:".$n."                              ////";
+                if ($a[1] == "null") {
+                    $a[1] = get_max_helper_parent();
+                }
+                echo "parent_id=" . $a[1] . " where id=" . $rest . ";\r\n";
+                
+                $stmt = $dbConnection->prepare('UPDATE sla_plans set sort_id=:s_id,parent_id=:p_id where id=:el_id');
+                $stmt->execute(array(
+                    ':s_id' => $n,
+                    ':p_id' => $a[1],
+                    ':el_id' => $rest
+                ));
+                
+                $n++;
+            }
+        }
+
+if ($mode == "save_subj_item") {
+
+                $stmt = $dbConnection->prepare('UPDATE subj set name=:t where id=:el_id');
+            $stmt->execute(array(
+                ':t' => $_POST['value'],
+                ':el_id' => $_POST['pk']
+            ));
+}
+
+
+if ($mode == "save_sla") {
+
+if (!$_POST['react_low_1']) {
+    $_POST['react_low_1']=0;
+}
+if (!$_POST['react_low_2']) {
+    $_POST['react_low_2']=0;
+}
+if (!$_POST['react_low_3']) {
+    $_POST['react_low_3']=0;
+}
+if (!$_POST['react_low_4']) {
+    $_POST['react_low_4']=0;
+}
+
+$react_low_sec=(($_POST['react_low_1'] * 24 + $_POST['react_low_2']) * 60 + $_POST['react_low_3']) * 60;
+$react_low_sec=$react_low_sec+$_POST['react_low_4'];
 
 
 
+if (!$_POST['react_def_1']) {
+    $_POST['react_def_1']=0;
+}
+if (!$_POST['react_def_2']) {
+    $_POST['react_def_2']=0;
+}
+if (!$_POST['react_def_3']) {
+    $_POST['react_def_3']=0;
+}
+if (!$_POST['react_def_4']) {
+    $_POST['react_def_4']=0;
+}
+$react_def_sec=(($_POST['react_def_1'] * 24 + $_POST['react_def_2']) * 60 + $_POST['react_def_3']) * 60;
+$react_def_sec=$react_def_sec+$_POST['react_def_4'];
+
+
+if (!$_POST['react_high_1']) {
+    $_POST['react_high_1']=0;
+}
+if (!$_POST['react_high_2']) {
+    $_POST['react_high_2']=0;
+}
+if (!$_POST['react_high_3']) {
+    $_POST['react_high_3']=0;
+}
+if (!$_POST['react_high_4']) {
+    $_POST['react_high_4']=0;
+}
+$react_high_sec=(($_POST['react_high_1'] * 24 + $_POST['react_high_2']) * 60 + $_POST['react_high_3']) * 60;
+$react_high_sec=$react_high_sec+$_POST['react_high_4'];
+
+//$second += (($_POST['react_low_1'] * 24 + $_POST['react_low_2']) * 60 + $_POST['react_low_3']) * 60;
+
+
+
+
+
+if (!$_POST['work_low_1']) {
+    $_POST['work_low_1']=0;
+}
+if (!$_POST['work_low_2']) {
+    $_POST['work_low_2']=0;
+}
+if (!$_POST['work_low_3']) {
+    $_POST['work_low_3']=0;
+}
+if (!$_POST['work_low_4']) {
+    $_POST['work_low_4']=0;
+}
+
+$work_low_sec=(($_POST['work_low_1'] * 24 + $_POST['work_low_2']) * 60 + $_POST['work_low_3']) * 60;
+$work_low_sec=$work_low_sec+$_POST['work_low_4'];
+
+
+
+if (!$_POST['work_def_1']) {
+    $_POST['work_def_1']=0;
+}
+if (!$_POST['work_def_2']) {
+    $_POST['work_def_2']=0;
+}
+if (!$_POST['work_def_3']) {
+    $_POST['work_def_3']=0;
+}
+if (!$_POST['work_def_4']) {
+    $_POST['work_def_4']=0;
+}
+$work_def_sec=(($_POST['work_def_1'] * 24 + $_POST['work_def_2']) * 60 + $_POST['work_def_3']) * 60;
+$work_def_sec=$work_def_sec+$_POST['work_def_4'];
+
+
+if (!$_POST['work_high_1']) {
+    $_POST['work_high_1']=0;
+}
+if (!$_POST['work_high_2']) {
+    $_POST['work_high_2']=0;
+}
+if (!$_POST['work_high_3']) {
+    $_POST['work_high_3']=0;
+}
+if (!$_POST['work_high_4']) {
+    $_POST['work_high_4']=0;
+}
+$work_high_sec=(($_POST['work_high_1'] * 24 + $_POST['work_high_2']) * 60 + $_POST['work_high_3']) * 60;
+$work_high_sec=$work_high_sec+$_POST['work_high_4'];
+
+
+
+
+
+
+if (!$_POST['deadline_low_1']) {
+    $_POST['deadline_low_1']=0;
+}
+if (!$_POST['deadline_low_2']) {
+    $_POST['deadline_low_2']=0;
+}
+if (!$_POST['deadline_low_3']) {
+    $_POST['deadline_low_3']=0;
+}
+if (!$_POST['deadline_low_4']) {
+    $_POST['deadline_low_4']=0;
+}
+
+$deadline_low_sec=(($_POST['deadline_low_1'] * 24 + $_POST['deadline_low_2']) * 60 + $_POST['deadline_low_3']) * 60;
+$deadline_low_sec=$deadline_low_sec+$_POST['deadline_low_4'];
+
+
+
+if (!$_POST['deadline_def_1']) {
+    $_POST['deadline_def_1']=0;
+}
+if (!$_POST['deadline_def_2']) {
+    $_POST['deadline_def_2']=0;
+}
+if (!$_POST['deadline_def_3']) {
+    $_POST['deadline_def_3']=0;
+}
+if (!$_POST['deadline_def_4']) {
+    $_POST['deadline_def_4']=0;
+}
+$deadline_def_sec=(($_POST['deadline_def_1'] * 24 + $_POST['deadline_def_2']) * 60 + $_POST['deadline_def_3']) * 60;
+$deadline_def_sec=$deadline_def_sec+$_POST['deadline_def_4'];
+
+
+if (!$_POST['deadline_high_1']) {
+    $_POST['deadline_high_1']=0;
+}
+if (!$_POST['deadline_high_2']) {
+    $_POST['deadline_high_2']=0;
+}
+if (!$_POST['deadline_high_3']) {
+    $_POST['deadline_high_3']=0;
+}
+if (!$_POST['deadline_high_4']) {
+    $_POST['deadline_high_4']=0;
+}
+$deadline_high_sec=(($_POST['deadline_high_1'] * 24 + $_POST['deadline_high_2']) * 60 + $_POST['deadline_high_3']) * 60;
+$deadline_high_sec=$deadline_high_sec+$_POST['deadline_high_4'];
+
+
+
+
+
+
+ $stmt = $dbConnection->prepare('UPDATE sla_plans set 
+reaction_time_def=:reaction_time_def,
+reaction_time_low_prio=:reaction_time_low_prio,
+reaction_time_high_prio=:reaction_time_high_prio,
+work_time_def=:work_time_def,
+work_time_low_prio=:work_time_low_prio,
+work_time_high_prio=:work_time_high_prio,
+deadline_time_def=:deadline_time_def,
+deadline_time_low_prio=:deadline_time_low_prio,
+deadline_time_high_prio=:deadline_time_high_prio
+  where uniq_id=:el_id');
+            $stmt->execute(array(
+                ':el_id' => $_POST['uniq_id'],
+                ':reaction_time_def'=>$react_def_sec,
+                ':reaction_time_low_prio'=>$react_low_sec,
+                ':reaction_time_high_prio'=>$react_high_sec,
+                ':work_time_def'=>$work_def_sec,
+                ':work_time_low_prio'=>$work_low_sec,
+                ':work_time_high_prio'=>$work_high_sec,
+                ':deadline_time_def'=>$deadline_def_sec,
+                ':deadline_time_low_prio'=>$deadline_low_sec,
+                ':deadline_time_high_prio'=>$deadline_high_sec
+            ));
+
+
+$msg= "<div class=\"alert alert-success\">" . lang('PROFILE_msg_ok') . "</div>";
+echo $msg;
+}
+
+//make_sla_active
+
+if ($mode == "make_sla_active") {
+
+
+
+
+if ($_POST['name'] == "true") {$h=1;}
+else if ($_POST['name'] == "false") {$h=0;}
+
+update_val_by_key('sla_system', $_POST['name']);
+
+
+
+}
+
+
+if ($mode == "save_sla_item") {
+
+                $stmt = $dbConnection->prepare('UPDATE sla_plans set name=:t where id=:el_id');
+            $stmt->execute(array(
+                ':t' => $_POST['value'],
+                ':el_id' => $_POST['pk']
+            ));
+}
 
 
 
@@ -4841,55 +5144,38 @@ echo $msg;
             }
         }
         
-        if ($mode == "subj_del") {
+        if ($mode == "sla_del") {
             $id = ($_POST['id']);
             
+                        $stmt = $dbConnection->prepare('UPDATE sla_plans set parent_id=:t where parent_id=:el_id');
+            $stmt->execute(array(
+                ':t' => '0',
+                ':el_id' => $_POST['id']
+            ));
+
+
+            $stmt = $dbConnection->prepare('delete from sla_plans where id=:id');
+            $stmt->execute(array(
+                ':id' => $id
+            ));
+            get_sla_view();
+        }
+
+
+        if ($mode == "subj_del") {
+            $id = ($_POST['id']);
+                        $stmt = $dbConnection->prepare('UPDATE subj set parent_id=:t where parent_id=:el_id');
+            $stmt->execute(array(
+                ':t' => '0',
+                ':el_id' => $_POST['id']
+            ));
+
+
             $stmt = $dbConnection->prepare('delete from subj where id=:id');
             $stmt->execute(array(
                 ':id' => $id
             ));
-            
-            $stmt = $dbConnection->prepare('select id, name from subj');
-            $stmt->execute();
-            $res1 = $stmt->fetchAll();
-?>
-
-
-
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
-                <thead>
-                <tr>
-                    <th><center>ID</center></th>
-                    <th><center><?php
-            echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php
-            echo lang('TABLE_action'); ?></center></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-            foreach ($res1 as $row) {
-?>
-                    <tr id="tr_<?php
-                echo $row['id']; ?>">
-
-
-                        <td><small><center><?php
-                echo $row['id']; ?></center></small></td>
-                        <td><small><?php
-                echo $row['name']; ?></small></td>
-                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?php
-                echo $row['id']; ?>">del</button></center></small></td>
-                    </tr>
-                <?php
-            } ?>
-
-
-
-                </tbody>
-            </table>
-            <br>
-        <?php
+            showMenu_sla();
         }
         if ($mode == "deps_add") {
             $t = ($_POST['text']);
@@ -5108,55 +5394,31 @@ echo $msg;
         <?php
         }
         
+
+//add_slaplan_item
+
+        if ($mode == "add_slaplan_item") {
+            $t = ($_POST['text']);
+            
+            $stmt = $dbConnection->prepare('insert into sla_plans (name, parent_id, uniq_id) values (:t, 0, :hn)');
+            $stmt->execute(array(
+                ':t' => $t,
+                ':hn'=> md5(time())
+            ));
+            
+get_sla_view();
+
+        }
         if ($mode == "subj_add") {
             $t = ($_POST['text']);
             
-            $stmt = $dbConnection->prepare('insert into subj (name) values (:t)');
+            $stmt = $dbConnection->prepare('insert into subj (name, parent_id) values (:t, 0)');
             $stmt->execute(array(
                 ':t' => $t
             ));
             
-            $stmt = $dbConnection->prepare('select id, name from subj');
-            $stmt->execute();
-            $res1 = $stmt->fetchAll();
-?>
+showMenu_sla();
 
-
-
-            <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
-                <thead>
-                <tr>
-                    <th><center>ID</center></th>
-                    <th><center><?php
-            echo lang('TABLE_name'); ?></center></th>
-                    <th><center><?php
-            echo lang('TABLE_action'); ?></center></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-            foreach ($res1 as $row) {
-?>
-                    <tr id="tr_<?php
-                echo $row['id']; ?>">
-
-
-                        <td><small><center><?php
-                echo $row['id']; ?></center></small></td>
-                        <td><small><?php
-                echo $row['name']; ?></small></td>
-                        <td><small><center><button id="subj_del" type="button" class="btn btn-danger btn-xs" value="<?php
-                echo $row['id']; ?>">del</button></center></small></td>
-                    </tr>
-                <?php
-            } ?>
-
-
-
-                </tbody>
-            </table>
-            <br>
-        <?php
         }
         
         if ($mode == "posada_add") {
@@ -7074,7 +7336,21 @@ if ($row['t_type'] == "multiselect") {
 if ($deadline_time == "NULL") {$deadline_time=NULL;}
             $user_init_id = ($_POST['user_init_id']);
             $user_to_id = ($_POST['user_do']);
+
+if (get_conf_param('sla_system') == "false") {
             $subj = strip_tags(xss_clean(($_POST['subj'])));
+            $sla_plan_id="0";
+            }
+            else if (get_conf_param('sla_system') == "true") {
+            $sla_plan_id=strip_tags(xss_clean(($_POST['subj'])));
+    $stmt_sla = $dbConnection->prepare('SELECT * from sla_plans where id=:uid');
+    $stmt_sla->execute(array(':uid' => $sla_plan_id));
+    $row_sla = $stmt_sla->fetch(PDO::FETCH_ASSOC);
+    $subj=$row_sla['name'];
+            }
+
+
+
             $msg = strip_tags(xss_clean(($_POST['msg'])));
             $status = '0';
             $unit_id = ($_POST['unit_id']);
@@ -7197,7 +7473,7 @@ $unit_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id');
                 $max_id_res_ticket = $max_id_ticket[0] + 1;
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_time) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time)');
+                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_time, sla_plan_id) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time, :sla_plan_id)');
                 $stmt->execute(array(
                     ':max_id_res_ticket' => $max_id_res_ticket,
                     ':user_init_id' => $user_init_id,
@@ -7211,7 +7487,8 @@ $unit_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id');
                     ':prio' => $prio,
                     ':n' => $CONF['now_dt'],
                     ':nz' => $CONF['now_dt'],
-                    ':deadline_time'=>$deadline_time
+                    ':deadline_time'=>$deadline_time,
+                    ':sla_plan_id'=>$sla_plan_id
                 ));
                 
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
@@ -7260,7 +7537,7 @@ $unit_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id');
                 $max_id_res_ticket = $max_id_ticket[0] + 1;
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_time) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time)');
+                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_time, sla_plan_id) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time, :sla_plan_id)');
                 $stmt->execute(array(
                     ':max_id_res_ticket' => $max_id_res_ticket,
                     ':user_init_id' => $user_init_id,
@@ -7274,7 +7551,8 @@ $unit_id=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id');
                     ':prio' => $prio,
                     ':n' => $CONF['now_dt'],
                     ':nz' => $CONF['now_dt'],
-                    ':deadline_time'=>$deadline_time
+                    ':deadline_time'=>$deadline_time,
+                    ':sla_plan_id'=>$sla_plan_id
                 ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];
@@ -7311,7 +7589,7 @@ if ($deadline_time == "NULL") {$deadline_time=NULL;}
                 $max_id_res_ticket = $max_id_ticket[0] + 1;
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update,deadline_time) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time)');
+                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update,deadline_time, sla_plan_id) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time, :sla_plan_id)');
                 
                 $stmt->execute(array(
                     ':max_id_res_ticket' => $max_id_res_ticket,
@@ -7326,7 +7604,8 @@ if ($deadline_time == "NULL") {$deadline_time=NULL;}
                     ':prio' => $prio,
                     ':n' => $CONF['now_dt'],
                     ':nz' => $CONF['now_dt'],
-                    ':deadline_time'=>$deadline_time
+                    ':deadline_time'=>$deadline_time,
+                    ':sla_plan_id'=>$sla_plan_id
                 ));
                 
                 $unow = $_SESSION['helpdesk_user_id'];

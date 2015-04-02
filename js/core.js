@@ -304,7 +304,18 @@ $(".right-side").fadeIn(800);
         //.zone("+08:00")
 
 
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
 
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+    return time;
+}
 
         
                $('time#a').each(function(i, e) {
@@ -328,6 +339,19 @@ $(".right-side").fadeIn(800);
             var time = moment($(e).attr('datetime'));
             $(e).html('<span>' + time.format("dddd, Do MMMM") + '</span>');
         });
+
+                $('time#f').each(function(i, e) {
+            var time = $(e).attr('datetime');
+            var duration = moment.duration(time*1000, 'milliseconds');
+
+            $(e).html('<span>' + duration.format("d "+MOMENTJS_DAY+", h "+MOMENTJS_HOUR+", m "+MOMENTJS_MINUTE+", s "+MOMENTJS_SEC+"") + '</span>');
+           //time.from(now)
+            
+            //var time = moment($(e).attr('datetime'));
+           //$(e).html('<span>' + moment.duration(2, "seconds").humanize() + '</span>');
+        });
+
+
     };
 
     function get_host_conf() {
@@ -1606,6 +1630,71 @@ $('body').on('click', 'button#user_stat_make', function(event) {
         });
 
 
+
+
+var intr = null;
+//setInterval(plus_sec(), 1000);
+
+
+function gotimer_worker() {
+
+        //setInterval(function() {
+
+
+if ($('#work_timer').attr('value') == 'true') {
+
+
+var t=$('#work_timer > #f').attr('datetime');
+t++;
+$('#work_timer > #f').attr('datetime', t);
+
+var el=$('#work_timer > time#f').attr('datetime');
+var duration = moment.duration(el*1000, 'milliseconds');
+$('#work_timer > time#f').html('<span>' + duration.format("d "+MOMENTJS_DAY+", h "+MOMENTJS_HOUR+", m "+MOMENTJS_MINUTE+", s "+MOMENTJS_SEC+"") + '</span>');
+}
+      //  }, 1000);
+
+//$('#work_timer').attr('value', 'false');
+}
+
+
+function gotimer_deadline() {
+
+        //setInterval(function() {
+
+
+if ($('#deadline_timer').attr('value') == 'true') {
+
+
+var t=$('#deadline_timer > #f').attr('datetime');
+t--;
+$('#deadline_timer > #f').attr('datetime', t);
+
+var el=$('#deadline_timer > time#f').attr('datetime');
+var duration = moment.duration(el*1000, 'milliseconds');
+$('#deadline_timer > time#f').html('<span>' + duration.format("d "+MOMENTJS_DAY+", h "+MOMENTJS_HOUR+", m "+MOMENTJS_MINUTE+", s "+MOMENTJS_SEC+"") + '</span>');
+}
+      //  }, 1000);
+
+//$('#work_timer').attr('value', 'false');
+}
+
+if ($('#deadline_timer').attr('value') == 'true') {
+    //gotimer_worker();
+    intr= setInterval(gotimer_deadline,1000);
+//clearInterval(intr);
+}
+
+
+if ($('#work_timer').attr('value') == 'true') {
+    //gotimer_worker();
+    intr= setInterval(gotimer_worker,1000);
+//clearInterval(intr);
+}
+
+
+
+
 $('.fancybox').fancybox(
     {
         openEffect  : 'elastic',
@@ -1633,6 +1722,7 @@ $('.fancybox').fancybox(
                     //alert(html); // display response from the PHP script, if any
                     $("#comment_content").html(html);
                     $("input#msg").val('')
+                    $(".file-input-name").text('');
                     makemytime(true);
                     var scroll = $('#comment_body');
                     var height = scroll[0].scrollHeight;
@@ -1850,6 +1940,11 @@ $('.fancybox').fancybox(
                     url: ACTIONPATH,
                     data: "mode=status_ok" + "&tid=" + ok_val_tid + "&user=" + encodeURIComponent(ok_val),
                     success: function(html) {
+
+intr= setInterval(gotimer_worker,1000);
+//clearInterval(intr);
+
+
                         $("#msg").hide().html(html).fadeIn(500);
                         setTimeout(function() {
                             $('#msg').children('.alert').fadeOut(500);
@@ -1867,6 +1962,9 @@ $('.fancybox').fancybox(
                     url: ACTIONPATH,
                     data: "mode=status_no_ok" + "&tid=" + ok_val_tid + "&user=" + encodeURIComponent(ok_val),
                     success: function(html) {
+//intr= setInterval(gotimer_worker,1000);
+clearInterval(intr);
+
                         $("#msg").hide().html(html).fadeIn(500);
                         setTimeout(function() {
                             $('#msg').children('.alert').fadeOut(500);
@@ -1900,6 +1998,9 @@ $('.fancybox').fancybox(
                     data: "mode=lock" + "&tid=" + lock_val_tid + "&user=" + encodeURIComponent(lock_val),
                     success: function(html) {
                         $("#msg").hide().html(html).fadeIn(500);
+$('#work_timer').attr('value', 'true');
+    intr= setInterval(gotimer_worker,1000);
+//clearInterval(intr);
 
                         //$("#action_ok").attr('disabled', "disabled");
                         $("#action_ok").removeAttr('disabled');
@@ -1920,6 +2021,10 @@ $('.fancybox').fancybox(
                     success: function(html) {
                         $("#msg").hide().html(html).fadeIn(500);
                         $("#action_ok").attr('disabled', "disabled");
+                        $('#work_timer').attr('value', 'false');
+//intr= setInterval(gotimer_worker,1000);
+clearInterval(intr);
+
                         setTimeout(function() {
                             $('#msg').children('.alert').fadeOut(500);
                         }, 3000);
@@ -3213,7 +3318,7 @@ view_helper_cat();
                     $("#dsd").popover('hide');
                 }, 2000);
             }
-            if (s == null) {
+            if ((s == null) || (s == "0")) {
                 error_code = 1;
                 $("#for_subj").popover('show');
                 $("#for_subj").addClass('has-error');
@@ -3888,6 +3993,220 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
                     });
 
     }
+
+
+if (ispath('slaplans')) {
+
+
+
+   function view_slaplans() {
+$.fn.editable.defaults.mode = 'inline';
+            $('a#edit_item').each(function(i, e) {
+            $(e).editable({
+                inputclass: 'form-control input-sm input-longtext',
+                emptytext: 'пусто',
+                params: {
+                    mode: 'save_sla_item'
+                },
+                tpl: "<input type='text' style='width: 400px'>"
+            });
+        });
+
+
+
+
+
+                            $('.sortable').nestedSortable({
+            ForcePlaceholderSize: true,
+                handle: 'div',
+                helper: 'clone',
+                items: 'li',
+                opacity: .6,
+                placeholder: 'placeholder',
+                revert: 250,
+                tabSize: 25,
+                tolerance: 'pointer',
+                toleranceElement: '> div',
+                maxLevels: 1,
+                
+update: function () {
+    list = $(this).nestedSortable('serialize');
+    //console.log(list);
+
+$.post(
+        ACTIONPATH,
+        { mode:"sort_sla_plans" ,list: list},
+        function(data){
+            console.log(data);
+        }
+    );
+
+
+}
+
+        });
+
+                            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+        checkboxClass: 'icheckbox_minimal',
+        radioClass: 'iradio_minimal'
+    });
+
+
+};
+
+view_slaplans();
+
+$(document).on('ifChanged', '#make_sla_active', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+//var hash=$(this).attr('value');
+var name=$(this).prop('checked');
+
+$.post( ACTIONPATH, { mode: "make_sla_active", name: name } );
+
+
+
+    });
+
+$('body').on('click', 'button#save_sla_plan', function(event) {
+            event.preventDefault();
+var ids=$(this).val();
+var data= {
+    'mode': 'save_sla',
+    'uniq_id': ids,
+    'react_low_1':$('#react_low_1').val(),
+    'react_low_2':$('#react_low_2').val(),
+    'react_low_3':$('#react_low_3').val(),
+    'react_low_4':$('#react_low_4').val(),
+
+    'react_def_1':$('#react_def_1').val(),
+    'react_def_2':$('#react_def_2').val(),
+    'react_def_3':$('#react_def_3').val(),
+    'react_def_4':$('#react_def_4').val(),
+
+    'react_high_1':$('#react_high_1').val(),
+    'react_high_2':$('#react_high_2').val(),
+    'react_high_3':$('#react_high_3').val(),
+    'react_high_4':$('#react_high_4').val(),
+
+    'work_low_1':$('#work_low_1').val(),
+    'work_low_2':$('#work_low_2').val(),
+    'work_low_3':$('#work_low_3').val(),
+    'work_low_4':$('#work_low_4').val(),
+
+    'work_def_1':$('#work_def_1').val(),
+    'work_def_2':$('#work_def_2').val(),
+    'work_def_3':$('#work_def_3').val(),
+    'work_def_4':$('#work_def_4').val(),
+
+    'work_high_1':$('#work_high_1').val(),
+    'work_high_2':$('#work_high_2').val(),
+    'work_high_3':$('#work_high_3').val(),
+    'work_high_4':$('#work_high_4').val(),
+
+
+
+    'deadline_low_1':$('#deadline_low_1').val(),
+    'deadline_low_2':$('#deadline_low_2').val(),
+    'deadline_low_3':$('#deadline_low_3').val(),
+    'deadline_low_4':$('#deadline_low_4').val(),
+
+    'deadline_def_1':$('#deadline_def_1').val(),
+    'deadline_def_2':$('#deadline_def_2').val(),
+    'deadline_def_3':$('#deadline_def_3').val(),
+    'deadline_def_4':$('#deadline_def_4').val(),
+
+    'deadline_high_1':$('#deadline_high_1').val(),
+    'deadline_high_2':$('#deadline_high_2').val(),
+    'deadline_high_3':$('#deadline_high_3').val(),
+    'deadline_high_4':$('#deadline_high_4').val()
+
+};
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: data,
+                        success: function(html) {
+                            //$("#plan_res").html(html);
+
+
+                                                $("#plan_res").hide().html(html).fadeIn(500);
+                    setTimeout(function() {
+                        $('#plan_res').children('.alert').fadeOut(500);
+                    }, 3000);
+
+
+//view_slaplans();
+                        }
+                    });
+
+        });
+
+
+
+
+
+
+//add_slaplan_item
+
+//edit_sla_plan
+$('body').on('click', 'i#edit_sla_plan', function(event) {
+            event.preventDefault();
+window.location = MyHOSTNAME + "config?slaplans&item="+$(this).attr('value');
+        });
+
+
+
+
+
+                $('body').on('click', 'i#del_item_sla', function(event) {
+            event.preventDefault();
+            var ids = $(this).attr('value');
+            bootbox.confirm(get_lang_param('JS_del'), function(result) {
+                if (result == true) {
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=sla_del" + "&id=" + ids,
+                        success: function(html) {
+                            $("#content_sla_plans").html(html);
+view_slaplans();
+                        }
+                    });
+                }
+                if (result == false) {
+                    console.log('false');
+                }
+            });
+        });
+
+
+
+
+
+
+        $('body').on('click', 'button#add_slaplan_item', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=add_slaplan_item" + "&text=new_item",
+                success: function(html) {
+                    $("#content_sla_plans").html(html);
+                    //$("#subj_text").val('');
+                   view_slaplans();
+                }
+            });
+        });
+
+
+
+
+
+}
+
 
     if (ispath('config')) {
 
@@ -5023,7 +5342,79 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
         });
     }
     if (ispath('subj')) {
-        $('body').on('click', 'button#subj_del', function(event) {
+
+
+
+
+   function view_sla() {
+$.fn.editable.defaults.mode = 'inline';
+            $('a#edit_item').each(function(i, e) {
+            $(e).editable({
+                inputclass: 'form-control input-sm input-longtext',
+                emptytext: 'пусто',
+                params: {
+                    mode: 'save_subj_item'
+                },
+                tpl: "<input type='text' style='width: 450px'>"
+            });
+        });
+
+
+
+
+
+                            $('.sortable').nestedSortable({
+            ForcePlaceholderSize: true,
+                handle: 'div',
+                helper: 'clone',
+                items: 'li',
+                opacity: .6,
+                placeholder: 'placeholder',
+                revert: 250,
+                tabSize: 25,
+                tolerance: 'pointer',
+                toleranceElement: '> div',
+                maxLevels: 1,
+                
+update: function () {
+    list = $(this).nestedSortable('serialize');
+    //console.log(list);
+
+$.post(
+        ACTIONPATH,
+        { mode:"sort_sla" ,list: list},
+        function(data){
+            console.log(data);
+        }
+    );
+
+
+}
+
+        });
+
+                            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+        checkboxClass: 'icheckbox_minimal',
+        radioClass: 'iradio_minimal'
+    });
+
+
+};
+
+
+view_sla();
+
+
+
+
+
+
+
+
+
+
+
+                $('body').on('click', 'i#del_item_subj', function(event) {
             event.preventDefault();
             var ids = $(this).attr('value');
             bootbox.confirm(get_lang_param('JS_del'), function(result) {
@@ -5034,20 +5425,31 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
                         data: "mode=subj_del" + "&id=" + ids,
                         success: function(html) {
                             $("#content_subj").html(html);
+view_sla();
                         }
                     });
                 }
+                if (result == false) {
+                    console.log('false');
+                }
             });
         });
+
+
+
+
+
+
         $('body').on('click', 'button#subj_add', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=subj_add" + "&text=" + encodeURIComponent($("#subj_text").val()),
+                data: "mode=subj_add" + "&text=new_item",
                 success: function(html) {
                     $("#content_subj").html(html);
-                    $("#subj_text").val('');
+                    //$("#subj_text").val('');
+                    view_sla();
                 }
             });
         });

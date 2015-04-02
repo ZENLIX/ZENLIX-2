@@ -252,13 +252,37 @@ if (in_array($row['value'], $mass)) {$st_sel="selected";}
             </div></div></div></div>
 <?php
         
-        /*
-        
-        
-        
-        
-        
-        */
+
+if (get_conf_param('sla_system') == "true") { ?>
+
+<div class="control-group " >
+    <div class="controls">
+        <div class="form-group " id="for_subj" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right" data-content="<small><?php echo lang('NEW_subj_msg'); ?></small>">
+            <label for="subj" class="col-sm-2 control-label"><small><?php echo lang('NEW_subj'); ?>: </small></label>
+            <div class="col-sm-10 " style="">
+                <select data-placeholder="<?php echo lang('NEW_subj_det'); ?>" class="chosen-select form-control input-sm " id="subj" name="subj">
+               
+                    <option value="0"></option>
+                    <?php
+            echo get_sla_view_select_box();
+
+?>
+
+
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<?php
+
+}
+
+else if (get_conf_param('sla_system') == "false") {
         
         if ($CONF['fix_subj'] == "false") {
 ?>
@@ -312,7 +336,9 @@ if (in_array($row['value'], $mass)) {$st_sel="selected";}
 
 
 <?php
-        } ?>
+        } 
+        }
+        ?>
 
 
 

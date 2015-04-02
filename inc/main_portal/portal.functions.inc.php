@@ -461,7 +461,7 @@ if (($row['parent_id'] == "0") && (($row['type'] == "1"))) {echo "<br>";}
 
         //echo "<li id=\"list-".$row['id']."\"><div>".$row['name'];
 
-if ($row['parent_id'] != "0") {echo "<li style=\"list-style:none; padding: 1px 0 1px 0;\"><i class=\"fa fa-file-text-o\"></i> ";}
+if ($row['parent_id'] != "0") {echo "<li style=\"list-style:none; padding: 3px 0 3px 0;\"><i class=\"fa fa-file-text-o\"></i> ";}
         ?>
                                         
                                             
@@ -522,7 +522,7 @@ if (($row['parent_id'] == "0") && (($row['type'] == "1"))) {echo "<i class=\"fa 
 
         //echo "<li id=\"list-".$row['id']."\"><div>".$row['name'];
 
-if ($row['parent_id'] != "0") {echo "<li style=\"list-style:none; padding: 1px 0 1px 0;\"><i class=\"fa fa-file-text-o\"></i>";}
+if ($row['parent_id'] != "0") {echo "<li style=\"list-style:none; padding: 3px 0 3px 0;\"><i class=\"fa fa-file-text-o\"></i>";}
         ?>
                                         
                                            
@@ -764,7 +764,12 @@ global $dbConnection;
 <div class="box-group" id="accordion">
                     <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
 
-                    <?php foreach ($re as $row) { ?>
+                    <?php 
+$i=0;
+                    foreach ($re as $row) { 
+$fel="";
+if ($i==0) {$fel="in";}
+                    	?>
                     <div class="panel box box-default">
                       <div class="box-header with-border">
                         <h4 class="box-title">
@@ -776,13 +781,14 @@ global $dbConnection;
                         <small><a href="manual?qa=<?=$row['uniq_id'];?>"><i class="fa fa-link"></i> <?=lang('PORTAL_adr');?> </a></small>
                         </div>
                       </div>
-                      <div id="collapse_<?=$row['uniq_id'];?>" class="panel-collapse collapse">
+                      <div id="collapse_<?=$row['uniq_id'];?>" class="panel-collapse collapse <?=$fel;?>">
                         <div class="box-body">
                           <?=$row['answer'];?>
                         </div>
                       </div>
                     </div>
-                    <?php } ?>
+                    <?php
+                    $i++; } ?>
                     
                   </div>
 <?php

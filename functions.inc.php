@@ -1158,6 +1158,649 @@ FROM
     
 }
 
+
+function get_ticket_time_lock_sec($t_id) {
+    global $dbConnection;
+
+$stmt = $dbConnection->prepare("SELECT c.ticket_id, c.init_user_id, Min(c.StartTime), Max(c.EndTime), Sum(c.Seconds) as sum_sec
+ FROM (
+  SELECT   a.ticket_id,
+           a.Id aStateId, a.msg aName,
+           b.Id bStateId, b.msg bname,
+           a.init_user_id,
+           a.date_op as StartTime, min(b.date_op) as EndTime,
+           timestampdiff(Second, a.date_op, b.date_op) as Seconds
+  FROM ticket_log as a inner join ticket_log as b
+    ON ( ((a.msg <=> :lock AND b.msg <=> :ok) OR 
+          (a.msg <=> :lock2 AND b.msg <=> :unlock) OR
+          (a.msg <=> :no_ok AND b.msg <=> :unlock2) OR
+          (a.msg <=> :no_ok2 AND b.msg <=> :ok2))
+          AND a.date_op < b.date_op
+          -- AND a.init_user_id = b.init_user_id
+          AND a.ticket_id = b.ticket_id
+          AND a.ticket_id=:tid
+       ) 
+  GROUP BY a.ticket_id, a.msg, a.date_op
+  ) as c
+  GROUP BY c.ticket_id");
+
+
+
+    $stmt->execute(array(
+        ':tid'       => $t_id,
+        ':lock'      => 'lock',
+        ':lock2'      => 'lock',
+        ':ok'        => 'ok',        
+        ':ok2'        => 'ok',
+        ':no_ok'     => 'no_ok',
+        ':unlock'    => 'unlock',        
+        ':no_ok2'     => 'no_ok',
+        ':unlock2'    => 'unlock'
+    ));
+
+
+$tt = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($tt['sum_sec']) {
+    //$t=round((strtotime($tt['date_op'])-strtotime($date_create)));
+   
+
+
+    $stmt2 = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op DESC limit 1');
+    $stmt2->execute(array(
+        ':tid' => $t_id,
+        ':m'=>'lock'
+    ));
+    $tts = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+$now = strtotime(date("Y-m-d H:i:s"));
+
+$t_actual=round(($now - strtotime($tts['date_op'])));
+
+
+
+//ТЕКУЩЕЕ ВРЕМЯ - ДАТА ПОСЛЕДНЕЙ БЛОКИРОВКИ = СЕКУНДЫ + СУМ_СЕК
+$thash=get_ticket_hash_by_id($t_id);
+$t_status=get_ticket_val_by_hash('status', $thash);
+$t_lock=get_ticket_val_by_hash('lock_by', $thash);
+
+if ($t_status == 1) {
+    $res_time_sec=$tt['sum_sec'];
+    //$res_time_sec=$t_actual+$tt['sum_sec'];
+}
+if ($t_status == 0) {
+if ($t_lock == 0) {
+    $res_time_sec=$tt['sum_sec'];
+}
+else if ($t_lock != 0) {
+    $res_time_sec=($t_actual)+$tt['sum_sec'];
+}
+}
+
+//$tt['sum_sec'] - СУМ_СЕК
+//
+
+
+$t=$res_time_sec;
+
+//$t=$tts['date_op'];
+
+
+
+
+    $r=$t;
+}
+else if (!$tt['sum_sec']) {
+    
+    $stmt2 = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op DESC limit 1');
+    $stmt2->execute(array(
+        ':tid' => $t_id,
+        ':m'=>'lock'
+    ));
+    $tts = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+$now = strtotime(date("Y-m-d H:i:s"));
+
+$t_actual=round(($now - strtotime($tts['date_op'])));
+
+
+
+//ТЕКУЩЕЕ ВРЕМЯ - ДАТА ПОСЛЕДНЕЙ БЛОКИРОВКИ = СЕКУНДЫ + СУМ_СЕК
+$thash=get_ticket_hash_by_id($t_id);
+$t_status=get_ticket_val_by_hash('status', $thash);
+$t_lock=get_ticket_val_by_hash('lock_by', $thash);
+
+if ($t_status == 1) {
+    $res_time_sec=$tt['sum_sec'];
+    //$res_time_sec=$t_actual+$tt['sum_sec'];
+}
+if ($t_status == 0) {
+if ($t_lock == 0) {
+    $res_time_sec=$tt['sum_sec'];
+}
+else if ($t_lock != 0) {
+    $res_time_sec=($t_actual)+$tt['sum_sec'];
+}
+}
+
+//$tt['sum_sec'] - СУМ_СЕК
+//
+
+
+$t=$res_time_sec;
+
+//$t=$tts['date_op'];
+
+
+
+
+    $r=$t;
+}
+
+return $r;
+
+}
+
+
+
+function get_ticket_time_lock($t_id) {
+    global $dbConnection;
+
+$stmt = $dbConnection->prepare("SELECT c.ticket_id, c.init_user_id, Min(c.StartTime), Max(c.EndTime), Sum(c.Seconds) as sum_sec
+ FROM (
+  SELECT   a.ticket_id,
+           a.Id aStateId, a.msg aName,
+           b.Id bStateId, b.msg bname,
+           a.init_user_id,
+           a.date_op as StartTime, min(b.date_op) as EndTime,
+           timestampdiff(Second, a.date_op, b.date_op) as Seconds
+  FROM ticket_log as a inner join ticket_log as b
+    ON ( ((a.msg <=> :lock AND b.msg <=> :ok) OR 
+          (a.msg <=> :lock2 AND b.msg <=> :unlock) OR
+          (a.msg <=> :no_ok AND b.msg <=> :unlock2) OR
+          (a.msg <=> :no_ok2 AND b.msg <=> :ok2))
+          AND a.date_op < b.date_op
+          -- AND a.init_user_id = b.init_user_id
+          AND a.ticket_id = b.ticket_id
+          AND a.ticket_id=:tid
+       ) 
+  GROUP BY a.ticket_id, a.msg, a.date_op
+  ) as c
+  GROUP BY c.ticket_id");
+
+
+
+    $stmt->execute(array(
+        ':tid'       => $t_id,
+        ':lock'      => 'lock',
+        ':lock2'      => 'lock',
+        ':ok'        => 'ok',        
+        ':ok2'        => 'ok',
+        ':no_ok'     => 'no_ok',
+        ':unlock'    => 'unlock',        
+        ':no_ok2'     => 'no_ok',
+        ':unlock2'    => 'unlock'
+    ));
+
+
+$tt = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($tt['sum_sec']) {
+    //$t=round((strtotime($tt['date_op'])-strtotime($date_create)));
+   
+
+
+    $stmt2 = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op DESC limit 1');
+    $stmt2->execute(array(
+        ':tid' => $t_id,
+        ':m'=>'lock'
+    ));
+    $tts = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+$now = strtotime(date("Y-m-d H:i:s"));
+
+$t_actual=round(($now - strtotime($tts['date_op'])));
+
+
+
+//ТЕКУЩЕЕ ВРЕМЯ - ДАТА ПОСЛЕДНЕЙ БЛОКИРОВКИ = СЕКУНДЫ + СУМ_СЕК
+$thash=get_ticket_hash_by_id($t_id);
+$t_status=get_ticket_val_by_hash('status', $thash);
+$t_lock=get_ticket_val_by_hash('lock_by', $thash);
+
+if ($t_status == 1) {
+    $res_time_sec=$tt['sum_sec'];
+    //$res_time_sec=$t_actual+$tt['sum_sec'];
+}
+if ($t_status == 0) {
+if ($t_lock == 0) {
+    $res_time_sec=$tt['sum_sec'];
+}
+else if ($t_lock != 0) {
+    $res_time_sec=($t_actual)+$tt['sum_sec'];
+}
+}
+
+//$tt['sum_sec'] - СУМ_СЕК
+//
+
+
+$t="<time id=\"f\" datetime=\"".$res_time_sec."\"></time>";
+
+//$t=$tts['date_op'];
+
+
+
+
+    $r=$t;
+}
+else if (!$tt['sum_sec']) {
+       $stmt2 = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op DESC limit 1');
+    $stmt2->execute(array(
+        ':tid' => $t_id,
+        ':m'=>'lock'
+    ));
+    $tts = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+$now = strtotime(date("Y-m-d H:i:s"));
+
+$t_actual=round(($now - strtotime($tts['date_op'])));
+
+
+
+//ТЕКУЩЕЕ ВРЕМЯ - ДАТА ПОСЛЕДНЕЙ БЛОКИРОВКИ = СЕКУНДЫ + СУМ_СЕК
+$thash=get_ticket_hash_by_id($t_id);
+$t_status=get_ticket_val_by_hash('status', $thash);
+$t_lock=get_ticket_val_by_hash('lock_by', $thash);
+
+if ($t_status == 1) {
+    $res_time_sec=$tt['sum_sec'];
+    //$res_time_sec=$t_actual+$tt['sum_sec'];
+}
+if ($t_status == 0) {
+if ($t_lock == 0) {
+    $res_time_sec=$tt['sum_sec'];
+}
+else if ($t_lock != 0) {
+    $res_time_sec=($t_actual)+$tt['sum_sec'];
+}
+}
+
+//$tt['sum_sec'] - СУМ_СЕК
+//
+
+
+$t="<time id=\"f\" datetime=\"".$res_time_sec."\"></time>";
+
+//$t=$tts['date_op'];
+
+
+
+
+    $r=$t;
+}
+
+return $r;
+
+}
+
+
+
+function get_sla_plans_times($uniq_id) {
+global $dbConnection;
+
+    $stmt = $dbConnection->prepare('SELECT * from sla_plans where uniq_id=:uid');
+    $stmt->execute(array(':uid' => $uniq_id));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+$param=array();
+$s = $row['reaction_time_low_prio']%60;
+
+
+
+$param= array(
+    'react_low_1'=>floor(($row['reaction_time_low_prio']%2592000)/86400),
+    'react_low_2'=>floor(($row['reaction_time_low_prio']%86400)/3600),
+    'react_low_3'=>floor(($row['reaction_time_low_prio']%3600)/60),
+    'react_low_4'=>$row['reaction_time_low_prio']%60,
+
+    'react_def_1'=>floor(($row['reaction_time_def']%2592000)/86400),
+    'react_def_2'=>floor(($row['reaction_time_def']%86400)/3600),
+    'react_def_3'=>floor(($row['reaction_time_def']%3600)/60),
+    'react_def_4'=>$row['reaction_time_def']%60,
+
+    'react_high_1'=>floor(($row['reaction_time_high_prio']%2592000)/86400),
+    'react_high_2'=>floor(($row['reaction_time_high_prio']%86400)/3600),
+    'react_high_3'=>floor(($row['reaction_time_high_prio']%3600)/60),
+    'react_high_4'=>$row['reaction_time_high_prio']%60,
+
+
+    'work_low_1'=>floor(($row['work_time_low_prio']%2592000)/86400),
+    'work_low_2'=>floor(($row['work_time_low_prio']%86400)/3600),
+    'work_low_3'=>floor(($row['work_time_low_prio']%3600)/60),
+    'work_low_4'=>$row['work_time_low_prio']%60,
+
+    'work_def_1'=>floor(($row['work_time_def']%2592000)/86400),
+    'work_def_2'=>floor(($row['work_time_def']%86400)/3600),
+    'work_def_3'=>floor(($row['work_time_def']%3600)/60),
+    'work_def_4'=>$row['work_time_def']%60,
+
+    'work_high_1'=>floor(($row['work_time_high_prio']%2592000)/86400),
+    'work_high_2'=>floor(($row['work_time_high_prio']%86400)/3600),
+    'work_high_3'=>floor(($row['work_time_high_prio']%3600)/60),
+    'work_high_4'=>$row['work_time_high_prio']%60,
+
+
+    'deadline_low_1'=>floor(($row['deadline_time_low_prio']%2592000)/86400),
+    'deadline_low_2'=>floor(($row['deadline_time_low_prio']%86400)/3600),
+    'deadline_low_3'=>floor(($row['deadline_time_low_prio']%3600)/60),
+    'deadline_low_4'=>$row['deadline_time_low_prio']%60,
+
+    'deadline_def_1'=>floor(($row['deadline_time_def']%2592000)/86400),
+    'deadline_def_2'=>floor(($row['deadline_time_def']%86400)/3600),
+    'deadline_def_3'=>floor(($row['deadline_time_def']%3600)/60),
+    'deadline_def_4'=>$row['deadline_time_def']%60,
+
+    'deadline_high_1'=>floor(($row['deadline_time_high_prio']%2592000)/86400),
+    'deadline_high_2'=>floor(($row['deadline_time_high_prio']%86400)/3600),
+    'deadline_high_3'=>floor(($row['deadline_time_high_prio']%3600)/60),
+    'deadline_high_4'=>$row['deadline_time_high_prio']%60
+    );
+
+return $param;
+}
+
+
+
+function get_sla_view_select_box($level = 0) {
+global $dbConnection;
+
+//$result = mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$level); 
+
+    $stmt = $dbConnection->prepare('SELECT id, name, type, uniq_id from sla_plans where parent_id=:p_id order by sort_id ASC');
+    $stmt->execute(array(':p_id' => $level));
+    $re = $stmt->fetchAll();
+
+
+
+//if ($level != 0) { echo "<ul>"; }
+//    else if ($level == 0) { echo "<ul class=\"todo-list sortable\" style=\"margin: 0px;\">"; }
+
+   // while ($node = mysql_fetch_array($result)) { 
+    foreach ($re as $row) {
+
+
+//if ($level == 0) {echo "<optgroup label=\"".$row['name']."\">";}
+//else if ($level != 0) {
+    echo "<option value=\"".$row['id']."\">".$row['name']."</option>";
+//}
+        //echo "<li id=\"list-".$row['id']."\"><div>".$row['name'];
+        ?>
+
+                                                
+                                           
+                                        
+        <?php 
+        //$hasChild = mysql_fetch_array(mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$node['ID'])) != null;
+
+        
+        $stmt2 = $dbConnection->prepare('SELECT id, name from sla_plans where parent_id=:p_id');
+        $stmt2->execute(array(':p_id' => $row['id']));
+        $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        //$hasChild=$row2['parent_id'];
+        
+
+        if ($row2) {
+            get_sla_view_select_box($row['id']);
+        }
+       // echo "</li>";
+    }
+//echo "</ul>";
+}
+
+
+
+
+//get_sla_view()
+
+function get_sla_view($level = 0) {
+global $dbConnection;
+
+//$result = mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$level); 
+
+    $stmt = $dbConnection->prepare('SELECT id, name, type, uniq_id from sla_plans where parent_id=:p_id order by sort_id ASC');
+    $stmt->execute(array(':p_id' => $level));
+    $re = $stmt->fetchAll();
+
+
+
+if ($level != 0) { echo "<ul>"; }
+    else if ($level == 0) { echo "<ul class=\"todo-list sortable\" style=\"margin: 0px;\">"; }
+
+   // while ($node = mysql_fetch_array($result)) { 
+    foreach ($re as $row) {
+
+
+                if ($row['type'] == "1") {$c1="checked";}
+        else if ($row['type'] == "0") {$c1="";}
+
+
+        //echo "<li id=\"list-".$row['id']."\"><div>".$row['name'];
+        ?>
+                                        <li id="list_<?=$row['id'];?>">
+                                            <div>
+                                            <!-- drag handle -->
+                                            <span class="handle ui-sortable-handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <!-- checkbox -->
+                                            
+                                            <!-- todo text -->
+                                            <span class="text" id="val_<?=$row['id'];?>" style="  font-weight: 400;">
+                                        <a href="#" data-pk="<?=$row['id'];?>" data-url="actions.php" id="edit_item" data-type="text" class="">
+                                                <?=$row['name'];?>
+                                            </a> 
+                                            </span>
+
+                                            <!-- General tools such as edit or delete-->
+                                            <span class="tools">
+                                                              <!--label style="padding-right:20px;">
+                    <input id="make_cat_manual" name="" value="<?=$row['id'];?>" type="checkbox" <?=$c1;?>> <small><?=lang('PORTAL_cat');?></small>
+                </label-->
+
+                <i id="edit_sla_plan" value="<?=$row['uniq_id'];?>" class="fa fa-pencil-square-o"></i>  
+            <i id="del_item_sla" value="<?=$row['id']?>" class="fa fa-trash-o"></i>
+                                              
+
+
+                                                
+                                            </span>
+                                        </div>
+                                        
+        <?php
+        //$hasChild = mysql_fetch_array(mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$node['ID'])) != null;
+
+        
+        $stmt2 = $dbConnection->prepare('SELECT id, name from sla_plans where parent_id=:p_id');
+        $stmt2->execute(array(':p_id' => $row['id']));
+        $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        //$hasChild=$row2['parent_id'];
+        
+
+        if ($row2) {
+            get_sla_view($row['id']);
+        }
+        echo "</li>";
+    }
+echo "</ul>";
+}
+
+
+function showMenu_sla($level = 0) {
+global $dbConnection;
+
+//$result = mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$level); 
+
+    $stmt = $dbConnection->prepare('SELECT id, name, type, uniq_id from subj where parent_id=:p_id order by sort_id ASC');
+    $stmt->execute(array(':p_id' => $level));
+    $re = $stmt->fetchAll();
+
+
+
+if ($level != 0) { echo "<ul>"; }
+    else if ($level == 0) { echo "<ul class=\"todo-list sortable\" style=\"margin: 0px;\">"; }
+
+   // while ($node = mysql_fetch_array($result)) { 
+    foreach ($re as $row) {
+
+
+                if ($row['type'] == "1") {$c1="checked";}
+        else if ($row['type'] == "0") {$c1="";}
+
+
+        //echo "<li id=\"list-".$row['id']."\"><div>".$row['name'];
+        ?>
+                                        <li id="list_<?=$row['id'];?>">
+                                            <div>
+                                            <!-- drag handle -->
+                                            <span class="handle ui-sortable-handle">
+                                                <i class="fa fa-ellipsis-v"></i>
+                                                <i class="fa fa-ellipsis-v"></i>
+                                            </span>
+                                            <!-- checkbox -->
+                                            
+                                            <!-- todo text -->
+                                            <span class="text" id="val_<?=$row['id'];?>">
+                                        <a href="#" data-pk="<?=$row['id'];?>" data-url="actions.php" id="edit_item" data-type="text" class="">
+                                                <?=$row['name'];?>
+                                            </a> 
+                                            </span>
+
+                                            <!-- General tools such as edit or delete-->
+                                            <span class="tools">
+                                             
+            <i id="del_item_subj" value="<?=$row['id']?>" class="fa fa-trash-o"></i>
+                                              
+
+
+                                                
+                                            </span>
+                                        </div>
+                                        
+        <?php
+        //$hasChild = mysql_fetch_array(mysql_query("SELECT * FROM `tbl_structure` WHERE `PARENTID` = ".$node['ID'])) != null;
+
+        
+        $stmt2 = $dbConnection->prepare('SELECT id, name from subj where parent_id=:p_id');
+        $stmt2->execute(array(':p_id' => $row['id']));
+        $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        //$hasChild=$row2['parent_id'];
+        
+
+        if ($row2) {
+            showMenu_sla($row['id']);
+        }
+        echo "</li>";
+    }
+echo "</ul>";
+}
+
+
+
+
+
+
+function get_ticket_time_reaction_sec_no_lock($t_id) {
+    global $dbConnection;
+
+$thash=get_ticket_hash_by_id($t_id);
+$date_create=get_ticket_val_by_hash('date_create', $thash);
+
+    //отнять две даты
+    //
+    $t=round((time()-strtotime($date_create)));
+    //$t="<time id=\"f\" datetime=\"".$t."\"></time>";
+    //$t="<time id=\"f\" datetime=\"".$tt['date_op']."\"></time>";
+    $res=$t;
+
+
+
+return $res;
+}
+
+
+function get_ticket_time_reaction_sec($t_id) {
+    global $dbConnection;
+
+$thash=get_ticket_hash_by_id($t_id);
+$date_create=get_ticket_val_by_hash('date_create', $thash);
+
+    $stmt = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op ASC limit 1');
+    $stmt->execute(array(
+        ':tid' => $t_id,
+        ':m'=>'lock'
+    ));
+    
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($tt['date_op']) { $r=true;}
+
+    else if (!$tt['date_op']) { $r=false;}
+
+
+if ($r == true) {
+
+    //отнять две даты
+    //
+    $t=round((strtotime($tt['date_op'])-strtotime($date_create)));
+    //$t="<time id=\"f\" datetime=\"".$t."\"></time>";
+    //$t="<time id=\"f\" datetime=\"".$tt['date_op']."\"></time>";
+    $res=$t;
+
+} 
+else if ($r == false) {$res=0;}
+
+return $res;
+}
+
+
+function get_ticket_time_reaction($t_id) {
+    global $dbConnection;
+
+$thash=get_ticket_hash_by_id($t_id);
+$date_create=get_ticket_val_by_hash('date_create', $thash);
+
+    $stmt = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op ASC limit 1');
+    $stmt->execute(array(
+        ':tid' => $t_id,
+        ':m'=>'lock'
+    ));
+    
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($tt['date_op']) { $r=true;}
+
+    else if (!$tt['date_op']) { $r=false;}
+
+
+if ($r == true) {
+
+    //отнять две даты
+    //
+    $t=round((strtotime($tt['date_op'])-strtotime($date_create)));
+    $t="<time id=\"f\" datetime=\"".$t."\"></time>";
+    //$t="<time id=\"f\" datetime=\"".$tt['date_op']."\"></time>";
+    $res=$t;
+
+} 
+else if ($r == false) {$res=lang('SLA_NOT_LOCK');}
+
+return $res;
+}
+
+
 function view_comment($tid) {
     global $dbConnection;
 ?>

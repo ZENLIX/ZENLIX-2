@@ -28,6 +28,12 @@ echo $lang; ?>";
     var USER_HASH = "<?php echo get_user_val('uniq_id'); ?>";
     var NODE_URL = "<?php echo get_conf_param('node_port'); ?>";
     var USER_noty_layot="<?=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'noty_layot');?>";
+
+    var MOMENTJS_DAY = "<?=lang('MOMENTJS_DAY');?>";
+    var MOMENTJS_HOUR = "<?=lang('MOMENTJS_HOUR');?>";
+    var MOMENTJS_MINUTE = "<?=lang('MOMENTJS_MINUTE');?>";
+    var MOMENTJS_SEC = "<?=lang('MOMENTJS_SEC');?>";
+
 </script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-2.1.3.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js?<?=get_conf_param('version');?>"></script>
@@ -87,6 +93,11 @@ if (get_current_URL_name('ticket')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap.file-input.js?<?=get_conf_param('version');?>"></script>
 
 <script src="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.js?<?=get_conf_param('version');?>"></script>
+
+<script src="<?php echo $CONF['hostname'] ?>js/moment-duration-format.js?<?=get_conf_param('version');?>"></script>
+<!--script src="<?php echo $CONF['hostname'] ?>js/countdown.min.js?<?=get_conf_param('version');?>"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/moment-countdown.min.js?<?=get_conf_param('version');?>"></script-->
+
 <?php
 } ?>
 
@@ -144,7 +155,7 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 } ?>
 
 <?php
-if ( get_current_URL_name('helper') ) { ?>
+if ( get_current_URL_name('helper') || get_current_URL_name('subj') || get_current_URL_name('config') ) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.mjs.nestedSortable.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap3-editable/js/bootstrap-editable.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootbox.min.js?<?=get_conf_param('version');?>"></script>
