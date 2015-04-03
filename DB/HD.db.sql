@@ -531,6 +531,31 @@ VALUES
 UNLOCK TABLES;
 
 
+
+DROP TABLE IF EXISTS `user_data`;
+CREATE TABLE `user_data` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `field_id` int(11) DEFAULT NULL,
+  `field_val` longtext,
+  `field_name` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `user_fields`;
+CREATE TABLE `user_fields` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `t_type` varchar(512) NOT NULL DEFAULT 'text',
+  `name` varchar(512) DEFAULT NULL,
+  `placeholder` varchar(512) DEFAULT NULL,
+  `value` varchar(2048) NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL DEFAULT '1',
+  `hash` varchar(512) DEFAULT NULL,
+  `for_client` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
 # Дамп таблицы ticket_log
 # ------------------------------------------------------------
 

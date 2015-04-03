@@ -7,7 +7,8 @@ function lang_ua($phrase){
 
 'SLA_NOT_LOCK'=>'ще не взята',
 'SLA_REGLAMENT'=>'Регламент',
-
+'SLA_deadline_ok'=>'Виконано',
+'SLA_deadline_ok_by'=>'Виконано за',
 'MOMENTJS_DAY'=>'дн',
 'MOMENTJS_HOUR'=>'год',
 'MOMENTJS_MINUTE'=>'хв',
@@ -738,7 +739,7 @@ function lang_ua($phrase){
 'NAVBAR_reports' => 'Звіти', 
 'NAVBAR_db' => 'Довідники', 
 'NAVBAR_posads' => 'Посади', 
-'NAVBAR_units' => 'Управління', 
+'NAVBAR_units' => 'Групи', 
 'NAVBAR_subjs' => 'Теми заявок', 
 'NAVBAR_profile' => 'Профіль', 
 'NAVBAR_help' => 'Допомога', 

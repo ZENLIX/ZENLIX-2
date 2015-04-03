@@ -18,7 +18,8 @@ function lang_ru($phrase){
 
 'SLA_perf_deadline_short'=>'Крайний срок заявки',
 'SLA_deadline_t'=>'Осталось',
-
+'SLA_deadline_ok'=>'Выполнил',
+'SLA_deadline_ok_by'=>'Выполнил за',
  
 'SLA_not_sel'=>'не задано',
 'SLA_time_old'=>'просрочено',
@@ -778,7 +779,7 @@ function lang_ru($phrase){
 'NAVBAR_reports'=>'Отчеты',
 'NAVBAR_db'=>'Справочники',
 'NAVBAR_posads'=>'Должности',
-'NAVBAR_units'=>'Управления',
+'NAVBAR_units'=>'Группы пользователей',
 'NAVBAR_subjs'=>'Темы заявок',
 'NAVBAR_profile'=>'Профиль',
 'NAVBAR_help'=>'Помощь',

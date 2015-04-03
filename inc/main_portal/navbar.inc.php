@@ -77,9 +77,9 @@ $validate=true;
 if ($validate == true) {
 ?>      
 
-
-
-
+<li class="">
+<a href="<?php echo $CONF['hostname'] ?>dashboard"><?=lang('PORTAL_helpdesk');?></a>
+</li>
 
 <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -99,7 +99,7 @@ if ($validate == true) {
                   <!-- Menu Footer-->
                   <li class="user-footer">
                     <div class="pull-left">
-                      <a href="<?php echo $CONF['hostname'] ?>dashboard" class="btn btn-default btn-flat"><?=lang('PORTAL_helpdesk');?></a>
+                      <a href="<?php echo $CONF['hostname'] ?>profile" class="btn btn-default btn-flat"> <i class="fa fa-user"></i> <?php echo lang('NAVBAR_profile'); ?></a></a>
                     </div>
                     <div class="pull-right">
                       <a href="<?php echo $CONF['hostname'] ?>index.php?logout" class="btn btn-default btn-flat"><?=lang('PORTAL_logout');?></a>

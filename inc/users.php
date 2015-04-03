@@ -8,12 +8,26 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         include ("navbar.inc.php");
         
         if (isset($_GET['create'])) {
-            $status_create = "active";
+            $menu_opt="create";
+            $menu_active['create']="active";
         } else if (isset($_GET['list'])) {
-            $status_list = "active";
-        } else {
-            $status_list = "active";
+                        $menu_opt="list";
+            $menu_active['list']="active";
+        } else if (isset($_GET['import'])) {
+                        $menu_opt="import";
+            $menu_active['import']="active";
         }
+
+
+else if (isset($_GET['ad_f'])) {
+                        $menu_opt="ad_f";
+            $menu_active['ad_f']="active";
+        }
+
+
+
+
+
 ?>
 
 <section class="content-header">
@@ -38,6 +52,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 <div class="row">
+<?php if (isset($_GET['list'])) { ?>
 <div class="col-md-12">
 	<div class="box box-solid">
 	<div class="box-body">
@@ -48,14 +63,27 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 	</div>
 	</div>
 </div>
+<?php  }
+?>
 <div class="col-md-12">
 	<div class="box box-solid">
 	<div class="box-body">
 	
-	<a href="?create" class="btn btn-success btn-block"><i class="fa fa-male"></i> <?php echo lang('USERS_create'); ?></a>
-	<a href="?list" class="btn btn-primary btn-block"><i class="fa fa-list-alt"></i> <?php echo lang('USERS_list'); ?></a>
-	<a href="?import" class="btn btn-primary btn-block"><i class="fa fa fa-download"></i> <?php echo lang('LDAP_IMPORT_user_t'); ?></a>
-	
+
+
+<div class="list-group">
+<a href="?list" class="list-group-item <?=$menu_active['list'];?>"><?php echo lang('USERS_list'); ?></a>
+
+  <a href="?create" class="list-group-item <?=$menu_active['create'];?>"><?php echo lang('USERS_create'); ?></a>
+    
+    <a href="?import" class="list-group-item <?=$menu_active['import'];?>"><?php echo lang('LDAP_IMPORT_user_t'); ?></a>
+<a href="?ad_f" class="list-group-item <?=$menu_active['ad_f'];?>"><?php echo lang('FIELD_title'); ?></a>
+  
+</div>
+
+
+
+
 
 	</div>
 	</div>
@@ -106,6 +134,13 @@ else if (isset($_GET['import_step_3'])) {
 else if (isset($_GET['import_step_2'])) {
 
             $_POST['menu'] = "import_step_2";
+            include_once ("users.inc.php"); 
+
+}
+
+else if (isset($_GET['ad_f'])) {
+
+            $_POST['menu'] = "ad_f";
             include_once ("users.inc.php"); 
 
 }

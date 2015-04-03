@@ -160,6 +160,10 @@ else if (isset($_GET['inform'])) {
 $menu_opt="inform";
 $menu_active['inform']="active";
 }
+else if (isset($_GET['subj'])) {
+$menu_opt="subj";
+$menu_active['subj']="active";
+}
 else if (isset($_GET['slaplans'])) {
 $menu_opt="sla";
 $menu_active['sla']="active";
@@ -204,6 +208,7 @@ $menu_active['main']="active";
   </a>
   <a href="config?ti_conf" class="list-group-item <?=$menu_active['tickets'];?>"><?=lang('PERF_menu_ticket_conf');?></a>
     <a href="config?slaplans" class="list-group-item <?=$menu_active['sla'];?>"><?=lang('PERF_menu_sla');?></a>
+    <a href="config?subj" class="list-group-item <?=$menu_active['subj'];?>"><?php echo lang('NAVBAR_subjs'); ?></a>
   <a href="config?notify" class="list-group-item <?=$menu_active['notify'];?>"><?=lang('PERF_menu_notify_conf');?></a>
   <a href="config?inform" class="list-group-item <?=$menu_active['inform'];?>"><?=lang('PERF_menu_info_conf');?></a>
   
@@ -252,7 +257,199 @@ $menu_active['main']="active";
 </div>
 
 <?php
-if ($menu_opt == "sla") { 
+
+if ($menu_opt == "subj") { ?>
+
+
+<style type="text/css">
+
+
+
+        
+
+        pre, code {
+            font-size: 12px;
+        }
+
+        pre {
+            width: 100%;
+            overflow: auto;
+        }
+
+        small {
+            font-size: 90%;
+        }
+
+        small code {
+            font-size: 11px;
+        }
+
+        .placeholder {
+            outline: 1px dashed #4183C4;
+            /*-webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            margin: -1px;*/
+            height: 20px;
+        }
+
+        .mjs-nestedSortable-error {
+            background: #fbe3e4;
+            border-color: transparent;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            padding-left: 30px;
+        }
+
+        ul.sortable, ul.sortable ul {
+            margin: 0 0 0 25px;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        ul.sortable {
+            margin: 4em 0;
+        }
+
+        .sortable li {
+            margin: 5px 0 0 0;
+            padding: 0;
+        }
+
+        .sortable li div  {
+            /*
+            border: 1px solid #d4d4d4;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+            padding: 6px;
+            margin: 0;
+            cursor: move;
+            background: #f6f6f6;
+            background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
+            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+            */
+        }
+
+        .sortable li.mjs-nestedSortable-branch div {
+           /* background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
+            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
+            */
+            list-style-type: none;
+
+        }
+
+        .sortable li.mjs-nestedSortable-leaf div {
+
+
+        }
+
+        li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+            border-color: #999;
+            background: #fafafa;
+        }
+
+        .disclose {
+            cursor: pointer;
+            width: 10px;
+            display: none;
+        }
+
+        .sortable li.mjs-nestedSortable-collapsed > ul {
+            display: none;
+        }
+
+        .sortable li.mjs-nestedSortable-branch > div > .disclose {
+            display: inline-block;
+        }
+
+        .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
+            content: '+ ';
+        }
+
+        .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
+            content: '- ';
+        }
+
+        
+
+        p, ol, ul, pre, form {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        dl {
+            margin: 0;
+        }
+
+        dd {
+            margin: 0;
+            padding: 0 0 0 1.5em;
+        }
+
+        code {
+            background: #e5e5e5;
+        }
+
+        input {
+            vertical-align: text-bottom;
+        }
+
+        .notice {
+            color: #c33;
+        }
+
+    </style>
+<div class="col-md-9">
+
+<div class="row">
+<div class="col-md-12">
+<div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-tags"></i> <?php echo lang('SUBJ_title'); ?>
+<small></small></h3>
+</div>
+      <div class="box-body">
+
+<div class="" id="content_subj">
+      
+
+<?=showMenu_sla();?>
+
+
+
+      <br>
+      </div>
+      <br>
+<button id="subj_add" class="btn btn-default btn-sm btn-block" type="submit"><?php echo lang('SUBJ_add'); ?></button>
+      </div>
+
+      </div>
+      </div>
+      </div>
+      </div>
+
+
+
+
+<?php
+}
+
+
+
+
+
+
+else if ($menu_opt == "sla") { 
 
 
 
@@ -551,7 +748,6 @@ if (get_conf_param('sla_system') == "true") {
 }
 
     ?>
-
 <style type="text/css">
 
 
@@ -732,7 +928,7 @@ if (get_conf_param('sla_system') == "true") {
 
       </form>
                       <div class="box-footer clearfix no-border">
-                                    <button id="add_slaplan_item" class="btn btn-default pull-right"><i class="fa fa-plus"></i> <?=lang('NOTES_create');?></button>
+                                    <button id="add_slaplan_item" class="btn btn-default btn-block btn-sm"><i class="fa fa-plus"></i> <?=lang('NOTES_create');?></button>
                                 </div>
       </div>
       </div>

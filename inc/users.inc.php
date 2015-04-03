@@ -25,7 +25,7 @@ if (isset($_POST['menu'])) {
   <div class="box-body">
 <div id="form_message"></div>
 
-<form class="form-horizontal" role="form">
+<div class="form-horizontal" role="form">
 
 
 
@@ -124,6 +124,8 @@ if (isset($_POST['menu'])) {
     <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="<?php echo lang('APPROVE_adr'); ?>">
         </div>
   </div>
+
+
   
   
    <div class="control-group">
@@ -196,7 +198,131 @@ if (isset($_POST['menu'])) {
                         <option value="ua">Українська</option>
 </select>
         </div>
-  </div></div>
+  </div>
+
+<hr>
+
+
+  <!--######### ADDITIONAL FIELDS ############## -->
+
+<form id="add_field_form">
+    <div >
+<?php
+        $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+
+
+?>
+
+                      <div class="control-group" id="">
+    <div class="controls">
+        <div class="form-group">
+            <label for="<?=$row['hash'];?>" class="col-sm-2 control-label"><?=$row['name'];?>: </label>
+
+            <div class="col-sm-10" style=" padding-top: 5px; ">
+
+<?php 
+if ($row['t_type'] == "text") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+<input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
+<?php } ?>
+
+
+<?php 
+if ($row['t_type'] == "textarea") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+<textarea rows="3" class="form-control input-sm animated" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>"><?=$v;?></textarea>
+<?php } ?>
+
+
+<?php 
+if ($row['t_type'] == "select") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+<select data-placeholder="<?=$row['placeholder'];?>" class="chosen-select form-control" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>">
+
+<?php 
+$v=explode(",", $row['value']);
+ foreach ($v as $value) {
+     # code...
+ 
+?>
+                            <option value="<?=$value;?>"><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+
+<?php 
+if ($row['t_type'] == "multiselect") {
+    $v=$row['value'];
+    if ($row['value'] == "0") {$v="";}
+?>
+
+
+
+
+
+<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple="multiple" >
+
+<?php 
+$v=explode(",", $row['value']);
+ foreach ($v as $value) {
+     # code...
+ 
+?>
+                            <option value="<?=$value;?>"><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    </div> 
+
+    <?php
+}
+    ?>
+</div>
+    </form>
+    
+<!--######### ADDITIONAL FIELDS ############## -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
                   <div class="tab-pane" id="tab_2">
   <div class="form-group">
   <label for="mess" class="col-sm-2 control-label"><?php echo lang('USERS_profile_priv'); ?></label>
@@ -479,7 +605,7 @@ $s="";
     <button type="submit" id="create_user" class="btn btn-success"><?php echo lang('USERS_make_create'); ?></button>
 </center>
 </div>
-</form>
+</div>
   </div>
 </div>
 
@@ -514,7 +640,7 @@ $users = $ldap->get_users();
   <div class="box-body">
 
 
-<form class="form-horizontal" role="form">
+<div class="form-horizontal" role="form">
 
 <div class="alert alert-info alert-dismissable">
 <?=lang('LDAP_IMPORT_sel_obj');?>
@@ -816,6 +942,35 @@ if ($_POST['menu'] == 'import_step_2') {
 <?php
 
 }
+
+
+if ($_POST['menu'] == 'ad_f') {
+
+?>
+<div class="col-md-12">
+<div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-bookmark-o"></i> <?=lang('FIELD_title');?></h3>
+<div class="box-tools pull-right"><button id="user_field_plus" class="btn btn-success btn-xs" type="submit"><?=lang('FIELD_new');?></button></div>
+</div>
+      <div class="box-body">
+      <form class="form-horizontal" role="form">
+
+<div id="user_fields_res">
+<?=get_user_form_view();?> 
+</div>
+
+<!--center>
+    <button type="submit" id="conf_edit_ticket_fields" class="btn btn-success"><i class="fa fa-pencil"></i> </button>
+    
+</center-->
+      </form>
+      </div>
+      </div>
+      </div>
+<?php
+
+  }
 
 if ($_POST['menu'] == 'import') {
 
@@ -1177,7 +1332,7 @@ if ($_POST['menu'] == 'import') {
   
   
   
-  <form class="form-horizontal" role="form">
+  <div class="form-horizontal" role="form">
 
 
 
@@ -1387,6 +1542,124 @@ if ($status == "2") {echo lang('USER_RE_t');}
 </select>
         </div>
   </div>
+
+<hr>
+
+  <!--######### ADDITIONAL FIELDS ############## -->
+
+<form id="add_field_form">
+    <div >
+<?php
+        $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+
+
+?>
+
+                      <div class="control-group" id="">
+    <div class="controls">
+        <div class="form-group">
+            <label for="<?=$row['hash'];?>" class="col-sm-2 control-label"><?=$row['name'];?>: </label>
+
+            <div class="col-sm-10" style=" padding-top: 5px; ">
+
+<?php 
+//echo get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+if ($row['t_type'] == "text") {
+    $v=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+    //if ($row['value'] == "0") {$v="";}
+?>
+<input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
+<?php } ?>
+
+
+<?php 
+if ($row['t_type'] == "textarea") {
+$v=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+?>
+<textarea rows="3" class="form-control input-sm animated" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>"><?=$v;?></textarea>
+<?php } ?>
+
+
+<?php 
+if ($row['t_type'] == "select") {
+$vs=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+
+
+?>
+<select data-placeholder="<?=$row['placeholder'];?>" class="chosen-select form-control" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>">
+
+<?php 
+$v=explode(",", $row['value']);
+$vs=explode(",", $vs);
+ foreach ($v as $value) {
+     # code...
+ $sc="";
+ if (in_array($value, $vs)) {$sc="selected";}
+?>
+                            <option value="<?=$value;?>" <?=$sc;?>><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+
+<?php 
+if ($row['t_type'] == "multiselect") {
+$vs=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+?>
+
+
+
+
+
+<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple="multiple" >
+
+<?php 
+$v=explode(",", $row['value']);
+$vs=explode(",", $vs);
+ foreach ($v as $value) {
+     # code...
+  $sc="";
+ if (in_array($value, $vs)) {$sc="selected";}
+?>
+                            <option value="<?=$value;?>"<?=$sc;?>><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    </div> 
+
+    <?php
+}
+    ?>
+</div>
+    </form>
+    
+<!--######### ADDITIONAL FIELDS ############## -->
+
+
+
+
+
+
+
+
                   </div><!-- /.tab-pane -->
                   <div class="tab-pane" id="tab_2">
                       <div class="form-group">
@@ -1708,7 +1981,7 @@ if ($status != "2") {
     <button type="submit" id="edit_user" value="<?php echo $usid; ?>" class="btn btn-success"><?php echo lang('USERS_make_edit_user'); ?></button>
 </center>
 </div>
-</form>
+</div>
   
 
   

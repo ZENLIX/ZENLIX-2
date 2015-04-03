@@ -2306,6 +2306,27 @@ $("#noty").on("change", function(){
                 }
             });
         });
+
+
+
+                $('body').on('click', 'button#edit_profile_ad_f', function(event) {
+            event.preventDefault();
+            var add_from=$('#add_field_form').serialize();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=edit_profile_ad_f" + "&" + add_from,
+                success: function(html) {
+                    $("#ad_f_res").hide().html(html).fadeIn(500);
+                    setTimeout(function() {
+                        $('#ad_f_res').children('.alert').fadeOut(500);
+                    }, 3000);
+                }
+            });
+        });
+
+
+
         //if (def_filename == "profile.php") {
         /*  setInterval(function(){
             check_update();
@@ -4817,6 +4838,159 @@ $.post( ACTIONPATH, { mode: "change_field_placeholder", hash: hash, name: name }
     }
     if (ispath('users')) {
 
+        $('body').on('click', 'button#user_field_plus', function(event) {
+            event.preventDefault();
+
+
+                        $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=add_additional_user_perf",
+                success: function(html) {
+                    $("#user_fields_res").html(html);
+                        $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+        checkboxClass: 'icheckbox_minimal',
+        radioClass: 'iradio_minimal'
+    });
+                }
+            });
+
+});
+
+
+
+
+
+
+
+$(document).on('ifChanged', '#field_perf_client', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).prop('checked');
+
+$.post( ACTIONPATH, { mode: "change_userfield_client", hash: hash, name: name } );
+
+
+
+
+    });
+
+
+$(document).on('ifChanged', '#field_perf_check', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).prop('checked');
+
+$.post( ACTIONPATH, { mode: "change_userfield_check", hash: hash, name: name } );
+
+
+
+
+    });
+
+$(document).on('change', 'select#field_perf_select', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).val();
+
+$.post( ACTIONPATH, { mode: "change_userfield_select", hash: hash, name: name } );
+
+
+
+
+    });
+
+
+$(document).on('change', 'input#field_perf_value', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).val();
+
+$.post( ACTIONPATH, { mode: "change_userfield_value", hash: hash, name: name } );
+
+
+
+
+    });
+
+//field_perf_name
+$(document).on('change', 'input#field_perf_name', function() {
+//$("input#field_perf_name").on('change', function() {
+
+//console.log($(this).closest('tr').attr('id'));
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).val();
+
+$.post( ACTIONPATH, { mode: "change_userfield_name", hash: hash, name: name } );
+
+
+
+
+    });
+$(document).on('change', 'input#field_perf_placeholder', function() {
+//$("input#field_perf_placeholder").on('change', function() {
+
+var hash=$(this).closest('tr').attr('id');
+var name=$(this).val();
+
+$.post( ACTIONPATH, { mode: "change_userfield_placeholder", hash: hash, name: name } );
+
+
+    });
+
+
+
+//del_field_item
+        $('body').on('click', 'button#del_userfield_item', function(event) {
+            event.preventDefault();
+            //console.log($(this).closest('tr').attr('id'));
+
+            var hash=$(this).closest('tr').attr('id');
+
+            bootbox.confirm(get_lang_param('JS_del'), function(result) {
+                if (result == true) {
+
+
+                        $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=del_userfield_item"+
+                "&hash="+hash,
+                success: function(html) {
+                    $("#user_fields_res").html(html);
+                        $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+        checkboxClass: 'icheckbox_minimal',
+        radioClass: 'iradio_minimal'
+    });
+                }
+            });
+}
+});
+
+        });
+
+
+
+
+
+
+
+
+
+
 
 //ldap_step3_obj
 //$('#exampleInputPassword1').prop("disabled", true);
@@ -5286,6 +5460,9 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
             event.preventDefault();
             //console.log($("#my-select").val());
             
+var add_from=$('#add_field_form').serialize();
+
+
             if ($("#fio_user").val().length < 3) {
                 //$("#errors").val('true');
                 my_errors.fio = true;
@@ -5311,7 +5488,7 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
                     "&msg_type="+encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
                     "&def_unit_id="+encodeURIComponent($("#to").val())+
                     "&def_user_id="+encodeURIComponent($("#users_do").val())+
-                    "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked')),
+                    "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked'))+"&"+add_from,
                     success: function(html) {
                         window.location = MyHOSTNAME + "users?create&ok";
                     }
@@ -5326,6 +5503,7 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
         $('body').on('click', 'button#edit_user', function(event) {
             event.preventDefault();
             var usid = $(this).attr('value');
+            var add_from=$('#add_field_form').serialize();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
@@ -5333,7 +5511,7 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
                     "&msg_type="+encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
                     "&def_unit_id="+encodeURIComponent($("#to").val())+
                     "&def_user_id="+encodeURIComponent($("#users_do").val())+
-                    "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked')),
+                    "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked'))+"&"+add_from,
                 success: function(html) {
                     //alert(html);
                     window.location = MyHOSTNAME + "users?edit=" + usid + "&ok";

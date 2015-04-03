@@ -2298,6 +2298,25 @@ values
 
 }
 
+if ($mode == "change_userfield_client") {
+
+if ($_POST['name'] == "false") {
+    $s=0;
+}
+if ($_POST['name'] == "true") {
+    $s=1;
+}
+
+
+            $stmt = $dbConnection->prepare('update user_fields set for_client=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $s
+                ));
+
+}
+
+
 
 if ($mode == "change_field_client") {
 
@@ -2310,6 +2329,24 @@ if ($_POST['name'] == "true") {
 
 
             $stmt = $dbConnection->prepare('update ticket_fields set for_client=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $s
+                ));
+
+}
+
+if ($mode == "change_userfield_check") {
+
+if ($_POST['name'] == "false") {
+    $s=0;
+}
+if ($_POST['name'] == "true") {
+    $s=1;
+}
+
+
+            $stmt = $dbConnection->prepare('update user_fields set status=:name where hash=:h');
             $stmt->execute(array(
                 ':h'=>$_POST['hash'],
                 ':name' => $s
@@ -2336,6 +2373,16 @@ if ($_POST['name'] == "true") {
 
 }
 
+if ($mode == "change_userfield_select") {
+
+            $stmt = $dbConnection->prepare('update user_fields set t_type=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $_POST['name']
+                ));
+
+}
+
 if ($mode == "change_field_select") {
 
             $stmt = $dbConnection->prepare('update ticket_fields set t_type=:name where hash=:h');
@@ -2346,6 +2393,15 @@ if ($mode == "change_field_select") {
 
 }
 
+if ($mode == "change_userfield_value") {
+
+            $stmt = $dbConnection->prepare('update user_fields set value=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $_POST['name']
+                ));
+
+}
 
 if ($mode == "change_field_value") {
 
@@ -2356,7 +2412,15 @@ if ($mode == "change_field_value") {
                 ));
 
 }
+if ($mode == "change_userfield_name") {
 
+            $stmt = $dbConnection->prepare('update user_fields set name=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $_POST['name']
+                ));
+
+}
 if ($mode == "change_field_name") {
 
             $stmt = $dbConnection->prepare('update ticket_fields set name=:name where hash=:h');
@@ -2366,7 +2430,15 @@ if ($mode == "change_field_name") {
                 ));
 
 }
+if ($mode == "change_userfield_placeholder") {
 
+            $stmt = $dbConnection->prepare('update user_fields set placeholder=:name where hash=:h');
+            $stmt->execute(array(
+                ':h'=>$_POST['hash'],
+                ':name' => $_POST['name']
+                ));
+
+}
 if ($mode == "change_field_placeholder") {
 
             $stmt = $dbConnection->prepare('update ticket_fields set placeholder=:name where hash=:h');
@@ -2393,6 +2465,29 @@ if ($mode == "add_additional_tickets_perf") {
 
 }
 
+if ($mode == "add_additional_user_perf") {
+
+
+            $stmt = $dbConnection->prepare('INSERT into user_fields (name, placeholder, hash) values (:n,:p, :h)');
+            $stmt->execute(array(
+                ':n' => '',
+                ':p' => '',
+                ':h' => randomhash()
+            ));
+
+
+
+    get_user_form_view();
+
+}
+if ($mode == "del_userfield_item") {
+
+            $stmt = $dbConnection->prepare('delete from user_fields where hash=:h');
+            $stmt->execute(array(':h'=>$_POST['hash']));
+
+get_user_form_view();
+
+}
 if ($mode == "del_field_item") {
 
             $stmt = $dbConnection->prepare('delete from ticket_fields where hash=:h');
@@ -6271,7 +6366,77 @@ values (:unlock, :n, :unow, :tid)');
     }
         }
 
+if ($mode =="edit_profile_ad_f") {
 
+$uid=$_SESSION['helpdesk_user_id'];
+########################### ADDITIONAL FIELDS ###############################
+
+
+
+
+
+        $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+
+            $cur_hash=$row['hash'];
+
+        if ($_POST[$cur_hash]) {
+            //insert
+
+$v_field=$_POST[$cur_hash];
+if ($row['t_type'] == "multiselect") {
+    # code...
+    $v_field=implode(", ", $_POST[$cur_hash]);
+}
+
+
+
+            $stmtf = $dbConnection->prepare('SELECT id FROM user_data where user_id=:val and field_id=:fid');
+        $stmtf->execute(array(
+            ':val' => $uid,
+            ':fid' => $row['id']
+        ));
+        $ifex = $stmtf->fetch(PDO::FETCH_ASSOC);
+
+if ($ifex['id']) {
+            $stmts = $dbConnection->prepare('update user_data set field_val=:field_val, field_name=:field_name where field_id=:field_id and user_id=:user_id');
+            $stmts->execute(array(
+                ':user_id' => $uid,
+                ':field_id' => $row['id'],
+                ':field_val'=> $v_field,
+                ':field_name'=>$row['name']
+            ));
+}
+else if (!$ifex['id']) {
+
+            $stmts = $dbConnection->prepare('insert into user_data (user_id,field_id,field_val, field_name) VALUES (:user_id,:field_id,:field_val,:field_name)');
+            $stmts->execute(array(
+                ':user_id' => $uid,
+                ':field_id' => $row['id'],
+                ':field_val'=> $v_field,
+                ':field_name'=>$row['name']
+            ));
+
+    }
+
+
+
+        }
+
+        }
+
+
+
+
+            ########################### ADDITIONAL FIELDS ###############################
+                            $msg= " <div class=\"alert alert-success\">";
+                    $msg.=lang('PROFILE_msg_ok');
+                    $msg.= "</div>";
+
+                    echo $msg;
+}
 
 
 
@@ -6301,6 +6466,73 @@ values (:unlock, :n, :unow, :tid)');
 
             $unit = ($_POST['unit']);
             
+
+
+
+########################### ADDITIONAL FIELDS ###############################
+
+
+
+
+
+        $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+
+            $cur_hash=$row['hash'];
+
+        if ($_POST[$cur_hash]) {
+            //insert
+
+$v_field=$_POST[$cur_hash];
+if ($row['t_type'] == "multiselect") {
+    # code...
+    $v_field=implode(", ", $_POST[$cur_hash]);
+}
+
+
+
+            $stmtf = $dbConnection->prepare('SELECT id FROM user_data where user_id=:val and field_id=:fid');
+        $stmtf->execute(array(
+            ':val' => get_user_val_by_hash($usid, 'id'),
+            ':fid' => $row['id']
+        ));
+        $ifex = $stmtf->fetch(PDO::FETCH_ASSOC);
+
+if ($ifex['id']) {
+            $stmts = $dbConnection->prepare('update user_data set field_val=:field_val, field_name=:field_name where field_id=:field_id and user_id=:user_id');
+            $stmts->execute(array(
+                ':user_id' => get_user_val_by_hash($usid, 'id'),
+                ':field_id' => $row['id'],
+                ':field_val'=> $v_field,
+                ':field_name'=>$row['name']
+            ));
+}
+else if (!$ifex['id']) {
+
+            $stmts = $dbConnection->prepare('insert into user_data (user_id,field_id,field_val, field_name) VALUES (:user_id,:field_id,:field_val,:field_name)');
+            $stmts->execute(array(
+                ':user_id' => get_user_val_by_hash($usid, 'id'),
+                ':field_id' => $row['id'],
+                ':field_val'=> $v_field,
+                ':field_name'=>$row['name']
+            ));
+
+    }
+
+
+
+        }
+
+        }
+
+
+
+
+            ########################### ADDITIONAL FIELDS ###############################
+
+
 
 
 if ($user_to_def == "true") {
@@ -6560,6 +6792,13 @@ else {
             $user_to_def=$_POST['user_to_def'];
 
 
+
+
+
+
+
+
+
 if ($user_to_def == "true") {
 
     if ($def_unit_id != "0") {
@@ -6628,6 +6867,15 @@ else {
             }
             
             $hn = md5(time());
+
+
+
+
+            
+
+
+
+
             $stmt = $dbConnection->prepare('INSERT INTO users 
             (fio, 
             login, 
@@ -6709,7 +6957,65 @@ values
                 ':def_unit_id'=>$user_2_unit,
                 ':def_user_id'=>$user_2_user
             ));
+
+
+
+
+########################### ADDITIONAL FIELDS ###############################
+
+
+
+
+
+        $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+
+            $cur_hash=$row['hash'];
+
+        if ($_POST[$cur_hash]) {
+            //insert
+
+$v_field=$_POST[$cur_hash];
+if ($row['t_type'] == "multiselect") {
+    # code...
+    $v_field=implode(", ", $_POST[$cur_hash]);
+}
+
+
+            $stmt = $dbConnection->prepare('insert into user_data (user_id,field_id,field_val, field_name) VALUES (:user_id,:field_id,:field_val,:field_name)');
+            $stmt->execute(array(
+                ':user_id' => get_user_val_by_hash($hn, 'id'),
+                ':field_id' => $row['id'],
+                ':field_val'=> $v_field,
+                ':field_name'=>$row['name']
+            ));
         }
+
+        }
+
+
+
+
+            ########################### ADDITIONAL FIELDS ###############################
+
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
         if ($mode == "save_edit_ticket") {
             
             $t_hash = $_POST['t_hash'];

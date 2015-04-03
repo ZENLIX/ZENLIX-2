@@ -411,6 +411,151 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             
                           
 </div>
+
+
+
+<?php
+        $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+
+        if (!empty($res1)) 
+        {
+
+?>
+
+
+<div class="col-md-12">
+<div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-bookmark-o"></i> <?=lang('FIELD_add_title');?></h3>
+
+</div>
+      <div class="box-body">
+      <div class="panel-body">
+      
+ <!--######### ADDITIONAL FIELDS ############## -->
+
+<form id="add_field_form" class="form-horizontal" role="form">
+    <div >
+<?php
+
+        foreach ($res1 as $row) {
+
+
+?>
+
+                      <div class="" id="">
+    <div class="">
+        <div class="form-group">
+            <label for="<?=$row['hash'];?>" class="col-sm-4 control-label"><small><?=$row['name'];?>: </small></label>
+
+            <div class="col-sm-8" style=" padding-top: 5px; ">
+
+<?php 
+//echo get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+if ($row['t_type'] == "text") {
+    $v=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
+    //if ($row['value'] == "0") {$v="";}
+?>
+<input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
+<?php } ?>
+
+
+<?php 
+if ($row['t_type'] == "textarea") {
+$v=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
+?>
+<textarea rows="3" class="form-control input-sm animated" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>"><?=$v;?></textarea>
+<?php } ?>
+
+
+<?php 
+if ($row['t_type'] == "select") {
+$vs=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
+
+
+?>
+<select data-placeholder="<?=$row['placeholder'];?>" class="chosen-select form-control" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>">
+
+<?php 
+$v=explode(",", $row['value']);
+$vs=explode(",", $vs);
+ foreach ($v as $value) {
+     # code...
+ $sc="";
+ if (in_array($value, $vs)) {$sc="selected";}
+?>
+                            <option value="<?=$value;?>" <?=$sc;?>><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+
+<?php 
+if ($row['t_type'] == "multiselect") {
+    $vs=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
+
+?>
+
+
+
+
+
+<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple="multiple" >
+
+<?php 
+$v=explode(",", $row['value']);
+$vs=explode(",", $vs);
+ foreach ($v as $value) {
+     # code...
+     $sc="";
+ if (in_array($value, $vs)) {$sc="selected";}
+ 
+?>
+                            <option value="<?=$value;?>" <?=$sc;?>><?=$value;?></option>
+
+                            <?php
+                        }
+                            ?>
+                
+                        
+            </select>
+<?php } ?>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    </div> 
+
+    <?php
+}
+    ?>
+</div>
+    </form>
+    
+<!--######### ADDITIONAL FIELDS ############## -->
+    <div class="col-md-offset-3 col-md-6">
+<center>
+    <button type="submit" id="edit_profile_ad_f" value="<?php echo $usid ?>" class="btn btn-success"><i class="fa fa-pencil"></i> <?php echo lang('P_edit'); ?></button>
+</center>
+</div>
+</div><div id="ad_f_res"></div>
+
+      </div>
+      </div>
+      </div>
+<?php 
+
+}
+?>
+
 <div class="col-md-12">
   <?php
     $ul = get_userlogin_byid($_SESSION['helpdesk_user_id']);

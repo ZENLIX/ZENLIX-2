@@ -69,7 +69,18 @@ if ($tm != 0) {
 
 
                <header class="header">
+                                   <?php
+                    if ($main_portal == "true") {
+                        ?>
+            <a href="<?php echo $CONF['hostname'] ?>dashboard" class="logo">
+            <?php
+        }
+        else if ($main_portal == "false") {
+            ?>
             <a href="<?php echo $CONF['hostname'] ?>index.php" class="logo">
+            <?php
+        }
+        ?>
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
                 <img src="<?=get_logo_img('small');?>">
                  <?php echo $CONF['name_of_firm'] ?>
@@ -85,7 +96,17 @@ if ($tm != 0) {
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
-                    
+                    <?php
+                    if ($main_portal == "true") {
+                        ?>
+<li class="">
+<a href="<?php echo $CONF['hostname'] ?>"><?=lang('PORTAL_title');?></a>
+</li>
+<?php
+}
+?>
+
+
                     <li class="dropdown messages-menu">
                             <a href="#" id="show_online_users" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-users"></i>
@@ -342,7 +363,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                     <li <?php echo echoActiveClassIfRequestMatches("mailers") ?>><a href="<?php echo $CONF['hostname'] ?>mailers"><i class="fa fa-paper-plane-o"></i> <?php echo lang('NAVBAR_mailers'); ?></a></li>
 
                     <li <?php echo echoActiveClassIfRequestMatches("deps") ?>><a href="<?php echo $CONF['hostname'] ?>deps"><i class="fa fa-sitemap"></i> <?php echo lang('NAVBAR_deps'); ?></a></li>
-                    
+                    <li <?php echo echoActiveClassIfRequestMatches("units") ?>><a href="<?php echo $CONF['hostname'] ?>units"><i class="fa fa-building-o"></i> <?php echo lang('NAVBAR_units'); ?></a></li>
                     <li <?php echo echoActiveClassIfRequestMatches("files") ?>><a href="<?php echo $CONF['hostname'] ?>files"><i class="fa fa-files-o"></i>  <?php echo lang('NAVBAR_files'); ?></a></li>
                     
                     <li <?php echo echoActiveClassIfRequestMatches("scheduler") ?>><a href="<?php echo $CONF['hostname'] ?>scheduler"><i class="fa fa-clock-o"></i>  <?=lang('cron_navbar');?></a></li>
@@ -352,8 +373,8 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
                             
                             
                             <li <?php echo echoActiveClassIfRequestMatches("posada") ?> ><a href="<?php echo $CONF['hostname'] ?>posada"><i class="fa fa-male"></i> <?php echo lang('NAVBAR_posads'); ?></a></li>
-                            <li <?php echo echoActiveClassIfRequestMatches("units") ?>><a href="<?php echo $CONF['hostname'] ?>units"><i class="fa fa-building-o"></i> <?php echo lang('NAVBAR_units'); ?></a></li>
-                            <li <?php echo echoActiveClassIfRequestMatches("subj") ?>><a href="<?php echo $CONF['hostname'] ?>subj"><i class="fa fa-tags"></i> <?php echo lang('NAVBAR_subjs'); ?></a></li>
+                            
+                            
                             
                             </ul>
                             

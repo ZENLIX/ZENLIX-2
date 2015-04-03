@@ -774,36 +774,50 @@ if ($perw > 100) { $perw=100;}
 
 
 
+if ($sla_react == "0") {
+$sla_react=lang('SLA_not_sel');
 
-//сейчас - дата создания = сколько времени с момент создания
+}
+else if ($sla_react != "0") {
 
-//дата создания + деадлайн = крайник срок 
-
-//крайний срок - сейчас = осталось
-
-
-
-
-
-//если выполнена то таймер остановить
-//если не выполнена то считать 
+    $sla_react="<time id=\"f\" datetime=\"".$sla_react."\"></time>";
+}
 
 
 
+if ($sla_work == "0") {
+$sla_work=lang('SLA_not_sel');
 
-if ($sla_deadline == 0) {
+}
+
+
+
+
+else if ($sla_work != "0") {
+
+    $sla_work="<time id=\"f\" datetime=\"".$sla_work."\"></time>";
+}
+
+
+
+
+if ($sla_deadline == "0") {
     $left_secr=lang('SLA_not_sel');
     $ls="false";
 }
-else if ($sla_deadline != 0) {
+
+
+
+else if ($sla_deadline != "0") {
     
 
+//$left_sec=(strtotime($dcr)+$sla_deadline)-time();
+
+
+if ($status_ok == "0") {
+
+
 $left_sec=(strtotime($dcr)+$sla_deadline)-time();
-
-
-//Если выполнено
-
-
 if ($left_sec < 0) {
     $left_secr=lang('SLA_time_old');
     $ls="false";
@@ -812,7 +826,76 @@ if ($left_sec >= 0) {
     $left_secr=lang('SLA_deadline_t').": "."<time id=\"f\" datetime=\"".$left_sec."\"></time>";
     $ls="true";
 }
+
+
+$perd=floor(((time()-strtotime($dcr))*100)/$sla_deadline);
+
+
 }
+
+
+
+
+
+
+if ($status_ok == "1") {
+
+    $stmt_dl = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op DESC limit 1');
+    $stmt_dl->execute(array(
+        ':tid' => $tid,
+        ':m'=>'ok'
+    ));
+    $tts_dl = $stmt_dl->fetch(PDO::FETCH_ASSOC);
+
+
+$left_sec=(strtotime($dcr)+$sla_deadline)-strtotime($tts_dl['date_op']);
+
+
+
+
+$ok_by_time=(strtotime($tts_dl['date_op'])-strtotime($dcr));
+
+
+
+
+$perd=floor(((strtotime($tts_dl['date_op'])-strtotime($dcr))*100)/$sla_deadline);
+
+
+
+
+
+if ($left_sec < 0) {
+    $left_secr=lang('SLA_time_old');
+}
+
+
+if ($left_sec > 0) {
+ $left_secr=lang('SLA_deadline_ok_by')." "."<time id=\"f\" datetime=\"".$ok_by_time."\"></time>";
+}
+$ls="false";
+    }
+/*
+Если выполнено
+
+время выполнения - время создания = время всей заявки
+
+время создания + время деадлайн = допустимое время заявки
+
+если время всей заявки > допустимое время заявки то просрочено
+иначе: то: время все заявки показать
+
+---------------
+
+если не выполнена
+*/
+//$left_sec=(strtotime($dcr)+$sla_deadline)-time();
+
+
+
+
+}
+
+if ($perd > 100) { $perd=100;}
     ?>
 <div class="row">
     
@@ -828,7 +911,7 @@ if ($left_sec >= 0) {
                     <div class="progress-bar" style="width: <?=$per;?>%"></div>
                   </div>
                   <span class="progress-description">
-                    <?=lang('SLA_REGLAMENT');?>: <time id="f" datetime="<?=$sla_react;?>"></time>
+                    <?=lang('SLA_REGLAMENT');?>: <?=$sla_react;?>
                   </span>
                 </div><!-- /.info-box-content -->
               </div>
@@ -857,7 +940,7 @@ else if ($lock_status == "unlock") {
                     <div class="progress-bar" style="width: <?=$perw;?>%"></div>
                   </div>
                   <span class="progress-description">
-                    <?=lang('SLA_REGLAMENT');?>: <time id="f" datetime="<?=$sla_work;?>"></time>
+                    <?=lang('SLA_REGLAMENT');?>: <?=$sla_work;?>
                   </span>
                 </div><!-- /.info-box-content -->
               </div>
@@ -872,7 +955,7 @@ else if ($lock_status == "unlock") {
                   <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="deadline_timer" value="<?=$ls;?>"><?=$left_secr;?>
                   </span>
                   <div class="progress">
-                    <div class="progress-bar" style="width: <?=$per;?>%"></div>
+                    <div class="progress-bar" style="width: <?=$perd;?>%"></div>
                   </div>
                   <span class="progress-description">
                     <?=lang('SLA_REGLAMENT');?>: <time id="f" datetime="<?=$sla_deadline;?>"></time>

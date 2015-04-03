@@ -5,7 +5,8 @@ function lang_en($phrase){
 
 'SLA_NOT_LOCK'=>'not locked',
 'SLA_REGLAMENT'=>'Reglament',
-
+'SLA_deadline_ok'=>'Success',
+'SLA_deadline_ok_by'=>'Success by',
 'SLA_perf_reaction' => 'ticket response time',
 'SLA_perf_1' => 'With a low priority',
 'SLA_perf_2' => 'When a medium priority',
@@ -716,7 +717,7 @@ function lang_en($phrase){
 'NAVBAR_reports'=>'Reports',
 'NAVBAR_db'=>'Reference',
 'NAVBAR_posads'=>'Posts',
-'NAVBAR_units'=>'Management',
+'NAVBAR_units'=>'User groups',
 'NAVBAR_subjs'=>'Themes ticket',
 'NAVBAR_profile'=>'Profile',
 'NAVBAR_help'=>'Help',

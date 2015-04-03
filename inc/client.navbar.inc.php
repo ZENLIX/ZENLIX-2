@@ -36,7 +36,18 @@ if ($ap == 0) {
 
 
                <header class="header">
+ <?php
+                    if ($main_portal == "true") {
+                        ?>
+            <a href="<?php echo $CONF['hostname'] ?>dashboard" class="logo">
+            <?php
+        }
+        else if ($main_portal == "false") {
+            ?>
             <a href="<?php echo $CONF['hostname'] ?>index.php" class="logo">
+            <?php
+        }
+        ?>
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
                 <img src="<?=get_logo_img('small');?>"> <?php echo $CONF['name_of_firm'] ?>
             </a>
@@ -51,6 +62,19 @@ if ($ap == 0) {
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
+
+
+ <?php
+                    if ($main_portal == "true") {
+                        ?>
+<li class="">
+<a href="<?php echo $CONF['hostname'] ?>"><?=lang('PORTAL_title');?></a>
+</li>
+<?php
+}
+?>
+
+                    
                     <?php
 if (1 == 0) { ?> 
                         <!-- Messages: style can be found in dropdown.less-->
