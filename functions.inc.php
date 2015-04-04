@@ -2964,7 +2964,88 @@ function get_client_info_ticket($id) {
         </table>
 
                                     
-                                    
+ 
+<?php
+        $stmtf = $dbConnection->prepare('SELECT user_data.field_val as udf, user_data.field_name as udfn from user_data,user_fields where user_data.field_id=user_fields.id and user_data.user_id=:uid and user_fields.for_client=1 and user_fields.status=1');
+        $stmtf->execute(array(':uid' => $id));
+        $resf = $stmtf->fetchAll();
+
+
+if (!empty($resf)) {
+?>
+<br>
+<center>
+<?=lang('FIELD_add_title');?></center>
+<table class="table  ">
+   <tbody>
+<?php
+
+
+
+foreach ($resf as $fv) {
+
+    ?>
+            <tr>
+                <td style=" width: 30px; "><small><?php
+        echo $fv['udfn']; ?>:</small></td>
+                <td><small><?php
+        echo $fv['udf']
+?></small></td>
+            </tr>
+    <?php
+
+
+}
+?>
+
+                 </tbody>
+                 </table> 
+
+<?php
+}
+
+?>
+
+<?php
+
+        if ($priv_val <> "1") { 
+        $stmtf = $dbConnection->prepare('SELECT user_data.field_val as udf, user_data.field_name as udfn from user_data,user_fields where user_data.field_id=user_fields.id and user_data.user_id=:uid and user_fields.for_client=0 and user_fields.status=1');
+        $stmtf->execute(array(':uid' => $id));
+        $resf = $stmtf->fetchAll();
+
+
+if (!empty($resf)) {
+?>
+<br>
+<table class="table  ">
+   <tbody>
+<?php
+
+
+
+foreach ($resf as $fv) {
+
+    ?>
+            <tr>
+                <td style=" width: 30px; "><small><?php
+        echo $fv['udfn']; ?>:</small></td>
+                <td><small><?php
+        echo $fv['udf']
+?></small></td>
+            </tr>
+    <?php
+
+
+}
+?>
+
+                 </tbody>
+                 </table> 
+
+<?php
+}
+}
+?>                                   
                                     
                                     
                                                                  </div><!-- /.box-body -->
@@ -3980,7 +4061,93 @@ function get_client_info($id) {
             </tr>
                         </tbody>
         </table>
-                                    
+
+
+
+<?php
+        $stmtf = $dbConnection->prepare('SELECT user_data.field_val as udf, user_data.field_name as udfn from user_data,user_fields where user_data.field_id=user_fields.id and user_data.user_id=:uid and user_fields.for_client=1 and user_fields.status=1');
+        $stmtf->execute(array(':uid' => $id));
+        $resf = $stmtf->fetchAll();
+
+
+if (!empty($resf)) {
+?>
+<br>
+<center>
+<?=lang('FIELD_add_title');?></center>
+<table class="table  ">
+   <tbody>
+<?php
+
+
+
+foreach ($resf as $fv) {
+
+    ?>
+            <tr>
+                <td style=" width: 30px; "><small><?php
+        echo $fv['udfn']; ?>:</small></td>
+                <td><small><?php
+        echo $fv['udf']
+?></small></td>
+            </tr>
+    <?php
+
+
+}
+?>
+
+                 </tbody>
+                 </table> 
+
+<?php
+}
+
+?>
+
+<?php
+
+        if ($priv_val <> "1") { 
+        $stmtf = $dbConnection->prepare('SELECT user_data.field_val as udf, user_data.field_name as udfn from user_data,user_fields where user_data.field_id=user_fields.id and user_data.user_id=:uid and user_fields.for_client=0 and user_fields.status=1');
+        $stmtf->execute(array(':uid' => $id));
+        $resf = $stmtf->fetchAll();
+
+
+if (!empty($resf)) {
+?>
+<br>
+<table class="table  ">
+   <tbody>
+<?php
+
+
+
+foreach ($resf as $fv) {
+
+    ?>
+            <tr>
+                <td style=" width: 30px; "><small><?php
+        echo $fv['udfn']; ?>:</small></td>
+                <td><small><?php
+        echo $fv['udf']
+?></small></td>
+            </tr>
+    <?php
+
+
+}
+?>
+
+                 </tbody>
+                 </table> 
+
+<?php
+}
+}
+?>
+
+
+              
                                 </div><!-- /.box-body -->
                             </div>
                             
@@ -4121,6 +4288,87 @@ function get_client_info($id) {
                         </tbody>
         </table>
                                     
+<?php
+        $stmtf = $dbConnection->prepare('SELECT user_data.field_val as udf, user_data.field_name as udfn from user_data,user_fields where user_data.field_id=user_fields.id and user_data.user_id=:uid and user_fields.for_client=1 and user_fields.status=1');
+        $stmtf->execute(array(':uid' => $id));
+        $resf = $stmtf->fetchAll();
+
+
+if (!empty($resf)) {
+?>
+<br>
+<center>
+<?=lang('FIELD_add_title');?></center>
+<table class="table  ">
+   <tbody>
+<?php
+
+
+
+foreach ($resf as $fv) {
+
+    ?>
+            <tr>
+                <td style=" width: 30px; "><small><?php
+        echo $fv['udfn']; ?>:</small></td>
+                <td><small><?php
+        echo $fv['udf']
+?></small></td>
+            </tr>
+    <?php
+
+
+}
+?>
+
+                 </tbody>
+                 </table> 
+
+<?php
+}
+
+?>
+
+<?php
+
+        if ($priv_val <> "1") { 
+        $stmtf = $dbConnection->prepare('SELECT user_data.field_val as udf, user_data.field_name as udfn from user_data,user_fields where user_data.field_id=user_fields.id and user_data.user_id=:uid and user_fields.for_client=0 and user_fields.status=1');
+        $stmtf->execute(array(':uid' => $id));
+        $resf = $stmtf->fetchAll();
+
+
+if (!empty($resf)) {
+?>
+<br>
+<table class="table  ">
+   <tbody>
+<?php
+
+
+
+foreach ($resf as $fv) {
+
+    ?>
+            <tr>
+                <td style=" width: 30px; "><small><?php
+        echo $fv['udfn']; ?>:</small></td>
+                <td><small><?php
+        echo $fv['udf']
+?></small></td>
+            </tr>
+    <?php
+
+
+}
+?>
+
+                 </tbody>
+                 </table> 
+
+<?php
+}
+}
+?>
                                 </div><!-- /.box-body -->
                             </div>
 <?php

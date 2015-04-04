@@ -274,7 +274,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 <?php
-        $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
+        $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n and for_client=1');
         $stmt->execute(array(':n' => '1'));
         $res1 = $stmt->fetchAll();
 

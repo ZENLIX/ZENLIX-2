@@ -384,7 +384,26 @@ $cat=get_post_val_by_hash($cat, 'id');
     return $count;
 }
 
+function get_total_pages_posts_status($cat,$status) {
+    global $dbConnection;
+    $perpage = '10';
+    if (!$cat) {$cat=1;}
 
+    $res = $dbConnection->prepare("SELECT count(*) from portal_posts where parent_id=0 and type=:t and status=:s");
+    $res->execute(array(':t'=>$cat, ':s'=>$status));
+    $count = $res->fetch(PDO::FETCH_NUM);
+    $count = $count[0];
+    
+    if ($count <> 0) {
+        $pages_count = ceil($count / $perpage);
+        return $pages_count;
+    } else {
+        $pages_count = 0;
+        return $pages_count;
+    }
+    
+    return $count;
+}
 
 function get_total_pages_posts($cat) {
     global $dbConnection;

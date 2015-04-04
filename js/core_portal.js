@@ -1343,8 +1343,9 @@ if (ispath('cat')) {
             },
             onPageClicked: function(e, originalEvent, type, page) {
                 var current = $("#curent_page").attr('value');
+                var st_str=$("#st_str").attr('value');
                 if (page != current) {
-window.location = MyHOSTNAME + "cat?"+$("#cat").val()+"&p="+page;
+window.location = MyHOSTNAME + "cat?"+$("#cat").val()+st_str+"&p="+page;
 /*                                  &r=2
                     $("#spinner").fadeIn(300);
                     $("#curent_page").attr('value', page);

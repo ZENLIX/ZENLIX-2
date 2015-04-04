@@ -243,6 +243,92 @@ if ($user_status != "2") {
               <div class="col-md-9"><small><?php echo $user_mail; ?></small></div><?php
     } ?> 
               
+
+
+
+<?php
+        $stmtf = $dbConnection->prepare('SELECT user_data.field_val as udf, user_data.field_name as udfn from user_data,user_fields where user_data.field_id=user_fields.id and user_data.user_id=:uid and user_fields.for_client=1 and user_fields.status=1');
+        $stmtf->execute(array(':uid' => $user_id));
+        $resf = $stmtf->fetchAll();
+
+
+if (!empty($resf)) {
+?>
+<br><br><br>
+<center>
+<?=lang('FIELD_add_title');?></center>
+<table class="table  ">
+   <tbody>
+<?php
+
+
+
+foreach ($resf as $fv) {
+
+    ?>
+            <tr>
+                <td style=" width: 30px; "><small><?php
+        echo $fv['udfn']; ?>:</small></td>
+                <td><small><?php
+        echo $fv['udf']
+?></small></td>
+            </tr>
+    <?php
+
+
+}
+?>
+
+                 </tbody>
+                 </table> 
+
+<?php
+}
+
+?>
+
+<?php
+
+        if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'priv') <> "1") { 
+        $stmtf = $dbConnection->prepare('SELECT user_data.field_val as udf, user_data.field_name as udfn from user_data,user_fields where user_data.field_id=user_fields.id and user_data.user_id=:uid and user_fields.for_client=0 and user_fields.status=1');
+        $stmtf->execute(array(':uid' => $user_id));
+        $resf = $stmtf->fetchAll();
+
+
+if (!empty($resf)) {
+?>
+<br>
+<table class="table  ">
+   <tbody>
+<?php
+
+
+
+foreach ($resf as $fv) {
+
+    ?>
+            <tr>
+                <td style=" width: 30px; "><small><?php
+        echo $fv['udfn']; ?>:</small></td>
+                <td><small><?php
+        echo $fv['udf']
+?></small></td>
+            </tr>
+    <?php
+
+
+}
+?>
+
+                 </tbody>
+                 </table> 
+
+<?php
+}
+}
+?>
+
+
               
           </div>
           

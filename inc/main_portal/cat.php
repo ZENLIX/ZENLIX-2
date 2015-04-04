@@ -185,9 +185,34 @@ limit :start_pos, :perpage');
             <input type="hidden" id="cur_page" value="<?=$p;?>">
             <input type="hidden" id="cat" value="<?=$hn;?>">
 
+<?php
 
-            <input type="hidden" id="total_pages" value="<?php
+
+
+
+
+
+
+
+
+
+
+if (isset($_GET['status'])) { ?>
+<input type="hidden" id="total_pages" value="<?=get_total_pages_posts_status($hn,$_GET['status']);?>">
+<input type="hidden" id="st_str" value="&status=<?=$_GET['status'];?>">
+<?php
+
+}
+else if (!isset($_GET['status'])) { ?>
+<input type="hidden" id="total_pages" value="<?php
         echo get_total_pages_posts($hn); ?>">
+        <input type="hidden" id="st_str" value="">
+<?php
+  
+}
+
+?>
+            
 
 
 
