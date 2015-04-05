@@ -230,6 +230,9 @@ else if ($main_portal == "false") {
                         case 'user_stats':
                             include ('inc/user_stats.php');
                             break;
+                        case 'sla_rep':
+                            include ('inc/sla_rep.php');
+                            break;
                             
                         case 'scheduler':
                             include ('inc/scheduler.php');

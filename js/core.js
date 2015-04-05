@@ -1356,6 +1356,68 @@ php:
 	     };
     
 
+
+
+    if (ispath('sla_rep')) {
+
+
+        $("#unitstat_id").select2({
+            allowClear: true,
+            maximumSelectionSize: 15,
+            formatNoMatches: get_lang_param('JS_not_found')
+        });
+
+
+
+
+
+
+        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+
+           
+
+            $("#start_time").val(picker.startDate.format('YYYY-MM-DD'));
+            $("#stop_time").val(picker.endDate.format('YYYY-MM-DD'));
+
+
+        });
+        $('#reservation').daterangepicker({
+            format: 'YYYY-MM-DD'
+        });
+
+
+
+
+$('body').on('click', 'button#sla_stat_make', function(event) {
+            event.preventDefault();
+             var p = $('#unitstat_id').val();
+             var start_time=$("#start_time").val();
+             var stop_time=$("#stop_time").val();
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=get_sla_period_stat"+
+                "&start=" + start_time + "&end=" + stop_time+ "&unit="+p,
+                success: function(html) {
+                    $('#ts_res').html(html);
+                    $(".knob").knob();
+                    makemytime();
+                }
+            });
+
+
+        });
+
+
+
+    }
+
+
+
+
+
+
     if (ispath('main_stats')) {
 
 

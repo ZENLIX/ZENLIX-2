@@ -194,6 +194,27 @@ else if (!isset($_GET['edit_feed'])) {
                 <?=$news_item['msg'];?>
                 </div>
                 <div class="box-footer">
+
+
+<?php
+$logo_img=$CONF['hostname']."upload_files/avatars/".get_conf_param('logo_img');
+if (strlen(get_conf_param('logo_img')) < 5) {
+  $logo_img=$CONF['hostname'].'img/ZENLIX_small.png';
+}
+?>
+
+<a style="width:25px;" class="btn btn-xs btn-twitter" href="http://twitter.com/share?text=<?=$news_item['title'];?>&url=<?php echo urlencode( $CONF['hostname'].$_SERVER['REQUEST_URI']); ?>" title="Share on Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+
+<a style="width:25px;" class="btn btn-xs btn-facebook" 
+href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=<?php echo urlencode( $CONF['hostname'].$_SERVER['REQUEST_URI']); ?>&p[title]=<?php echo $news_item['title']; ?>&p[summary]=<?php echo $news_item['msg']; ?>&p[images][0]=<?php echo $logo_img ?>"
+
+
+><i class="fa fa-facebook"></i></a>
+<a style="width:25px;" class="btn btn-xs btn-google-plus" href="https://plus.google.com/share?url=<?php echo urlencode( $CONF['hostname'].$_SERVER['REQUEST_URI']); ?>"><i class="fa fa-google-plus"></i></a>
+
+<a style="width:25px;" class="btn btn-xs btn-github" href="mailto:?subject=&body=<?=$news_item['title'];?> - <?=$CONF['hostname'].$_SERVER['REQUEST_URI'];?>"><i class="fa fa-envelope"></i></a>
+
+                <br>
                 <small class="text-muted">
                 <time id="c" datetime="<?=$news_item['dt'];?>"></time>
                 </small>

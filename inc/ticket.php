@@ -756,7 +756,7 @@ if (get_ticket_time_reaction_sec($tid) == 0) {
 $per=floor((get_ticket_time_reaction_sec_no_lock($tid)*100)/$sla_react);
 }
 else if (get_ticket_time_reaction_sec($tid) != 0) {
-    $per=floor((get_ticket_time_reaction_sec($tid)*100)/$sla_react);
+$per=floor((get_ticket_time_reaction_sec($tid)*100)/$sla_react);
 }
 if ($per > 100) { $per=100;}
 

@@ -246,6 +246,209 @@ function lang($in) {
     return $res;
 }
 
+function get_ticket_sla_status_nook($ticket_id) {
+
+
+ global $dbConnection;
+
+    $stmt = $dbConnection->prepare('select * from tickets where id=:ticket_id');
+    $stmt->execute(array(
+        ':ticket_id' => $ticket_id
+    ));
+    $ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($ticket['sla_plan_id'] == 0) {
+    $r = array(
+    'status'=>'false'
+    );
+}
+    else if ($ticket['sla_plan_id'] != 0) {
+
+           $stmt_sla = $dbConnection->prepare('SELECT * from sla_plans where id=:uid');
+    $stmt_sla->execute(array(':uid' => $ticket['sla_plan_id']));
+    $row_sla = $stmt_sla->fetch(PDO::FETCH_ASSOC);
+$pr=$ticket['prio'];
+if ($pr == "0") {
+$sla_react=$row_sla['reaction_time_low_prio'];
+$sla_work=$row_sla['work_time_low_prio'];
+$sla_deadline=$row_sla['deadline_time_low_prio'];
+}
+else if ($pr == "1") {
+$sla_react=$row_sla['reaction_time_def'];
+$sla_work=$row_sla['work_time_def'];
+$sla_deadline=$row_sla['deadline_time_def'];
+}
+
+else if ($pr == "2") {
+$sla_react=$row_sla['reaction_time_high_prio'];
+$sla_work=$row_sla['work_time_high_prio'];
+$sla_deadline=$row_sla['deadline_time_high_prio'];
+}
+
+
+$dcr=$ticket['date_create'];
+
+
+if (get_ticket_time_reaction_sec($ticket_id) == 0) {
+$per=floor((get_ticket_time_reaction_sec_no_lock($ticket_id)*100)/$sla_react);
+}
+else if (get_ticket_time_reaction_sec($ticket_id) != 0) {
+$per=floor((get_ticket_time_reaction_sec($ticket_id)*100)/$sla_react);
+}
+if ($per > 100) { $per=100;}
+$per=100-$per;
+
+
+
+
+
+if (get_ticket_time_lock_sec($ticket_id) == 0) {
+$perw=0;
+}
+else if (get_ticket_time_lock_sec($ticket_id) != 0) {
+    $perw=floor((get_ticket_time_lock_sec($ticket_id)*100)/$sla_work);
+}
+if ($perw > 100) { $perw=100;}
+$perw=100-$perw;
+
+
+
+
+    $stmt_dl = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op DESC limit 1');
+    $stmt_dl->execute(array(
+        ':tid' => $ticket_id,
+        ':m'=>'ok'
+    ));
+    $tts_dl = $stmt_dl->fetch(PDO::FETCH_ASSOC);
+
+
+$perd=floor(((time()-strtotime($dcr))*100)/$sla_deadline);
+if ($perd > 100) { $perd=100;}
+$perd=100-$perd;
+
+
+
+
+
+
+
+
+
+
+
+$r = array(
+    'react'=> $per,
+    'work'=> $perw,
+    'dl'=> $perd,
+    'status'=>'true'
+    );
+
+
+    }
+
+    return $r;
+
+
+}
+
+function get_ticket_sla_status($ticket_id) {
+        global $dbConnection;
+
+    $stmt = $dbConnection->prepare('select * from tickets where id=:ticket_id');
+    $stmt->execute(array(
+        ':ticket_id' => $ticket_id
+    ));
+    $ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($ticket['sla_plan_id'] == 0) {
+    $r = array(
+    'status'=>'false'
+    );
+}
+    else if ($ticket['sla_plan_id'] != 0) {
+
+           $stmt_sla = $dbConnection->prepare('SELECT * from sla_plans where id=:uid');
+    $stmt_sla->execute(array(':uid' => $ticket['sla_plan_id']));
+    $row_sla = $stmt_sla->fetch(PDO::FETCH_ASSOC);
+$pr=$ticket['prio'];
+if ($pr == "0") {
+$sla_react=$row_sla['reaction_time_low_prio'];
+$sla_work=$row_sla['work_time_low_prio'];
+$sla_deadline=$row_sla['deadline_time_low_prio'];
+}
+else if ($pr == "1") {
+$sla_react=$row_sla['reaction_time_def'];
+$sla_work=$row_sla['work_time_def'];
+$sla_deadline=$row_sla['deadline_time_def'];
+}
+
+else if ($pr == "2") {
+$sla_react=$row_sla['reaction_time_high_prio'];
+$sla_work=$row_sla['work_time_high_prio'];
+$sla_deadline=$row_sla['deadline_time_high_prio'];
+}
+
+
+$dcr=$ticket['date_create'];
+
+
+
+$per=floor((get_ticket_time_reaction_sec($ticket_id)*100)/$sla_react);
+if ($per > 100) { $per=100;}
+$per=100-$per;
+
+
+
+
+
+
+
+$perw=floor((get_ticket_time_lock_sec($ticket_id)*100)/$sla_work);
+if ($perw > 100) { $perw=100;}
+$perw=100-$perw;
+
+
+
+
+    $stmt_dl = $dbConnection->prepare('SELECT date_op from ticket_log where ticket_id=:tid and msg=:m order by date_op DESC limit 1');
+    $stmt_dl->execute(array(
+        ':tid' => $ticket_id,
+        ':m'=>'ok'
+    ));
+    $tts_dl = $stmt_dl->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+$perd=floor(((strtotime($tts_dl['date_op'])-strtotime($dcr))*100)/$sla_deadline);
+if ($perd > 100) { $perd=100;}
+$perd=100-$perd;
+
+
+
+
+
+
+
+
+
+
+
+$r = array(
+    'react'=> $per,
+    'work'=> $perw,
+    'dl'=> $perd,
+    'status'=>'true'
+    );
+
+
+    }
+
+    return $r;
+
+}
+
+
 function get_last_action_ticket($ticket_id) {
     global $dbConnection;
     $stmt = $dbConnection->prepare('select date_op, msg, init_user_id, to_user_id, to_unit_id from ticket_log where ticket_id=:ticket_id order by date_op DESC limit 1');

@@ -1041,6 +1041,657 @@ values (:comment, :n, :user_comment, :tid_comment)');
             }
         }
         
+
+        if ($mode == "get_sla_period_stat") {
+            $start = $_POST['start'] . " 00:00:00";
+            $end = $_POST['end'] . " 23:59:00";
+            $unit = $_POST['unit'];
+
+
+if ($unit != "0") {
+    ?>
+
+<div class="box box-solid">
+ <div class="box-header">
+
+<h4 class="">
+<center>
+<?php echo get_unit_name($unit); ?></center></h4>
+<h5><center>
+    <?php
+
+
+                echo lang('STATS_by_unit'); ?> <br> <time id="c" datetime="<?php
+                echo $start ?>"></time> - <time id="c" datetime="<?php
+                echo $end ?>"></time>
+</center>
+
+</h5><hr>
+</div>
+<div class="box-body">
+
+
+
+
+
+
+
+
+<center><h4><?=lang('STAT_MAIN_t1');?></h4></center>
+<table class="table table-bordered">
+<tbody>
+
+                                <tr>
+                    <td style=""><strong><small><center><?=lang('STAT_MAIN_num');?></center></small></strong></td>
+                    <td style=""><strong><small><center>#</center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('NEW_subj');?></center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_create');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_init');?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_to');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('USERS_p_4');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_status');?>  </center></small></strong></td>
+                    
+                </tr>
+
+
+<?php
+                
+                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where id !=:system and is_client=0 order by fio ASC');
+                $stmt->execute(array(
+                    ':system' => '1'
+                ));
+                $res1 = $stmt->fetchAll();
+                $i = 1;
+                foreach ($res1 as $row) {
+                    
+                    $ec = explode(",", $row['unit']);
+                    
+                    if (in_array($unit, $ec)) {
+                        
+                        //$row['value']; //ID
+                        //
+                        $usr_id = $row['value'];
+                        $stmt = $dbConnection->prepare('SELECT date_op, msg, init_user_id, to_user_id, to_unit_id, ticket_id from ticket_log where init_user_id=:iud and date_op between :start AND :end AND msg=:msg order by date_op ASC');
+                        $stmt->execute(array(
+                            ':iud' => $usr_id,
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':msg' => 'create'
+                        ));
+                        $re = $stmt->fetchAll();
+                        
+                        if (!empty($re)) {
+                            
+                            foreach ($re as $row) {
+
+                                //$row['id'];
+                ////////////////////////////Показывает кому/////////////////////////////////////////////////////////////////
+                if ($row['to_user_id'] <> 0) {
+                    $to_text = "<div class=''>" . nameshort(name_of_user_ret($row['to_user_id'])) . "</div>";
+                }
+                if ($row['to_user_id'] == 0) {
+                    $to_text = view_array(get_unit_name_return($row['to_unit_id'])) ;
+                }
+                
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
+                    $t_status=get_ticket_val_by_hash('status', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_ob=get_ticket_val_by_hash('ok_by', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_dc=get_ticket_val_by_hash('date_create', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_lb=get_ticket_val_by_hash('lock_by', get_ticket_hash_by_id($row['ticket_id']));
+                if ($t_status == 1) {
+                    $st = "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> " . lang('t_list_a_oko') . " " . nameshort(name_of_user_ret_nolink($t_ob)) . "</span>";
+                    $t_ago = get_date_ok($t_dc, $row['ticket_id']);
+                }
+                if ($t_status == 0) {
+                    $t_ago = $t_dc;
+                    if ($t_lb <> 0) {
+
+                            $st = "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> " . lang('t_list_a_lock_u') . " " . nameshort(name_of_user_ret_nolink($t_lb)) . "</span>";
+                        
+                    }
+                    if ($t_lb == 0) {
+                        $st = "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> " . lang('t_list_a_hold') . "</span>";
+                    }
+                }
+                
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+?>
+
+                                <tr>
+                    <td style=""><small><center><?php echo $i; ?></center></small></td>
+                    <td style=""><small><center><?php echo $row['ticket_id']; ?> </center>  </small></td>
+                    <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['ticket_id']);?>">
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['ticket_id']))), 'no')); ?>
+                    </a>
+                    </small></td>
+                    <td style=""><small><time id="c" datetime="<?php echo $row['date_op'] ?>"></time>   </small></td>
+                    <td style=""><small><?php echo name_of_user_ret($row['init_user_id']); ?>       </small></td>
+                    <td style=""><small><?=$to_text; ?> </small></td>
+                    <td style=""><small><?=nameshort(name_of_user_ret(get_ticket_val_by_hash('client_id', get_ticket_hash_by_id($row['ticket_id']))));?> </small></td>
+                    <td style=""><small><?=$st;?>  </small></td>
+                    
+                </tr>
+
+
+<?php
+                                //echo $row['date_op'] . "<br>";
+                                $i++;
+                            }
+                        }
+                    }
+                }
+?>
+</tbody>
+</table>
+<br>
+<br>
+
+
+
+
+<center><h4><?=lang('STAT_MAIN_t4');?></h4></center>
+<table class="table table-bordered">
+<tbody>
+
+                <tr>
+                    <td style=""><strong><small><center><?=lang('STAT_MAIN_num');?></center></small></strong></td>
+                    <td style=""><strong><small><center>#</center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('NEW_subj');?></center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_create');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_init');?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_to');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('USERS_p_4');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_status');?>  </center></small></strong></td>
+                    
+                </tr>
+
+
+<?php
+                
+
+
+
+
+$ar_u=array();
+                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where id !=:system and is_client=0 order by fio ASC');
+                $stmt->execute(array(
+                    ':system' => '1'
+                ));
+                $res1 = $stmt->fetchAll();
+                $i = 1;
+                foreach ($res1 as $row) {
+                    
+                    $ec = explode(",", $row['unit']);
+                    
+                    if (in_array($unit, $ec)) {
+                        
+                        //$row['value']; //ID
+                        //
+                        $usr_id = $row['value'];
+
+
+                        $stmt = $dbConnection->prepare('SELECT date_op, msg, init_user_id, to_user_id, to_unit_id, ticket_id from ticket_log where ((find_in_set(:user_id,to_user_id))
+                            ) and date_op between :start AND :end AND msg=:msg order by date_op ASC');
+                        $stmt->execute(array(
+                            ':user_id' => $usr_id,
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':msg' => 'create'
+                        ));
+                        $re = $stmt->fetchAll();
+                        $ar_u=array_merge($ar_u, $re);
+}
+}
+
+                        $stmt2 = $dbConnection->prepare('SELECT date_op, msg, init_user_id, to_user_id, to_unit_id, ticket_id from ticket_log where to_unit_id=:unit_id AND to_user_id=:u
+                             and date_op between :start AND :end AND msg=:msg order by date_op ASC');
+                        $stmt2->execute(array(
+                            ':unit_id' => $unit,
+                            ':u'=>'0',
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':msg' => 'create'
+                        ));
+                        $re2 = $stmt2->fetchAll();
+
+                        $re_s=array_merge($re2, $ar_u);
+                        
+                        if (!empty($re_s)) {
+                            
+                            foreach ($re_s as $row) {
+
+                                //$row['id'];
+                ////////////////////////////Показывает кому/////////////////////////////////////////////////////////////////
+                if ($row['to_user_id'] <> 0) {
+                    $to_text = "<div class=''>" . nameshort(name_of_user_ret($row['to_user_id'])) . "</div>";
+                }
+                if ($row['to_user_id'] == 0) {
+                    $to_text = view_array(get_unit_name_return($row['to_unit_id'])) ;
+                }
+                
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
+                    $t_status=get_ticket_val_by_hash('status', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_ob=get_ticket_val_by_hash('ok_by', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_dc=get_ticket_val_by_hash('date_create', get_ticket_hash_by_id($row['ticket_id']));
+                    $t_lb=get_ticket_val_by_hash('lock_by', get_ticket_hash_by_id($row['ticket_id']));
+                if ($t_status == 1) {
+                    $st = "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> " . lang('t_list_a_oko') . " " . nameshort(name_of_user_ret_nolink($t_ob)) . "</span>";
+                    $t_ago = get_date_ok($t_dc, $row['ticket_id']);
+                }
+                if ($t_status == 0) {
+                    $t_ago = $t_dc;
+                    if ($t_lb <> 0) {
+
+                            $st = "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> " . lang('t_list_a_lock_u') . " " . nameshort(name_of_user_ret_nolink($t_lb)) . "</span>";
+                        
+                    }
+                    if ($t_lb == 0) {
+                        $st = "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> " . lang('t_list_a_hold') . "</span>";
+                    }
+                }
+                
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+?>
+
+                                <tr>
+                    <td style=""><small><center><?php echo $i; ?></center></small></td>
+                    <td style=""><small><center><?php echo $row['ticket_id']; ?> </center>  </small></td>
+                    <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['ticket_id']);?>">
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['ticket_id']))), 'no')); ?>
+                    </a>
+                    </small></td>
+                    <td style=""><small><time id="c" datetime="<?php echo $row['date_op'] ?>"></time>   </small></td>
+                    <td style=""><small><?php echo name_of_user_ret($row['init_user_id']); ?>       </small></td>
+                    <td style=""><small><?=$to_text; ?> </small></td>
+                    <td style=""><small><?=nameshort(name_of_user_ret(get_ticket_val_by_hash('client_id', get_ticket_hash_by_id($row['ticket_id']))));?> </small></td>
+                    <td style=""><small><?=$st;?>  </small></td>
+                    
+                </tr>
+
+
+<?php
+                                //echo $row['date_op'] . "<br>";
+                                $i++;
+                            
+                        
+                    }
+                }
+?>
+</tbody>
+</table>
+<br>
+<br>
+
+
+
+
+
+
+
+
+<center><h4><?=lang('STAT_MAIN_t2');?></h4></center>
+<table class="table table-bordered">
+<tbody>
+                                <tr>
+                    <td style=""><strong><small><center><?=lang('STAT_MAIN_num');?></center></small></strong></td>
+                    <td style=""><strong><small><center>#</center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('NEW_subj');?></center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_create');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_init');?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_to');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('USERS_p_4');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_status');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('PERF_menu_sla');?>  </center></small></strong></td>
+                    
+                </tr>
+
+
+
+<?php
+                
+
+
+$res_react_ok=0;
+$res_react_no=0;
+$res_work_ok=0;
+$res_work_no=0;
+$res_dl_ok=0;
+$res_dl_no=0;
+
+                $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where id !=:system and is_client=0 order by fio ASC');
+                $stmt->execute(array(
+                    ':system' => '1'
+                ));
+                $res1 = $stmt->fetchAll();
+                $i = 1;
+                foreach ($res1 as $row) {
+                    
+                    $ec = explode(",", $row['unit']);
+                    
+                    if (in_array($unit, $ec)) {
+                        
+                        //$row['value']; //ID
+                        //
+                        $usr_id = $row['value'];
+                        $stmt = $dbConnection->prepare('SELECT * from tickets where ok_by=:iud and ok_date between :start AND :end  order by ok_date ASC');
+                        $stmt->execute(array(
+                            ':iud' => $usr_id,
+                            ':start' => $start,
+                            ':end' => $end
+                        ));
+                        $re = $stmt->fetchAll();
+                        
+                        if (!empty($re)) {
+                            
+                            foreach ($re as $row) {
+
+                                //$row['id'];
+                ////////////////////////////Показывает кому/////////////////////////////////////////////////////////////////
+                if ($row['user_to_id'] <> 0) {
+                    $to_text = "<div class=''>" . nameshort(name_of_user_ret($row['user_to_id'])) . "</div>";
+                }
+                if ($row['user_to_id'] == 0) {
+                    $to_text = view_array(get_unit_name_return($row['unit_id'])) ;
+                }
+                
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
+                    $t_status=get_ticket_val_by_hash('status', get_ticket_hash_by_id($row['id']));
+                    $t_ob=get_ticket_val_by_hash('ok_by', get_ticket_hash_by_id($row['id']));
+                    $t_dc=get_ticket_val_by_hash('date_create', get_ticket_hash_by_id($row['id']));
+                    $t_lb=get_ticket_val_by_hash('lock_by', get_ticket_hash_by_id($row['id']));
+                if ($t_status == 1) {
+                    $st = "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> " . lang('t_list_a_oko') . " " . nameshort(name_of_user_ret_nolink($t_ob)) . "</span>";
+                    $t_ago = get_date_ok($t_dc, $row['id']);
+                }
+                if ($t_status == 0) {
+                    $t_ago = $t_dc;
+                    if ($t_lb <> 0) {
+
+                            $st = "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> " . lang('t_list_a_lock_u') . " " . nameshort(name_of_user_ret_nolink($t_lb)) . "</span>";
+                        
+                    }
+                    if ($t_lb == 0) {
+                        $st = "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> " . lang('t_list_a_hold') . "</span>";
+                    }
+                }
+                
+                $sla=get_ticket_sla_status($row['id']);
+
+if ($sla['status'] == "true") {
+
+
+    if ($sla['react'] == 0) {$sla['react']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>";
+    $res_react_no++;
+}
+    else if (($sla['react'] > 0) && ($sla['react'] < 50) ) { $sla['react']="<span class=\"label label-warning\">".$sla['react']."% </span>";
+$res_react_ok++; }
+    else if (($sla['react'] >= 50)) { $sla['react']="<span class=\"label label-success\">".$sla['react']."% </span>"; $res_react_ok++; }
+
+
+    if ($sla['work'] == 0) {$sla['work']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>"; $res_work_no++; }
+    else if (($sla['work'] > 0) && ($sla['work'] < 50) ) { $sla['work']="<span class=\"label label-warning\">".$sla['work']."% </span>"; $res_work_ok++; }
+    else if (($sla['work'] >= 50)) { $sla['work']="<span class=\"label label-success\">".$sla['work']."% </span>"; $res_work_ok++;}
+
+    if ($sla['dl'] == 0) {$sla['dl']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>"; $res_dl_no++;}
+    else if (($sla['dl'] > 0) && ($sla['dl'] < 50) ) { $sla['dl']="<span class=\"label label-warning\">".$sla['dl']."% </span>"; $res_dl_ok++;}
+    else if (($sla['dl'] >= 50)) { $sla['dl']="<span class=\"label label-success\">".$sla['dl']."% </span>"; $res_dl_ok++;}
+
+
+    $sla_str=lang('SLA_perf_reaction').": ".$sla['react']."<br>";
+    $sla_str.=lang('SLA_perf_work_a').": ".$sla['work']."<br>";
+    $sla_str.=lang('SLA_perf_deadline_short').": ".$sla['dl']."<br>";
+
+}
+else if ($sla['status'] == "false") {
+$sla_str=lang('SLA_not_sel');
+}
+
+
+
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+?>
+
+                                <tr>
+                    <td style=""><small><center><?php echo $i; ?></center></small></td>
+                    <td style=""><small><center><?php echo $row['id']; ?> </center>  </small></td>
+                    <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['id']);?>">
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['id']))), 'no')); ?>
+                    </a>
+                    </small></td>
+                    <td style=""><small><time id="c" datetime="<?php echo $t_dc ?>"></time>   </small></td>
+                    <td style=""><small><?php echo name_of_user_ret($row['user_init_id']); ?>       </small></td>
+                    <td style=""><small><?=$to_text; ?> </small></td>
+                    <td style=""><small><?=nameshort(name_of_user_ret(get_ticket_val_by_hash('client_id', get_ticket_hash_by_id($row['id']))));?> </small></td>
+                    <td style=""><small><?=$st;?>  </small></td>
+                    <td style=""><small><?=$sla_str;?> </small></td>
+                </tr>
+
+
+<?php
+                                //echo $row['date_op'] . "<br>";
+                                $i++;
+                            }
+                        }
+                    }
+                }
+?>
+</tbody>
+</table>
+
+ 
+<br>
+<center><h4><?=lang('SLA_stat_res_by_ok');?></h4></center>
+
+<table class="table table-bordered table-hover">
+<thead>
+ <tr>
+ <td><strong><small><center> <?=lang('SLA_stat_name');?></center></small></strong></td> 
+ <td><strong><small><center> <?=lang('SLA_stat_count');?> </center></small></strong></td>
+ </tr>
+ </thead>
+ <tbody>
+  <tr class="text-success">
+ <td><strong><small><?=lang('SLA_stat_react_ok');?></small></strong></td> <td><strong><small><center><?=$res_react_ok;?></center></small></strong> </td>
+ </tr>
+   <tr class="text-danger">
+ <td><strong><small><?=lang('SLA_stat_react_no');?></small></strong></td> <td><strong><small><center><?=$res_react_no;?></center></small></strong> </td>
+ </tr>
+
+    <tr class="text-success">
+ <td><strong><small><?=lang('SLA_stat_work_ok');?></small></strong></td> <td><strong><small><center><?=$res_work_ok;?></center></small></strong> </td>
+ </tr>
+
+    <tr class="text-danger">
+ <td><strong><small><?=lang('SLA_stat_work_no');?></small></strong></td> <td><strong><small><center><?=$res_work_no;?></center></small></strong> </td>
+ </tr>
+
+     <tr class="text-success">
+ <td><strong><small><?=lang('SLA_stat_dl_ok');?></small></strong></td> <td><strong><small><center><?=$res_dl_ok;?></center></small></strong> </td>
+ </tr>
+
+    <tr class="text-danger">
+ <td><strong><small><?=lang('SLA_stat_dl_no');?></small></strong></td> <td><strong><small><center><?=$res_dl_no;?></center></small></strong> </td>
+ </tr>
+ </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<center><h4><?=lang('STAT_MAIN_t3');?></h4></center>
+<table class="table table-bordered">
+
+                                <tr>
+                    <td style=""><strong><small><center><?=lang('STAT_MAIN_num');?></center></small></strong></td>
+                    <td style=""><strong><small><center>#</center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('NEW_subj');?></center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_create');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_init');?>       </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_to');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('USERS_p_4');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('t_LIST_status');?>  </center></small></strong></td>
+                    <td style=""><strong><small><center><?=lang('PERF_menu_sla');?>  </center></small></strong></td>
+                    
+                </tr>
+
+
+
+
+<?php
+                
+                        $stmt = $dbConnection->prepare('SELECT id, ok_by, ok_date, user_to_id, user_init_id, unit_id,last_update from tickets where status=:st and unit_id=:iud and last_update between :start AND :end  order by last_update ASC');
+                        $stmt->execute(array(
+                            ':iud' => $unit,
+                            ':start' => $start,
+                            ':end' => $end,
+                            ':st' =>'0'
+
+                        ));
+
+
+                        $res1 = $stmt->fetchAll();
+                        
+                        $i = 1;
+
+                        
+                        if (!empty($res1)) {
+                            
+                            foreach ($res1 as $row) {
+
+                                //$row['id'];
+                ////////////////////////////Показывает кому/////////////////////////////////////////////////////////////////
+                if ($row['user_to_id'] <> 0) {
+                    $to_text = "<div class=''>" . nameshort(name_of_user_ret($row['user_to_id'])) . "</div>";
+                }
+                if ($row['user_to_id'] == 0) {
+                    $to_text = view_array(get_unit_name_return($row['unit_id'])) ;
+                }
+                
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                ////////////////////////////Показывает labels//////////////////////////////////////////////////////////////
+                    $t_status=get_ticket_val_by_hash('status', get_ticket_hash_by_id($row['id']));
+                    $t_ob=get_ticket_val_by_hash('last_update', get_ticket_hash_by_id($row['id']));
+                    $t_dc=get_ticket_val_by_hash('date_create', get_ticket_hash_by_id($row['id']));
+                    $t_lb=get_ticket_val_by_hash('lock_by', get_ticket_hash_by_id($row['id']));
+                if ($t_status == 1) {
+                    $st = "<span class=\"label label-success\"><i class=\"fa fa-check-circle\"></i> " . lang('t_list_a_oko') . " " . nameshort(name_of_user_ret_nolink($t_ob)) . "</span>";
+                    $t_ago = get_date_ok($t_dc, $row['id']);
+                }
+                if ($t_status == 0) {
+                    $t_ago = $t_dc;
+                    if ($t_lb <> 0) {
+
+                            $st = "<span class=\"label label-default\"><i class=\"fa fa-gavel\"></i> " . lang('t_list_a_lock_u') . " " . nameshort(name_of_user_ret_nolink($t_lb)) . "</span>";
+                        
+                    }
+                    if ($t_lb == 0) {
+                        $st = "<span class=\"label label-primary\"><i class=\"fa fa-clock-o\"></i> " . lang('t_list_a_hold') . "</span>";
+                    }
+                }
+                
+
+
+$sla=get_ticket_sla_status_nook($row['id']);
+
+if ($sla['status'] == "true") {
+
+
+    if ($sla['react'] == 0) {$sla['react']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>";}
+    else if (($sla['react'] > 0) && ($sla['react'] < 50) ) { $sla['react']="<span class=\"label label-warning\">".$sla['react']."% </span>";}
+    else if (($sla['react'] >= 50)) { $sla['react']="<span class=\"label label-success\">".$sla['react']."% </span>";}
+
+
+    if ($sla['work'] == 0) {$sla['work']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>";}
+    else if (($sla['work'] > 0) && ($sla['work'] < 50) ) { $sla['work']="<span class=\"label label-warning\">".$sla['work']."% </span>";}
+    else if (($sla['work'] >= 50)) { $sla['work']="<span class=\"label label-success\">".$sla['work']."% </span>";}
+
+    if ($sla['dl'] == 0) {$sla['dl']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>";}
+    else if (($sla['dl'] > 0) && ($sla['dl'] < 50) ) { $sla['dl']="<span class=\"label label-warning\">".$sla['dl']."% </span>";}
+    else if (($sla['dl'] >= 50)) { $sla['dl']="<span class=\"label label-success\">".$sla['dl']."% </span>";}
+
+
+    $sla_str=lang('SLA_perf_reaction').": ".$sla['react']."<br>";
+    $sla_str.=lang('SLA_perf_work_a').": ".$sla['work']."<br>";
+    $sla_str.=lang('SLA_perf_deadline_short').": ".$sla['dl']."<br>";
+
+}
+else if ($sla['status'] == "false") {
+$sla_str=lang('SLA_not_sel');
+}
+
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+?>
+
+                                <tr>
+                    <td style=""><small><center><?php echo $i; ?></center></small></td>
+                    <td style=""><small><center><?php echo $row['id']; ?> </center>  </small></td>
+                    <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['id']);?>">
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['id']))), 'no')); ?>
+                    </a>
+                    </small></td>
+                    <td style=""><small><time id="c" datetime="<?php echo $row['last_update'] ?>"></time>   </small></td>
+                    <td style=""><small><?php echo name_of_user_ret($row['user_init_id']); ?>       </small></td>
+                    <td style=""><small><?=$to_text; ?> </small></td>
+                    <td style=""><small><?=nameshort(name_of_user_ret(get_ticket_val_by_hash('client_id', get_ticket_hash_by_id($row['id']))));?> </small></td>
+                    <td style=""><small><?=$st;?>  </small></td>
+                    <td style=""><small><?=$sla_str;?> </small></td>
+                    
+                </tr>
+
+
+<?php
+                                //echo $row['date_op'] . "<br>";
+                                $i++;
+                            }
+                        }
+                    
+?>
+</tbody>
+</table>
+<br>
+
+
+</div>
+
+</div>
+
+    <?php
+}
+
+
+
+
+
+
+else if ($unit == "0") {}
+
+
+
+        }
+
+
+
+
+
+
+
+
         if ($mode == "get_total_period_stat") {
             $start = $_POST['start'] . " 00:00:00";
             $end = $_POST['end'] . " 23:59:00";
@@ -1150,7 +1801,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                     <td style=""><small><center><?php echo $i; ?></center></small></td>
                     <td style=""><small><center><?php echo $row['ticket_id']; ?> </center>  </small></td>
                     <td style=""><small><a href="ticket?<?=get_ticket_hash_by_id($row['ticket_id']);?>">
-                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($row['ticket_id']))), 'no')); ?>
+                        <?php echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['ticket_id']))), 'no')); ?>
                     </a>
                     </small></td>
                     <td style=""><small><time id="c" datetime="<?php echo $row['date_op'] ?>"></time>   </small></td>

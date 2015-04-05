@@ -145,7 +145,7 @@ if (get_current_URL_name('view_user')) { ?>
 } ?>
 
 <?php
-if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('mailers') ) { ?>
+if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('mailers') || get_current_URL_name('sla_rep')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/daterangepicker.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/s2/select2.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jqueryKnob/jquery.knob.js?<?=get_conf_param('version');?>"></script>

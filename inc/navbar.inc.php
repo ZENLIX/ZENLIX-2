@@ -15,7 +15,7 @@ function echoActiveClassIfRequestMatches($requestUri) {
 
 
 $p1=array('config', 'users', 'deps', 'files', 'scheduler', 'approve', 'posada', 'units', 'subj', 'portal', 'mailers');
-$p2=array('main_stats', 'user_stats');
+$p2=array('main_stats', 'user_stats', 'sla_rep');
     $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
     $file = $_SERVER['REQUEST_URI'];
     $file = explode("?", basename($file));
@@ -327,6 +327,10 @@ if (($priv_val == "2") || ($priv_val == "0")) { ?>
                             <ul class="treeview-menu">
                             <li <?php echo echoActiveClassIfRequestMatches("main_stats") ?>><a href="<?php echo $CONF['hostname'] ?>main_stats"><i class="fa fa-line-chart"></i> <?php echo lang('ALLSTATS_main'); ?></a></li>
                             <li <?php echo echoActiveClassIfRequestMatches("user_stats") ?>><a href="<?php echo $CONF['hostname'] ?>user_stats"><i class="fa fa-pie-chart"></i> <?php echo lang('EXT_graph_user'); ?></a></li>
+
+                            <li <?php echo echoActiveClassIfRequestMatches("sla_rep") ?>><a href="<?php echo $CONF['hostname'] ?>sla_rep"><i class="fa fa-bolt"></i> <?php echo lang('SLA_rep'); ?></a></li>
+
+
                             </ul>
  </li>
  

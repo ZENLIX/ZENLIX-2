@@ -4,6 +4,21 @@ function lang_ua($phrase){
     
 
 'PERF_menu_sla'=>'SLA-плани',
+'SLA_rep'=>'SLA-звіти',
+'SLA_rep_ext' => 'Статистика за часом заявок',
+'SLA_stat_res_by_ok' => 'Результати за виконання заявки',
+'SLA_stat_name' => 'Показник',
+'SLA_stat_count' => 'Кількість',
+'SLA_stat_react_ok' => 'Реакція вчасно',
+'SLA_stat_react_no' => 'Реакція прострочено',
+'SLA_stat_work_ok' => 'Час виконання вчасно',
+'SLA_stat_work_no' => 'Час виконання прострочено',
+'SLA_stat_dl_ok' => 'Крайній термін вчасно',
+'SLA_stat_dl_no' => 'Крайній термін прострочено',
+
+'STAT_MAIN_t4' => 'Заявки, отримані користувачами відділу',
+
+'SLA_success' => 'успіху',
 
 'SLA_NOT_LOCK'=>'ще не взята',
 'SLA_REGLAMENT'=>'Регламент',

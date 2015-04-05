@@ -2,7 +2,22 @@
 function lang_en($phrase){
     static $lang = array(
 	    
+'SLA_rep'=>'SLA-reports',
+'SLA_rep_ext' => 'Time Stats tickets',
 
+'SLA_success' => 'success',
+
+'SLA_stat_res_by_ok' => 'The results for the implementation of applications',
+'SLA_stat_name' => 'index',
+'SLA_stat_count' => 'Number',
+'SLA_stat_react_ok' => 'reaction time',
+'SLA_stat_react_no' => 'The response overdue',
+'SLA_stat_work_ok' => 'Time in time',
+'SLA_stat_work_no' => 'Time overdue',
+'SLA_stat_dl_ok' => 'deadline on time',
+'SLA_stat_dl_no' => 'The deadline for overdue',
+
+'STAT_MAIN_t4' => 'Tickets received by users of department',
 'SLA_NOT_LOCK'=>'not locked',
 'SLA_REGLAMENT'=>'Reglament',
 'SLA_deadline_ok'=>'Success',
@@ -14,7 +29,7 @@ function lang_en($phrase){
 'SLA_perf_work' => 'Time for performance of the ticket',
 'SLA_perf_work_a'=>'Time of work with ticket',
 'PERF_menu_sla'=>'SLA-plans',
-'SLA_perf_deadline' => 'The deadline for applications perform',
+'SLA_perf_deadline' => 'The deadline for tickets perform',
 'MOMENTJS_DAY'=>'day',
 'MOMENTJS_HOUR'=>'hour',
 'MOMENTJS_MINUTE'=>'min',

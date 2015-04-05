@@ -29,6 +29,7 @@ if (isset($data_json->mode)) {
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
                         $code = "ok";
                         $fio=$row['fio'];
+                        $ui=$row['usr_img'];
                     }
                 } else {
                     $code = "error";
@@ -50,6 +51,7 @@ if (isset($data_json->mode)) {
                     $user_id = $row['id'];
                     $code = "ok";
                     $fio=$row['fio'];
+                    $ui=$row['usr_img'];
                 } else {
                     $code = "error";
                     $error_msg = "system auth error";
@@ -74,11 +76,16 @@ if (!get_user_val_by_id($user_id, 'api_key')) {
     $ap_key=gen_new_api($user_id);
 }
 
+if (strlen($ui) < 5) {
+    $ui="img/avatar5.png";
+}
+
 $r=array(
     'uniq_id'=>$ap_key,
     'status'=>$code,
     'error_description'=>$error_msg,
-    'fio'=>$fio
+    'fio'=>$fio,
+    'usr_img'=>$ui
     );
 
         print json_encode($r);
@@ -122,7 +129,7 @@ if ($data_json->type == "in") {
         if ($priv_val == 0) { 
                 $stmt = $dbConnection->prepare('SELECT *
                             from tickets
-                            where unit_id IN (' . $in_query . ') and arch=:n order by ok_by asc, prio desc, id desc limit 10');
+                            where unit_id IN (' . $in_query . ') and arch=:n order by ok_by asc, prio desc, id desc');
                 
                 $paramss = array(':n' => '0');
                 $stmt->execute(array_merge($vv, $paramss));
@@ -130,7 +137,7 @@ if ($data_json->type == "in") {
         else if ($priv_val == 1) { 
                 $stmt = $dbConnection->prepare('SELECT * from tickets
                             where ((find_in_set(:user_id,user_to_id) and arch=:n) or
-                            (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2)) order by ok_by asc, prio desc, id desc limit 10');
+                            (find_in_set(:n1,user_to_id) and unit_id IN (' . $in_query . ') and arch=:n2)) order by ok_by asc, prio desc, id desc');
                 $paramss = array(':user_id' => $user_id, ':n' => '0', ':n1' => '0', ':n2' => '0');
                 $stmt->execute(array_merge($vv, $paramss));
             }
@@ -138,7 +145,7 @@ if ($data_json->type == "in") {
                 $stmt = $dbConnection->prepare('SELECT *
                             from tickets
                             where arch=:n
-                            order by ok_by asc, prio desc, id desc limit 10');
+                            order by ok_by asc, prio desc, id desc');
                 $stmt->execute(array(':n' => '0'));
                  }
 }
@@ -317,7 +324,7 @@ else if ($row['arch'] == 0) {
                     }
                 }
             }
-
+//nameshort(name_of_user_ret_nolink())
 
                 	array_push($r['tickets'], array(
                     'id_ticket' 	=> $row['id'],
@@ -330,6 +337,9 @@ else if ($row['arch'] == 0) {
                     'user_init_hash'=> get_user_hash_by_id($row['user_init_id']),
                     'client_hash'   => get_user_hash_by_id($row['client_id']),
                     'to_user_hash'  => get_user_hash_by_id($row['user_to_id']),
+                    'user_init_fio' => nameshort(name_of_user_ret_nolink($row['user_init_id'])),
+                    'client_fio'    => nameshort(name_of_user_ret_nolink($row['client_id'])),
+                    'to_user_fio'   => nameshort(name_of_user_ret_nolink($row['user_to_id'])),
                     'to_unit_id'    => $row['unit_id']
                 	));
                 }
@@ -413,6 +423,8 @@ else if ($row['arch'] == 0) {
                 }
             }
 
+
+//nameshort(name_of_user_ret_nolink())
         			array_push($r['ticket'], array(
                     'id_ticket' 	=> $row['id'],
                     'ticket_hash' 	=> $row['hash_name'],
@@ -421,11 +433,19 @@ else if ($row['arch'] == 0) {
                     'date_created' 	=> $row['date_create'], 
                     'user_init_id'	=> get_user_hash_by_id($row['user_init_id']),
                     'client_id'		=> get_user_hash_by_id($row['client_id']),
+                    'user_init_fio' => nameshort(name_of_user_ret_nolink($row['user_init_id'])),
+                    'client_fio'    => nameshort(name_of_user_ret_nolink($row['client_id'])),
+
                     'unit_id'		=> $row['unit_id'],
                     'user_to_id'	=> get_user_hash_by_id($row['user_to_id']),
+                    'user_to_fio'   => nameshort(name_of_user_ret_nolink($row['user_to_id'])),
                     'status'		=> $st,
                     'lock_by'		=> get_user_hash_by_id($row['lock_by']),
                     'ok_by'			=> get_user_hash_by_id($row['ok_by']),
+
+                    'lock_by_fio'   => nameshort(name_of_user_ret_nolink($row['lock_by'])),
+                    'ok_by_fio'     => nameshort(name_of_user_ret_nolink($row['ok_by'])),
+
                     'prio'          => $row['prio'],
                     'ok_date'       => $row['ok_date'],
                     'deadline_time' => $row['deadline_time']
@@ -871,6 +891,11 @@ if (get_user_val_by_hash($data_json->uniq_id, 'def_user_id') != "0") {
     $def_user=get_user_hash_by_id(get_user_val_by_hash($data_json->uniq_id, 'def_user_id'));
 }
 
+$ui=get_user_val_by_hash($data_json->user_hash, 'usr_img');
+if (strlen($ui) < 5) {
+    $ui="img/avatar5.png";
+}
+
     array_push($r['info'], array(
             'fio'           =>get_user_val_by_hash($data_json->user_hash, 'fio'),
             'status'        =>get_user_val_by_hash($data_json->user_hash, 'status'),
@@ -880,7 +905,7 @@ if (get_user_val_by_hash($data_json->uniq_id, 'def_user_id') != "0") {
             'email'         =>get_user_val_by_hash($data_json->user_hash, 'email'),
             'lang'          =>get_user_val_by_hash($data_json->user_hash, 'lang'),
             'last_time'     =>get_user_val_by_hash($data_json->user_hash, 'last_time'),
-            'usr_img'       =>get_user_val_by_hash($data_json->user_hash, 'usr_img'),
+            'usr_img'       =>$ui,
             'posada'        =>get_user_val_by_hash($data_json->user_hash, 'posada'),
             'tel'           =>get_user_val_by_hash($data_json->user_hash, 'tel'),
             'skype'         =>get_user_val_by_hash($data_json->user_hash, 'skype'),
