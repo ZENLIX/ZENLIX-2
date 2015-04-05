@@ -6,7 +6,7 @@ function lang_ru($phrase){
 
 
 
-
+'SLA_stat_res_by_nook'=>'Результаты по не выполненым заявкам',
 'SLA_stat_res_by_ok'=>'Результаты по выполненым заявкам',
 'SLA_stat_name'=> 'Показатель',
 'SLA_stat_count'=>'Количество',

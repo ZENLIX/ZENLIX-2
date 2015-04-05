@@ -7,6 +7,7 @@ function lang_ua($phrase){
 'SLA_rep'=>'SLA-звіти',
 'SLA_rep_ext' => 'Статистика за часом заявок',
 'SLA_stat_res_by_ok' => 'Результати за виконання заявки',
+'SLA_stat_res_by_nook' => 'Результати за не виконання заявки',
 'SLA_stat_name' => 'Показник',
 'SLA_stat_count' => 'Кількість',
 'SLA_stat_react_ok' => 'Реакція вчасно',

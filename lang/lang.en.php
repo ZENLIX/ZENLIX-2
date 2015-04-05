@@ -8,6 +8,8 @@ function lang_en($phrase){
 'SLA_success' => 'success',
 
 'SLA_stat_res_by_ok' => 'The results for the implementation of applications',
+
+'SLA_stat_res_by_nook' => 'The results for the no implementation of applications',
 'SLA_stat_name' => 'index',
 'SLA_stat_count' => 'Number',
 'SLA_stat_react_ok' => 'reaction time',

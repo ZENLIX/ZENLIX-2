@@ -1553,7 +1553,14 @@ $sla_str=lang('SLA_not_sel');
 
 
 <?php
-                
+$res_react_ok1=0;
+$res_react_no1=0;
+$res_work_ok1=0;
+$res_work_no1=0;
+$res_dl_ok1=0;
+$res_dl_no1=0;
+
+
                         $stmt = $dbConnection->prepare('SELECT id, ok_by, ok_date, user_to_id, user_init_id, unit_id,last_update from tickets where status=:st and unit_id=:iud and last_update between :start AND :end  order by last_update ASC');
                         $stmt->execute(array(
                             ':iud' => $unit,
@@ -1612,18 +1619,18 @@ $sla=get_ticket_sla_status_nook($row['id']);
 if ($sla['status'] == "true") {
 
 
-    if ($sla['react'] == 0) {$sla['react']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>";}
-    else if (($sla['react'] > 0) && ($sla['react'] < 50) ) { $sla['react']="<span class=\"label label-warning\">".$sla['react']."% </span>";}
-    else if (($sla['react'] >= 50)) { $sla['react']="<span class=\"label label-success\">".$sla['react']."% </span>";}
+    if ($sla['react'] == 0) {$sla['react']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>"; $res_react_no1++;}
+    else if (($sla['react'] > 0) && ($sla['react'] < 50) ) { $sla['react']="<span class=\"label label-warning\">".$sla['react']."% </span>";$res_react_ok1++;}
+    else if (($sla['react'] >= 50)) { $sla['react']="<span class=\"label label-success\">".$sla['react']."% </span>";$res_react_ok1++;}
 
 
-    if ($sla['work'] == 0) {$sla['work']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>";}
-    else if (($sla['work'] > 0) && ($sla['work'] < 50) ) { $sla['work']="<span class=\"label label-warning\">".$sla['work']."% </span>";}
-    else if (($sla['work'] >= 50)) { $sla['work']="<span class=\"label label-success\">".$sla['work']."% </span>";}
+    if ($sla['work'] == 0) {$sla['work']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>"; $res_work_no1++;}
+    else if (($sla['work'] > 0) && ($sla['work'] < 50) ) { $sla['work']="<span class=\"label label-warning\">".$sla['work']."% </span>";$res_work_ok1++;}
+    else if (($sla['work'] >= 50)) { $sla['work']="<span class=\"label label-success\">".$sla['work']."% </span>";$res_work_ok1++;}
 
-    if ($sla['dl'] == 0) {$sla['dl']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>";}
-    else if (($sla['dl'] > 0) && ($sla['dl'] < 50) ) { $sla['dl']="<span class=\"label label-warning\">".$sla['dl']."% </span>";}
-    else if (($sla['dl'] >= 50)) { $sla['dl']="<span class=\"label label-success\">".$sla['dl']."% </span>";}
+    if ($sla['dl'] == 0) {$sla['dl']="<span class=\"label label-danger\">".lang('SLA_time_old')."</span>";$res_dl_no1++;}
+    else if (($sla['dl'] > 0) && ($sla['dl'] < 50) ) { $sla['dl']="<span class=\"label label-warning\">".$sla['dl']."% </span>";$res_dl_ok1++;}
+    else if (($sla['dl'] >= 50)) { $sla['dl']="<span class=\"label label-success\">".$sla['dl']."% </span>";$res_dl_ok1++;}
 
 
     $sla_str=lang('SLA_perf_reaction').": ".$sla['react']."<br>";
@@ -1664,7 +1671,42 @@ $sla_str=lang('SLA_not_sel');
 ?>
 </tbody>
 </table>
+
 <br>
+<center><h4><?=lang('SLA_stat_res_by_nook');?></h4></center>
+
+<table class="table table-bordered table-hover">
+<thead>
+ <tr>
+ <td><strong><small><center> <?=lang('SLA_stat_name');?></center></small></strong></td> 
+ <td><strong><small><center> <?=lang('SLA_stat_count');?> </center></small></strong></td>
+ </tr>
+ </thead>
+ <tbody>
+  <tr class="text-success">
+ <td><strong><small><?=lang('SLA_stat_react_ok');?></small></strong></td> <td><strong><small><center><?=$res_react_ok1;?></center></small></strong> </td>
+ </tr>
+   <tr class="text-danger">
+ <td><strong><small><?=lang('SLA_stat_react_no');?></small></strong></td> <td><strong><small><center><?=$res_react_no1;?></center></small></strong> </td>
+ </tr>
+
+    <tr class="text-success">
+ <td><strong><small><?=lang('SLA_stat_work_ok');?></small></strong></td> <td><strong><small><center><?=$res_work_ok1;?></center></small></strong> </td>
+ </tr>
+
+    <tr class="text-danger">
+ <td><strong><small><?=lang('SLA_stat_work_no');?></small></strong></td> <td><strong><small><center><?=$res_work_no1;?></center></small></strong> </td>
+ </tr>
+
+     <tr class="text-success">
+ <td><strong><small><?=lang('SLA_stat_dl_ok');?></small></strong></td> <td><strong><small><center><?=$res_dl_ok1;?></center></small></strong> </td>
+ </tr>
+
+    <tr class="text-danger">
+ <td><strong><small><?=lang('SLA_stat_dl_no');?></small></strong></td> <td><strong><small><center><?=$res_dl_no1;?></center></small></strong> </td>
+ </tr>
+ </tbody>
+</table>
 
 
 </div>
