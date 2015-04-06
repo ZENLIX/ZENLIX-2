@@ -1383,15 +1383,25 @@ $t=0;
 
 foreach ($ex as $value) {
 	# code...
-	$stmt = $dbConnection->prepare("SELECT * from portal_posts, portal_manual_cat where (portal_posts.subj like :t) OR (portal_manual_cat.name like :t2)");
+	$stmt = $dbConnection->prepare("SELECT * from portal_manual_cat where (portal_manual_cat.name like :t2)");
                 $stmt->execute(array(
-                    ':t' => '%' . $value . '%',
                     ':t2' => '%' . $value . '%'
                 ));
                 $result = $stmt->fetchAll();
 		if (!empty($result)) {
 			$t++;
 		}
+		
+		
+			$stmt2 = $dbConnection->prepare("SELECT * from portal_posts where (portal_posts.subj like :t)");
+                $stmt2->execute(array(
+                    ':t' => '%' . $value . '%'
+                ));
+                $result2 = $stmt2->fetchAll();
+		if (!empty($result2)) {
+			$t++;
+		}
+
 
 }
 $_SESSION['zenlix_portal_post']=$ts;
