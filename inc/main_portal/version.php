@@ -206,7 +206,7 @@ if (strlen(get_conf_param('logo_img')) < 5) {
 <a style="width:25px;" class="btn btn-xs btn-twitter" href="http://twitter.com/share?text=<?=$news_item['title'];?>&url=<?php echo urlencode( $CONF['hostname'].$_SERVER['REQUEST_URI']); ?>" title="Share on Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
 
 <a style="width:25px;" class="btn btn-xs btn-facebook" 
-href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=<?php echo urlencode( $CONF['hostname'].$_SERVER['REQUEST_URI']); ?>&p[title]=<?php echo $news_item['title']; ?>&p[summary]=<?php echo $news_item['msg']; ?>&p[images][0]=<?php echo $logo_img ?>"
+href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=<?php echo urlencode( $CONF['hostname'].$_SERVER['REQUEST_URI']); ?>&p[title]=<?php echo $news_item['title']; ?>&p[summary]=<?php echo $news_item['title']; ?>&p[images][0]=<?php echo $logo_img ?>"
 
 
 ><i class="fa fa-facebook"></i></a>
