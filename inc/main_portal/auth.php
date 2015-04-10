@@ -22,7 +22,7 @@ include "navbar.inc.php";
 
 
 
-<div class="col-md-12">
+<div class="col-md-4 col-md-offset-4">
 <div class="box box-default">
                 <div class="box-header with-border">
                   <center><h3 class="box-title"><?=lang('PORTAL_auth');?></h3></center>
@@ -46,15 +46,15 @@ else if ($CONF['main_portal'] == false) {
 <form class="form-horizontal" action="<?php echo $CONF['hostname'] . $link; ?>" method="POST" autocomplete="off">
 
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
 <input type="text" name="login" autocomplete="off" autocapitalize="off" autocorrect="off" class="form-control input-lg" placeholder="<?php echo lang('login'); ?>"/><br>
 </div>
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
  <input type="password" name="password" class="form-control input-lg" placeholder="<?php echo lang('pass'); ?>"/>
 </div>
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
  <div class="form-group">
 
 
@@ -70,11 +70,11 @@ else if ($CONF['main_portal'] == false) {
                     </div>
 </div>
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
   <button class="btn btn-block btn-success btn-lg"><i class="fa fa-sign-in"></i>  <?php echo lang('log_in'); ?> </button>
 </div>
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
   <br>
 <center>
                     <small>

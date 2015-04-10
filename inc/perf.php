@@ -241,7 +241,7 @@ $menu_active['main']="active";
                             </div>
 
 
-<div class="callout callout-info">
+<div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php

@@ -1228,6 +1228,7 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
                 if ($row['is_read'] <> "0") {
                     $style = "";
                 }
+                
                 if ($row['status'] == "1") {
                     $ob_text = "<i class=\"fa fa-check-circle-o\"></i>";
                     $ob_status = "unok";

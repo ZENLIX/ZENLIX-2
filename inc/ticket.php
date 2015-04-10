@@ -660,7 +660,7 @@ $fts = array(
 <div class="nav-tabs-custom">
                                 <ul class="nav nav-tabs">
                                     <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-comments-o"></i> <?php echo lang('TICKET_t_comment'); ?></a></li>
-                                    <li class=""><a href="#tab_2" data-toggle="tab"><?php echo lang('TICKET_t_history'); ?></a></li>
+                                    <li class=""><a href="#tab_2" data-toggle="tab" id="get_new_log"><?php echo lang('TICKET_t_history'); ?></a></li>
                                     
                                 </ul>
                                 <div class="tab-content">
@@ -682,6 +682,12 @@ $fts = array(
 
 <textarea id="msg" name="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="&lt;small&gt;<?php echo lang('TICKET_t_det_ticket'); ?>&lt;/small&gt;" placeholder="<?php echo lang('TICKET_t_comm_ph'); ?>"></textarea>
 </div>
+
+
+
+
+
+
 <div class="">
 <div style="height: 30px;" class="">
 

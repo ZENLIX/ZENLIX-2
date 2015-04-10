@@ -33,9 +33,9 @@ if ($ap == 0) {
 ?>
 
 
+<div class="wrapper">
 
-
-               <header class="header">
+               <header class="main-header">
  <?php
                     if ($main_portal == "true") {
                         ?>
@@ -54,12 +54,9 @@ if ($ap == 0) {
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
-                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only"><?php echo lang('EXT_toggle_nav'); ?></span>
+          </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
 
@@ -306,9 +303,9 @@ if (1 == 0) { ?>
         </header>
         
         
-        <div class="wrapper row-offcanvas row-offcanvas-left">
+        <div class="">
             <!-- Left side column. contains the logo and sidebar -->
-            <aside class="left-side sidebar-offcanvas">
+            <aside class="main-sidebar">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
@@ -373,5 +370,15 @@ if (1 == 0) { ?>
                 <!-- /.sidebar -->
             </aside>
 
+<?php
+
+
+$style_hide="display:none;";
+if (get_current_URL_name('print_ticket')) {
+    $style_hide="";
+}
+
+?>
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
+            <div class="content-wrapper" >
+<div class="main_i" style="<?=$style_hide;?>">

@@ -110,6 +110,10 @@ function lang_ru($phrase){
 
 'PORTAL_title'=>'Главный портал',
 
+'PORTAL_nf_users_list'=>'Уведомлять о новых постах',
+
+'POST_MAIL_POST_NEW'=>'Новый пост на портале',
+'PORTAL_post_NEWM_ext'=>'Вы получили это сообщение потому что был создан пост пользователем ',
 
 'POST_MAIL_COMMENT'=>'Новый комментарий на портале',
 'POST_created_author'=>'Автор поста',

@@ -46,6 +46,29 @@ $su = array();
             $stmt->execute(array(':delivers_id' => $su, ':type_op' => $type, ':tid' => $post_id, ':n' => $CONF['now_dt']));
 }
 }
+else if ($type == "portal_post_new") {
+
+
+$ul=get_conf_param('portal_posts_mail_users');
+
+if (!empty($ul)) {
+
+            $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+            $stmt->execute(array(':delivers_id' => $ul, ':type_op' => $type, ':tid' => $post_id, ':n' => $CONF['now_dt']));
+        }
+
+}
+
+
+
+
+
+
+
+
+
+
+
 }
 
 

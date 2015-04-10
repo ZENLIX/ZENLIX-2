@@ -2270,6 +2270,17 @@ else if ($unit == "0") {}
             }
         }
         
+
+if ($mode == "get_new_ticket_log") {
+
+
+echo view_log(get_ticket_val_by_hash('id', $_POST['ticket_hash']));
+
+//echo $_POST['ticket_hash'];
+
+}
+
+
         if ($mode == "get_user_stat") {
             
             //print_r($_POST);
@@ -5448,6 +5459,14 @@ if ($mode == "conf_edit_portal") {
             update_val_by_key("portal_msg_text", $_POST['msg_text']);
             //portal_msg_status
             update_val_by_key("portal_msg_status", $_POST['portal_msg_status']);
+
+
+                $ntu=$_POST['ntu'];
+            if ($_POST['ntu'] == "null") {
+                $ntu="";
+            }
+
+            update_val_by_key("portal_posts_mail_users", $ntu);
 ?>
                 <div class="alert alert-success">
                     <?php

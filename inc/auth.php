@@ -6,7 +6,7 @@ include_once ("head.inc.php");
 ?>
 
 
-
+ 
 <style type="text/css" media="screen">
 .c {
 background: url(img/login_bg.jpg) no-repeat center center fixed; 

@@ -118,7 +118,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             </div>
     
   </div>
-    <div class="col-md-12"><div class="callout callout-info">
+    <div class="col-md-12"><div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('EXT_graph_user_ext2'); ?>

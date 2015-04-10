@@ -310,11 +310,23 @@ if (!empty($res11)) {
                                     
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
-                                    <div class="input-group" id="for_msg">
-                                        <input name="msg" id="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="&lt;small&gt;<?php echo lang('TICKET_t_det_ticket'); ?>&lt;/small&gt;" placeholder="<?php echo lang('TICKET_t_comm_ph'); ?>"/>
-                                        <div class="input-group-btn">
-                                            <button value="<?php echo $hn ?>" id="do_comment" class="btn btn-success"><i class="fa fa-comment"></i></button>
-                                            <input type="file" id="do_comment_file" value="<?php echo $hn ?>" class="file-inputs" title="+">
+                                    <div class="" id="for_msg">
+                                        
+
+<textarea id="msg" name="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="&lt;small&gt;<?php echo lang('TICKET_t_det_ticket'); ?>&lt;/small&gt;" placeholder="<?php echo lang('TICKET_t_comm_ph'); ?>"></textarea>
+
+
+                                    </div>
+                                    <div class="">
+<div style="height: 30px;" class="">
+
+                                        <div class="btn-group pull-right">
+                                            <button value="<?php echo $hn ?>" id="do_comment" class="btn btn-success btn-sm"><i class="fa fa-comment"></i></button>
+                                            
+  <input type="file" id="do_comment_file" value="<?php echo $hn ?>" class="file-inputs" title="+">
+                                            
+                                            
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

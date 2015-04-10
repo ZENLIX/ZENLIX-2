@@ -79,12 +79,16 @@ if (!get_user_val_by_id($user_id, 'api_key')) {
 if (strlen($ui) < 5) {
     $ui="img/avatar5.png";
 }
+else {
+    $ui="upload_files/avatars/".$ui;
+}
 
 $r=array(
     'uniq_id'=>$ap_key,
     'status'=>$code,
     'error_description'=>$error_msg,
     'fio'=>$fio,
+    'name_only'=>get_user_name($fio),
     'usr_img'=>$ui
     );
 
@@ -301,12 +305,28 @@ ok_priv=ok/unok
                 foreach ($res1 as $row) {
 
 
+$lock_by_other_fio="0";
+$ok_by_fio="0";
+
 if ($row['arch'] == 1) {
     $st = 'arch';
 }
 else if ($row['arch'] == 0) {
                 if ($row['status'] == 1) {
-                    $st = 'ok';
+
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+
+
+                   // $st = 'ok';
+                    
                 }
                 if ($row['status'] == 0) {
                     if ($row['lock_by'] <> 0) {
@@ -317,6 +337,7 @@ else if ($row['arch'] == 0) {
                         
                         if ($row['lock_by'] <> $user_id) {
                             $st = "lock_by_other";
+                            $lock_by_other_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                     }
                     else if ($row['lock_by'] == 0) {
@@ -334,13 +355,16 @@ else if ($row['arch'] == 0) {
                     'date_created' 	=> $row['date_create'],
                     'status'        => $st,
                     'prio'          => $row['prio'],
+                    'lock_by_other_fio'=>$lock_by_other_fio,
+                    'ok_by_fio'     => $ok_by_fio,
                     'user_init_hash'=> get_user_hash_by_id($row['user_init_id']),
                     'client_hash'   => get_user_hash_by_id($row['client_id']),
                     'to_user_hash'  => get_user_hash_by_id($row['user_to_id']),
                     'user_init_fio' => nameshort(name_of_user_ret_nolink($row['user_init_id'])),
                     'client_fio'    => nameshort(name_of_user_ret_nolink($row['client_id'])),
                     'to_user_fio'   => nameshort(name_of_user_ret_nolink($row['user_to_id'])),
-                    'to_unit_id'    => $row['unit_id']
+                    'to_unit_id'    => $row['unit_id'],
+                    'access_priv'   => get_ticket_action_priv_api_arr($row['id'], $user_id)
                 	));
                 }
 
@@ -404,7 +428,16 @@ if ($row['arch'] == 1) {
 }
 else if ($row['arch'] == 0) {
                 if ($row['status'] == 1) {
-                    $st = 'ok';
+                    
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
                 }
                 if ($row['status'] == 0) {
                     if ($row['lock_by'] <> 0) {
@@ -445,7 +478,7 @@ else if ($row['arch'] == 0) {
 
                     'lock_by_fio'   => nameshort(name_of_user_ret_nolink($row['lock_by'])),
                     'ok_by_fio'     => nameshort(name_of_user_ret_nolink($row['ok_by'])),
-
+                    'access_priv'   => get_ticket_action_priv_api_arr($row['id'], $user_id),
                     'prio'          => $row['prio'],
                     'ok_date'       => $row['ok_date'],
                     'deadline_time' => $row['deadline_time']
@@ -467,6 +500,7 @@ else {
 }
         $r['status'] = $code;
         $r['error_description'] = $error_msg;
+
         $row_set[] = $r;
         print json_encode($row_set);
 }
@@ -490,26 +524,42 @@ else {
 
             $t_id=$row['id'];
 
+
+
+
+
     $hs=explode(",", get_ticket_action_priv_api($t_id, $user_id));
     if (in_array("lock", $hs)) {
 
 
-if ($row['arch'] == 1) {
+                if ($row['arch'] == 1) {
     $st = 'arch';
 }
 else if ($row['arch'] == 0) {
                 if ($row['status'] == 1) {
-                    $st = 'ok';
+                    
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
                 }
                 if ($row['status'] == 0) {
                     if ($row['lock_by'] <> 0) {
                         
                         if ($row['lock_by'] == $user_id) {
                             $st = "lock_by_me";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                         
                         if ($row['lock_by'] <> $user_id) {
                             $st = "lock_by_other";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                     }
                     else if ($row['lock_by'] == 0) {
@@ -534,7 +584,8 @@ values (:lock, :n, :unow, :tid)');
                 send_notification('ticket_lock', $t_id);
             }
 
-            	
+            	                
+
     			
 
             
@@ -544,6 +595,42 @@ values (:lock, :n, :unow, :tid)');
     else if (!in_array("lock", $hs)) {
                     $code = "error";
                 $error_msg = "you have no priviliges";
+
+                if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
 }
 }
     else { 
@@ -560,6 +647,13 @@ else {
 
         $r['status'] = $code;
         $r['error_description'] = $error_msg;
+        $r['status_ticket']= $st;
+        $r['lock_by_fio']=$lock_by_fio;
+        $r['ok_by_fio']=$ok_by_fio;
+
+        //array_push($r['access_priv'], get_ticket_action_priv_api_arr($t_id, $user_id));
+        $r['access_priv']=get_ticket_action_priv_api_arr($t_id, $user_id);
+
         $row_set[] = $r;
         print json_encode($row_set);
 }
@@ -589,22 +683,41 @@ $t_id=$row['id'];
 
 
 
-if ($row['arch'] == 1) {
+                
+
+$p="";
+if (in_array($priv_val, array('2','0'))) {
+    $p="lock_by_other";
+}
+
+                if ($row['arch'] == 1) {
     $st = 'arch';
 }
 else if ($row['arch'] == 0) {
                 if ($row['status'] == 1) {
-                    $st = 'ok';
+                    
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
                 }
                 if ($row['status'] == 0) {
                     if ($row['lock_by'] <> 0) {
                         
                         if ($row['lock_by'] == $user_id) {
                             $st = "lock_by_me";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                         
                         if ($row['lock_by'] <> $user_id) {
                             $st = "lock_by_other";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                     }
                     else if ($row['lock_by'] == 0) {
@@ -612,10 +725,6 @@ else if ($row['arch'] == 0) {
                     }
                 }
             }
-$p="";
-if (in_array($priv_val, array('2','0'))) {
-    $p="lock_by_other";
-}
 
              if (in_array($st, array('lock_by_me',$p))) {
                 
@@ -632,15 +741,52 @@ values (:lock, :n, :unow, :tid)');
             }
 
                 
-                
+
 
             
                 $code = "ok";
         
     }
     else if (!in_array("unlock", $hs)) {
-                    $code = "error";
+                $code = "error";
                 $error_msg = "you have no priviliges";
+
+                if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+
 }
 
 }
@@ -659,6 +805,10 @@ else {
 
         $r['status'] = $code;
         $r['error_description'] = $error_msg;
+        $r['status_ticket']= $st;
+        $r['lock_by_fio']=$lock_by_fio;
+        $r['ok_by_fio']=$ok_by_fio;
+        $r['access_priv']=get_ticket_action_priv_api_arr($t_id, $user_id);
         $row_set[] = $r;
         print json_encode($row_set);
 }
@@ -686,23 +836,37 @@ $t_id=$row['id'];
 
     $hs=explode(",", get_ticket_action_priv_api($t_id, $user_id));
     if (in_array("ok", $hs)) {
+                
 
-if ($row['arch'] == 1) {
+
+                if ($row['arch'] == 1) {
     $st = 'arch';
 }
 else if ($row['arch'] == 0) {
                 if ($row['status'] == 1) {
-                    $st = 'ok';
+                    
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
                 }
                 if ($row['status'] == 0) {
                     if ($row['lock_by'] <> 0) {
                         
                         if ($row['lock_by'] == $user_id) {
                             $st = "lock_by_me";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                         
                         if ($row['lock_by'] <> $user_id) {
                             $st = "lock_by_other";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                     }
                     else if ($row['lock_by'] == 0) {
@@ -710,8 +874,6 @@ else if ($row['arch'] == 0) {
                     }
                 }
             }
-
-
 
 $p="";
 if (in_array($priv_val, array('2','0'))) {
@@ -744,6 +906,44 @@ if (in_array($priv_val, array('2','0'))) {
     else if (!in_array("ok", $hs)) {
                     $code = "error";
                 $error_msg = "you have no priviliges";
+
+                                if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+
+
 }
 }
     else { 
@@ -759,6 +959,10 @@ else {
 
         $r['status'] = $code;
         $r['error_description'] = $error_msg;
+        $r['status_ticket']= $st;
+        $r['lock_by_fio']=$lock_by_fio;
+        $r['ok_by_fio']=$ok_by_fio;
+        $r['access_priv']=get_ticket_action_priv_api_arr($t_id, $user_id);
         $row_set[] = $r;
         print json_encode($row_set);
 }
@@ -783,18 +987,22 @@ $t_id=$row['id'];
 
     $hs=explode(",", get_ticket_action_priv_api($t_id, $user_id));
     if (in_array("un_ok", $hs)) {
-if ($row['arch'] == 1) {
+                
+                if ($row['arch'] == 1) {
     $st = 'arch';
 }
 else if ($row['arch'] == 0) {
                 if ($row['status'] == 1) {
-                    //$st = 'ok';
+                    
 
                         if ($row['ok_by'] == $user_id) {
-                            $st="ok_by_me";
+                            $st = "ok_by_me";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
                         }
-                                                if ($row['ok_by'] != $user_id) {
-                            $st="ok_by_other";
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
                         }
                 }
                 if ($row['status'] == 0) {
@@ -802,10 +1010,12 @@ else if ($row['arch'] == 0) {
                         
                         if ($row['lock_by'] == $user_id) {
                             $st = "lock_by_me";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                         
                         if ($row['lock_by'] <> $user_id) {
                             $st = "lock_by_other";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
                         }
                     }
                     else if ($row['lock_by'] == 0) {
@@ -813,8 +1023,6 @@ else if ($row['arch'] == 0) {
                     }
                 }
             }
-
-
 
 $p="";
 if (in_array($priv_val, array('2','0'))) {
@@ -838,6 +1046,7 @@ if (in_array($priv_val, array('2','0'))) {
 
 
 
+
                     
 
                 $code = "ok";
@@ -847,6 +1056,45 @@ if (in_array($priv_val, array('2','0'))) {
     else if (!in_array("un_ok", $hs)) {
                     $code = "error";
                 $error_msg = "you have no priviliges";
+
+                if ($row['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($row['arch'] == 0) {
+                if ($row['status'] == 1) {
+                    
+
+                        if ($row['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                        
+                        if ($row['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                            $ok_by_fio=nameshort(name_of_user_ret_nolink($row['ok_by']));
+                        }
+                }
+                if ($row['status'] == 0) {
+                    if ($row['lock_by'] <> 0) {
+                        
+                        if ($row['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
+                        }
+                        
+                        if ($row['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                            $lock_by_fio=nameshort(name_of_user_ret_nolink($row['lock_by']));
+                        }
+                    }
+                    else if ($row['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+
+
+
 }
 }
     else { 
@@ -863,6 +1111,10 @@ else {
 
         $r['status'] = $code;
         $r['error_description'] = $error_msg;
+        $r['status_ticket']= $st;
+        $r['lock_by_fio']=$lock_by_fio;
+        $r['ok_by_fio']=$ok_by_fio;
+        $r['access_priv']=get_ticket_action_priv_api_arr($t_id, $user_id);
         $row_set[] = $r;
         print json_encode($row_set);
 }

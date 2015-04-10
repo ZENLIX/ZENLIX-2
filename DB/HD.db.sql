@@ -442,7 +442,8 @@ VALUES
   (55, 'mailers_subj', ''),
   (56, 'mailers_text', ''),
   (57, 'allow_forgot', 'true'),
-  (58, 'sla_system', 'true');
+  (58, 'sla_system', 'true'),
+  (59, 'portal_posts_mail_users', 'false');
 
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;

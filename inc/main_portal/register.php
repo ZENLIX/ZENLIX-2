@@ -23,7 +23,7 @@ include "navbar.inc.php";
 
 
 
-<div class="col-md-12">
+<div class="col-md-4 col-md-offset-4">
 <div class="box box-default">
                 <div class="box-header with-border">
                   <center><h3 class="box-title"><?=lang('PORTAL_reg_user');?></h3></center>
@@ -39,23 +39,23 @@ include "navbar.inc.php";
 <form class="form-horizontal" id="main_form_register">
 
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
  <input id="login_fio" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_fio');?>"><br>
 </div>
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
  <input id="login_name" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_login_name');?>"><br>
 </div>
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
  <input id="login_mail" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_email');?>"><br>
 </div>
 
-<div class="col-sm-4 col-sm-offset-4">
+<div class="col-sm-12">
   <button class="btn btn-block btn-success btn-lg" id="register_new"><?=lang('PORTAL_reg');?> </button>
 </div>
-<div class="col-sm-4 col-sm-offset-4"><br><br></div>
-<div class="col-sm-4 col-sm-offset-4" id="error_result">
+<div class="col-sm-12"><br><br></div>
+<div class="col-sm-12" id="error_result">
 
 </div>
 

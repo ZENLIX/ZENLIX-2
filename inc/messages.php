@@ -38,7 +38,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 	<div class="row">
 		
 		<div class="col-md-12">
-			<a id="select_main_chat" class="btn btn-block btn-default" ><?php echo lang('MESSAGES_main'); ?></a>
+			<a id="select_main_chat" class="btn btn-block btn-primary" ><?php echo lang('MESSAGES_main'); ?></a>
 			<br>
 		</div>
 		
@@ -150,7 +150,7 @@ height: 25px;" src="<?php echo get_user_img_by_id($uniq_id); ?>" class="img-circ
 		
 		
 		<div class="row">
-			<div class="col-md-12"><div class="box box-solid box-default" style="margin-bottom: 2px; height:100%;">
+			<div class="col-md-12"><div class="box box-primary" style="margin-bottom: 2px; height:100%;">
                                 <div class="box-header">
                                     <h3 id="title_chat" class="box-title">
                                     

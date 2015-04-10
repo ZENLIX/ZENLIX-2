@@ -511,9 +511,54 @@ $message=$mmm;
    }
 
 
+   if ($type_op == "portal_post_new") {
+
+    
+
+        $stmt = $dbConnection->prepare('SELECT subj, author_id, uniq_id, msg FROM portal_posts where id=:tid');
+        $stmt->execute(array(':tid' => $ticket_id));
+        $post_res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$SUBJ_POST=$post_res['subj'];
+$AUTHOR_POST=name_of_user_ret($post_res['author_id']);
+$THREAD_HASH=$post_res['uniq_id'];
+
+$POST_COMMENT=$post_res['msg'];
 
 
-   if ($type_op == "portal_post_comment") {
+   
+$subject = $SUBJ_POST.' - '.lang($lang, 'POST_MAIL_POST_NEW');
+//$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
+ob_start();
+include($base . "/inc/mail_tmpl/portal_post_new.tpl");
+$message = ob_get_clean();
+
+
+$message = str_replace("{PORTAL_post_comment}", lang($lang, 'POST_MAIL_POST_NEW').' '.get_conf_param('name_of_firm'), $message);
+$message = str_replace("{MAIL_info}", lang($lang,'MAIL_info'), $message);
+$message = str_replace("{POST_created_author}", lang($lang,'POST_created_author'), $message);
+$message = str_replace("{POST_MAIL_subj}", lang($lang,'POST_MAIL_subj'), $message);
+$message = str_replace("{PORTAL_post_comment_ext}", lang($lang,'PORTAL_post_NEWM_ext'), $message);
+$message = str_replace("{MAIL_2link}", lang($lang,'PORTAL_post_MAIL_2link'), $message);
+
+
+
+
+
+$message = str_replace("{uin}", $AUTHOR_POST, $message);
+$message = str_replace("{to_text}", $SUBJ_POST, $message);
+$message = str_replace("{who_init}", $AUTHOR_POST, $message);
+$message = str_replace("{comment}", $POST_COMMENT, $message);
+$message = str_replace("{h}", $THREAD_HASH, $message);
+
+
+     send_mail($user_mail,$subject,$message);
+
+
+   }
+
+
+  else if ($type_op == "portal_post_comment") {
 
 
         $stmt = $dbConnection->prepare('SELECT subj, author_id, uniq_id FROM portal_posts where id=:tid');

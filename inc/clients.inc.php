@@ -274,7 +274,7 @@ if (isset($_POST['menu'])) {
                                     <div class="col-md-2">
                                          
 
-<img style=" border: 1px solid #dddddd;" src="<?php echo get_user_img_by_id($row['id']); ?>" alt="user image" class="responsive"/>
+<img style=" border: 1px solid #dddddd;" src="<?php echo get_user_img_by_id($row['id']); ?>" alt="user image" class="img-responsive"/>
 
 
 
@@ -282,10 +282,7 @@ if (isset($_POST['menu'])) {
                                     <div class="col-md-3">
                                         <div class="row">
 
-                                            <?php if ($row['login']) { ?>
-                                            <div class="col-md-6"> <small class="text-muted"> <?php echo lang('USERS_login'); ?>: </small></div>
-                                            <div class="col-md-6"> <small><?=$row['login']; ?></small></div>
-                                            <?php } ?>
+
 
                                             <?php if ($adr) { ?>
                                             <div class="col-md-6"> <small class="text-muted"> <?=lang('APPROVE_adr');?>: </small></div>

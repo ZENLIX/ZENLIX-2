@@ -183,7 +183,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     
                      <?php
         if ($CONF['fix_subj'] == "false") { ?>
-                   <div class="callout callout-danger">
+                   <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('DEPS_off'); ?>
@@ -192,7 +192,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                    <?php
         } ?>
 
-                    <div class="callout callout-info">
+                    <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('SUBJ_info'); ?>

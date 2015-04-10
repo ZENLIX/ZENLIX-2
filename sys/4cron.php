@@ -705,6 +705,8 @@ define('GMAIL_PASSWORD', get_conf_param('email_gate_pass'));
 define('ATTACHMENTS_DIR', $base . '/upload_files');
 
 $mailbox = new ImapMailbox('{'.get_conf_param('email_gate_host').':'.get_conf_param('email_gate_port').'/imap/ssl}'.get_conf_param('email_gate_cat').'', GMAIL_EMAIL, GMAIL_PASSWORD, ATTACHMENTS_DIR, 'utf-8');
+
+
 $mails = array();
 
 // Get some mail

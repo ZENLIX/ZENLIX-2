@@ -66,9 +66,9 @@ if ($tm != 0) {
 }
 ?>
 
+<div class="wrapper">
 
-
-               <header class="header">
+               <header class="main-header">
                                    <?php
                     if ($main_portal == "true") {
                         ?>
@@ -88,12 +88,19 @@ if ($tm != 0) {
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
-                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only"><?php echo lang('EXT_toggle_nav'); ?></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
+
+
+
+
+
+          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only"><?php echo lang('EXT_toggle_nav'); ?></span>
+          </a>
+
+
+
+
+
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
                     <?php
@@ -253,10 +260,19 @@ border-color: rgba(255, 255, 255, 0.2);" />
             </nav>
         </header>
         
+
+
+
+
+
+
+
+
+
         
-        <div class="wrapper row-offcanvas row-offcanvas-left">
+        
             <!-- Left side column. contains the logo and sidebar -->
-            <aside class="left-side sidebar-offcanvas">
+            <aside class="main-sidebar">
                 <!-- sidebar: style can be found in sidebar.less -->
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
@@ -403,4 +419,5 @@ if (get_current_URL_name('print_ticket')) {
 
 ?>
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side" style="<?=$style_hide;?> ">
+            <div class="content-wrapper" >
+<div class="main_i" style="<?=$style_hide;?>">

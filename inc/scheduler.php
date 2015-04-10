@@ -1016,7 +1016,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
       <br>
       
       
-                    <div class="callout callout-info">
+                    <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?=lang('cron_info');?>

@@ -135,7 +135,7 @@ if (isset($_GET['out'])) {
                                     
                                     
                                     
-                                        <form action="<?php echo $CONF['hostname']; ?>list" method="get">
+                                        <!--form action="<?php echo $CONF['hostname']; ?>list" method="get">
                         <div class="input-group">
 
                             <input name="t" type="text" class="form-control input-sm pull-right" id="input_find" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('LIST_find_ph'); ?>" style="width: 250px;">
@@ -150,7 +150,7 @@ if (isset($_GET['out'])) {
 
                         </div>
 
-                    </form>
+                    </form-->
                                         
                                         
                                         
@@ -172,15 +172,19 @@ if (isset($_GET['out'])) {
     <div class="">
         
         <div class="btn-group btn-group-justified">
-            <a class="btn btn-default btn-sm <?php echo $status_in ?>" role="button" href="?in"><i
+            <a class="btn btn-default btn-sm btn-flat <?php echo $status_in ?>" role="button" href="?in"><i
                     class="fa fa-download"></i> <?php echo lang('LIST_in'); ?> <span
                     id="label_list_in"><?php echo $newtickets ?></span></a>
-            <a class="btn btn-default btn-sm <?php echo $status_out ?>" role="button" id="link_out" href="?out"><i
+            <a class="btn btn-default btn-sm btn-flat <?php echo $status_out ?>" role="button" id="link_out" href="?out"><i
                     class="fa fa-upload"></i> <?php echo lang('LIST_out'); ?> <span
                     id="label_list_out"><?php echo $out_tickets ?></span> </a>
-            <a class="btn btn-default btn-sm <?php echo $status_arch ?>" role="button" href="?arch"><i
+            <a class="btn btn-default btn-sm btn-flat <?php echo $status_arch ?>" role="button" href="?arch"><i
                     class="fa fa-archive"></i> <?php echo lang('LIST_arch'); ?></a>
         </div>
+
+
+
+
         <br>
 
         <div id="spinner" class="well well-large well-transparent lead">

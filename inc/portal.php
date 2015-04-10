@@ -26,7 +26,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 <div class="row">
                     <div class="col-md-3">
-                    <div class="callout callout-info">
+                    <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> <?php echo lang('PORTAL_helper'); ?>
                                         </small>
@@ -140,8 +140,57 @@ else if (get_conf_param('portal_msg_type') == "danger") { $mp['danger']="checked
   </div>
   </div>
 
+<hr>
+   <div class="form-group">
+  <label for="mess" class="col-sm-4 control-label"><small><?=lang('PORTAL_nf_users_list');?></small></label>
+        <div class="col-md-8" style="" id="dsd">
+    
+    
+    <select data-placeholder="<?php echo lang('NAVBAR_users'); ?>" id="users_do" name="unit_id" class="form-control input-sm" multiple>
+        <option></option>
 
-  
+
+<?php
+        
+        /* $qstring = "SELECT fio as label, id as value FROM users where status='1' and login !='system' order by fio ASC;";
+                $result = mysql_query($qstring);//query the database for entries containing the term
+        while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
+        */
+        
+        $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and is_client=0 order by fio ASC');
+        $stmt->execute(array(':n' => '1'));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+            
+            //echo($row['label']);
+            $row['label'] = $row['label'];
+            $row['value'] = (int)$row['value'];
+            
+            if (get_user_status_text($row['value']) == "online") {
+                $s = "online";
+            } else if (get_user_status_text($row['value']) == "offline") {
+                $s = "offline";
+            }
+
+
+$ulist=get_conf_param('portal_posts_mail_users');
+$ulist=explode(",", $ulist);
+$c="";
+if (in_array($row['value'], $ulist)) {
+  $c="selected";
+}
+
+?>
+                    <option data-foo="<?php echo $s; ?>" value="<?php echo $row['value'] ?>" <?=$c;?>><?php echo nameshort($row['label']) ?> </option>
+
+                <?php
+        }
+?>
+    </select>
+            
+
+        </div>
+  </div>
 
 
 

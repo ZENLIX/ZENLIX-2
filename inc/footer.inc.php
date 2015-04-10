@@ -1,5 +1,8 @@
 
-<div id="footer" style=" padding-bottom: 70px; ">
+</div>
+</div>
+
+<div id="main-footer" class="mf" style=" padding-bottom: 20px; <?=$style_hide;?>">
     <div class="" style=" padding: 20px; ">
         <div class="col-md-12">
             <p class="text-muted credit pull-right"><small>Developed by <a href="http://zenlix.com/">ZENLIX</a> (с) <?=date('Y');?>.</p>
@@ -12,7 +15,7 @@
 
 
 
-</aside><!-- /.right-side -->
+<!-- /.right-side -->
 </div>     
                 
             
@@ -37,6 +40,7 @@ echo $lang; ?>";
 </script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-2.1.3.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js?<?=get_conf_param('version');?>"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/icheck.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/app.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.titlealert.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/noty/packaged/jquery.noty.packaged.min.js?<?=get_conf_param('version');?>"></script>
@@ -102,7 +106,7 @@ if (get_current_URL_name('ticket')) { ?>
 } ?>
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_current_URL_name('scheduler') || get_current_URL_name('config')) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_current_URL_name('scheduler') || get_current_URL_name('config') || get_current_URL_name('portal')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/s2/select2.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.autosize.min.js?<?=get_conf_param('version');?>"></script>
 

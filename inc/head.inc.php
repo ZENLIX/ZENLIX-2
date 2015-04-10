@@ -41,7 +41,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('deps') || get_curr
 
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('config') || get_current_URL_name('mailers') || get_current_URL_name('sla_rep')  ) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('config') || get_current_URL_name('mailers') || get_current_URL_name('sla_rep') || get_current_URL_name('portal')  ) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2-bootstrap.css?<?=get_conf_param('version');?>">
 
@@ -85,6 +85,7 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 
 
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/AdminLTE.css?<?=get_conf_param('version');?>">
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/skin-blue.css?<?=get_conf_param('version');?>">
 <body class="skin-blue" style="">
   
 

@@ -243,7 +243,7 @@ get_helper(); ?>
     
 
        
-</div>
+
 </section>
 <?php
 include ("footer.inc.php");

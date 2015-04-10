@@ -16,11 +16,12 @@ function lang_ua($phrase){
 'SLA_stat_work_no' => 'Час виконання прострочено',
 'SLA_stat_dl_ok' => 'Крайній термін вчасно',
 'SLA_stat_dl_no' => 'Крайній термін прострочено',
-
+'PORTAL_nf_users_list' => 'Повідомляти про нові пости',
 'STAT_MAIN_t4' => 'Заявки, отримані користувачами відділу',
 
 'SLA_success' => 'успіху',
-
+'POST_MAIL_POST_NEW' => 'Новий пост на порталі',
+'PORTAL_post_NEWM_ext' => 'Ви отримали це повідомлення тому що був створений пост користувачем',
 'SLA_NOT_LOCK'=>'ще не взята',
 'SLA_REGLAMENT'=>'Регламент',
 'SLA_deadline_ok'=>'Виконано',

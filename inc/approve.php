@@ -37,7 +37,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     <div class="row">
                     <div class="col-md-3">
                     
-                    <div class="callout callout-info">
+                    <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('APPROVED_info'); ?>

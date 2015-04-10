@@ -1045,6 +1045,7 @@ if ($validated === true) {
 			':dt'=> $CONF['now_dt'],
 			':uid'=>$_SESSION['helpdesk_user_id']
 		));
+        send_notification_portal('portal_post_new', get_post_val_by_hash($_POST['hn'], 'id'));
 		verify_uploaded_files($_POST['hn']);
 	}
 	else {
@@ -1244,6 +1245,10 @@ if ($validated === true) {
 			':dt'=> $CONF['now_dt'],
 			':uid'=>$_SESSION['helpdesk_user_id']
 		));
+
+
+
+
 	}
 	else {
                 

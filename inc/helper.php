@@ -352,7 +352,7 @@ if ($priv_h == "yes") {
                     <a href="<?php echo $CONF['hostname'] ?>helper?edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> <?=lang('HELP_cats_title');?> </a>
                     <?php } ?>
 <br>
-                    <div class="callout callout-info">
+                    <div class="callout ">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('HELPER_cats_info'); ?>
@@ -705,7 +705,7 @@ $cat_id=$_GET['cat'];
                     <a href="<?php echo $CONF['hostname'] ?>helper?edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> <?=lang('HELP_cats_title');?> </a>
                     <?php } ?>
 <br>
-                    <div class="callout callout-info">
+                    <div class="callout ">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('HELPER_add_info'); ?>
@@ -917,7 +917,7 @@ $cat_id=$_GET['cat'];
                     <a href="<?php echo $CONF['hostname'] ?>helper?edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> <?=lang('HELP_cats_title');?> </a>
                     <?php } ?>
 <br>
-                    <div class="callout callout-info">
+                    <div class="callout ">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('HELPER_info'); ?>

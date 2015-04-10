@@ -27,12 +27,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     <?php
         if ($CONF['file_uploads'] == "false") { ?>
                     
-                    <div class="callout callout-danger">
+                    <div class="callout">
                         <?php echo lang('FILES_off'); ?>
                     </div>
                     <?php
         } ?>
-                    <div class="callout callout-info">
+                    <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('FILES_info'); ?>

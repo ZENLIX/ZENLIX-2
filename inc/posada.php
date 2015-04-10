@@ -27,7 +27,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     <div class="row">
                     <div class="col-md-3">
                     <input type="text" class="form-control input-sm ui-autocomplete-input" id="posada_text" placeholder="<?php echo lang('POSADA_name'); ?>" autocomplete="off"><button id="posada_add" class="btn btn-default btn-sm btn-block" type="submit"><?php echo lang('POSADA_add'); ?></button><br>
-                    <div class="callout callout-info">
+                    <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
 <?php echo lang('POSADA_info'); ?>
