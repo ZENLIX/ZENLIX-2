@@ -404,13 +404,28 @@ class ImapMailbox {
 	 */
 	public function getMail($mailId) {
 		$head = imap_rfc822_parse_headers(imap_fetchheader($this->getImapStream(), $mailId, FT_UID));
+$head2=imap_fetchheader($this->getImapStream(), $mailId, FT_UID);
+
 
 		$mail = new IncomingMail();
 		$mail->id = $mailId;
 		$mail->date = date('Y-m-d H:i:s', isset($head->date) ? strtotime($head->date) : time());
 		$mail->subject = isset($head->subject) ? $this->decodeMimeStr($head->subject, $this->serverEncoding) : null;
 		$mail->fromName = isset($head->from[0]->personal) ? $this->decodeMimeStr($head->from[0]->personal, $this->serverEncoding) : null;
+
+		//$mail->message_id=$head->message_id;
+		//$head->message_id;
+$mail->m_id = htmlspecialchars($this->decodeMimeStr($head->message_id, $this->serverEncoding));
+$mail->references = htmlspecialchars($this->decodeMimeStr($head->references, $this->serverEncoding));
+$mail->in_reply_to = htmlspecialchars($this->decodeMimeStr($head->in_reply_to, $this->serverEncoding));
+
+$mail->all=quoted_printable_decode(imap_fetchbody($this->getImapStream(), $mailId, FT_UID));
+//references
+//in_reply_to
+
+
 		$mail->fromAddress = strtolower($head->from[0]->mailbox . '@' . $head->from[0]->host);
+		//$mail->message_id=$head->ticket_id;
 
 		if(isset($head->to)) {
 			$toStrings = array();
@@ -605,10 +620,17 @@ class IncomingMail {
 	public $fromName;
 	public $fromAddress;
 
+
 	public $to = array();
 	public $toString;
 	public $cc = array();
 	public $replyTo = array();
+	public $all;
+	public $m_id;
+	
+	public $references;
+	
+	public $in_reply_to;
 
 	public $textPlain;
 	public $textHtml;

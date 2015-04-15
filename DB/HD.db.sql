@@ -284,6 +284,7 @@ CREATE TABLE `files` (
   `file_type` varchar(512) DEFAULT NULL,
   `file_size` int(11) DEFAULT NULL,
   `file_ext` varchar(12) DEFAULT NULL,
+  `obj_type` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -409,7 +410,7 @@ VALUES
 	(22,'pb_api','api'),
 	(23,'ldap_ip','0.0.0.0'),
 	(24,'ldap_domain','ldap.local'),
-	(25,'version','2.6'),
+	(25,'version','2.8'),
 	(26,'node_port','http://localhost:3001/'),
   (27,'time_zone','Europe/Kiev'),
   (28,'allow_register','true'),
@@ -443,7 +444,8 @@ VALUES
   (56, 'mailers_text', ''),
   (57, 'allow_forgot', 'true'),
   (58, 'sla_system', 'true'),
-  (59, 'portal_posts_mail_users', 'false');
+  (59, 'portal_posts_mail_users', 'false'),
+  (60, 'email_gate_connect_param', '/imap/ssl');
 
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;

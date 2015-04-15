@@ -46,7 +46,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_cu
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2-bootstrap.css?<?=get_conf_param('version');?>">
 
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.css?<?=get_conf_param('version');?>">
-
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/dropzone.css?<?=get_conf_param('version');?>">
 <?php
 } ?>
 
@@ -56,6 +56,8 @@ if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_cu
 
 <?php
 if ((get_current_URL_name('helper')) || get_current_URL_name('notes') || get_current_URL_name('mailers')) { ?>
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.css?<?=get_conf_param('version');?>">
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/dropzone.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote-bs3.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote.css?v2.5">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css?<?=get_conf_param('version');?>">
@@ -63,7 +65,7 @@ if ((get_current_URL_name('helper')) || get_current_URL_name('notes') || get_cur
 } ?>
 
 <?php
-if (get_current_URL_name('create')) { ?>
+if (true == false) { ?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/jquery.fileupload.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/jquery.fileupload-ui.css?<?=get_conf_param('version');?>">
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/uploadfile.css?<?=get_conf_param('version');?>">

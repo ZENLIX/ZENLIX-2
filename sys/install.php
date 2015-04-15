@@ -215,8 +215,8 @@ $pos = strrpos($_SERVER['REQUEST_URI'], '/');
 $sys_url= $_SERVER['HTTP_HOST'].substr($_SERVER['REQUEST_URI'], 0, $pos + 1);
 $lc=substr($sys_url, -1);
 if ($lc == "/") { $c=substr($sys_url, 0, -1); }
-$p="http://".$c.":".$nodeport."/";
-
+//$p="http://".$c.":".$nodeport."/";
+$p="http://".$c."/";
 
 mysql_query("update perf set value='$sys_url' where param='hostname'") or die("Invalid query: " . mysql_error());
 mysql_query("update perf set value='$p' where param='node_port'") or die("Invalid query: " . mysql_error());

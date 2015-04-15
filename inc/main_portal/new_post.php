@@ -139,33 +139,6 @@ switch ($_GET['p']) {
 
                 </tbody></table>
 
-
-
-
-
-
-
-
-
-
-<!--table class="table">
-  <tr>
-    <td><p class="name" data-dz-name></p>
-<br><p class="size" data-dz-size></p>
-    </td>
-    <td>        
-        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-        </div></td>
-        <td>
-              <button data-dz-remove class="btn btn-danger delete">
-        <i class="glyphicon glyphicon-trash"></i>
-        <span>Delete</span>
-      </button>
-        </td>
-  </tr>
-</table-->
-
 </div>
   </div>
  

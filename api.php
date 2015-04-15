@@ -350,8 +350,8 @@ else if ($row['arch'] == 0) {
                 	array_push($r['tickets'], array(
                     'id_ticket' 	=> $row['id'],
                     'ticket_hash' 	=> $row['hash_name'],
-                    'subj' 			=> $row['subj'],
-                    'text' 			=> $row['msg'],
+                    'subj' 			=> cutstr_api($row['subj'], 150),
+                    'text' 			=> cutstr_api($row['msg'], 150),
                     'date_created' 	=> $row['date_create'],
                     'status'        => $st,
                     'prio'          => $row['prio'],
@@ -457,6 +457,13 @@ else if ($row['arch'] == 0) {
             }
 
 
+if ($row['user_to_id'] == "0") {
+    $utid_str=get_unit_name_return4news($row['unit_id']);
+}
+else if ($row['user_to_id'] != "0") {
+    $utid_str=nameshort(name_of_user_ret_nolink($row['user_to_id']));
+}
+
 //nameshort(name_of_user_ret_nolink())
         			array_push($r['ticket'], array(
                     'id_ticket' 	=> $row['id'],
@@ -471,7 +478,7 @@ else if ($row['arch'] == 0) {
 
                     'unit_id'		=> $row['unit_id'],
                     'user_to_id'	=> get_user_hash_by_id($row['user_to_id']),
-                    'user_to_fio'   => nameshort(name_of_user_ret_nolink($row['user_to_id'])),
+                    'user_to_fio'   => $utid_str,
                     'status'		=> $st,
                     'lock_by'		=> get_user_hash_by_id($row['lock_by']),
                     'ok_by'			=> get_user_hash_by_id($row['ok_by']),
@@ -1132,37 +1139,43 @@ else if ($mode == "get_user_info") {
 $r['info'] = array();
 
 $def_unit=0;
-if (get_user_val_by_hash($data_json->uniq_id, 'def_unit_id') != "0") {
+if (get_user_val_by_hash_api($data_json->uniq_id, 'def_unit_id') != "0") {
 
-    $def_unit=get_user_val_by_hash($data_json->uniq_id, 'def_unit_id');
+    $def_unit=get_user_val_by_hash_api($data_json->uniq_id, 'def_unit_id');
 }
 
 $def_user=0;
-if (get_user_val_by_hash($data_json->uniq_id, 'def_user_id') != "0") {
+if (get_user_val_by_hash_api($data_json->uniq_id, 'def_user_id') != "0") {
 
     $def_user=get_user_hash_by_id(get_user_val_by_hash($data_json->uniq_id, 'def_user_id'));
 }
 
-$ui=get_user_val_by_hash($data_json->user_hash, 'usr_img');
+$ui=get_user_val_by_hash_api($data_json->user_hash, 'usr_img');
 if (strlen($ui) < 5) {
     $ui="img/avatar5.png";
 }
 
+
+ 
+
+
+
     array_push($r['info'], array(
-            'fio'           =>get_user_val_by_hash($data_json->user_hash, 'fio'),
-            'status'        =>get_user_val_by_hash($data_json->user_hash, 'status'),
-            'priv'          =>get_user_val_by_hash($data_json->user_hash, 'priv'),
-            'unit'          =>get_user_val_by_hash($data_json->user_hash, 'unit'),
-            'is_client'     =>get_user_val_by_hash($data_json->user_hash, 'is_client'),
-            'email'         =>get_user_val_by_hash($data_json->user_hash, 'email'),
-            'lang'          =>get_user_val_by_hash($data_json->user_hash, 'lang'),
-            'last_time'     =>get_user_val_by_hash($data_json->user_hash, 'last_time'),
+            'fio'           =>get_user_val_by_hash_api($data_json->user_hash, 'fio'),
+            'user_login'    =>get_user_val_by_hash_api($data_json->user_hash, 'login'),
+            'status'        =>get_user_val_by_hash_api($data_json->user_hash, 'status'),
+            'priv'          =>get_user_val_by_hash_api($data_json->user_hash, 'priv'),
+            'unit'          =>get_user_val_by_hash_api($data_json->user_hash, 'unit'),
+            'is_client'     =>get_user_val_by_hash_api($data_json->user_hash, 'is_client'),
+            'email'         =>get_user_val_by_hash_api($data_json->user_hash, 'email'),
+            'lang'          =>get_user_val_by_hash_api($data_json->user_hash, 'lang'),
+            'last_time'     =>get_user_val_by_hash_api($data_json->user_hash, 'last_time'),
             'usr_img'       =>$ui,
-            'posada'        =>get_user_val_by_hash($data_json->user_hash, 'posada'),
-            'tel'           =>get_user_val_by_hash($data_json->user_hash, 'tel'),
-            'skype'         =>get_user_val_by_hash($data_json->user_hash, 'skype'),
-            'unit_desc'     =>get_user_val_by_hash($data_json->user_hash, 'unit_desc'),
-            'adr'           =>get_user_val_by_hash($data_json->user_hash, 'adr'),
+            'posada'        =>get_user_val_by_hash_api($data_json->user_hash, 'posada'),
+            'tel'           =>get_user_val_by_hash_api($data_json->user_hash, 'tel'),
+            'skype'         =>get_user_val_by_hash_api($data_json->user_hash, 'skype'),
+            'unit_desc'     =>get_user_val_by_hash_api($data_json->user_hash, 'unit_desc'),
+            'adr'           =>get_user_val_by_hash_api($data_json->user_hash, 'adr'),
             'def_unit_id'   =>$def_unit,
             'def_user_id'   =>$def_user
 

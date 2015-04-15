@@ -887,7 +887,8 @@ $('#myid').dropzone({
     params: {
       mode: 'upload_post_file',
       post_hash: ph,
-      type: '0'
+      type: '0',
+      is_tmp: '1'
 
     },
   removedfile: function(file) {
@@ -1072,7 +1073,8 @@ $('#myid').dropzone({
     params: {
       mode: 'upload_post_file',
       post_hash: ph,
-      type: '0'
+      type: '0',
+      is_tmp: '1'
 
     },
   removedfile: function(file) {
@@ -1200,7 +1202,8 @@ $('#myid').dropzone({
     params: {
       mode: 'upload_post_file',
       post_hash: ph,
-      type: '0'
+      type: '0',
+      is_tmp: '0'
 
     },
   removedfile: function(file) {
@@ -1768,6 +1771,34 @@ if (ispath('thread')) {
 
 
 
+$('body').on('click', '.make_cat_type', function(event) {
+            event.preventDefault();
+var v=$(this).val();
+var type=$(this).attr('option');
+
+
+
+
+$.ajax({
+                type: "POST",
+                url: ACTIONPATH_PORTAL,
+                data: {mode: 'set_post_cat', post_hash: v, type: type},
+                success: function(html) {
+                    //console.log(html);
+                    window.location = MyHOSTNAME + "thread?"+v;
+                    //$("#"+v+" .editable_text").html(html);
+                }
+            });
+
+
+
+
+
+
+            });
+
+
+
 
 $(".direct-chat-msg").on({
     mouseenter: function () {
@@ -2149,11 +2180,14 @@ $.ajax({
                 type: "POST",
                 url: ACTIONPATH_PORTAL,
                 
-                data: "mode=add_comment"+
+                data: {mode: 'add_comment', msg: sHTML, ph: v, ch:c, type: type},
+/*
+                "mode=add_comment"+
                 "&msg="+sHTML+
                 "&ph="+v+
                 "&ch="+c+
                 "&type="+type,
+*/
                 dataType: "json",
                 success: function(html) {
                     console.log(html);
@@ -2212,6 +2246,7 @@ previewNode.id = "";
 var previewTemplate = previewNode.parentNode.innerHTML;
 previewNode.parentNode.removeChild(previewNode);
 var ph=$("#comment_hash").val();
+
 $('#myid').dropzone({ 
     url: ACTIONPATH_PORTAL,
     maxFilesize: 100,

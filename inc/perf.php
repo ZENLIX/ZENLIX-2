@@ -4,6 +4,10 @@ include ("../functions.inc.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if (validate_admin($_SESSION['helpdesk_user_id'])) {
+
+
+                   $CONF['title_header'] = lang('CONF_title') . " - " . $CONF['name_of_firm'];
+
         include ("head.inc.php");
         include ("navbar.inc.php");
         
@@ -1321,6 +1325,27 @@ if (in_array($row['value'], $mass)) {$st_sel="selected";}
     <div class="col-sm-8">
       <input type="text" class="form-control input-sm" id="email_gate_cat" placeholder="<?=lang('CONF_EMAIL_GATE_cat');?>" value="<?php
         echo get_conf_param('email_gate_cat') ?>">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="email_gate_connect_param" class="col-sm-4 control-label"><small><?=lang('CONF_EMAIL_GATE_cp');?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="email_gate_connect_param" placeholder="<?=lang('CONF_EMAIL_GATE_cp');?>" value="<?php
+        echo get_conf_param('email_gate_connect_param') ?>">
+        <p class="help-block"><small>Ex.:   
+<pre>
+/pop3                     - for POP3 protocol connection
+/imap/ssl                 - for IMAP secure connection
+/pop3/ssl/novalidate-cert - POP3 with self-signed cert
+/ssl                      - use the Secure Socket Layer to encrypt the session
+/validate-cert            - validate certificates from TLS/SSL server (this is the default behavior)
+/novalidate-cert          - do not validate certificates from TLS/SSL server, needed if server uses self-signed certificates
+/tls                      - force use of start-TLS to encrypt the session, and reject connection to servers that do not support it
+/nntp                     - NNTP protocol connection
+</pre>
+</small>
+</p>
     </div>
   </div>
 

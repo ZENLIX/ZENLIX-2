@@ -3,7 +3,8 @@ session_start();
 include ("../functions.inc.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
-    
+     $CONF['title_header'] = lang('USERS_list') . " - " . $CONF['name_of_firm'];
+
     include ("head.inc.php");
     include ("navbar.inc.php");
     

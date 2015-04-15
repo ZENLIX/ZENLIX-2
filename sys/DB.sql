@@ -269,6 +269,7 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (58, 'sla_system', 'true') ON
 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (59, 'portal_posts_mail_users', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
 
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (60, 'email_gate_connect_param', '/imap/ssl') ON DUPLICATE KEY UPDATE `value` = `value`;
 
 #######UPDATE perf.value####################
 SET @sql = (SELECT IF(
@@ -309,6 +310,19 @@ PREPARE stmt FROM @sql;
 EXECUTE stmt;
 ######################################################
 
+
+#######UPDATE files.obj_type####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='files' and column_name='obj_type'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE files ADD obj_type int(11) NOT NULL DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
 
 #######UPDATE subj.uniq_id####################
 SET @sql = (SELECT IF(

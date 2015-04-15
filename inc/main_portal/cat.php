@@ -2,10 +2,10 @@
 
 <?php
 
-include "head.inc.php";
 
 
-include "navbar.inc.php";
+
+
 $rkeys = array_keys($_GET);
 
 
@@ -40,6 +40,7 @@ switch ($hn) {
     break;
   default:
     # code...
+  $t=lang('PORTAL_comments');
     break;
 }
 
@@ -54,6 +55,13 @@ else if ($_GET['p']) {
         $page = ($p);
         $perpage = '10';
         $start_pos = ($page - 1) * $perpage;
+
+$CONF['title_header']=get_conf_param('name_of_firm')." - ".$t;
+
+include "head.inc.php";
+
+
+include "navbar.inc.php";
 
 ?>
 <div class="content-wrapper">

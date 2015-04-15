@@ -2992,6 +2992,134 @@ php:
     }
     if (ispath('helper')) {
 
+$('.fancybox').fancybox(
+    {
+        openEffect  : 'elastic',
+        closeEffect : 'elastic'
+    });
+
+
+
+//delete_edited_manual_file
+        $('body').on('click', 'button#delete_edited_manual_file', function(event) {
+            event.preventDefault();
+$.ajax({
+        type: 'POST',
+        url: ACTIONPATH,
+        data: "mode=delete_manual_file"+
+        "&uniq_code="+$(this).val(),
+        dataType: 'html',
+                                success: function(html) {
+                            //$('#table_list').html(html);
+                            console.log("ok");
+                            window.location = MyHOSTNAME + "helper?h="+$("#do_save_help").val()+"&edit";
+                        }
+
+    });
+});
+
+
+if($('#myid').length) {
+
+
+var previewNode = document.querySelector("#template");
+previewNode.id = "";
+var previewTemplate = previewNode.parentNode.innerHTML;
+previewNode.parentNode.removeChild(previewNode);
+var ph=$("#manual_hash").val();
+
+$('#myid').dropzone({ 
+    url: ACTIONPATH,
+    maxFilesize: 100,
+    paramName: "myfile",
+    params: {
+      mode: 'upload_manual_file',
+      post_hash: ph,
+      type: '1'
+    },
+  removedfile: function(file) {
+
+//console.log('d:'+file);
+//var name = file.name;
+/*
+$.ajax({
+        type: 'POST',
+        url: 'delete.php',
+        data: "id="+name,
+        dataType: 'html'
+    });
+*/
+    var _ref;
+    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+  },
+    maxThumbnailFilesize: 5,
+    previewTemplate: previewTemplate,
+    previewsContainer: "#previews",
+    autoQueue: true,
+    maxFiles: 50,
+    init: function() {
+      
+      this.on('success', function(file, response) {
+         //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
+         
+
+ //$.each(json, function(i, item) {
+//var obj = jQuery.parseJSON(json);
+var obj = jQuery.parseJSON(response);
+
+//console.log(obj);
+
+$.each(obj, function(i, item) {
+
+    if (item.status == "ok") {
+
+
+$(file.previewTemplate).append('<input type="hidden" class="server_file" value="'+item.uniq_code+'">');
+}
+else if (item.status == "error") {
+//$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
+
+    $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+item.msg+'</div>').fadeOut(3000);
+
+}
+
+})
+
+
+        
+ //});
+
+
+      });
+      this.on("removedfile", function(file) {
+var server_file = $(file.previewTemplate).children('.server_file').val();
+            //console.log(server_file);
+
+
+$.ajax({
+        type: 'POST',
+        url: ACTIONPATH,
+        data: "mode=delete_manual_file"+
+        "&uniq_code="+server_file,
+        dataType: 'html',
+    });
+
+      });
+      
+     this.on("addedfile", function(file) {
+console.log(file);
+      });
+      
+      this.on('drop', function(file) {
+        //alert('file');
+      }); 
+    }
+  });
+
+}
+
+
+
 
 
                 if ($('#summernote_help').length != 0) {
@@ -3242,6 +3370,7 @@ view_helper_cat();
                 'mode': 'do_create_help',
                 'u': u,
                 't': t,
+                'mh': $("#manual_hash").val(),
                 'msg': sHTML,
                 'is_client': is_client,
                 'cat':cat
@@ -3329,6 +3458,108 @@ view_helper_cat();
         },5000);*/
     }
     if (ispath('create')) {
+
+
+if($('#myid').length) {
+
+
+var previewNode = document.querySelector("#template");
+previewNode.id = "";
+var previewTemplate = previewNode.parentNode.innerHTML;
+previewNode.parentNode.removeChild(previewNode);
+var ph=$("#hashname").val();
+
+$('#myid').dropzone({ 
+    url: ACTIONPATH,
+    maxFilesize: 100,
+    paramName: "myfile",
+    params: {
+      mode: 'upload_post_file',
+      post_hash: ph,
+      type: '1'
+    },
+  removedfile: function(file) {
+
+//console.log('d:'+file);
+//var name = file.name;
+/*
+$.ajax({
+        type: 'POST',
+        url: 'delete.php',
+        data: "id="+name,
+        dataType: 'html'
+    });
+*/
+    var _ref;
+    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+  },
+    maxThumbnailFilesize: 5,
+    previewTemplate: previewTemplate,
+    previewsContainer: "#previews",
+    autoQueue: true,
+    maxFiles: 50,
+    init: function() {
+      
+      this.on('success', function(file, response) {
+         //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
+         
+
+ //$.each(json, function(i, item) {
+//var obj = jQuery.parseJSON(json);
+var obj = jQuery.parseJSON(response);
+
+//console.log(obj);
+
+$.each(obj, function(i, item) {
+
+    if (item.status == "ok") {
+
+
+$(file.previewTemplate).append('<input type="hidden" class="server_file" value="'+item.uniq_code+'">');
+}
+else if (item.status == "error") {
+//$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
+
+    $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+item.msg+'</div>').fadeOut(3000);
+
+}
+
+})
+
+
+        
+ //});
+
+
+      });
+      this.on("removedfile", function(file) {
+var server_file = $(file.previewTemplate).children('.server_file').val();
+            //console.log(server_file);
+
+
+$.ajax({
+        type: 'POST',
+        url: ACTIONPATH,
+        data: "mode=delete_post_file"+
+        "&uniq_code="+server_file,
+        dataType: 'html',
+    });
+
+      });
+      
+     this.on("addedfile", function(file) {
+console.log(file);
+      });
+      
+      this.on('drop', function(file) {
+        //alert('file');
+      }); 
+    }
+  });
+
+}
+
+
         $("textarea#msg").keyup(function() {
             if ($(this).val().length > 1) {
                 $("textarea#msg").popover('hide');
@@ -3674,9 +3905,10 @@ if(jQuery().fileupload) {
             var status_ll = $(this).attr('status');
             var tr_id = $(this).attr('value');
             var elem = '#tr_' + tr_id;
+            var elb='.ela_'+tr_id;
             var us = $(this).attr('user');
             if (status_ll == "ok") {
-                                        $("#action_list_lock").attr('disabled', "disabled");
+                                        $(elb).attr('disabled', "disabled");
                         //$("#action_list_lock").removeAttr('disabled');
                 $(this).attr("status", "unok");
                 $(this).html('<i class=\"fa fa-check-circle-o\"></i>');
@@ -3691,7 +3923,7 @@ if(jQuery().fileupload) {
             }
             if (status_ll == "unok") {
                                         //$("#action_list_lock").attr('disabled', "disabled");
-                        $("#action_list_lock").removeAttr('disabled');
+                        $(elb).removeAttr('disabled');
                 $(this).attr("status", "ok");
                 $(this).html('<i class=\"fa fa-circle-o\"></i>');
                 $.ajax({
@@ -3722,6 +3954,7 @@ if(jQuery().fileupload) {
             var status_ll = $(this).attr('status');
             var tr_id = $(this).attr('value');
             var elem = '#tr_' + tr_id;
+            var elb='.elb_'+tr_id;
             var us = $(this).attr('user');
             if (status_ll == "lock") {
                 $(this).attr("status", "unlock");
@@ -3733,7 +3966,7 @@ if(jQuery().fileupload) {
                     success: function() {
 
                         //$("#action_list_ok").attr('disabled', "disabled");
-                        $("#action_list_ok").removeAttr('disabled');
+                        $(elb).removeAttr('disabled');
 
                         $(elem).removeClass().addClass('warning', 1000);
                         $(elem).addClass('pops');
@@ -3748,7 +3981,7 @@ if(jQuery().fileupload) {
                     url: ACTIONPATH,
                     data: "mode=unlock" + "&tid=" + tr_id,
                     success: function() {
-                        $("#action_list_ok").attr('disabled', "disabled");
+                        $(elb).attr('disabled', "disabled");
                         //$("#action_list_ok").removeAttr('disabled');
 
                         $(elem).removeClass('warning', 1000);
@@ -4620,7 +4853,8 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
                 "&email_gate_cat="+$("#email_gate_cat").val()+
                 "&email_gate_port="+$("#email_gate_port").val()+
                 "&email_gate_login="+$("#email_gate_login").val()+
-                "&email_gate_pass="+$("#email_gate_pass").val(),
+                "&email_gate_pass="+$("#email_gate_pass").val()+
+                "&email_gate_cp="+$("#email_gate_connect_param").val(),
                 success: function(html) {
                     $("#conf_edit_email_gate_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {

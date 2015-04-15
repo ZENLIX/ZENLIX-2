@@ -1419,12 +1419,14 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
                         </small></td>
                     <td style=" vertical-align: middle; ">
                         <center>
-                            <div class="btn-group btn-group-xs actions">
+                            <div class="btn-group btn-group-xs actions ">
                                 <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $lb_status);?>
-                                 data-toggle="tooltip" data-placement="bottom" title="<?php echo $lb_tooltip ?>" type="button" class="btn btn-warning" user="<?php echo $user_id ?>" value="<?php
+                                 data-toggle="tooltip" data-placement="bottom" title="<?php echo $lb_tooltip ?>" type="button" class="btn btn-warning ela_<?php
+                echo $row['id']; ?>" user="<?php echo $user_id ?>" value="<?php
                 echo $row['id']; ?>" id="action_list_lock" status="<?php echo $lb_status ?>"><?php echo $lb_text ?></button>
 
-                                <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $status_ok_status);?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $ob_tooltip ?>" type="button" class="btn btn-success" user="<?php echo $user_id ?>" value="<?php
+                                <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $status_ok_status);?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $ob_tooltip ?>" type="button" class="btn btn-success elb_<?php
+                echo $row['id']; ?>" user="<?php echo $user_id ?>" value="<?php
                 echo $row['id']; ?>" id="action_list_ok" status="<?php echo $ob_status ?>"><?php echo $ob_text ?></button>
                             </div>
                         </center>

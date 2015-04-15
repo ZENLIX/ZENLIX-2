@@ -1,9 +1,6 @@
 <?php
 session_start();
-include "head.inc.php";
 
-
-include "navbar.inc.php";
 
 
 $rkeys = array_keys($_GET);
@@ -58,6 +55,15 @@ else if ($_GET['p']) {
         $perpage = '10';
         $start_pos = ($page - 1) * $perpage;
 
+
+
+
+        $CONF['title_header']=get_conf_param('name_of_firm')." - ".$post['subj'];
+        
+include "head.inc.php";
+
+
+include "navbar.inc.php";
 ?>
 <div class="content-wrapper">
 <section class="content">

@@ -53,15 +53,15 @@ $now_date_time = $date_tz->format('Y-m-d H:i:s');
 */
 
             $stmt = $dbConnection->prepare('SELECT id, ok_by, ok_date,date_create,user_to_id,unit_id,user_init_id
-							from tickets
-							where arch=:n1 and ok_by !=:n2');
-			$stmt->execute(array(':n1' => '0',':n2' => '0'));
-			$res1 = $stmt->fetchAll();
-			foreach($res1 as $row) {
+                            from tickets
+                            where arch=:n1 and ok_by !=:n2');
+            $stmt->execute(array(':n1' => '0',':n2' => '0'));
+            $res1 = $stmt->fetchAll();
+            foreach($res1 as $row) {
 
-				        $user_to_id=$row['user_to_id'];
-						$unit_to_id=$row['unit_id'];
-						$user_init_id=$row['user_init_id'];
+                        $user_to_id=$row['user_to_id'];
+                        $unit_to_id=$row['unit_id'];
+                        $user_init_id=$row['user_init_id'];
 
 
     $m=$row['id'];
@@ -70,7 +70,7 @@ $now_date_time = $date_tz->format('Y-m-d H:i:s');
     if ($td > $CONF['days2arch'] ) {
 
                 $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=:n where id=:m');
-		$stmt->execute(array(':n1' => '1',':m' => $m, ':n'=>$now_date_time));
+        $stmt->execute(array(':n1' => '1',':m' => $m, ':n'=>$now_date_time));
         
         
         
@@ -78,98 +78,98 @@ $now_date_time = $date_tz->format('Y-m-d H:i:s');
                 
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, ticket_id)
 values (:arch, :n, :m)');
-			$stmt->execute(array(':arch' => 'arch',':m' => $m,':n'=>$now_date_time));
-			
-			
+            $stmt->execute(array(':arch' => 'arch',':m' => $m,':n'=>$now_date_time));
+            
+            
 
 
 
-					$delivers_ids=array();
-					array_push($delivers_ids,$user_init_id);
-				
-					
-					
-					///////////Исполнителям?///////////////////
-					if ( $user_to_id == 0) {
-						//выбрать всех с отдела
-									        $stmt = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and status=:n and is_client=0');
-											$stmt->execute(array(':n'=>'1', ':id'=>$unit_to_id));
-											$res1 = $stmt->fetchAll();                 
-											
-											foreach($res1 as $qrow) { 
-											array_push($delivers_ids,$qrow['id']);
-											}
-					
-					
-						
-					}
-					else if ($user_to_id <> 0) {
-					$users=explode(",",$user_to_id);
-					foreach ($users as $val) {
-					//всем исполнителям
-					array_push($delivers_ids,$val);
-					}
-					}
-					
-					
+                    $delivers_ids=array();
+                    array_push($delivers_ids,$user_init_id);
+                
+                    
+                    
+                    ///////////Исполнителям?///////////////////
+                    if ( $user_to_id == 0) {
+                        //выбрать всех с отдела
+                                            $stmt = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and status=:n and is_client=0');
+                                            $stmt->execute(array(':n'=>'1', ':id'=>$unit_to_id));
+                                            $res1 = $stmt->fetchAll();                 
+                                            
+                                            foreach($res1 as $qrow) { 
+                                            array_push($delivers_ids,$qrow['id']);
+                                            }
+                    
+                    
+                        
+                    }
+                    else if ($user_to_id <> 0) {
+                    $users=explode(",",$user_to_id);
+                    foreach ($users as $val) {
+                    //всем исполнителям
+                    array_push($delivers_ids,$val);
+                    }
+                    }
+                    
+                    
 
-					///////////Исполнителям?///////////////////
-					
-					
-					
-					
-					
-					//кто прокомментировал - тому не слать
-					//SELECT id,init_user_id FROM ticket_log where ticket_id=1 and msg='comment' order by id DESC limit 1
-					$stmt = $dbConnection->prepare("SELECT init_user_id FROM ticket_log where ticket_id=:id and msg=:n order by id DESC limit 1");
-					$stmt->execute(array(':n'=>'comment', ':id'=>$m));
-					$who_last = $stmt->fetch(PDO::FETCH_NUM);
-					$res=$who_last[0];
-					
-					$delivers_ids=array_unique($delivers_ids);
-					if(($key = array_search($res, $delivers_ids)) !== false) {
-					 				unset($delivers_ids[$key]);
-					}
-					
-					
+                    ///////////Исполнителям?///////////////////
+                    
+                    
+                    
+                    
+                    
+                    //кто прокомментировал - тому не слать
+                    //SELECT id,init_user_id FROM ticket_log where ticket_id=1 and msg='comment' order by id DESC limit 1
+                    $stmt = $dbConnection->prepare("SELECT init_user_id FROM ticket_log where ticket_id=:id and msg=:n order by id DESC limit 1");
+                    $stmt->execute(array(':n'=>'comment', ':id'=>$m));
+                    $who_last = $stmt->fetch(PDO::FETCH_NUM);
+                    $res=$who_last[0];
+                    
+                    $delivers_ids=array_unique($delivers_ids);
+                    if(($key = array_search($res, $delivers_ids)) !== false) {
+                                    unset($delivers_ids[$key]);
+                    }
+                    
+                    
 
-					
-					
-					$delivers_ids=implode(",", array_unique($delivers_ids));
-					
-									 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
-				 $stmt->execute(array(':msg'=>'ticket_arch', 
-				 					  ':init_user_id'=>$user_init_id, 
-				 					  ':target_user'=>$delivers_ids,
-				 					  ':ticket_id'=>$m,
-				 					  ':n'=>$now_date_time));
+                    
+                    
+                    $delivers_ids=implode(",", array_unique($delivers_ids));
+                    
+                                     $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
+                                                           VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
+                 $stmt->execute(array(':msg'=>'ticket_arch', 
+                                      ':init_user_id'=>$user_init_id, 
+                                      ':target_user'=>$delivers_ids,
+                                      ':ticket_id'=>$m,
+                                      ':n'=>$now_date_time));
 
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
     }
 
 }
@@ -181,7 +181,7 @@ values (:arch, :n, :m)');
 
 function check_user_mail($in) {
 
-	global $dbConnection;
+    global $dbConnection;
     //$uid = $_SESSION['helpdesk_user_id'];
     
     $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email=:str');
@@ -343,7 +343,7 @@ function get_user_hash_by_id($in) {
 
 
 function send_notification($ticket_id) {
-	global $dbConnection, $now_date_time;
+    global $dbConnection, $now_date_time;
 
 
 $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
@@ -355,7 +355,7 @@ $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,
     $user_init_id = $res_ticket['user_init_id'];
 
 $type = "ticket_create";
-	        if ($user_to_id == 0) {
+            if ($user_to_id == 0) {
             
             //отправка всему отделу
             /* выбрать всех пользователей у кого статус активен и отдел равен N и в БД записать: id пользователей,$type,$ticket_id */
@@ -384,7 +384,7 @@ $type = "ticket_create";
             $res_str = implode(",", $delivers_ids);
             
             $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
+                                                           VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
             $stmt->execute(array(':msg' => $type, ':init_user_id' => $user_init_id, ':target_user' => $res_str, ':ticket_id' => $ticket_id, ':n' => $now_date_time));
             
             $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
@@ -433,7 +433,7 @@ $type = "ticket_create";
             if ($su) {
                 
                 $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
-				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
+                                                           VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
                 $stmt->execute(array(':msg' => $type, ':init_user_id' => $user_init_id, ':target_user' => $su, ':ticket_id' => $ticket_id, ':n' => $now_date_time));
                 
                 $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
@@ -471,7 +471,7 @@ $errors = false;
 if (validate_exist_login($login_pre2) == false) {
             //$errors = true;
             //$el = lang('ticket_login_error') . "<br>";
-	$login_pre2=$login_pre2."_".rand(0,100);
+    $login_pre2=$login_pre2."_".rand(0,100);
         }
 
 //if (validate_email())
@@ -500,7 +500,7 @@ if (validate_exist_login($login_pre2) == false) {
              :pass)');
         
         $stmt->execute(array(
-        	':id'=>$max_user_id,
+            ':id'=>$max_user_id,
             ':client_fio' => $fio,
             ':client_login' => $login_pre2,
             ':client_mail' => $mail,
@@ -679,19 +679,19 @@ $fhash=$path_parts['filename'];
 $filetype=mime_content_type($path);
 $filesize=filesize($path);
 $ext = pathinfo($name, PATHINFO_EXTENSION);
- 	 	//$fileName_norm = $fhash.".".$ext;
+        //$fileName_norm = $fhash.".".$ext;
 
 $stmt = $dbConnection->prepare('insert into files 
- 		(ticket_hash, original_name, file_hash, file_type, file_size, file_ext) values 
- 		(:ticket_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext)');
-		$stmt->execute(array(
-		':ticket_hash'=>$hn, 
-		':original_name'=>$name,
-		':file_hash'=>$fhash,
-		':file_type'=>$filetype,
-		':file_size'=>$filesize,
-		':file_ext'=>$ext
-		));
+        (ticket_hash, original_name, file_hash, file_type, file_size, file_ext) values 
+        (:ticket_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext)');
+        $stmt->execute(array(
+        ':ticket_hash'=>$hn, 
+        ':original_name'=>$name,
+        ':file_hash'=>$fhash,
+        ':file_type'=>$filetype,
+        ':file_size'=>$filesize,
+        ':file_ext'=>$ext
+        ));
 
 }
 
@@ -704,29 +704,79 @@ define('GMAIL_EMAIL', get_conf_param('email_gate_login'));
 define('GMAIL_PASSWORD', get_conf_param('email_gate_pass'));
 define('ATTACHMENTS_DIR', $base . '/upload_files');
 
-$mailbox = new ImapMailbox('{'.get_conf_param('email_gate_host').':'.get_conf_param('email_gate_port').'/imap/ssl}'.get_conf_param('email_gate_cat').'', GMAIL_EMAIL, GMAIL_PASSWORD, ATTACHMENTS_DIR, 'utf-8');
+
+/*
+    
+    /pop3
+    
+    /imap/ssl
+    
+    /pop3/ssl/novalidate-cert
+    
+    /nntp
+    
+    
+Optional flags for names
+Flag    Description
+/service=service    mailbox access service, default is "imap"
+/user=user  remote user name for login on the server
+/authuser=user  remote authentication user; if specified this is the user name whose password is used (e.g. administrator)
+/anonymous  remote access as anonymous user
+/debug  record protocol telemetry in application's debug log
+/secure do not transmit a plaintext password over the network
+/imap, /imap2, /imap2bis, /imap4, /imap4rev1    equivalent to /service=imap
+/pop3   equivalent to /service=pop3
+/nntp   equivalent to /service=nntp
+/norsh  do not use rsh or ssh to establish a preauthenticated IMAP session
+/ssl    use the Secure Socket Layer to encrypt the session
+/validate-cert  validate certificates from TLS/SSL server (this is the default behavior)
+/novalidate-cert    do not validate certificates from TLS/SSL server, needed if server uses self-signed certificates
+/tls    force use of start-TLS to encrypt the session, and reject connection to servers that do not support it
+/notls  do not do start-TLS to encrypt the session, even with servers that support it
+/readonly   request read-only mailbox open (IMAP only; ignored on NNTP, and an error with SMTP and POP3)
+
+    */
+
+
+$mailbox = new ImapMailbox('{'.get_conf_param('email_gate_host').':'.get_conf_param('email_gate_port').get_conf_param('email_gate_connect_param').'}'.get_conf_param('email_gate_cat').'', GMAIL_EMAIL, GMAIL_PASSWORD, ATTACHMENTS_DIR, 'utf-8');
 
 
 $mails = array();
 
+
+//
+
 // Get some mail
 $mailsIds = $mailbox->searchMailBox(get_conf_param('email_gate_filter'));
+
+
+
 
 $max_msg=50;
 $i = 0;
 foreach ($mailsIds as $id) {
-	if ($i > $max_msg)
+    if ($i > $max_msg)
   break;
 
 $i++;
 
 
+
+
     $message = $mailbox->getMail($id);
     $attachments=$message->getAttachments();
+//$vv=$message->m_id;
+
+/*
+echo "MID:".$message->m_id."<br>";
+echo "ref:".$message->references."<br>";
+echo "rto:".$message->in_reply_to."<br>";
+*/
 
 
+$mref=$message->references;
 
-
+//echo "<pre>".$message->all."</pre>";
 
 //to code place
 
@@ -736,24 +786,24 @@ $i++;
     //echo "This message has subject {$message->subject} and was sent from {$message->fromAddress} on {$message->date}<br><br>";
 
 
-	/*
+    /*
 
-		Проверить - есть ли такой пользователь в базе
+        Проверить - есть ли такой пользователь в базе
 
-	*/
+    */
 
-			/*
-		$message->subject
-		$message->id
-		$message->date
-		$message->fromName
-		$message->fromAddress
-		$message->toString
-		$message->textPlain
+            /*
+        $message->subject
+        $message->id
+        $message->date
+        $message->fromName
+        $message->fromAddress
+        $message->toString
+        $message->textPlain
 
-			$attachments->filePath
-			$attachments->name
-	*/
+            $attachments->filePath
+            $attachments->name
+    */
 
 
 
@@ -764,28 +814,46 @@ $user_init_id=get_user_info_by_email($message->fromAddress, 'id');
 $client_id_param=get_user_info_by_email($message->fromAddress, 'id');
 
 if (get_conf_param('email_gate_unit_id')) {
-	$unit_id=get_conf_param('email_gate_unit_id');
+    $unit_id=get_conf_param('email_gate_unit_id');
 }
 else if (!get_conf_param('email_gate_unit_id')) {
-	$unit_id='0';
+    $unit_id='0';
 }
 
 
 $user_to_id='0';
 if (get_conf_param('email_gate_user_id')) {
-	if (get_conf_param('email_gate_user_id') != "Null") {
-		$user_to_id=get_conf_param('email_gate_user_id');
-	}
-	
+    if (get_conf_param('email_gate_user_id') != "Null") {
+        $user_to_id=get_conf_param('email_gate_user_id');
+    }
+    
 }
 
 
 
-
+        echo $message->textHtml;
+        //$message->textPlain
 
 
 $subj=strip_tags(xss_clean($message->subject));
 $msg=strip_tags(xss_clean($message->textHtml));
+
+
+
+
+
+/*
+    
+    $mref
+    Если $message->references 
+    
+    то найти ticket_id
+    
+    */
+
+
+
+
 
 
 
@@ -818,13 +886,13 @@ $prio='1';
                 ));
 
 
-	foreach ($attachments as $attachment) {
+    foreach ($attachments as $attachment) {
     // Array of IncomingMailAttachment objects
-    	//       echo $attachment->filePath;
-				//$attachment->name;
+        //       echo $attachment->filePath;
+                //$attachment->name;
 add_file($hashname, $attachment->name, $attachment->filePath);
 
-	}
+    }
 
 
 
@@ -850,12 +918,12 @@ insert_ticket_info ($max_id_res_ticket, 'mail');
 else if (check_user_mail($message->fromAddress) == true) {
 //пользователя нет такого
 
-	if (get_conf_param('email_gate_all') == "true") {
-		//создать пользователя
-		//направить письмо пользователю
-		//создать заявку
+    if (get_conf_param('email_gate_all') == "true") {
+        //создать пользователя
+        //направить письмо пользователю
+        //создать заявку
 
-		$user_id=create_new_client($message->fromAddress, $message->fromName);
+        $user_id=create_new_client($message->fromAddress, $message->fromName);
 
 
 
@@ -864,19 +932,19 @@ $user_init_id=$user_id;
 $client_id_param=$user_id;
 
 if (get_conf_param('email_gate_unit_id')) {
-	$unit_id=get_conf_param('email_gate_unit_id');
+    $unit_id=get_conf_param('email_gate_unit_id');
 }
 else if (!get_conf_param('email_gate_unit_id')) {
-	$unit_id='0';
+    $unit_id='0';
 }
 
 
 $user_to_id='0';
 if (get_conf_param('email_gate_user_id')) {
-	if (get_conf_param('email_gate_user_id') != "Null") {
-		$user_to_id=get_conf_param('email_gate_user_id');
-	}
-	
+    if (get_conf_param('email_gate_user_id') != "Null") {
+        $user_to_id=get_conf_param('email_gate_user_id');
+    }
+    
 }
 
 
@@ -919,13 +987,13 @@ $prio='1';
 
 
 
-	foreach ($attachments as $attachment) {
+    foreach ($attachments as $attachment) {
     // Array of IncomingMailAttachment objects
-    	//       echo $attachment->filePath;
-				//$attachment->name;
+        //       echo $attachment->filePath;
+                //$attachment->name;
 add_file($hashname, $attachment->name, $attachment->filePath);
 
-	}
+    }
 
 
 //$unow=$user_init_id;
@@ -947,12 +1015,12 @@ insert_ticket_info ($max_id_res_ticket, 'mail');
 
 
 
-	}
+    }
 
-	else if (get_conf_param('email_gate_all') == "false") {
-		//не создавать пользователя
-		
-	}
+    else if (get_conf_param('email_gate_all') == "false") {
+        //не создавать пользователя
+        
+    }
 
 
 }

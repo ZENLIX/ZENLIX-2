@@ -4,6 +4,10 @@ include_once "../functions.inc.php";
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if ($_SESSION['helpdesk_user_id']) {
+
+
+             $CONF['title_header'] = lang('HELPER_title') . " - " . $CONF['name_of_firm'];
+
         include ("head.inc.php");
         include ("navbar.inc.php");
         
@@ -178,14 +182,124 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 
+
+
+<div class="text-muted well well-sm no-shadow" id="myid" >
+  <div class="dz-message" data-dz-message>
+<center class="text-muted"><?=lang('PORTAL_fileplace');?></center>
+  </div>
+
+<style type="text/css">
+  .note-editor .note-dropzone { opacity: 0 !important; }
+</style>
+
+<form action="upload.php" class=""></form>
+
+<div class="table table-striped" class="files" id="previews">
+ 
+  <div id="template" class="file-row">
+    <!-- This is used as the file preview template -->
+
+
+
+<table class="table" style="margin-bottom: 0px;">
+                  <tbody><tr>
+                    <td style="width:50%"><small><p class="name" data-dz-name></p> </small></td>
+                    <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                    <td style="width:30%"><div class="progress progress-striped progress-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar progress-bar-success progress-sm" style="width:0%;" data-dz-uploadprogress></div>
+        </div></td>
+                    <td class="pull-right"><button data-dz-remove class="btn btn-xs btn-danger delete">
+        <i class="glyphicon glyphicon-trash"></i>
+        <span>Delete</span>
+      </button></td>
+                  </tr>
+
+                </tbody></table>
+
+</div>
+  </div>
+ 
+</div>
+
+
+
                         </div>
-                        <div class="col-md-12"><hr></div>
+                        <div class="col-md-12"><hr>
+
+    <?php
+            
+            $stmt = $dbConnection->prepare('SELECT * FROM files where ticket_hash=:tid and obj_type=1');
+            $stmt->execute(array(':tid' => $hn));
+            $res1 = $stmt->fetchAll();
+            if (!empty($res1)) {
+?>
+                    
+                        <div class="row" style="padding:10px;">
+                        <div class="col-md-3">
+                            <center><small><strong><?php echo lang('TICKET_file_list') ?>:</strong></small></center>
+                        </div>
+                        <div class="col-md-9">
+                            <table class="table table-hover">
+                                    <tbody>
+                                <?php
+                foreach ($res1 as $r) { 
+
+
+$fts = array(
+                'image/jpeg',
+                'image/gif',
+                'image/png'
+            );
+
+
+
+            if (in_array($r['file_type'], $fts)) {
+                
+                $ct= ' <a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'><img style=\'max-height:50px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'></a> ';
+                $ic='';
+            } else {
+                $ct= ' <a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $r['file_hash'] . '\'>' . $r['original_name'] . '</a>';
+                $ic=get_file_icon($r['file_hash']);
+            }
+
+
+
+                    ?>
+                                    
+                                    
+                                    
+                    <tr>
+                        <td style="width:20px;"><small><?php echo $ic; ?></small></td>
+                        <td><small><?=$ct;?></small></td>
+                        <td><small><?php
+                    echo round(($r['file_size'] / (1024 * 1024)), 2); ?> Mb</small></td>
+                    <td><button class="btn btn-xs btn-danger delete" id="delete_edited_manual_file" value="<?=$r['file_hash'];?>">delete</button></td>
+                    </tr>
+<?php
+                } ?>
+                                    </tbody>
+                            </table>
+
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+
+
+                <?php
+            } ?></div>
                         <div class="col-md-2"></div>
                         <div class="col-md-10">
                             <div class="btn-group btn-group-justified">
                                 <div class="btn-group">
                                     <button id="do_save_help" value="<?php echo $hn ?>" class="btn btn-success" type="submit"><i class="fa fa-check-circle-o"></i> <?php echo lang('HELP_save'); ?></button>
                                 </div>
+                                <input type="hidden" id="manual_hash" value="<?=$hn;?>">
                                 <div class="btn-group">
                                     <a href="helper" class="btn btn-default" type="submit"><i class="fa fa-reply"></i> <?php echo lang('HELP_back'); ?></a>
                                 </div>
@@ -238,6 +352,76 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             <div class="box-body">
             <h3 style=" margin-top: 0px; "><?php echo make_html($fio['title']) ?></h3>
     <p><?php echo ($fio['message']) ?></p>
+
+
+
+
+
+    <?php
+            
+            $stmt = $dbConnection->prepare('SELECT * FROM files where ticket_hash=:tid and obj_type=1');
+            $stmt->execute(array(':tid' => $h));
+            $res1 = $stmt->fetchAll();
+            if (!empty($res1)) {
+?>
+                    <hr style="margin:0px;">
+                        <div class="row" style="padding:10px;">
+                        <div class="col-md-3">
+                            <center><small><strong><?php echo lang('TICKET_file_list') ?>:</strong></small></center>
+                        </div>
+                        <div class="col-md-9">
+                            <table class="table table-hover">
+                                    <tbody>
+                                <?php
+                foreach ($res1 as $r) { 
+
+
+$fts = array(
+                'image/jpeg',
+                'image/gif',
+                'image/png'
+            );
+
+
+
+            if (in_array($r['file_type'], $fts)) {
+                
+                $ct= ' <a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'><img style=\'max-height:50px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'></a> ';
+                $ic='';
+            } else {
+                $ct= ' <a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $r['file_hash'] . '\'>' . $r['original_name'] . '</a>';
+                $ic=get_file_icon($r['file_hash']);
+            }
+
+
+
+                    ?>
+                                    
+                                    
+                                    
+                    <tr>
+                        <td style="width:20px;"><small><?php echo $ic; ?></small></td>
+                        <td><small><?=$ct;?></small></td>
+                        <td><small><?php
+                    echo round(($r['file_size'] / (1024 * 1024)), 2); ?> Mb</small></td>
+                    </tr>
+<?php
+                } ?>
+                                    </tbody>
+                            </table>
+
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+
+
+                <?php
+            } ?>
     <hr>
     
     <p class="text-right"><small class="text-muted"><?php echo lang('HELPER_pub'); ?>: <?php echo nameshort(name_of_user_ret($fio['user_init_id'])); ?></small><br><small class="text-muted"> <time id="c" datetime="<?php echo $fio['dt']; ?>"></time>
@@ -433,7 +617,7 @@ if ($priv_h == "yes") {
         }
 
         ul.sortable {
-            margin: 4em 0;
+            margin: 0 0;
         }
 
         .sortable li {
@@ -841,7 +1025,43 @@ $cat_id=$_GET['cat'];
 
 
                             <div id="summernote_help"></div>
+<div class="text-muted well well-sm no-shadow" id="myid" >
+  <div class="dz-message" data-dz-message>
+<center class="text-muted"><?=lang('PORTAL_fileplace');?></center>
+  </div>
 
+<style type="text/css">
+  .note-editor .note-dropzone { opacity: 0 !important; }
+</style>
+
+<form action="upload.php" class=""></form>
+
+<div class="table table-striped" class="files" id="previews">
+ 
+  <div id="template" class="file-row">
+    <!-- This is used as the file preview template -->
+
+
+
+<table class="table" style="margin-bottom: 0px;">
+                  <tbody><tr>
+                    <td style="width:50%"><small><p class="name" data-dz-name></p> </small></td>
+                    <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                    <td style="width:30%"><div class="progress progress-striped progress-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar progress-bar-success progress-sm" style="width:0%;" data-dz-uploadprogress></div>
+        </div></td>
+                    <td class="pull-right"><button data-dz-remove class="btn btn-xs btn-danger delete">
+        <i class="glyphicon glyphicon-trash"></i>
+        <span>Delete</span>
+      </button></td>
+                  </tr>
+
+                </tbody></table>
+
+</div>
+  </div>
+ 
+</div>
 
 
                         </div>
@@ -852,6 +1072,7 @@ $cat_id=$_GET['cat'];
                                 <div class="btn-group">
                                     <button id="do_create_help" class="btn btn-success" type="submit"><i class="fa fa-check-circle-o"></i> <?php echo lang('HELP_create'); ?></button>
                                 </div>
+                                <input type="hidden" id="manual_hash" value="<?=md5(time());?>">
                                 <div class="btn-group">
                                     <a href="helper" class="btn btn-default" type="submit"><i class="fa fa-reply"></i> <?php echo lang('HELP_back'); ?></a>
                                 </div>

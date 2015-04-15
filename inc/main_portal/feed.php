@@ -1,4 +1,17 @@
 <?php
+$rkeys = array_keys($_GET);
+
+
+$hn = $rkeys[1];
+
+
+
+
+$CONF['title_header']=get_conf_param('name_of_firm')." - ".lang('PORTAL_news');
+if (isset($hn)) {
+$news_item=get_news_info($hn);
+$CONF['title_header']=get_conf_param('name_of_firm')." - ".$news_item['subj'];
+}
 
 include "head.inc.php";
 
@@ -8,10 +21,7 @@ include "navbar.inc.php";
 
 
 
-$rkeys = array_keys($_GET);
 
-
-$hn = $rkeys[1];
 
 
 

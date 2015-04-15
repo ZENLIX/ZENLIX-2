@@ -330,10 +330,10 @@ function lang_ru($phrase){
 'CONF_EMAIL_GATE_mailbox_info'=>'E-mail адрес, с которого будет происходить сбор почты и создание заявок',
 'CONF_EMAIL_GATE_filter'=>'Фильтр',
 'CONF_EMAIL_GATE_filter_ex'=>'Список фильтров',
-'CONF_EMAIL_GATE_host'=>'Адрес IMAP-сервера',
-'CONF_EMAIL_GATE_cat'=>'Каталог на IMAP-сервере',
-'CONF_EMAIL_GATE_port'=>'Порт IMAP-сервера',
-
+'CONF_EMAIL_GATE_host'=>'Адрес сервера',
+'CONF_EMAIL_GATE_cat'=>'Каталог на сервере',
+'CONF_EMAIL_GATE_port'=>'Порт сервера',
+'CONF_EMAIL_GATE_cp'=>'Параметры подключения',
 
 
 'cron_navbar'=>'Планировщик',    

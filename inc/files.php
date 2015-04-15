@@ -4,6 +4,11 @@ include ("../functions.inc.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if (validate_admin($_SESSION['helpdesk_user_id'])) {
+
+            $CONF['title_header'] = lang('FILES_title') . " - " . $CONF['name_of_firm'];
+
+
+
         include ("head.inc.php");
         include ("navbar.inc.php");
 ?>

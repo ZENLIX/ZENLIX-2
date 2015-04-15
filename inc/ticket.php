@@ -4,7 +4,10 @@ session_start();
 include ("../functions.inc.php");
 $rkeys = array_keys($_GET);
 
-$CONF['title_header'] = lang('TICKET_name') . " #" . get_ticket_id_by_hash($rkeys[1]) . " - " . $CONF['name_of_firm'];
+$CONF['title_header'] = lang('TICKET_name') . " #" . get_ticket_id_by_hash($rkeys[1]) ." (".get_ticket_val_by_hash('subj', $rkeys[1]).")". " - " . $CONF['name_of_firm'];
+
+
+
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     include ("head.inc.php");
@@ -144,6 +147,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
             <div class="col-md-8">
             <?php
+
+
+
             if (isset($_GET['refresh'])) { ?>
                 <div class="alert alert-info">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
@@ -247,7 +253,7 @@ if (!empty($res11)) {
 }
 ?>
 
-            <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+            <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;   background-color: #FDFDFD;">
                                 <?php echo make_html($row['msg']); ?>
                             </div>
                             

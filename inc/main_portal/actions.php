@@ -133,6 +133,25 @@ else {
 
 }
 
+
+
+//set_post_cat
+
+if ($mode == "set_post_cat") {
+
+
+//print_r($_POST);
+
+            $stmt = $dbConnection->prepare('update portal_posts set type=:s where uniq_id=:hn');
+            $stmt->execute(array(
+                ':hn' => $_POST['post_hash'],
+                ':s' =>$_POST['type']
+            ));
+
+
+
+}
+
 if ($mode == "set_post_status") {
 
 
@@ -1320,8 +1339,8 @@ if ((!in_array($ext, $acceptable)) && (!empty($_FILES["myfile"]["type"]))) {
  		
  		
  		$stmt = $dbConnection->prepare('insert into post_files 
- 		(post_hash, original_name, file_hash, file_type, file_size, file_ext, p_type) values 
- 		(:post_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext, :p_type)');
+ 		(post_hash, original_name, file_hash, file_type, file_size, file_ext, p_type, is_tmp) values 
+ 		(:post_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext, :p_type, :is_tmp)');
 		$stmt->execute(array(
 		':post_hash'=>$hn, 
 		':original_name'=>$fileName,
@@ -1329,7 +1348,8 @@ if ((!in_array($ext, $acceptable)) && (!empty($_FILES["myfile"]["type"]))) {
 		':file_type'=>$filetype,
 		':file_size'=>$filesize,
 		':file_ext'=>$ext,
-		':p_type'=>$_POST['type']
+		':p_type'=>$_POST['type'],
+        ':is_tmp'=>$_POST['is_tmp']
 		));
  		}
 

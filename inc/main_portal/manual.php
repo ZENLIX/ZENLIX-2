@@ -1,9 +1,5 @@
 <?php
 
-include "head.inc.php";
-
-
-include "navbar.inc.php";
 
 
 
@@ -14,7 +10,23 @@ $rkeys = array_keys($_GET);
 $hn = $rkeys[1];
 
 
+$CONF['title_header']=get_conf_param('name_of_firm')." - ".lang('PORTAL_help_center');
+if (isset($hn)) {
 
+
+$news_item=get_manual_info($hn);
+$CONF['title_header']=get_conf_param('name_of_firm')." - ".$news_item['name'];
+
+if ($hn == "qa") {
+    $news_item=get_qa_obj($_GET['qa']);
+    $CONF['title_header']=get_conf_param('name_of_firm')." - ".$news_item['question'];
+}
+
+}
+include "head.inc.php";
+
+
+include "navbar.inc.php";
 ?>
 <div class="content-wrapper">
 <section class="content">

@@ -26,7 +26,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         }
         
 
-
+/*
         function Zip($source, $destination) {
             if (!extension_loaded('zip') || !file_exists($source)) {
                 return false;
@@ -62,7 +62,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             
             return $zip->close();
         }
-        
+        */
         $myversion = get_conf_param('version');
         
         //echo $myversion;
@@ -198,7 +198,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 					if ($zip->open($zipFile) === TRUE) {
 					    $zip->extractTo($rp . "/");
 					    $zip->close();
-					    echo 'ok';
+					    //echo 'ok';
 					} else {
 					    echo 'error, please restart update';$error_tag = true;
 					}

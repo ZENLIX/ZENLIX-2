@@ -4516,6 +4516,7 @@ a, a:visited {
             $beats = implode(',', $u);
             $cat_id = $_POST['cat'];
             $is_client = $_POST['is_client'];
+            $mh=$_POST['mh'];
             if ($is_client == "true") {
                 $is_client = 1;
             } else {
@@ -4524,7 +4525,7 @@ a, a:visited {
             $t = ($_POST['t']);
             $user_id_z = $_SESSION['helpdesk_user_id'];
             
-            $hn = md5(time());
+            $hn = $mh;
             $message = ($_POST['msg']);
             $message = str_replace("\r\n", "\n", $message);
             $message = str_replace("\r", "\n", $message);
@@ -5475,8 +5476,247 @@ if ($mode == "conf_edit_portal") {
         <?php
         }
         
+if ($mode == "delete_post_file") {
+$uniq_code=$_POST['uniq_code'];
 
 
+
+
+            $stmt = $dbConnection->prepare("SELECT *
+                            from files where file_hash=:id");
+            $stmt->execute(array(':id' => $uniq_code));
+            $result = $stmt->fetchAll();
+
+            if (!empty($result)) {
+            foreach ($result as $row) {
+
+                unlink(realpath(dirname(dirname(dirname(__FILE__)))) . "/upload_files/" . $row['file_hash'] . "." . $row['file_ext']);
+
+            }
+            }
+            $stmt = $dbConnection->prepare('delete from files where file_hash=:id');
+            $stmt->execute(array(
+                ':id' => $uniq_code
+            ));
+
+
+
+}
+
+if ($mode == "delete_manual_file") {
+$uniq_code=$_POST['uniq_code'];
+
+
+
+
+            $stmt = $dbConnection->prepare("SELECT *
+                            from files where file_hash=:id and obj_type=1");
+            $stmt->execute(array(':id' => $uniq_code));
+            $result = $stmt->fetchAll();
+
+            if (!empty($result)) {
+            foreach ($result as $row) {
+
+                unlink(realpath(dirname(dirname(dirname(__FILE__)))) . "/upload_files/" . $row['file_hash'] . "." . $row['file_ext']);
+
+            }
+            }
+            $stmt = $dbConnection->prepare('delete from files where file_hash=:id');
+            $stmt->execute(array(
+                ':id' => $uniq_code
+            ));
+
+
+
+}
+if ($mode == "upload_manual_file") {
+
+
+$output_dir = "upload_files/";
+$hn=$_POST['post_hash'];
+$maxsize    = get_conf_param('file_size');
+
+
+$good_files=explode("|", get_conf_param('file_types'));
+
+        $acceptable = $good_files;
+
+
+
+if(isset($_FILES["myfile"]))
+{
+    $ret = array();
+
+    $error =$_FILES["myfile"]["error"];
+    $flag  = false;
+    //You need to handle  both cases
+    //If Any browser does not support serializing of multiple files using FormData() 
+    if(!is_array($_FILES["myfile"]["name"])) //single file
+    {
+        $fileName = $_FILES["myfile"]["name"];
+        $filetype = $_FILES["myfile"]["type"];
+        $filesize = $_FILES["myfile"]["size"];
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+    if($_FILES["myfile"]["size"]>$maxsize)
+    {
+    $flag=true; 
+    $msg=lang('PORTAL_file_big');
+    }
+if ((!in_array($ext, $acceptable)) && (!empty($_FILES["myfile"]["type"]))) {
+    $flag=true;
+    $msg=lang('PORTAL_file_ext');
+}
+        
+        if($flag == false) {
+        
+        
+        $fhash=randomhash();
+        //$ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName_norm = $fhash.".".$ext;
+        
+        
+        move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName_norm);
+        
+        
+        $stmt = $dbConnection->prepare('insert into files 
+        (ticket_hash, original_name, file_hash, file_type, file_size, file_ext, obj_type) values 
+        (:ticket_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext, :obj_type)');
+        $stmt->execute(array(
+        ':ticket_hash'=>$hn, 
+        ':original_name'=>$fileName,
+        ':file_hash'=>$fhash,
+        ':file_type'=>$filetype,
+        ':file_size'=>$filesize,
+        ':file_ext'=>$ext,
+        ':obj_type'=>'1'
+        ));
+        }
+
+
+//{msg: "Upload limit reached", status: "error", code: "403"}
+
+if ($flag == false) {
+    $status="ok";
+}
+else if ($flag == true) {
+    $status="error";
+}
+
+$results[] = array(
+                'uniq_code' => $fhash,
+                'code'=>501,
+                'status'=>$status,
+                'msg'=>$msg
+            ); 
+
+print json_encode($results);
+}
+           
+
+
+
+
+
+
+ }
+
+
+}
+
+
+
+if ($mode == "upload_post_file") {
+
+
+$output_dir = "upload_files/";
+$hn=$_POST['post_hash'];
+$maxsize    = get_conf_param('file_size');
+
+
+$good_files=explode("|", get_conf_param('file_types'));
+
+        $acceptable = $good_files;
+
+
+
+if(isset($_FILES["myfile"]))
+{
+    $ret = array();
+
+    $error =$_FILES["myfile"]["error"];
+    $flag  = false;
+    //You need to handle  both cases
+    //If Any browser does not support serializing of multiple files using FormData() 
+    if(!is_array($_FILES["myfile"]["name"])) //single file
+    {
+        $fileName = $_FILES["myfile"]["name"];
+        $filetype = $_FILES["myfile"]["type"];
+        $filesize = $_FILES["myfile"]["size"];
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+    if($_FILES["myfile"]["size"]>$maxsize)
+    {
+    $flag=true; 
+    $msg=lang('PORTAL_file_big');
+    }
+if ((!in_array($ext, $acceptable)) && (!empty($_FILES["myfile"]["type"]))) {
+    $flag=true;
+    $msg=lang('PORTAL_file_ext');
+}
+        
+        if($flag == false) {
+        
+        
+        $fhash=randomhash();
+        //$ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName_norm = $fhash.".".$ext;
+        
+        
+        move_uploaded_file($_FILES["myfile"]["tmp_name"],$output_dir.$fileName_norm);
+        
+        
+        $stmt = $dbConnection->prepare('insert into files 
+        (ticket_hash, original_name, file_hash, file_type, file_size, file_ext) values 
+        (:ticket_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext)');
+        $stmt->execute(array(
+        ':ticket_hash'=>$hn, 
+        ':original_name'=>$fileName,
+        ':file_hash'=>$fhash,
+        ':file_type'=>$filetype,
+        ':file_size'=>$filesize,
+        ':file_ext'=>$ext
+        ));
+        }
+
+
+//{msg: "Upload limit reached", status: "error", code: "403"}
+
+if ($flag == false) {
+    $status="ok";
+}
+else if ($flag == true) {
+    $status="error";
+}
+
+$results[] = array(
+                'uniq_code' => $fhash,
+                'code'=>501,
+                'status'=>$status,
+                'msg'=>$msg
+            ); 
+
+print json_encode($results);
+}
+           
+
+
+
+
+
+
+ }
+
+
+}
 
 
         if ($mode == "conf_edit_pb") {
@@ -5517,7 +5757,7 @@ if ($mode == "conf_edit_portal") {
             update_val_by_key("email_gate_pass", $_POST['email_gate_pass']);
             update_val_by_key("email_gate_filter", stripslashes($_POST['email_gate_filter']));
             update_val_by_key("email_gate_cat", $_POST['email_gate_cat']);
-            
+            update_val_by_key("email_gate_connect_param", $_POST['email_gate_cp']);
 
             //update_val_by_key("mail_debug", $_POST['debug']);
             

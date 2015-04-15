@@ -4,6 +4,11 @@ include ("../functions.inc.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if ($_SESSION['helpdesk_user_id']) {
+
+
+ $CONF['title_header'] = lang('MESSAGES_us') . " - " . $CONF['name_of_firm'];
+
+        
         include ("head.inc.php");
         include ("navbar.inc.php");
         $priv_val = priv_status($_SESSION['helpdesk_user_id']);

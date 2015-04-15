@@ -47,8 +47,8 @@ $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
 function send_pushbullet($type_op, $lang, $user_mail, $ticket_id) {
-	global $dbConnection,$base,$CONF;
-	
+  global $dbConnection,$base,$CONF;
+  
 
 $MAIL_new=lang($lang,'MAIL_new');
 $MAIL_refer=lang($lang,'mail_msg_ticket_refer');
@@ -101,7 +101,7 @@ $msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
 $msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
 $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
-	try {
+  try {
   $p = new PushBullet(get_conf_param('pb_api'));
   //email, title, msg
   $p->pushNote($user_mail, $tn, $msg);
@@ -119,7 +119,7 @@ $msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
 $msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
 $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
-	try {
+  try {
   $p = new PushBullet(get_conf_param('pb_api'));
   //email, title, msg
   $p->pushNote($user_mail, $tn, $msg);
@@ -136,7 +136,7 @@ $msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
 $msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
 $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
-	try {
+  try {
   $p = new PushBullet(get_conf_param('pb_api'));
   //email, title, msg
   $p->pushNote($user_mail, $tn, $msg);
@@ -154,7 +154,7 @@ $msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
 $msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
 $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
-	try {
+  try {
   $p = new PushBullet(get_conf_param('pb_api'));
   //email, title, msg
   $p->pushNote($user_mail, $tn, $msg);
@@ -172,7 +172,7 @@ $msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
 $msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
 $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
-	try {
+  try {
   $p = new PushBullet(get_conf_param('pb_api'));
   //email, title, msg
   $p->pushNote($user_mail, $tn, $msg);
@@ -191,7 +191,7 @@ $msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
 $msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
 $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
-	try {
+  try {
   $p = new PushBullet(get_conf_param('pb_api'));
   //email, title, msg
   $p->pushNote($user_mail, $tn, $msg);
@@ -209,7 +209,7 @@ $msg.=lang($lang,'MAIL_to').": ".$to_text."\r\n";
 $msg.=lang($lang,'MAIL_worker').": ".$nou."\r\n";
 $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
-	try {
+  try {
   $p = new PushBullet(get_conf_param('pb_api'));
   //email, title, msg
   $p->pushNote($user_mail, $tn, $msg);
@@ -264,8 +264,8 @@ function get_unit_name_return($input) {
         $stmt->execute(array(':val' => $val));
         $dep = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		
-		array_push($res, $dep['name']);
+    
+    array_push($res, $dep['name']);
         //$res.=$dep['name'];
         //$res.="<br>";
     }
@@ -283,43 +283,52 @@ $now_date_time = $date_tz->format('Y-m-d H:i:s');
 
 
 $CONF = array (
-	'title_header'	=> get_conf_param('title_header'),
-	'hostname'		=> 'http://'.get_conf_param('hostname'),
-	'mail'			=> get_conf_param('mail'),
-	'days2arch'		=> get_conf_param('days2arch'),
-	'name_of_firm'	=> get_conf_param('name_of_firm'),
-	'fix_subj'		=> get_conf_param('fix_subj'),
-	'first_login'	=> get_conf_param('first_login'),
-	'file_uploads'	=> get_conf_param('file_uploads'),
-	'file_types'	=> '('.get_conf_param('file_types').')',
-	'file_size'		=> get_conf_param('file_size'),
-	'now_dt' => $now_date_time
-	);
+  'title_header'  => get_conf_param('title_header'),
+  'hostname'    => 'http://'.get_conf_param('hostname'),
+  'mail'      => get_conf_param('mail'),
+  'days2arch'   => get_conf_param('days2arch'),
+  'name_of_firm'  => get_conf_param('name_of_firm'),
+  'fix_subj'    => get_conf_param('fix_subj'),
+  'first_login' => get_conf_param('first_login'),
+  'file_uploads'  => get_conf_param('file_uploads'),
+  'file_types'  => '('.get_conf_param('file_types').')',
+  'file_size'   => get_conf_param('file_size'),
+  'now_dt' => $now_date_time
+  );
 $CONF_MAIL = array (
-	'active'	=> get_conf_param('mail_active'),
-	'host'		=> get_conf_param('mail_host'),
-	'port'		=> get_conf_param('mail_port'),
-	'auth'		=> get_conf_param('mail_auth'),
-	'auth_type' => get_conf_param('mail_auth_type'),
-	'username'	=> get_conf_param('mail_username'),
-	'password'	=> get_conf_param('mail_password'),
-	'from'		=> get_conf_param('mail_from'),
-	'debug'		=> 'false'
+  'active'  => get_conf_param('mail_active'),
+  'host'    => get_conf_param('mail_host'),
+  'port'    => get_conf_param('mail_port'),
+  'auth'    => get_conf_param('mail_auth'),
+  'auth_type' => get_conf_param('mail_auth_type'),
+  'username'  => get_conf_param('mail_username'),
+  'password'  => get_conf_param('mail_password'),
+  'from'    => get_conf_param('mail_from'),
+  'debug'   => 'false'
 );
 
-function send_mail($to,$subj,$msg) {
-	global $CONF, $CONF_MAIL, $dbConnection;
-	
-	//echo "helo";
-	if (get_conf_param('mail_type') == "sendmail") {
-	
-	$mail = new PHPMailer();
-	//$mail->SMTPDebug = 1;
-	$mail->CharSet 	  = 'UTF-8';
-	$mail->IsSendmail();
+function send_mail($to,$subj,$msg, $msg_id) {
+  global $CONF, $CONF_MAIL, $dbConnection;
+  
+  
+$v=parse_url("http://".get_conf_param('hostname'));
+
+if(!isset($msg_id)) {
+  $msg_id=md5(time());
+}
+
+
+  //echo "helo";
+  if (get_conf_param('mail_type') == "sendmail") {
+  
+  $mail = new PHPMailer();
+  //$mail->SMTPDebug = 1;
+  $mail->CharSet    = 'UTF-8';
+  $mail->IsSendmail();
 
   $mail->AddReplyTo($CONF_MAIL['from'], $CONF['name_of_firm']);
   $mail->AddAddress($to, $to);
+$mail->MessageID = $msg_id."@".$v['host'];
   $mail->SetFrom($CONF_MAIL['from'], $CONF['name_of_firm']);
   $mail->Subject = $subj;
   $mail->AltBody = 'To view the message, please use an HTML compatible email viewer!'; 
@@ -328,20 +337,23 @@ function send_mail($to,$subj,$msg) {
 
 }
 else if (get_conf_param('mail_type') == "SMTP") {
-	
-	
-	$mail = new PHPMailer();
-	$mail->CharSet 	  = 'UTF-8';
-	$mail->IsSMTP();
+  
+  
+  $mail = new PHPMailer();
+  $mail->CharSet    = 'UTF-8';
+  $mail->IsSMTP();
   $mail->SMTPAuth   = $CONF_MAIL['auth'];                  // enable SMTP authentication
 if (get_conf_param('mail_auth_type') != "none") 
-	{	
-		$mail->SMTPSecure = $CONF_MAIL['auth_type'];
-	}
+  { 
+    $mail->SMTPSecure = $CONF_MAIL['auth_type'];
+  }
 $mail->Host       = $CONF_MAIL['host']; 
 $mail->Port       = $CONF_MAIL['port'];                  
 $mail->Username   = $CONF_MAIL['username'];
 $mail->Password   = $CONF_MAIL['password'];   
+  //$mail->set('Message-ID', '008');
+  //$mail->addCustomHeader("Message-ID: 008");
+$mail->MessageID = $msg_id."@".$v['host'];
 
 
   $mail->AddReplyTo($CONF_MAIL['from'], $CONF['name_of_firm']);
@@ -353,8 +365,8 @@ $mail->Password   = $CONF_MAIL['password'];
   $mail->Send();
 
 
-	
-	
+  
+  
 }
 }
 
@@ -367,7 +379,7 @@ $u=explode(",", $input);
 $u_count=count($u);
 
 if ($u_count > 1) {
-	$res="";
+  $res="";
 foreach ($u as $val) {
     $stmt = $dbConnection->prepare('SELECT fio FROM users where id=:input');
     $stmt->execute(array(':input' => $val));
@@ -379,7 +391,7 @@ $res.=$fio['fio'].", ";
 $res=substr($res, 0, -2);
 }
 else if ($u_count <= 1) {
-	$stmt = $dbConnection->prepare('SELECT fio FROM users where id=:input');
+  $stmt = $dbConnection->prepare('SELECT fio FROM users where id=:input');
     $stmt->execute(array(':input' => $input));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
     $res=$fio['fio'];
@@ -389,9 +401,9 @@ else if ($u_count <= 1) {
 
 
 function lang($lang, $in) {
-	
-	
-	switch ($lang) {
+  
+  
+  switch ($lang) {
     case 'ua':
         $res=lang_ua($in);
         break;
@@ -407,8 +419,8 @@ function lang($lang, $in) {
     default:
         $res=lang_en($in);
 }
-	
-	return $res;
+  
+  return $res;
 }
 
 
@@ -422,8 +434,8 @@ foreach ($in as $value) {
 }
 $res.=$end_element;
    // делаем что-либо с последним элементом $end_element
-	
-	return $res;
+  
+  return $res;
 }
 function name_of_client_ret($input) {
     global $dbConnection;
@@ -444,8 +456,8 @@ function name_of_client_ret($input) {
 
 
 function make_mail($type_op, $lang, $user_mail, $ticket_id) {
-	global $dbConnection,$base,$CONF;
-	
+  global $dbConnection,$base,$CONF;
+  
 
 
 
@@ -552,7 +564,7 @@ $message = str_replace("{comment}", $POST_COMMENT, $message);
 $message = str_replace("{h}", $THREAD_HASH, $message);
 
 
-     send_mail($user_mail,$subject,$message);
+     send_mail($user_mail,$subject,$message, $post_res['uniq_id']);
 
 
    }
@@ -604,13 +616,13 @@ $message = str_replace("{comment}", $POST_COMMENT, $message);
 $message = str_replace("{h}", $THREAD_HASH, $message);
 
 
-     send_mail($user_mail,$subject,$message);
+     send_mail($user_mail,$subject,$message, $post_res['uniq_id']);
 
    }
 
 
 
-	 else if ($type_op == "ticket_create") {
+   else if ($type_op == "ticket_create") {
 
         $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
@@ -638,7 +650,7 @@ $message = str_replace("{h}", $THREAD_HASH, $message);
 
 
 
-	 
+   
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_new;
 //$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
 ob_start();
@@ -667,17 +679,17 @@ $message = str_replace("{m}", $m, $message);
 
 $message = str_replace("{h}", $h, $message);
 
-		 send_mail($user_mail,$subject,$message);
-		 
-	 }
-	 
+     send_mail($user_mail,$subject,$message,$h);
+     
+   }
+   
 else if ($type_op == "ticket_refer") {
-	/*
-	Тема: Заявка # переадресована
-	Текст: ФИО, Вы получили это сообщение, потому что заявка была переадресована.
-	send_mail($to,$subj,$msg);
-	*/
-		$stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+  /*
+  Тема: Заявка # переадресована
+  Текст: ФИО, Вы получили это сообщение, потому что заявка была переадресована.
+  send_mail($to,$subj,$msg);
+  */
+    $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
         $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -709,7 +721,7 @@ else if ($type_op == "ticket_refer") {
 
 
 
-	 
+   
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_refer;
 
 
@@ -747,15 +759,15 @@ $message = str_replace("{s}", $s, $message);
 $message = str_replace("{MAIL_text}", $MAIL_text, $message);
 $message = str_replace("{m}", $m, $message);
 
-$message = str_replace("{h}", $h, $message);
+$message = str_replace("{h}", $h, $message, $h);
 
 
 
-		 send_mail($user_mail,$subject,$message);
-	
+     send_mail($user_mail,$subject,$message, $h);
+  
 }
 else if ($type_op == "ticket_comment") {
-			$stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+      $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
         $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -795,7 +807,7 @@ else if ($type_op == "ticket_comment") {
 
 
 
-	 
+   
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_comment;
 ob_start();
 include($base . "/inc/mail_tmpl/comment_ticket.tpl");
@@ -833,11 +845,11 @@ $message = str_replace("{MAIL_text}", $MAIL_text, $message);
 $message = str_replace("{m}", $m, $message);
 
 $message = str_replace("{h}", $h, $message);
-		 send_mail($user_mail,$subject,$message);
+     send_mail($user_mail,$subject,$message, $h);
 }
 else if ($type_op == "ticket_lock") {
-		
-		$stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+    
+    $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
         $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -872,7 +884,7 @@ else if ($type_op == "ticket_lock") {
 
 
 
-	 
+   
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_lock;
 
 ob_start();
@@ -912,10 +924,10 @@ $message = str_replace("{m}", $m, $message);
 
 $message = str_replace("{h}", $h, $message);
 
-		 send_mail($user_mail,$subject,$message);
+     send_mail($user_mail,$subject,$message,$h);
 }
 else if ($type_op == "ticket_unlock") {
-	$stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+  $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
         $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -950,7 +962,7 @@ else if ($type_op == "ticket_unlock") {
 
 
 
-	 
+   
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_unlock;
 
 ob_start();
@@ -991,10 +1003,10 @@ $message = str_replace("{m}", $m, $message);
 $message = str_replace("{h}", $h, $message);
 
 
-		 send_mail($user_mail,$subject,$message);
+     send_mail($user_mail,$subject,$message, $h);
 }
 else if ($type_op == "ticket_ok") {
-	$stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+  $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
         $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -1029,7 +1041,7 @@ else if ($type_op == "ticket_ok") {
 
 
 
-	 
+   
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_ok;
 
 ob_start();
@@ -1067,14 +1079,14 @@ $message = str_replace("{s}", $s, $message);
 $message = str_replace("{MAIL_text}", $MAIL_text, $message);
 $message = str_replace("{m}", $m, $message);
 
-$message = str_replace("{h}", $h, $message);
+$message = str_replace("{h}", $h, $message, $h);
 
 
 
-		 send_mail($user_mail,$subject,$message);
+     send_mail($user_mail,$subject,$message);
 }
 else if ($type_op == "ticket_no_ok") {
-	$stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+  $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
         $stmt->execute(array(':tid' => $ticket_id));
         $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
         
@@ -1109,7 +1121,7 @@ else if ($type_op == "ticket_no_ok") {
 
 
 
-	 
+   
 $subject = lang($lang,'TICKET_name').' #'.$ticket_id.' - '.$MAIL_msg_no_ok;
 
 
@@ -1152,7 +1164,7 @@ $message = str_replace("{h}", $h, $message);
 
 
 
-		 send_mail($user_mail,$subject,$message);
+     send_mail($user_mail,$subject,$message, $h);
 }
 
 }
@@ -1180,31 +1192,31 @@ $ticket_id=$qrow['ticket_id'];
 
 
 
-	foreach ($users as $val) {
-						//from users fio,lang,email where status=1
-						//$val
-						
-						
-			$stmt = $dbConnection->prepare('SELECT email, pb, lang FROM users where id=:tid');
+  foreach ($users as $val) {
+            //from users fio,lang,email where status=1
+            //$val
+            
+            
+      $stmt = $dbConnection->prepare('SELECT email, pb, lang FROM users where id=:tid');
             $stmt->execute(array(':tid' => $val));
             $usr_info = $stmt->fetch(PDO::FETCH_ASSOC);
             $pb=$usr_info['pb'];
-			$usr_mail=$usr_info['email'];
-			$usr_lang=$usr_info['lang'];
+      $usr_mail=$usr_info['email'];
+      $usr_lang=$usr_info['lang'];
            // $lb=$fio['lock_by'];
             
             
             if ($pb) {
-	            send_pushbullet($type_op, $usr_lang, $pb, $ticket_id);
+              send_pushbullet($type_op, $usr_lang, $pb, $ticket_id);
             }
             
             
-						if ($usr_mail) {
-						make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
-						}
-						//make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
-						
-	}
+            if ($usr_mail) {
+            make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
+            }
+            //make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
+            
+  }
 
 
 
@@ -1214,7 +1226,7 @@ $ticket_id=$qrow['ticket_id'];
 //make_mail('ticket_no_ok','ru', 'info@rustem.com.ua', '288');
 //send_mail('info@rustem.com.ua','hello','eeee');
 /*
-	
+  
 */
 include($base .'/sys/scheduler.php');
 

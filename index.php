@@ -117,7 +117,7 @@ include ('inc/register.php');
             
             if ($rq == 1) {
                 if ($main_portal == "false") {
-                header("Location: http://" . $url['host'] . $req_url);
+                header("Location: ".site_proto(). $url['host'] . $req_url);
             }
             else if ($main_portal == "true") {
                 header("Location: " . site_proto() . get_conf_param('hostname') . "dashboard");
@@ -290,7 +290,7 @@ case 'mailers':
             
             if ($rq == 1) {
                 if ($main_portal == "false") {
-                header("Location: http://" . $url['host'] . $req_url);
+                header("Location: ".site_proto() . $url['host'] . $req_url);
             }
             else if ($main_portal == "true") {
                 header("Location: " . site_proto() . get_conf_param('hostname') . "index.php");

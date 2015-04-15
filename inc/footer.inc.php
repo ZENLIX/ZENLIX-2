@@ -20,6 +20,13 @@
                 
             
 <?php
+
+
+
+
+
+
+
 if ($lang == "ua") {
     $lang = "uk";
 } ?>
@@ -64,6 +71,7 @@ echo $lang; ?>";
 if (get_current_URL_name('create') || get_current_URL_name('scheduler') ) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.ui.autocomplete.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/daterangepicker.js?<?=get_conf_param('version');?>"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/dropzone.js?<?=get_conf_param('version');?>"></script>
 <?php
 } ?>
 
@@ -112,7 +120,7 @@ if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_cur
 
 <!-- FOR UPLOADER -->
 <?php
-    if ($CONF['file_uploads'] == "true") { ?>
+    if ("false" == "true") { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/tmpl.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/load-image.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/canvas-to-blob.min.js?<?=get_conf_param('version');?>"></script>
@@ -132,6 +140,8 @@ if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_cur
 if ((get_current_URL_name('helper')) || get_current_URL_name('notes') || get_current_URL_name('mailers')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/summernote.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/summernote-lang.js?<?=get_conf_param('version');?>"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/dropzone.js?<?=get_conf_param('version');?>"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.js?<?=get_conf_param('version');?>"></script>
 <?php
 } ?>
 

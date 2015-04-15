@@ -2145,7 +2145,7 @@ function check_unlinked_file() {
     
     $stmt = $dbConnection->prepare('SELECT original_name, ticket_hash, file_hash, file_ext FROM files
                                     LEFT JOIN tickets ON tickets.hash_name = files.ticket_hash
-                                    WHERE tickets.hash_name IS NULL');
+                                    WHERE tickets.hash_name IS NULL and obj_type=0');
     $stmt->execute();
     $result = $stmt->fetchAll();
     if (!empty($result)) {
@@ -3388,7 +3388,27 @@ function get_user_add_field_val($user_id, $field_id) {
 
 return $dep['field_val'];
 }
+function get_user_val_by_hash_api($id, $in) {
+    
+    //val.id
+    global $CONF;
+    global $dbConnection;
+    
+    $stmt = $dbConnection->prepare('SELECT ' . $in . ' FROM users where uniq_id=:id');
+    $stmt->execute(array(
+        ':id' => $id
+    ));
+    
+    $fior = $stmt->fetch(PDO::FETCH_NUM);
+    
+$r=$fior[0];
 
+if ($fior[0] == Null) {
+    $r=null;
+} 
+
+    return $r;
+}
 
 function get_user_val_by_hash($id, $in) {
     
@@ -3495,7 +3515,7 @@ if (in_array($ticket['user_units'], $haystack_units)) {
             break;
         case 'free':
             $priv_res="ref,lock";
-            array_push($priv_res_arr, "ref");
+            //array_push($priv_res_arr, "ref");
             array_push($priv_res_arr, "lock");
             # code...
             break;
@@ -3511,7 +3531,7 @@ if (in_array($ticket['user_units'], $haystack_units)) {
             break;
         case 'lock_by_me':
             $priv_res="ref,unlock,ok";
-            array_push($priv_res_arr, "ref");
+            //array_push($priv_res_arr, "ref");
             array_push($priv_res_arr, "unlock");
             array_push($priv_res_arr, "ok");
             # code...
@@ -3551,7 +3571,7 @@ if (in_array($ticket['user_units'], $haystack_units)) {
             break;
         case 'free':
             $priv_res="ref,lock";
-            array_push($priv_res_arr, "ref");
+            //array_push($priv_res_arr, "ref");
             array_push($priv_res_arr, "lock");
             # code...
             break;
@@ -3567,7 +3587,7 @@ if (in_array($ticket['user_units'], $haystack_units)) {
             break;
         case 'lock_by_me':
             $priv_res="ref,unlock,ok";
-            array_push($priv_res_arr, "ref");
+            //array_push($priv_res_arr, "ref");
             array_push($priv_res_arr, "unlock");
             array_push($priv_res_arr, "ok");
             # code...
@@ -3602,7 +3622,7 @@ if ($user['priv'] == 2) {
             break;
         case 'free':
             $priv_res="ref,lock";
-            array_push($priv_res_arr, "ref");
+            //array_push($priv_res_arr, "ref");
             array_push($priv_res_arr, "lock");
             # code...
             break;
@@ -3618,7 +3638,7 @@ if ($user['priv'] == 2) {
             break;
         case 'lock_by_me':
             $priv_res="ref,unlock,ok";
-            array_push($priv_res_arr, "ref");
+            //array_push($priv_res_arr, "ref");
             array_push($priv_res_arr, "unlock");
             array_push($priv_res_arr, "ok");
             # code...
@@ -3637,9 +3657,16 @@ if ($user['priv'] == 2) {
 
 }
 
+/*
+foreach ($priv_res_arr as $key => $value) {
+    # code...
+    $ares[$value]=$value;
+}
+*/
 
+$ares=implode(",", $priv_res_arr);
 
-return $priv_res_arr;
+return $ares;
 //echo $lo;
 }
 
@@ -6844,6 +6871,13 @@ function cutstr_help2_ret($input) {
 function cutstr_ret($input) {
     
     $result = implode(array_slice(explode('<br>', wordwrap($input, 30, '<br>', true)) , 0, 1));
+    return $result;
+    if ($result != $input) return '...';
+}
+
+function cutstr_api($input, $c) {
+    
+    $result = implode(array_slice(explode('<br>', wordwrap($input, $c, '<br>', true)) , 0, 1));
     return $result;
     if ($result != $input) return '...';
 }

@@ -2,6 +2,9 @@
 
 <?php
 
+
+$CONF['title_header']=get_conf_param('name_of_firm')." - SUPPORT CENTER";
+
 include "head.inc.php";
 
 

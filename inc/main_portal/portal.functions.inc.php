@@ -44,6 +44,25 @@ $post_id=get_post_val_by_hash($post_hash, 'id');
 
 
             </div>
+
+
+<div class="col-md-12">
+<br>
+<?=lang('HELPER_cat');?>:<br>
+<div class="btn-group-vertical ">
+<button class="btn btn-xs btn-default make_cat_type" option="1" value="<?=$post_hash;?>"><?=lang('PORTAL_idea_one');?></button> 
+<button class="btn btn-xs btn-default make_cat_type" option="2" value="<?=$post_hash;?>"><?=lang('PORTAL_trouble_one');?></button>
+<button class="btn btn-xs btn-default make_cat_type" option="3" value="<?=$post_hash;?>"><?=lang('PORTAL_question_one');?></button>
+<button class="btn btn-xs btn-default make_cat_type" option="4" value="<?=$post_hash;?>"><?=lang('PORTAL_thank_one');?></button>
+
+
+
+ </div>
+
+</div>
+
+
+
           </div>
 
                 </div><!-- /.box-body -->
@@ -602,11 +621,11 @@ else if ($row['is_success'] == "0") {
 
 ?>
 
-  <li class="list-group-item <?=$style_act;?>">
+  <li class="list-group-item <?=$style_act;?>" style="padding: 3px 10px;">
   <span class="pull-right " style="
     padding-left: 10px;
-"><i style='font-size:25px;' class="fa <?=$style_icon;?>"></i></span>
-<strong><?=$row['name'];?></strong>
+"><i style='font-size:15px;' class="fa <?=$style_icon;?>"></i></span>
+<div style='font-size:12px;'><?=$row['name'];?></div>
 
                     </li>                        
 
