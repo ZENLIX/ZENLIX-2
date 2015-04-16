@@ -46,8 +46,8 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 ?>
     <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <strong><i class="fa fa-check"></i> <?php echo lang('NEW_ok'); ?></strong> <?php echo lang('NEW_ok_1'); ?> <a class="alert-link" href="<?php echo $CONF['hostname'] ?>ticket?<?php echo $h; ?>"><?php echo lang('NEW_ok_2'); ?></a> <?php echo lang('NEW_ok_3'); ?>
-        <a class="alert-link" href="<?php echo $CONF['hostname'] ?>print_ticket?<?php echo $h; ?>"target="_blank"> <?php echo lang('NEW_ok_4'); ?></a>.
+        <strong><i class="fa fa-check"></i> <?php echo lang('NEW_ok'); ?></strong> <?php echo lang('NEW_ok_1'); ?> <a class="" href="<?php echo $CONF['hostname'] ?>ticket?<?php echo $h; ?>"><?php echo lang('NEW_ok_2'); ?></a> <?php echo lang('NEW_ok_3'); ?>
+        <a class="" href="<?php echo $CONF['hostname'] ?>print_ticket?<?php echo $h; ?>"target="_blank"> <?php echo lang('NEW_ok_4'); ?></a>.
     </div>
 <?php
         }
@@ -296,7 +296,11 @@ else if (get_conf_param('sla_system') == "false") {
     </div>
   </div></div></div>
 <?php
-        } else if ($CONF['fix_subj'] == "true") {
+        } else if (($CONF['fix_subj'] == "true") || ($CONF['fix_subj'] == "true_multiple")) {
+            $mut="";
+            if ($CONF['fix_subj'] == "true_multiple") {
+                $mut="multiple";
+            }
 ?>
 
 
@@ -306,7 +310,7 @@ else if (get_conf_param('sla_system') == "false") {
         <div class="form-group">
             <label for="subj" class="col-sm-2 control-label"><small><?php echo lang('NEW_subj'); ?>: </small></label>
             <div class="col-sm-10" style="">
-                <select data-placeholder="<?php echo lang('NEW_subj_det'); ?>" class="chosen-select form-control input-sm" id="subj" name="subj">
+                <select data-placeholder="<?php echo lang('NEW_subj_det'); ?>" class="chosen-select form-control input-sm" id="subj" name="subj" <?=$mut;?>>
                     <option value="0"></option>
                     <?php
             
@@ -315,7 +319,7 @@ else if (get_conf_param('sla_system') == "false") {
             while ($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
             */
             
-            $stmt = $dbConnection->prepare('SELECT name FROM subj order by name COLLATE utf8_unicode_ci ASC');
+            $stmt = $dbConnection->prepare('SELECT name FROM subj order by sort_id ASC');
             $stmt->execute();
             $res1 = $stmt->fetchAll();
             foreach ($res1 as $row) {
@@ -390,6 +394,7 @@ else if (get_conf_param('sla_system') == "false") {
 <?php
         if ($CONF['file_uploads'] == "true") { ?>
 
+
 <div class="control-group">
     <div class="controls">
     <div class="form-group">
@@ -397,42 +402,49 @@ else if (get_conf_param('sla_system') == "false") {
     <label for="" class="col-sm-2 control-label"><small><?php echo lang('TICKET_file_add'); ?>:</small></label>
 
     <div class="col-sm-10">
+<div class="text-muted well well-sm no-shadow" id="myid" >
+  <div class="dz-message" data-dz-message>
+<center class="text-muted"><?=lang('PORTAL_fileplace');?></center>
+  </div>
 
- <form id="fileupload" action="" method="POST" enctype="multipart/form-data">
-        <div class="fileupload-buttonbar">
-            <div class="">
-                <!-- The fileinput-button span is used to style the file input field as button -->
-                <span class="btn btn-success fileinput-button btn-xs">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span><?php echo lang('TICKET_file_upload') ?></span>
-                    <input id="filer" type="file" name="files[]" multiple>
-                </span>
-                
-                <!--button data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="<small><?php echo lang('upload_not_u') ?></small>" type="submit" class="btn btn-primary start btn-xs" id="start_upload">
-                    <i class="glyphicon glyphicon-upload"></i>
-                    <span><?php echo lang('TICKET_file_startupload'); ?></span>
-                </button>
-                <button type="reset" class="btn btn-warning cancel btn-xs">
-                    <i class="glyphicon glyphicon-ban-circle"></i>
-                    <span><?php echo lang('TICKET_file_notupload') ?></span>
-                </button--><br>
-               <small class="text-muted"><?php echo lang('TICKET_file_upload_msg'); ?></small>
-                <!-- The global file processing state -->
-                
-                
-                
-                <span class="fileupload-process"></span>
-            </div>
+<style type="text/css">
+  .note-editor .note-dropzone { opacity: 0 !important; }
+</style>
 
-        </div>
-        <!-- The table listing the files available for upload/download -->
-        <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
-    </form>
+<form action="upload.php" class=""></form>
+
+<div class="table table-striped" class="files" id="previews">
+ 
+  <div id="template" class="file-row">
+    <!-- This is used as the file preview template -->
+
+
+
+<table class="table" style="margin-bottom: 0px;">
+                  <tbody><tr>
+                    <td style="width:50%"><small><p class="name" data-dz-name></p> </small></td>
+                    <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                    <td style="width:30%"><div class="progress progress-striped progress-sm" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div class="progress-bar progress-bar-success progress-sm" style="width:0%;" data-dz-uploadprogress></div>
+        </div></td>
+                    <td class="pull-right"><button data-dz-remove class="btn btn-xs btn-danger delete">
+        <i class="glyphicon glyphicon-trash"></i>
+        <span>Delete</span>
+      </button></td>
+                  </tr>
+
+                </tbody></table>
 
 </div>
-    </div>
-    </div>
+  </div>
+ 
 </div>
+
+</div></div></div></div>
+
+
+
+
 
 <?php
         } ?>

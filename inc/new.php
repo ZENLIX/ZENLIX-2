@@ -65,8 +65,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 ?>
     <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <strong><i class="fa fa-check"></i> <?php echo lang('NEW_ok'); ?></strong> <?php echo lang('NEW_ok_1'); ?> <a class="alert-link" href="<?php echo $CONF['hostname'] ?>ticket?<?php echo $h; ?>"><?php echo lang('NEW_ok_2'); ?></a> <?php echo lang('NEW_ok_3'); ?>
-        <a class="alert-link" href="<?php echo $CONF['hostname'] ?>print_ticket?<?php echo $h; ?>"target="_blank"> <?php echo lang('NEW_ok_4'); ?></a>.
+        <strong><i class="fa fa-check"></i> <?php echo lang('NEW_ok'); ?></strong> <?php echo lang('NEW_ok_1'); ?> <a class="" href="<?php echo $CONF['hostname'] ?>ticket?<?php echo $h; ?>"><?php echo lang('NEW_ok_2'); ?></a> <?php echo lang('NEW_ok_3'); ?>
+        <a class="" href="<?php echo $CONF['hostname'] ?>print_ticket?<?php echo $h; ?>"target="_blank"> <?php echo lang('NEW_ok_4'); ?></a>.
     </div>
 <?php
         }
@@ -355,7 +355,11 @@ else if (get_conf_param('sla_system') == "false") {
     </div>
   </div></div></div>
 <?php
-        } else if ($CONF['fix_subj'] == "true") {
+        } else if (($CONF['fix_subj'] == "true") || ($CONF['fix_subj'] == "true_multiple")) {
+            $mut="";
+            if ($CONF['fix_subj'] == "true_multiple") {
+                $mut="multiple";
+            }
 ?>
 
 
@@ -365,7 +369,7 @@ else if (get_conf_param('sla_system') == "false") {
         <div class="form-group " id="for_subj" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right" data-content="<small><?php echo lang('NEW_subj_msg'); ?></small>">
             <label for="subj" class="col-sm-2 control-label"><small><?php echo lang('NEW_subj'); ?>: </small></label>
             <div class="col-sm-10 " style="">
-                <select data-placeholder="<?php echo lang('NEW_subj_det'); ?>" class="chosen-select form-control input-sm " id="subj" name="subj" multiple>
+                <select data-placeholder="<?php echo lang('NEW_subj_det'); ?>" class="chosen-select form-control input-sm " id="subj" name="subj" <?=$mut;?>>
                     <option value="0"></option>
                     <?php
             
@@ -374,7 +378,7 @@ else if (get_conf_param('sla_system') == "false") {
             while ($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
             */
             
-            $stmt = $dbConnection->prepare('SELECT name FROM subj order by name COLLATE utf8_unicode_ci ASC');
+            $stmt = $dbConnection->prepare('SELECT name FROM subj order by sort_id ASC');
             $stmt->execute();
             $res1 = $stmt->fetchAll();
             foreach ($res1 as $row) {

@@ -17,7 +17,15 @@ function lang_ru($phrase){
 'SLA_stat_dl_ok'=>'Крайний срок вовремя',
 'SLA_stat_dl_no'=>'Крайний срок просрочено',
 
+'PROFILE_perf_notify'=>'Настройка уведомлений',
 
+'PROFILE_notify_new_ticket'=>'новая заявка',
+'PROFILE_notify_refer_ticket'=>'переадресована заявка',
+'PROFILE_notify_comment_ticket'=>'прокомментирована заявка',
+'PROFILE_notify_lock_ticket'=>'заблокирована заявка',
+'PROFILE_notify_unlock_ticket'=>'разблокирована заявка',
+'PROFILE_notify_ok_ticket'=>'выполнена заявка',
+'PROFILE_notify_un_ok_ticket'=>'не выполнена заявка',
 
 
 'SLA_rep'=>'SLA-отчёты',

@@ -169,7 +169,14 @@ CREATE TABLE IF NOT EXISTS `post_likes` (
 
 
 
-
+CREATE TABLE IF NOT EXISTS `users_notify` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `mail` varchar(2048) DEFAULT NULL,
+  `pb` varchar(2048) DEFAULT NULL,
+  `sms` varchar(2048) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 

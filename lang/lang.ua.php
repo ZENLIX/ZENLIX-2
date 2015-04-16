@@ -243,7 +243,14 @@ function lang_ua($phrase){
 'CONF_tlt'=>'Крайній срок заявки',
 'CONF_tlt_info'=>'Дає можливість встановлювати крайній срок виконання заявки.',
 
-
+'PROFILE_perf_notify'=>'Налаштування повідомлень',
+'PROFILE_notify_new_ticket' => 'нова заявка',
+'PROFILE_notify_refer_ticket' => 'переадресовано заявка',
+'PROFILE_notify_comment_ticket' => 'прокоментована заявка',
+'PROFILE_notify_lock_ticket' => 'заблокована заявка',
+'PROFILE_notify_unlock_ticket' => 'розблокована заявка',
+'PROFILE_notify_ok_ticket' => 'виконана заявка',
+'PROFILE_notify_un_ok_ticket' => 'не виконано заявка',
 
 'SORT_BY'=>'Сортування за полем: ',
 'SORT_BY_asc'=>'(зростання <i class=\'fa fa-sort-asc\'></i>)',

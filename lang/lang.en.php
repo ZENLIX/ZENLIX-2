@@ -1,7 +1,15 @@
 <?php
 function lang_en($phrase){
     static $lang = array(
-
+'PROFILE_perf_notify'=>'Private notifications',
+'PROFILE_notify_new_ticket' => 'new ticket',
+'PROFILE_notify_refer_ticket' => 'redirected ticket',
+'PROFILE_notify_comment_ticket' => 'commented ticket',
+'PROFILE_notify_lock_ticket' => 'locked ticket',
+'PROFILE_notify_unlock_ticket' => 'unlocked ticket',
+'PROFILE_notify_ok_ticket' => 'success ticket',
+'PROFILE_notify_un_ok_ticket' => 'not success ticket',
+'PROFILE_msg_pass_ok'=>'password successfully changed, please login again.',
 'POST_MAIL_POST_NEW' => 'A new post on our site',
 'PORTAL_post_NEWM_ext' => 'You received this message because the post was created by the user',
 'PORTAL_nf_users_list' => 'Notify on new posts',

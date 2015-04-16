@@ -4,7 +4,7 @@ ini_set('max_execution_time', 300);
 ini_set('memory_limit', '512M');
 //ok!
 include ("functions.inc.php");
-include ("sys/dbu.class.php");
+include ("sys/dbu.class.php");$main_portal=$CONF['main_portal'];
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if (validate_admin($_SESSION['helpdesk_user_id'])) {
         include ("inc/head.inc.php");
@@ -95,7 +95,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 <div class="col-md-12">
 <h2><center><?php echo lang('UPGRADE_version_already'); ?></center></h2>
 </div>
-</div></section>
+</div>
 <?php
         } else if ($myversion < $getver) {
             
@@ -447,7 +447,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             
                             
 </div>
-</section>
+
 
 <?php
             }

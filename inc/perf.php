@@ -978,9 +978,6 @@ else if ($menu_opt == "ti_conf") {
   
 
   
-
-  
-  
         <div class="form-group">
     <label for="fix_subj" class="col-sm-4 control-label"><small><?php
         echo lang('CONF_subj'); ?></small></label>
@@ -991,6 +988,14 @@ else if ($menu_opt == "ti_conf") {
             echo "selected";
         } ?>><?php
         echo lang('CONF_fix_list'); ?></option>
+
+
+  <option value="true_multiple" <?php
+        if (get_conf_param('fix_subj') == "true_multiple") {
+            echo "selected";
+        } ?>><?php
+        echo lang('FIELD_type_multiselect'); ?></option>
+
   <option value="false" <?php
         if (get_conf_param('fix_subj') == "false") {
             echo "selected";

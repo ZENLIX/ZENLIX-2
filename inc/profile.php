@@ -95,7 +95,7 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
     //$query = "SELECT fio, pass, login, status, priv, unit,email, lang from users where id='$usid'; ";
     //    $sql = mysql_query($query) or die(mysql_error());
     
-    $stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, unit,email, lang, tel, skype, adr, unit_desc, posada from users where id=:usid');
+    $stmt = $dbConnection->prepare('SELECT pb,fio, pass, login, status, priv, unit,email, lang, tel, skype, adr, unit_desc, posada from users where id=:usid');
     $stmt->execute(array(':usid' => $usid));
     $res1 = $stmt->fetchAll();
     
@@ -113,7 +113,7 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
         
         $unitss = $row['unit_desc'];
         $posada = $row['posada'];
-        
+        $push=$row['pb'];
         $langu = $row['lang'];
         
         if ($langu == "en") {
@@ -246,6 +246,13 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
         <div class="col-sm-8">
     <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="<?php echo lang('P_mail'); ?>" value="<?php echo $email; ?>">
     <p class="help-block"><small><?php echo lang('P_mail_desc'); ?></small></p>
+        </div>
+  </div>
+
+        <div class="form-group">
+    <label for="pb" class="col-sm-4 control-label"><small>Pushbullet</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="push" type="text" class="form-control input-sm" id="pb" placeholder="push" value="<?php echo $push; ?>">
         </div>
   </div>
   
@@ -509,13 +516,16 @@ if ($row['t_type'] == "multiselect") {
 
 
 
-<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple="multiple" >
+<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple >
 
 <?php 
 $v=explode(",", $row['value']);
 $vs=explode(",", $vs);
+
+//print_r($vs)."<br>";
  foreach ($v as $value) {
      # code...
+    //echo $value."<br>";
      $sc="";
  if (in_array($value, $vs)) {$sc="selected";}
  
@@ -558,6 +568,85 @@ $vs=explode(",", $vs);
 
 }
 ?>
+
+<div class="col-md-12">
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-bell"></i> <?php echo lang('PROFILE_perf_notify'); ?></h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                <div class="panel-body">
+
+<form class="form-horizontal" role="form">
+
+
+              <div class="form-group">
+    <label for="mail_nf" class="col-sm-4 control-label"><small><?php echo lang('CONF_mail_status'); ?></small></label>
+        <div class="col-sm-8">
+    <select data-placeholder="<?php echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
+
+<?php
+
+$stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => $_SESSION['helpdesk_user_id']));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+$nl=get_notify_opt_list();
+
+foreach ($nl as $key => $value) {
+    # code...
+
+$sc="";
+
+if ($tt2['mail']) {
+
+$al=explode(",", $tt2['mail']);
+
+if (in_array($key, $al)) {
+    $sc="selected";
+}
+
+}
+else if (!$tt2['mail']) {
+
+$sc="selected";
+
+}
+
+
+?>
+                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+
+
+              <?php
+}
+              ?>  
+                        
+            </select>
+        </div>
+  </div>
+
+
+
+
+
+  <div class="col-md-offset-3 col-md-6">
+<center>
+    <button type="submit" id="edit_nf" value="<?php echo $usid ?>" class="btn btn-success"><i class="fa fa-pencil"></i> <?php echo lang('P_edit'); ?></button>
+</center>
+</div>
+</form>
+                                </div>
+<div id="nf_info"></div>
+
+
+
+                                </div>
+                                </div>
+</div>
 
 <div class="col-md-12">
   <?php
@@ -627,7 +716,7 @@ if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'api_key')) {
                                 </div><!-- /.box-header -->
                                 <div class="box-body">
                                 <div class="panel-body">
-                                <pre><?=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'api_key');?></pre>
+                                <pre><strong id="api_code"><?=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'api_key');?></strong> <button class="pull-right btn btn-default btn-xs" id="gen_new_api"><i class="fa fa-refresh"></i></button></pre>
                                 </div>
                                 </div>
 

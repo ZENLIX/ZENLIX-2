@@ -75,7 +75,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     //$query = "SELECT fio, pass, login, status, priv, unit,email, lang from users where id='$usid'; ";
     //    $sql = mysql_query($query) or die(mysql_error());
     
-    $stmt = $dbConnection->prepare('SELECT fio, pass, login, status, priv, unit,email, lang, tel, skype, adr from users where id=:usid');
+    $stmt = $dbConnection->prepare('SELECT pb,fio, pass, login, status, priv, unit,email, lang, tel, skype, adr from users where id=:usid');
     $stmt->execute(array(':usid' => $usid));
     $res1 = $stmt->fetchAll();
     
@@ -91,6 +91,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $skype = $row['skype'];
         $adr = $row['adr'];
         $langu = $row['lang'];
+        $push = $row['pb'];
         
         if ($langu == "en") {
             $status_lang_en = "selected";
@@ -206,6 +207,17 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     <p class="help-block"><small><?php echo lang('P_mail_desc'); ?></small></p>
         </div>
   </div>
+
+
+
+        <div class="form-group">
+    <label for="pb" class="col-sm-4 control-label"><small>Pushbullet</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="push" type="text" class="form-control input-sm" id="pb" placeholder="push" value="<?php echo $push; ?>">
+        </div>
+  </div>
+
+
   
       <div class="form-group">
     <label for="tel" class="col-sm-4 control-label"><small><?php echo lang('WORKER_tel_full'); ?></small></label>
@@ -415,7 +427,84 @@ $vs=explode(",", $vs);
 }
 ?>
 
+<div class="col-md-12">
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-bell"></i> <?php echo lang('PROFILE_perf_notify'); ?></h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                <div class="panel-body">
 
+<form class="form-horizontal" role="form">
+
+
+              <div class="form-group">
+    <label for="mail_nf" class="col-sm-4 control-label"><small><?php echo lang('CONF_mail_status'); ?></small></label>
+        <div class="col-sm-8">
+    <select data-placeholder="<?php echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
+
+<?php
+
+$stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => $_SESSION['helpdesk_user_id']));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+$nl=get_notify_opt_list();
+
+foreach ($nl as $key => $value) {
+    # code...
+
+$sc="";
+
+if ($tt2['mail']) {
+
+$al=explode(",", $tt2['mail']);
+
+if (in_array($key, $al)) {
+    $sc="selected";
+}
+
+}
+else if (!$tt2['mail']) {
+
+$sc="selected";
+
+}
+
+
+?>
+                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+
+
+              <?php
+}
+              ?>  
+                        
+            </select>
+        </div>
+  </div>
+
+
+
+  
+
+  <div class="col-md-offset-3 col-md-6">
+<center>
+    <button type="submit" id="edit_nf" value="<?php echo $usid ?>" class="btn btn-success"><i class="fa fa-pencil"></i> <?php echo lang('P_edit'); ?></button>
+</center>
+</div>
+</form>
+                                </div>
+<div id="nf_info"></div>
+
+
+
+                                </div>
+                                </div>
+</div>
 
 
 <div class="col-md-12">

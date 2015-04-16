@@ -114,7 +114,7 @@ if (get_current_URL_name('ticket')) { ?>
 } ?>
 
 <?php
-if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_current_URL_name('scheduler') || get_current_URL_name('config') || get_current_URL_name('portal')) { ?>
+if ((get_current_URL_name('create')) || get_current_URL_name('users') || get_current_URL_name('scheduler') || get_current_URL_name('config') || get_current_URL_name('portal') || get_current_URL_name('profile')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/s2/select2.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery.autosize.min.js?<?=get_conf_param('version');?>"></script>
 

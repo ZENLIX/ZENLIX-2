@@ -679,8 +679,33 @@ $message = str_replace("{m}", $m, $message);
 
 $message = str_replace("{h}", $h, $message);
 
-     send_mail($user_mail,$subject,$message,$h);
+     if (check_notify_mail_user($type_op, $user_mail))
+{
+  send_mail($user_mail,$subject,$message,$h);
+}
      
+/*
+
+ticket_create:true,
+ticket_refer:true,
+ticket_comment:true,
+ticket_lock:true,
+ticket_unlock:true,
+ticket_ok:true,
+ticket_no_ok:true
+
+
+
+
+if (check_notify_mail_user($type_op, $user_mail))
+{
+  send_mail($user_mail,$subject,$message,$h);
+}
+*/
+
+
+
+
    }
    
 else if ($type_op == "ticket_refer") {
@@ -761,9 +786,10 @@ $message = str_replace("{m}", $m, $message);
 
 $message = str_replace("{h}", $h, $message, $h);
 
-
-
-     send_mail($user_mail,$subject,$message, $h);
+if (check_notify_mail_user($type_op, $user_mail))
+{
+  send_mail($user_mail,$subject,$message,$h);
+}
   
 }
 else if ($type_op == "ticket_comment") {
@@ -845,7 +871,10 @@ $message = str_replace("{MAIL_text}", $MAIL_text, $message);
 $message = str_replace("{m}", $m, $message);
 
 $message = str_replace("{h}", $h, $message);
-     send_mail($user_mail,$subject,$message, $h);
+    if (check_notify_mail_user($type_op, $user_mail))
+{
+  send_mail($user_mail,$subject,$message,$h);
+}
 }
 else if ($type_op == "ticket_lock") {
     
@@ -923,8 +952,10 @@ $message = str_replace("{MAIL_text}", $MAIL_text, $message);
 $message = str_replace("{m}", $m, $message);
 
 $message = str_replace("{h}", $h, $message);
-
-     send_mail($user_mail,$subject,$message,$h);
+if (check_notify_mail_user($type_op, $user_mail))
+{
+  send_mail($user_mail,$subject,$message,$h);
+}
 }
 else if ($type_op == "ticket_unlock") {
   $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
@@ -1002,8 +1033,10 @@ $message = str_replace("{m}", $m, $message);
 
 $message = str_replace("{h}", $h, $message);
 
-
-     send_mail($user_mail,$subject,$message, $h);
+if (check_notify_mail_user($type_op, $user_mail))
+{
+  send_mail($user_mail,$subject,$message,$h);
+}
 }
 else if ($type_op == "ticket_ok") {
   $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
@@ -1082,8 +1115,10 @@ $message = str_replace("{m}", $m, $message);
 $message = str_replace("{h}", $h, $message, $h);
 
 
-
-     send_mail($user_mail,$subject,$message);
+if (check_notify_mail_user($type_op, $user_mail))
+{
+  send_mail($user_mail,$subject,$message,$h);
+}
 }
 else if ($type_op == "ticket_no_ok") {
   $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
@@ -1163,8 +1198,10 @@ $message = str_replace("{m}", $m, $message);
 $message = str_replace("{h}", $h, $message);
 
 
-
-     send_mail($user_mail,$subject,$message, $h);
+if (check_notify_mail_user($type_op, $user_mail))
+{
+  send_mail($user_mail,$subject,$message,$h);
+}
 }
 
 }

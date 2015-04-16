@@ -314,6 +314,57 @@ $v=explode(",", $row['value']);
 
 
 
+<hr>
+
+
+              <div class="form-group">
+    <label for="mail_nf" class="col-sm-2 control-label"><?php echo lang('CONF_mail_status'); ?></label>
+        <div class="col-sm-10">
+    <select data-placeholder="<?php echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
+
+<?php
+
+$stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => get_user_val_by_hash($usid, 'id')));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+$nl=get_notify_opt_list();
+
+foreach ($nl as $key => $value) {
+    # code...
+
+$sc="";
+
+if ($tt2['mail']) {
+
+$al=explode(",", $tt2['mail']);
+
+if (in_array($key, $al)) {
+    $sc="selected";
+}
+
+}
+else if (!$tt2['mail']) {
+
+$sc="selected";
+
+}
+
+
+?>
+                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+
+
+              <?php
+}
+              ?>  
+                        
+            </select>
+        </div>
+  </div>
 
 
 
@@ -1618,7 +1669,7 @@ $vs=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
 
 
 
-<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple="multiple" >
+<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple >
 
 <?php 
 $v=explode(",", $row['value']);
@@ -1654,7 +1705,57 @@ $vs=explode(",", $vs);
 <!--######### ADDITIONAL FIELDS ############## -->
 
 
+<hr>
 
+
+              <div class="form-group">
+    <label for="mail_nf" class="col-sm-2 control-label"><?php echo lang('CONF_mail_status'); ?></label>
+        <div class="col-sm-10">
+    <select data-placeholder="<?php echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
+
+<?php
+
+$stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => get_user_val_by_hash($usid, 'id')));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+
+
+
+$nl=get_notify_opt_list();
+
+foreach ($nl as $key => $value) {
+    # code...
+
+$sc="";
+
+if ($tt2['mail']) {
+
+$al=explode(",", $tt2['mail']);
+
+if (in_array($key, $al)) {
+    $sc="selected";
+}
+
+}
+else if (!$tt2['mail']) {
+
+$sc="selected";
+
+}
+
+
+?>
+                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+
+
+              <?php
+}
+              ?>  
+                        
+            </select>
+        </div>
+  </div>
 
 
 

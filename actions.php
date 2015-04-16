@@ -5987,7 +5987,8 @@ echo $msg;
                     tel=:t, 
                     email=:m, 
                     lang=:langu,
-                    adr=:adr
+                    adr=:adr,
+                    pb=:pb
                     where id=:id');
                 $stmt->execute(array(
                     ':id' => $id,
@@ -5996,6 +5997,7 @@ echo $msg;
                     ':s' => $skype,
                     ':t' => $tel,
                     ':adr' => $adr,
+                    ':pb'=>$_POST['pb'],
                     ':fio' => $fio
                 ));
 ?>
@@ -6056,7 +6058,7 @@ echo $msg;
                 }
                 if ($ec == 0) {
                     $stmt = $dbConnection->prepare('update users set fio=:fio, skype=:s, tel=:t, email=:m, lang=:langu,
-                adr=:adr,posada=:posada,unit_desc=:unitss,noty_layot=:noty where id=:id');
+                adr=:adr,posada=:posada,unit_desc=:unitss,noty_layot=:noty,pb=:pb where id=:id');
                     $stmt->execute(array(
                         ':id' => $id,
                         ':m' => $m,
@@ -6067,7 +6069,8 @@ echo $msg;
                         ':posada' => $posada,
                         ':unitss' => $unitss,
                         ':fio' => $fio,
-                        ':noty'=>$noty
+                        ':noty'=>$noty,
+                        ':pb'=>$_POST['pb']
                     ));
 ?>
                 <div class="alert alert-success">
@@ -6094,6 +6097,23 @@ echo $msg;
             }
         }
         
+        if ($mode == "gen_new_api") {
+$nc=md5(time());
+
+                    $stmt = $dbConnection->prepare('update users set api_key=:ak where id=:id');
+                    $stmt->execute(array(
+                        ':id' => $_SESSION['helpdesk_user_id'],
+                        ':ak'=>$nc
+                    ));
+
+echo $nc;
+
+
+        }
+
+
+
+
         if ($mode == "edit_profile_pass") {
             
             $validator = new GUMP();
@@ -6152,10 +6172,11 @@ echo $msg;
                 
                 if ($ec == 0) {
                     
-                    $stmt = $dbConnection->prepare('update users set pass=:p_new where id=:id');
+                    $stmt = $dbConnection->prepare('update users set pass=:p_new, api_key=:ak where id=:id');
                     $stmt->execute(array(
                         ':id' => $id,
-                        ':p_new' => $p_new
+                        ':p_new' => $p_new,
+                        ':ak'=>md5(time())
                     ));
                     
                     session_destroy();
@@ -7340,7 +7361,7 @@ $uid=$_SESSION['helpdesk_user_id'];
 $v_field=$_POST[$cur_hash];
 if ($row['t_type'] == "multiselect") {
     # code...
-    $v_field=implode(", ", $_POST[$cur_hash]);
+    $v_field=implode(",", $_POST[$cur_hash]);
 }
 
 
@@ -7417,7 +7438,35 @@ else if (!$ifex['id']) {
             $user_to_def=$_POST['user_to_def'];
 
             $unit = ($_POST['unit']);
-            
+            $mail_nf=$_POST['mail_nf'];
+
+
+
+//$_POST['mail'];
+$stmt2r = $dbConnection->prepare('SELECT id from users_notify where user_id=:uto');
+    $stmt2r->execute(array(':uto' => get_user_val_by_hash($usid, 'id')));
+    $tt2r = $stmt2r->fetch(PDO::FETCH_ASSOC);
+
+
+    if ($tt2r['id']) {
+        $stmt2 = $dbConnection->prepare('update users_notify set mail=:mail, pb=:pb, sms=:sms where user_id=:user_id');
+$stmt2->execute(array(':user_id' => get_user_val_by_hash($usid, 'id'),
+                      ':mail'=>$mail_nf,
+                      ':pb' =>'',
+                      ':sms'=>''
+                        ));
+    }
+
+else     if (!$tt2r['id']) {
+
+$stmt2 = $dbConnection->prepare('insert into users_notify (user_id,mail,pb,sms) values (:user_id,:mail,:pb,:sms)');
+$stmt2->execute(array(':user_id' => get_user_val_by_hash($usid, 'id'),
+                      ':mail'=>$mail_nf,
+                      ':pb' =>'',
+                      ':sms'=>''
+                        ));
+
+}
 
 
 
@@ -7440,7 +7489,7 @@ else if (!$ifex['id']) {
 $v_field=$_POST[$cur_hash];
 if ($row['t_type'] == "multiselect") {
     # code...
-    $v_field=implode(", ", $_POST[$cur_hash]);
+    $v_field=implode(",", $_POST[$cur_hash]);
 }
 
 
@@ -7577,7 +7626,8 @@ else {
                 is_client=:is_client,
                 messages_type=:msg_type,
                 def_unit_id=:def_unit_id,
-                def_user_id=:def_user_id
+                def_user_id=:def_user_id,
+                api_key=:ak
                 where uniq_id=:usid
                 ');
                 $stmt->execute(array(
@@ -7605,7 +7655,8 @@ else {
                     ':is_client' => $is_client,
                     ':msg_type' => $msg_type,
                     ':def_unit_id'=>$user_2_unit,
-                    ':def_user_id'=>$user_2_user
+                    ':def_user_id'=>$user_2_user,
+                    ':ak'=>md5(time())
                 ));
             } else {
                 $stmt = $dbConnection->prepare('update users set
@@ -7742,6 +7793,12 @@ else {
             $def_unit_id=$_POST['def_unit_id'];
             $def_user_id=$_POST['def_user_id'];
             $user_to_def=$_POST['user_to_def'];
+
+            $mail_nf=$_POST['mail_nf'];
+
+
+
+
 
 
 
@@ -7932,7 +7989,7 @@ values
 $v_field=$_POST[$cur_hash];
 if ($row['t_type'] == "multiselect") {
     # code...
-    $v_field=implode(", ", $_POST[$cur_hash]);
+    $v_field=implode(",", $_POST[$cur_hash]);
 }
 
 
@@ -7953,6 +8010,15 @@ if ($row['t_type'] == "multiselect") {
             ########################### ADDITIONAL FIELDS ###############################
 
 
+
+
+
+$stmt2 = $dbConnection->prepare('insert into users_notify (user_id,mail,pb,sms) values (:user_id,:mail,:pb,:sms)');
+$stmt2->execute(array(':user_id' => get_user_val_by_hash($hn, 'id'),
+                      ':mail'=>$mail_nf,
+                      ':pb' =>'',
+                      ':sms'=>''
+                        ));
 
 
 
@@ -8540,6 +8606,48 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 }
 
 
+
+if ($mode == "profile_edit_nf") {
+
+
+//$_POST['mail'];
+$stmt2 = $dbConnection->prepare('SELECT id from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => $_SESSION['helpdesk_user_id']));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+
+    if ($tt2['id']) {
+        $stmt2 = $dbConnection->prepare('update users_notify set mail=:mail, pb=:pb, sms=:sms where user_id=:user_id');
+$stmt2->execute(array(':user_id' => $_SESSION['helpdesk_user_id'],
+                      ':mail'=>$_POST['mail'],
+                      ':pb' =>'',
+                      ':sms'=>''
+                        ));
+    }
+
+else     if (!$tt2['id']) {
+
+$stmt2 = $dbConnection->prepare('insert into users_notify (user_id,mail,pb,sms) values (:user_id,:mail,:pb,:sms)');
+$stmt2->execute(array(':user_id' => $_SESSION['helpdesk_user_id'],
+                      ':mail'=>$_POST['mail'],
+                      ':pb' =>'',
+                      ':sms'=>''
+                        ));
+
+}
+
+?>
+                <div class="alert alert-success">
+                    <?php
+                echo lang('PROFILE_msg_ok'); ?>
+                </div>
+            <?php
+
+
+
+}
+
+
         if ($mode == "add_ticket") {
             $type = ($_POST['type_add']);
             
@@ -8565,7 +8673,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 $v_field=$_POST[$cur_hash];
 if ($row['t_type'] == "multiselect") {
     # code...
-    $v_field=implode(", ", $_POST[$cur_hash]);
+    $v_field=implode(",", $_POST[$cur_hash]);
 }
 
 

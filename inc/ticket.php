@@ -1028,7 +1028,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
             if ($arch == 1) {
 ?>
                 
-<div class="callout callout-danger">
+<div class="callout bg-gray color-palette">
                                         <h4><?php echo lang('MAIN_attention'); ?></h4>
                                         <p><?php echo lang('TICKET_t_in_arch'); ?></p>
                                     </div>

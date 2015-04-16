@@ -11,6 +11,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
         include ("head.inc.php");
         include ("navbar.inc.php");
+
+
+        
 ?>
 
 

@@ -2140,6 +2140,55 @@ function get_total_unread_messages() {
     return $tt['cou'];
 }
 
+function get_notify_opt_list() {
+
+$r=array('ticket_create'  =>lang('PROFILE_notify_new_ticket')  ,
+         'ticket_refer'   =>lang('PROFILE_notify_refer_ticket')  ,
+         'ticket_comment' =>lang('PROFILE_notify_comment_ticket')  ,
+         'ticket_lock'    =>lang('PROFILE_notify_lock_ticket')  ,
+         'ticket_unlock'  =>lang('PROFILE_notify_unlock_ticket')  ,
+         'ticket_ok'      =>lang('PROFILE_notify_ok_ticket')  ,
+         'ticket_no_ok'   =>lang('PROFILE_notify_un_ok_ticket')
+);
+
+return $r;
+}
+
+function check_notify_mail_user($action, $mail) {
+    global $dbConnection;
+
+    $stmt = $dbConnection->prepare('SELECT id from users where email=:uto');
+    $stmt->execute(array(':uto' => $mail));
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    $uid=$tt['id'];
+
+
+    $stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => $uid));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+if ($tt2['mail']) {
+
+
+$p_str=explode(",",$tt2['mail']);
+
+if (in_array($action, $p_str)) {
+    $res=true;
+}
+if (!in_array($action, $p_str)) {
+    $res=false;
+}
+
+
+}
+else if (!$tt2['mail']) {
+    $res=true;
+}
+
+return $res;
+}
+
+
 function check_unlinked_file() {
     global $dbConnection;
     
@@ -3436,7 +3485,7 @@ $priv_res_arr=array();
 
 $ticket_hash=get_ticket_hash_by_id($ticked_id);
 
-$ticket['arch']=get_ticket_val_by_hash('arch', $ticked_hash);
+$ticket['arch']=get_ticket_val_by_hash('arch', $ticket_hash);
 $ticket['status']=get_ticket_val_by_hash('status',$ticket_hash);
 $ticket['ok_by']=get_ticket_val_by_hash('ok_by',$ticket_hash);
 $ticket['lock_by']=get_ticket_val_by_hash('lock_by',$ticket_hash);
@@ -3678,7 +3727,7 @@ function get_ticket_action_priv_api($ticked_id, $user_id) {
 
 $ticket_hash=get_ticket_hash_by_id($ticked_id);
 
-$ticket['arch']=get_ticket_val_by_hash('arch', $ticked_hash);
+$ticket['arch']=get_ticket_val_by_hash('arch', $ticket_hash);
 $ticket['status']=get_ticket_val_by_hash('status',$ticket_hash);
 $ticket['ok_by']=get_ticket_val_by_hash('ok_by',$ticket_hash);
 $ticket['lock_by']=get_ticket_val_by_hash('lock_by',$ticket_hash);
@@ -3880,7 +3929,7 @@ function get_ticket_action_priv($ticked_id) {
 $user_id=$_SESSION['helpdesk_user_id'];
 $ticket_hash=get_ticket_hash_by_id($ticked_id);
 
-$ticket['arch']=get_ticket_val_by_hash('arch', $ticked_hash);
+$ticket['arch']=get_ticket_val_by_hash('arch', $ticket_hash);
 $ticket['status']=get_ticket_val_by_hash('status',$ticket_hash);
 $ticket['ok_by']=get_ticket_val_by_hash('ok_by',$ticket_hash);
 $ticket['lock_by']=get_ticket_val_by_hash('lock_by',$ticket_hash);

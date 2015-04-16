@@ -33,7 +33,7 @@ if (isset($data_json->mode)) {
                     }
                 } else {
                     $code = "error";
-                    $error_msg = "ldap auth error";
+                    $error_msg = "system auth error";
                 }
             }
             
@@ -374,7 +374,7 @@ else if ($row['arch'] == 0) {
             }
             else {
             $code = "error";
-            $error_msg = "auth error";
+            $error_msg = "system auth error";
             }
             
             //validate_auth() {}
@@ -497,7 +497,7 @@ else if ($row['user_to_id'] != "0") {
     }
     else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
 
 }
@@ -642,7 +642,7 @@ else if ($row['arch'] == 0) {
 }
     else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
 
 }
@@ -799,7 +799,7 @@ else if ($row['arch'] == 0) {
 }
     else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
 
 }
@@ -955,7 +955,7 @@ else if ($row['arch'] == 0) {
 }
     else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
 
 }
@@ -1106,7 +1106,7 @@ else if ($row['arch'] == 0) {
 }
     else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
 
 }
@@ -1186,7 +1186,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1235,7 +1235,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1290,7 +1290,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1343,7 +1343,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1399,7 +1399,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1460,7 +1460,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1532,7 +1532,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1593,7 +1593,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1659,7 +1659,7 @@ $code = "ok";
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
@@ -1767,7 +1767,7 @@ $code = "ok";
     }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         
@@ -1967,7 +1967,7 @@ $r['ticket_hash']=$hashname;
             }
                 else { 
                 $code = "error";
-                $error_msg = "validate error";
+                $error_msg = "system auth error";
 }
         }
         else {
