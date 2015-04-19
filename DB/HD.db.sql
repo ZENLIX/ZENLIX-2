@@ -445,7 +445,12 @@ VALUES
   (57, 'allow_forgot', 'true'),
   (58, 'sla_system', 'true'),
   (59, 'portal_posts_mail_users', 'false'),
-  (60, 'email_gate_connect_param', '/imap/ssl');
+  (60, 'email_gate_connect_param', '/imap/ssl'),
+  (61, 'smsc_login', ''),
+  (62, 'smsc_pass', ''),
+  (63, 'smsc_active', 'false'),
+  (64, 'smsc_list_action', 'ticket_create,ticket_refer,ticket_comment,ticket_lock,ticket_unlock,ticket_ok,ticket_no_ok'),
+  (65, 'api_status', 'true');
 
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;
@@ -652,6 +657,16 @@ VALUES
 UNLOCK TABLES;
 
 
+DROP TABLE IF EXISTS `users_notify`;
+CREATE TABLE `users_notify` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `mail` varchar(2048) DEFAULT NULL,
+  `pb` varchar(2048) DEFAULT NULL,
+  `sms` varchar(2048) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 # Дамп таблицы users
 # ------------------------------------------------------------
 
@@ -688,6 +703,7 @@ CREATE TABLE `users` (
   `def_unit_id` int(11) NOT NULL DEFAULT '0',
   `def_user_id` varchar(1024) NOT NULL DEFAULT '0',
   `api_key` varchar(1024) DEFAULT NULL,
+  `mob` int(24) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 

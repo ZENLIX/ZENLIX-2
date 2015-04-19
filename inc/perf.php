@@ -977,7 +977,7 @@ else if ($menu_opt == "ti_conf") {
   </div>
   
 
-  
+
         <div class="form-group">
     <label for="fix_subj" class="col-sm-4 control-label"><small><?php
         echo lang('CONF_subj'); ?></small></label>
@@ -1739,7 +1739,117 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['2']="checked"
       </div>
 </div>
 </div>
+<div class="col-md-12">
+  <div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-bell"></i> <?php
+        echo lang('EXT_sms_noti'); ?></h3>
+</div>
+      <div class="box-body">
+      <form class="form-horizontal" role="form">
+   
 
+
+
+    <div class="form-group">
+    <label for="smsc_active" class="col-sm-4 control-label"><small><?=lang('t_LIST_status');?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="smsc_active">
+  <option value="true" <?php
+        if (get_conf_param('smsc_active') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('smsc_active') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>   <p class="help-block"><small>Supported by <a target="_blank" href="http://smscentre.com/">SMSC</a>.</small></p></div>
+  </div>
+
+
+
+
+  
+  <div class="form-group">
+    <label for="smsc_login" class="col-sm-4 control-label"><small><?php
+        echo lang('EXT_sms_noti_login'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="smsc_login" placeholder="<?php
+        echo lang('EXT_sms_noti_login'); ?>" value="<?php
+        echo get_conf_param('smsc_login') ?>">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="smsc_pass" class="col-sm-4 control-label"><small><?php
+        echo lang('EXT_sms_noti_pass'); ?></small></label>
+    <div class="col-sm-8">
+      <input type="text" class="form-control input-sm" id="smsc_pass" placeholder="<?php
+        echo lang('EXT_sms_noti_pass'); ?>" value="<?php
+        echo get_conf_param('smsc_pass') ?>">
+    </div>
+  </div>
+
+
+
+ <div class="form-group">
+    <label for="sms_nf" class="col-sm-4 control-label"><small><?php echo lang('EXT_sms_noti_list'); ?></small></label>
+        <div class="col-sm-8">
+    <select data-placeholder="<?php echo lang('CONF_mail_status'); ?>" class="chosen-select form-control" id="sms_nf" name="sms_nf[]" multiple="multiple" >
+
+<?php
+
+
+
+
+
+
+$nl=get_notify_opt_list();
+
+foreach ($nl as $key => $value) {
+    # code...
+
+$sc="";
+
+
+
+$opt_ac_list=explode(",",get_conf_param('smsc_list_action'));
+
+if (in_array($key, $opt_ac_list)) {
+    $sc="selected";
+}
+
+
+
+
+?>
+                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+
+
+              <?php
+}
+              ?>  
+                        
+            </select>
+        </div>
+  </div>
+
+
+<div class="">
+<center>
+    <button type="submit" id="conf_edit_sms" class="btn btn-success"><i class="fa fa-pencil"></i> <?php
+        echo lang('JS_save'); ?></button>
+<div class="" id="conf_edit_sms_res"></div>
+</center>
+</div>
+  </form>
+      
+      </div>
+  </div>
+  
+  
+</div>
 <div class="col-md-12">
   <div class="box box-solid">
 <div class="box-header">
@@ -1757,6 +1867,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['2']="checked"
       <input type="text" class="form-control input-sm" id="pb_api" placeholder="<?php
         echo lang('EXT_pb_api_key'); ?>" value="<?php
         echo get_conf_param('pb_api') ?>">
+        <p class="help-block"><small>Supported by <a target="_blank" href="https://www.pushbullet.com/">Pushbullet</a>.</small></p>
     </div>
   </div>
 <div class="">
@@ -2052,6 +2163,25 @@ else {
 
 
 
+  <div class="form-group">
+    <label for="api_status" class="col-sm-4 control-label"><small>API</small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="api_status">
+  <option value="true" <?php
+        if (get_conf_param('api_status') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('api_status') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>    
+</div>
+  </div>
+
+
   
   
 <center>
@@ -2064,9 +2194,9 @@ else {
   
     </div>
   
-  <div id="conf_edit_main_res"></div>
+  
       
-      </div>
+      </div><div id="conf_edit_main_res"></div>
 </div>
 
 

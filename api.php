@@ -6,7 +6,7 @@ include ("functions.inc.php");
 $data_json = json_decode( file_get_contents('php://input') );
 
 
-
+if (get_conf_param('api_status') == "true") {
 
 if (isset($data_json->mode)) {
 
@@ -1999,6 +1999,7 @@ else {
         print json_encode($row_set);
 }
 
+}
 }
 ?>
     

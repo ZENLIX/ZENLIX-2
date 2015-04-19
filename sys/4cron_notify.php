@@ -7,6 +7,7 @@ include($base ."/conf.php");
 //include_once($base ."/functions.inc.php");
 date_default_timezone_set('Europe/Kiev');
 include($base .'/sys/class.phpmailer.php');
+include($base .'/library/smsc_smpp.php');
 include($base .'/integration/PushBullet.class.php');
 
 include_once $base.'/lang/lang.ua.php';
@@ -39,7 +40,182 @@ $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
 
+function send_smsc($type_op, $lang, $user_mail, $ticket_id) {
+  global $dbConnection,$base,$CONF;
 
+
+
+
+$MAIL_new=lang($lang,'MAIL_new');
+$MAIL_refer=lang($lang,'mail_msg_ticket_refer');
+$MAIL_refer_ext=lang($lang,'mail_msg_ticket_refer_ext');
+$MAIL_to_w=lang($lang,'mail_msg_ticket_to_ext');
+
+$MAIL_msg_comment=lang($lang,'mail_msg_ticket_comment');
+$MAIL_msg_comment_ext=lang($lang,'mail_msg_ticket_comment_ext');
+
+
+$MAIL_msg_lock=lang($lang,'mail_msg_ticket_lock');
+$MAIL_msg_lock_ext=lang($lang,'mail_msg_ticket_lock_ext');
+$MAIL_msg_unlock=lang($lang,'mail_msg_ticket_unlock');
+$MAIL_msg_unlock_ext=lang($lang,'mail_msg_ticket_unlock_ext');
+$MAIL_msg_ok=lang($lang,'mail_msg_ticket_ok');
+$MAIL_msg_ok_ext=lang($lang,'mail_msg_ticket_ok_ext');
+$MAIL_msg_no_ok=lang($lang,'mail_msg_ticket_no_ok');
+$MAIL_msg_no_ok_ext=lang($lang,'mail_msg_ticket_no_ok_ext');
+
+        $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+        $stmt->execute(array(':tid' => $ticket_id));
+        $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $h=$ticket_res['hash_name'];
+        $user_init_id=$ticket_res['user_init_id'];
+        $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
+
+        $nou=name_of_client_ret($ticket_res['client_id']);
+        $to_id=$ticket_res['user_to_id'];
+        $s=$ticket_res['subj'];
+        $m=$ticket_res['msg'];
+        $unit_id=$ticket_res['unit_id'];
+        //кому?
+        if ($ticket_res['user_to_id'] <> 0 ) {
+            $to_text="".name_of_user_ret($to_id)."";
+        }
+        else if ($ticket_res['user_to_id'] == 0 ) {
+            $to_text=view_array(get_unit_name_return($unit_id));
+        }
+        
+        
+        
+        
+
+if ($type_op == "ticket_create") {
+$msg=lang($lang,'MAIL_new').' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$ar_list=explode(",", get_conf_param('smsc_list_action'));
+if (in_array($type_op, $ar_list)) {
+  if (check_notify_sms_user($type_op, $user_mail))
+{
+$S = new SMSC_SMPP();
+$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+}
+}
+
+
+
+ }
+else if ($type_op == "ticket_refer") {
+
+
+
+
+$msg=$MAIL_refer.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$ar_list=explode(",", get_conf_param('smsc_list_action'));
+if (in_array($type_op, $ar_list)) {
+    if (check_notify_sms_user($type_op, $user_mail))
+{
+$S = new SMSC_SMPP();
+$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+}
+}
+
+
+
+ }
+else if ($type_op == "ticket_comment") {
+
+$msg=$MAIL_msg_comment.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$ar_list=explode(",", get_conf_param('smsc_list_action'));
+if (in_array($type_op, $ar_list)) {
+    if (check_notify_sms_user($type_op, $user_mail))
+{
+$S = new SMSC_SMPP();
+$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+}
+}
+ }
+else if ($type_op == "ticket_lock") {
+
+
+$msg=$MAIL_msg_lock.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$ar_list=explode(",", get_conf_param('smsc_list_action'));
+if (in_array($type_op, $ar_list)) {
+    if (check_notify_sms_user($type_op, $user_mail))
+{
+$S = new SMSC_SMPP();
+$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+}
+}
+
+
+ }
+else if ($type_op == "ticket_unlock") {
+
+$msg=$MAIL_msg_unlock.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$ar_list=explode(",", get_conf_param('smsc_list_action'));
+if (in_array($type_op, $ar_list)) {
+    if (check_notify_sms_user($type_op, $user_mail))
+{
+$S = new SMSC_SMPP();
+$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+}
+}
+
+ }
+else if ($type_op == "ticket_ok") {
+
+$msg=$MAIL_msg_ok.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$ar_list=explode(",", get_conf_param('smsc_list_action'));
+if (in_array($type_op, $ar_list)) {
+    if (check_notify_sms_user($type_op, $user_mail))
+{
+$S = new SMSC_SMPP();
+$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+}
+}
+
+
+ }
+else if ($type_op == "ticket_no_ok") {
+
+$msg=$MAIL_msg_no_ok.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$ar_list=explode(",", get_conf_param('smsc_list_action'));
+if (in_array($type_op, $ar_list)) {
+    if (check_notify_sms_user($type_op, $user_mail))
+{
+$S = new SMSC_SMPP();
+$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+}
+}
+
+
+
+ }
+
+
+
+
+}
 
 
 
@@ -1234,12 +1410,13 @@ $ticket_id=$qrow['ticket_id'];
             //$val
             
             
-      $stmt = $dbConnection->prepare('SELECT email, pb, lang FROM users where id=:tid');
+      $stmt = $dbConnection->prepare('SELECT email, pb, lang, mob FROM users where id=:tid');
             $stmt->execute(array(':tid' => $val));
             $usr_info = $stmt->fetch(PDO::FETCH_ASSOC);
             $pb=$usr_info['pb'];
       $usr_mail=$usr_info['email'];
       $usr_lang=$usr_info['lang'];
+      $mob=$usr_info['mob'];
            // $lb=$fio['lock_by'];
             
             
@@ -1251,6 +1428,15 @@ $ticket_id=$qrow['ticket_id'];
             if ($usr_mail) {
             make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
             }
+
+
+
+
+if (get_conf_param('smsc_active') == "true") {
+                        if ($mob) {
+            send_smsc($type_op, $usr_lang, $mob, $ticket_id);
+            }
+          }
             //make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
             
   }

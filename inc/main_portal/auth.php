@@ -35,6 +35,70 @@ include "navbar.inc.php";
                 <div class="col-sm-12">
 <center><img src="<?=get_logo_img(); ?>" width="128"></center><br><hr>
 </div>
+
+
+
+
+
+
+<?php
+
+
+if ($_SESSION['z.times'] >= 5 ){
+//$vart = "bf";
+$rt=time()-$_SESSION['z.times_lt'];
+if ($rt > $CONF['bf_pass'])
+{
+                      //показать форму логина
+                $login_form=true;
+                        unset($_SESSION['z.times']);
+                        unset($_SESSION['z.times_lt']);
+}
+else if ($rt <= $CONF['bf_pass'])
+{
+  $login_form=false;
+                        //не показать форму логина
+}
+
+}
+else if ($_SESSION['z.times'] < 5 ){
+
+//показать форму логина
+  $login_form=true;
+}
+
+
+
+if ($login_form==false) {
+?>
+<div class="col-sm-12">
+<br>
+<div class="form-box" id="login-box">
+<div class="alert alert-warning alert-dismissable">
+                    
+                    <h4><i class="icon fa fa-warning"></i> <?php echo lang('LOGIN_ERROR_title'); ?>!</h4>
+                    <?=lang('LOGIN_ERROR_desc');?>
+                  </div>
+                  </div>
+                  </div>
+
+<?php
+}
+
+
+if ($login_form==true) {
+
+  ?>
+
+
+
+
+
+
+
+
+
+
 <?php
 if ($CONF['main_portal'] == true) {
 $link="auth";
@@ -101,6 +165,10 @@ if ($va == 'error') { ?>
                 <input type="hidden" name="req_url" value="<?php
 echo $_SERVER['REQUEST_URI']; ?>">
 </form>
+
+<?php
+}
+?>
 
                 </div><!-- /.footer -->
                 </div>

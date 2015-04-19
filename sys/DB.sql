@@ -278,6 +278,12 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (59, 'portal_posts_mail_users
 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (60, 'email_gate_connect_param', '/imap/ssl') ON DUPLICATE KEY UPDATE `value` = `value`;
 
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (61, 'smsc_login', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (62, 'smsc_pass', '') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (63, 'smsc_active', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (64, 'smsc_list_action', 'ticket_create,ticket_refer,ticket_comment,ticket_lock,ticket_unlock,ticket_ok,ticket_no_ok') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (65, 'api_status', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
 #######UPDATE perf.value####################
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)
@@ -386,7 +392,18 @@ EXECUTE stmt;
 
 
 
-
+#######UPDATE users.mob####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='users' and column_name='mob'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE users ADD mob int(24) NOT NULL DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
 
 #######UPDATE users.messages_type####################
 SET @sql = (SELECT IF(

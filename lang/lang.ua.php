@@ -638,7 +638,13 @@ function lang_ua($phrase){
 'MSG_no_records' => 'Немає записів', 
 'TICKET_name' => 'Заявка',
 ///////////////////////////////////////////////
-
+'EXT_sms_noti' => 'SMS-нотифікація',
+'EXT_sms_noti_login' => 'SMSC-логін',
+'EXT_sms_noti_pass' => 'SMSC-пароль',
+'EXT_sms_noti_list' => 'Список допустимих нотифікацій',
+'LOGIN_ERROR_title' => 'Помилка авторизації',
+'LOGIN_ERROR_desc' => 'Ви вичерпали допустиму кількість спроб входу. Спробуйте пізніше. ',
+'EXT_SMS_noti_mob'=>'Номер моб',
 'WORKER_TITLE' => 'Інформація про користувача', 
 'WORKER_fio' => 'ПІБ', 
 'WORKER_login' => 'Логін', 

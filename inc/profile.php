@@ -95,7 +95,7 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
     //$query = "SELECT fio, pass, login, status, priv, unit,email, lang from users where id='$usid'; ";
     //    $sql = mysql_query($query) or die(mysql_error());
     
-    $stmt = $dbConnection->prepare('SELECT pb,fio, pass, login, status, priv, unit,email, lang, tel, skype, adr, unit_desc, posada from users where id=:usid');
+    $stmt = $dbConnection->prepare('SELECT pb,fio, pass, login, status, priv, unit,email, lang, tel, skype, adr, unit_desc, posada,mob from users where id=:usid');
     $stmt->execute(array(':usid' => $usid));
     $res1 = $stmt->fetchAll();
     
@@ -110,6 +110,10 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
         $tel = $row['tel'];
         $skype = $row['skype'];
         $adr = $row['adr'];
+        if ($row['mob'] == "0") {
+            $row['mob']="";
+        }
+        $mob= $row['mob'];
         
         $unitss = $row['unit_desc'];
         $posada = $row['posada'];
@@ -630,8 +634,75 @@ $sc="selected";
   </div>
 
 
+              <div class="form-group">
+    <label for="sms_nf" class="col-sm-4 control-label"><small><?php echo lang('EXT_sms_noti'); ?></small></label>
+        <div class="col-sm-8">
+    <select data-placeholder="<?php echo lang('EXT_sms_noti'); ?>" class="multi_field" id="sms_nf" name="sms_nf[]" multiple="multiple" >
+
+<?php
+
+$stmt2 = $dbConnection->prepare('SELECT sms from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => $_SESSION['helpdesk_user_id']));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 
 
+
+
+$nl=get_notify_opt_list();
+
+
+$nla=explode(",", get_conf_param('smsc_list_action'));
+
+//$nl = array_intersect_key ($nl, $nla);
+
+foreach ($nl as $key => $value) {
+    # code...
+
+$sc="";
+
+if ($tt2['sms']) {
+
+$al=explode(",", $tt2['sms']);
+
+if (in_array($key, $al)) {
+    $sc="selected";
+}
+
+}
+else if (!$tt2['sms']) {
+
+$sc="";
+
+}
+
+if (in_array($key, $nla)) {
+?>
+                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+
+
+              <?php
+          }
+}
+              ?>  
+                        
+            </select>
+        </div>
+  </div>
+
+          <div class="form-group">
+    <label for="mob" class="col-sm-4 control-label"><small><?php echo lang('EXT_SMS_noti_mob'); ?></small></label>
+        <div class="col-sm-8">
+
+<div class="input-group">
+    <span class="input-group-addon"><small>+</small></span>
+      
+   
+
+
+    <input autocomplete="off" name="mob" type="text" class="form-control input-sm" id="mob" placeholder="Ex. 380501234567" value="<?php echo $mob; ?>">
+    </div>
+        </div>
+  </div>
 
   <div class="col-md-offset-3 col-md-6">
 <center>
@@ -706,7 +777,7 @@ $sc="selected";
 <div class="col-md-12">
 <?php
 
-if (get_user_val_by_id($_SESSION['helpdesk_user_id'], 'api_key')) {
+if (get_conf_param('api_status') == "true") {
 ?>
 
 

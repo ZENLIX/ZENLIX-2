@@ -1,6 +1,16 @@
 <?php
 function lang_en($phrase){
     static $lang = array(
+
+
+'LOGIN_ERROR_title' => 'Error authorization',
+'LOGIN_ERROR_desc' => 'You have exceeded the allowed number of login attempts. Try again later. ',
+
+'EXT_sms_noti' => 'SMS-notification',
+'EXT_sms_noti_login' => 'SMSC-login',
+'EXT_sms_noti_pass' => 'SMSC-password',
+'EXT_sms_noti_list' => 'The list of valid notifications',
+'EXT_SMS_noti_mob'=>'Mob number',
 'PROFILE_perf_notify'=>'Private notifications',
 'PROFILE_notify_new_ticket' => 'new ticket',
 'PROFILE_notify_refer_ticket' => 'redirected ticket',

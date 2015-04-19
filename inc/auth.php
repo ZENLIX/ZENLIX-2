@@ -3,6 +3,12 @@ include_once ("head.inc.php");
 
 //include("dbconnect.inc.php");
 
+
+
+
+
+
+
 ?>
 
 
@@ -162,10 +168,62 @@ $link="auth";
 else if ($CONF['main_portal'] == false) {
     $link="index.php";
 }
+
+
+
+
 ?>
 
 <body class="bg-navy">
 
+
+
+<?php
+
+
+if ($_SESSION['z.times'] >= 5 ){
+//$vart = "bf";
+$rt=time()-$_SESSION['z.times_lt'];
+if ($rt > $CONF['bf_pass'])
+{
+                      //показать форму логина
+                $login_form=true;
+                        unset($_SESSION['z.times']);
+                        unset($_SESSION['z.times_lt']);
+}
+else if ($rt <= $CONF['bf_pass'])
+{
+  $login_form=false;
+                        //не показать форму логина
+}
+
+}
+else if ($_SESSION['z.times'] < 5 ){
+
+//показать форму логина
+  $login_form=true;
+}
+
+
+
+if ($login_form==false) {
+?>
+
+<div class="form-box" id="login-box">
+<div class="alert alert-warning alert-dismissable">
+                    
+                    <h4><i class="icon fa fa-warning"></i> <?php echo lang('LOGIN_ERROR_title'); ?>!</h4>
+                    <?=lang('LOGIN_ERROR_desc');?>
+                  </div>
+                  </div>
+
+<?php
+}
+
+
+if ($login_form==true) {
+
+  ?>
         <div class="form-box" id="login-box">
             <div class="header bg-light-blue" style="">
             <center><img src="<?=get_logo_img(); ?>" width="128"></center>
@@ -215,6 +273,12 @@ echo $_SERVER['REQUEST_URI']; ?>">
 
             
         </div>
+
+<?php
+}
+
+?>
+
 
 <div style="color:white; position: fixed; bottom: 0; width:100%; text-align: right;">
 <right>

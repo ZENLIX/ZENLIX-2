@@ -443,13 +443,16 @@ function lang_ru($phrase){
 'MESSAGES_with'=>'Переписка с',
 'MESSAGES_sel_text'=>'Введите текст',
 
+'LOGIN_ERROR_title'=>'Ошибка авторизации',
+'LOGIN_ERROR_desc'=>'Вы исчерпали допустимое количество попыток входа. Попробуйте позже.',
 
 
+'EXT_sms_noti'=>'SMS-нотификация',
+'EXT_sms_noti_login'=>'SMSC-логин',
+'EXT_sms_noti_pass'=>'SMSC-пароль',
+'EXT_sms_noti_list'=>'Список допустимых нотификаций',
 
-
-
-
-
+'EXT_SMS_noti_mob'=>'Номер моб',
 
 'EXT_toggle_nav'=>'Меню навигации',
 'EXT_users_online'=>'пользователей онлайн',

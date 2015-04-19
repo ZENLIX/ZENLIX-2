@@ -32,6 +32,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 <section class="content">
     
  <?php
+ 
 $view_right=false;
 if (get_conf_param('global_msg_status') == "1") {
 

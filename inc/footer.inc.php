@@ -63,6 +63,10 @@ echo $lang; ?>";
 <script src="<?php echo $CONF['hostname'] ?>js/moment-with-langs.js?<?=get_conf_param('version');?>"></script>
 
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-ui-1.10.4.custom.min.js?<?=get_conf_param('version');?>"></script>
+
+
+
+
 <script src="<?php echo $CONF['hostname'] ?>js/chosen.jquery.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootbox.min.js?<?=get_conf_param('version');?>"></script>
 
@@ -176,7 +180,11 @@ if ( get_current_URL_name('helper') || get_current_URL_name('subj') || get_curre
 
 <?php
 } ?>
-
+<?php
+if (get_current_URL_name('calendar')) { ?>
+<script src="<?php echo $CONF['hostname'] ?>js/fullcalendar.min.js?<?=get_conf_param('version');?>"></script>
+<?php
+} ?>
 
 
 

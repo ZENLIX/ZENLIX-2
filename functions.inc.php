@@ -27,6 +27,9 @@ $date_tz = new DateTime();
 $date_tz->setTimezone(new DateTimeZone($def_timezone));
 $now_date_time = $date_tz->format('Y-m-d H:i:s');
 
+
+
+
 $CONF = array(
     'title_header' => get_conf_param('title_header') ,
     'hostname' => site_proto() . get_conf_param('hostname') ,
@@ -41,7 +44,8 @@ $CONF = array(
     'update_server' => 'http://update.zenlix.com/',
     'timezone' => get_conf_param('time_zone') ,
     'now_dt' => $now_date_time,
-    'main_portal'=>get_conf_param('portal_status')
+    'main_portal'=>get_conf_param('portal_status'),
+    'bf_pass'=> 300
 );
 $CONF_MAIL = array(
     'active' => get_conf_param('mail_active') ,
@@ -2183,6 +2187,41 @@ if (!in_array($action, $p_str)) {
 }
 else if (!$tt2['mail']) {
     $res=true;
+}
+
+return $res;
+}
+
+
+function check_notify_sms_user($action, $mail) {
+    global $dbConnection;
+
+    $stmt = $dbConnection->prepare('SELECT id from users where mob=:uto');
+    $stmt->execute(array(':uto' => $mail));
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    $uid=$tt['id'];
+
+
+    $stmt2 = $dbConnection->prepare('SELECT sms from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => $uid));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+if ($tt2['sms']) {
+
+
+$p_str=explode(",",$tt2['sms']);
+
+if (in_array($action, $p_str)) {
+    $res=true;
+}
+if (!in_array($action, $p_str)) {
+    $res=false;
+}
+
+
+}
+else if (!$tt2['sms']) {
+    $res=false;
 }
 
 return $res;

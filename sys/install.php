@@ -375,7 +375,7 @@ if (isset($_GET['mode'])) {
     <span class="label label-danger">file not found</span>
     <div class="alert alert-danger" role="alert">
     
-    В каталоге <?=realpath(dirname(dirname(__FILE__)))?> must create .htaccess with content:
+    In directory <?=realpath(dirname(dirname(__FILE__)))?> must create .htaccess with content:
     <code>
 RewriteEngine on
 RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?page=$1  [QSA,L]

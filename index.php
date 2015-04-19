@@ -11,6 +11,22 @@ if (isset($CONF_DB)) {
     
     include ("functions.inc.php");
     $main_portal=$CONF['main_portal'];
+
+$val_sta=false;
+if ((validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) || (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code']))) {
+    $val_sta=true;
+}
+   // $validate_p = false;
+if ($val_sta == true) {
+
+/*
+preg_match_all('/function (\w+\(.*?\))/', file_get_contents("functions.inc.php"), $m);
+foreach ($m[1] as $key => $value) {
+    # code...
+    echo $value."<br>";
+}
+*/
+
     if (isset($_GET['logout'])) {
         session_destroy();
         unset($_SESSION);
@@ -20,8 +36,11 @@ if (isset($CONF_DB)) {
         unset($_COOKIE['authhash_uid']);
         unset($_COOKIE['authhash_code']);
         session_regenerate_id();
+        //$_SESSION['z.times']=1;
         header("Location: " . $CONF['hostname']);
     }
+
+}
     
     if ($_GET['page'] == "register") {
 
@@ -42,6 +61,8 @@ include ('inc/register.php');
             
             $rq = 1;
 
+ if ($_SESSION['z.times'] < 5 ) {
+    
 
 
             $req_url = $_POST['req_url'];
@@ -64,6 +85,8 @@ include ('inc/register.php');
                         $_SESSION['helpdesk_user_fio'] = $row['fio'];
                         $_SESSION['helpdesk_user_type'] = "user";
                         $_SESSION['code'] = $_POST['password'];
+                        unset($_SESSION['z.times']);
+                        unset($_SESSION['z.times_lt']);
                         if ($rm == "1") {
                             
                             //UPDATE USERS set=password_ad
@@ -97,6 +120,8 @@ include ('inc/register.php');
                     $_SESSION['helpdesk_user_fio'] = $row['fio'];
                     $_SESSION['helpdesk_user_type'] = "user";
                     $_SESSION['code'] = md5($password);
+                    unset($_SESSION['z.times']);
+                    unset($_SESSION['z.times_lt']);
                     if ($rm == "1") {
                         
                         setcookie('authhash_uid', $_SESSION['helpdesk_user_id'], time() + 60 * 60 * 24 * 7);
@@ -109,7 +134,40 @@ include ('inc/register.php');
                     $va = 'error';
                 }
             }
+
+}
+
+
+
+if ($va == 'error') {
+
+ if (!isset($_SESSION['z.times'])) {
+    $_SESSION['z.times']=1;
+    $_SESSION['z.times_lt']=time();
+    
+}
+else if (isset($_SESSION['z.times'])) {
+$_SESSION['z.times']++;
+$_SESSION['z.times_lt']=time();
+}
+
+
+    //$_SESSION['z.error_code']=md5(time());
+    //$_SESSION['z.times']++;
+
+}
+
+
         }
+
+
+
+
+
+
+
+
+
         
         //if (isset($_SESSION['code']) ) {
         if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
@@ -143,6 +201,25 @@ else if ($main_portal == "false") {
                 if (isset($_GET['page'])) {
                     
                     switch ($_GET['page']) {
+
+
+
+case 'auth':
+ 
+if ($val_sta == true) {
+    header("Location: " . site_proto() . get_conf_param('hostname') . "dashboard");
+}
+else if ($val_sta == false) {
+    include 'inc/auth.php';
+}
+
+                            break;
+
+
+
+
+
+
                         case 'create':
                             include ('inc/new.php');
                             break;
@@ -246,6 +323,10 @@ else if ($main_portal == "false") {
                             include ('inc/print_ticket.php');
                             break;
 
+                         case 'calendar':
+                            include ('inc/calendar.php');
+                            break;    
+
                         case 'dashboard':
                             include ('inc/dashboard.php');
                             break;
@@ -321,6 +402,19 @@ else if ($main_portal == "false") {
 
                     
                     switch ($_GET['page']) {
+
+case 'auth':
+ 
+if ($val_sta == true) {
+    header("Location: " . site_proto() . get_conf_param('hostname') . "dashboard");
+}
+else if ($val_sta == false) {
+    include 'inc/auth.php';
+}
+
+                            break;
+
+
                         case 'create':
                             include ('inc/client.new.php');
                             break;
@@ -397,8 +491,24 @@ if (isset($_GET['page'])) {
             include 'inc/auth.php';
         }*/
        // if ($main_portal == true) {
- include 'inc/main_portal/auth.php';
+
+ //include 'inc/main_portal/auth.php';
         //}
+
+
+
+if ($val_sta == true) {
+    header("Location: " . site_proto() . get_conf_param('hostname') . "");
+}
+else if ($val_sta == false) {
+    include 'inc/main_portal/auth.php';
+}
+
+
+
+
+
+
                             break;
 
                         case 'manual':

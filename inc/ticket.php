@@ -1182,6 +1182,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
 
 
 <?php
+/*
                 if ($CONF['fix_subj'] == "false") {
 ?>
 
@@ -1233,7 +1234,9 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) { ?>
 
 
 <?php
-                } ?>
+                }
+
+                */ ?>
 
 
 
