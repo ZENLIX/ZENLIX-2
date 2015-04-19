@@ -7,7 +7,7 @@ include($base ."/conf.php");
 //include_once($base ."/functions.inc.php");
 date_default_timezone_set('Europe/Kiev');
 include($base .'/sys/class.phpmailer.php');
-include($base .'/library/smsc_smpp.php');
+
 include($base .'/integration/PushBullet.class.php');
 
 include_once $base.'/lang/lang.ua.php';
@@ -25,7 +25,7 @@ $dbConnection = new PDO(
 $dbConnection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
+include($base .'/library/smsc_smpp.php');
 
 /*
 кому?
@@ -422,6 +422,8 @@ $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 function get_conf_param($in) {
     global $dbConnection;
+    
+    
     $stmt = $dbConnection->prepare('SELECT value FROM perf where param=:in');
     $stmt->execute(array(':in' => $in));
     $fio = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -482,6 +484,88 @@ $CONF_MAIL = array (
   'from'    => get_conf_param('mail_from'),
   'debug'   => 'false'
 );
+
+
+
+
+
+function check_notify_mail_user($action, $mail) {
+    global $dbConnection;
+
+    $stmt = $dbConnection->prepare('SELECT id from users where email=:uto');
+    $stmt->execute(array(':uto' => $mail));
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    $uid=$tt['id'];
+
+
+    $stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => $uid));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+if ($tt2['mail']) {
+
+
+$p_str=explode(",",$tt2['mail']);
+
+if (in_array($action, $p_str)) {
+    $res=true;
+}
+if (!in_array($action, $p_str)) {
+    $res=false;
+}
+
+
+}
+else if (!$tt2['mail']) {
+    $res=true;
+}
+
+return $res;
+}
+
+
+function check_notify_sms_user($action, $mail) {
+    global $dbConnection;
+
+    $stmt = $dbConnection->prepare('SELECT id from users where mob=:uto');
+    $stmt->execute(array(':uto' => $mail));
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    $uid=$tt['id'];
+
+
+    $stmt2 = $dbConnection->prepare('SELECT sms from users_notify where user_id=:uto');
+    $stmt2->execute(array(':uto' => $uid));
+    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+if ($tt2['sms']) {
+
+
+$p_str=explode(",",$tt2['sms']);
+
+if (in_array($action, $p_str)) {
+    $res=true;
+}
+if (!in_array($action, $p_str)) {
+    $res=false;
+}
+
+
+}
+else if (!$tt2['sms']) {
+    $res=false;
+}
+
+return $res;
+}
+
+
+
+
+
+
+
+
+
 
 function send_mail($to,$subj,$msg, $msg_id) {
   global $CONF, $CONF_MAIL, $dbConnection;
