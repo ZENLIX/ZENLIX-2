@@ -3,6 +3,46 @@ function lang_ua($phrase){
     static $lang = array(
     
 
+
+'CALENDAR allday' => 'Весь день',
+'CALENDAR title' => 'Календар',
+'CALENDAR title_desc' => 'Події та заходи',
+'CALENDAR_dr_ev' => 'Набір подій',
+'CALENDAR_ex_ev_1' => 'Важлива подія',
+'CALENDAR_ex_ev_2' => 'Свято',
+'CALENDAR_ex_ev_3' => 'Зустріч',
+'CALENDAR_ex_ev_4' => 'Робота в офісі',
+'CALENDAR_ex_ev_5' => 'Робота вдома',
+'CALENDAR_del_after_drag' => 'вилучити після перенесення',
+'CALENDAR_create_event' => 'Створити подію',
+'CALENDAR_name' => 'Назва',
+'CALENDAR_add' => 'Додати',
+'CALENDAR_filter' => 'Фільтр подій',
+'CALENDAR_private' => 'Особисті події',
+'CALENDAR_dep' => 'Події відділу',
+'CALENDAR_corp' => 'Події корпорації',
+'CALENDAR_event' => 'Подія',
+'CALENDAR_description' => 'Опис',
+'CALENDAR_period' => 'Період',
+'CALENDAR_author' => 'Автор',
+'CALENDAR_close' => 'Закрити',
+'CALENDAR_edit_event' => 'Редагування події',
+'CALENDAR_allday_desc' => 'подія на весь день',
+'CALENDAR_visibility' => 'Видимість події',
+'CALENDAR_e_1' => 'особиста подія',
+'CALENDAR_e_2' => 'подія на відділ',
+'CALENDAR_e_3' => 'подія на корпорацію',
+'CALENDAR_color' => 'Колір',
+'CALENDAR_cur_color' => 'вибраний колір події',
+'CALENDAR_del' => 'Видалити подію',
+'CALENDAR_save' => 'Зберегти',
+'CALENDAR_NAVBAR_W' => 'Список подій на сьогодні',
+
+
+
+
+
+
 'PERF_menu_sla'=>'SLA-плани',
 'SLA_rep'=>'SLA-звіти',
 'SLA_rep_ext' => 'Статистика за часом заявок',

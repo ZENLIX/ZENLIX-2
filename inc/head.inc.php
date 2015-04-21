@@ -84,7 +84,7 @@ if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || g
 <?php
 if ( get_current_URL_name('calendar')  ) {?>
 <link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/fullcalendar.min.css?<?=get_conf_param('version');?>">
-
+<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/daterangepicker-bs3.css?<?=get_conf_param('version');?>">
 <?php }
 ?>
 

@@ -345,6 +345,11 @@ String.prototype.toHHMMSS = function () {
             $(e).html('<span>' + time.format("dddd, Do MMMM") + '</span>');
         });
 
+                $('time#e').each(function(i, e) {
+            var time = moment($(e).attr('datetime'));
+            $(e).html('<span>' + time.format("H:mm:ss") + '</span>');
+        });
+
                 $('time#f').each(function(i, e) {
             var time = $(e).attr('datetime');
             var duration = moment.duration(time*1000, 'milliseconds');
@@ -4615,6 +4620,44 @@ if (ispath('calendar')) {
 
        
 
+        $('#reservation').daterangepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',timePicker: true,timePicker12Hour: false
+        });
+
+
+$('#reservation').on('apply.daterangepicker', function(ev, picker) {
+            $("#current_start").val( picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
+            $("#current_end").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
+            
+            
+        });
+
+
+loadCal($("#filter_events").val());
+        $('#all_day').on('ifChanged', function(event) {
+            if ($(this).is(":checked")) {
+                $('#reservation').prop("disabled", true);
+            } else {
+                $('#reservation').prop("disabled", false);
+            }
+        });
+
+
+        $('.make_event_filter').on('ifChanged', function(event) {
+
+
+console.log($('.make_event_filter:checked').map(function() {return this.value;}).get().join(','));
+
+$("#filter_events").val($('.make_event_filter:checked').map(function() {return this.value;}).get().join(','));
+
+//$('#calendar').fullCalendar("refetchEvents");
+ //$('#calendar').fullCalendar( 'destroy' );
+loadCal($('.make_event_filter:checked').map(function() {return this.value;}).get().join(','));
+
+ 
+//$('#calendar').fullCalendar('render');
+//$('#calendar').fullCalendar("refetchEvents");
+        });
 
 
 
@@ -4650,6 +4693,13 @@ if (ispath('calendar')) {
         var d = date.getDate(),
                 m = date.getMonth(),
                 y = date.getFullYear();
+
+
+
+
+
+                function loadCal(uidArray) {
+                    $('#calendar').fullCalendar( 'destroy' );
         $('#calendar').fullCalendar({
           header: {
             left: 'prev,next today',
@@ -4666,55 +4716,141 @@ if (ispath('calendar')) {
             day: 'day'
           },
           //Random default events
-          events: [
-            {
-              title: 'All Day Event',
-              start: new Date(y, m, 1),
-              backgroundColor: "#f56954", //red
-              borderColor: "#f56954" //red
+          //events: "inc/json_calendar.php",
+          eventSources: [
+
+        // your event source
+        {
+            url: ACTIONPATH,
+            type: 'POST',
+            data: {
+                mode: 'get_cal_events',
+                filter: uidArray
             },
-            {
-              title: 'Long Event',
-              start: new Date(y, m, d - 5),
-              end: new Date(y, m, d - 2),
-              backgroundColor: "#f39c12", //yellow
-              borderColor: "#f39c12" //yellow
-            },
-            {
-              title: 'Meeting',
-              start: new Date(y, m, d, 10, 30),
-              allDay: false,
-              backgroundColor: "#0073b7", //Blue
-              borderColor: "#0073b7" //Blue
-            },
-            {
-              title: 'Lunch',
-              start: new Date(y, m, d, 12, 0),
-              end: new Date(y, m, d, 14, 0),
-              allDay: false,
-              backgroundColor: "#00c0ef", //Info (aqua)
-              borderColor: "#00c0ef" //Info (aqua)
-            },
-            {
-              title: 'Birthday Party',
-              start: new Date(y, m, d + 1, 19, 0),
-              end: new Date(y, m, d + 1, 22, 30),
-              allDay: false,
-              backgroundColor: "#00a65a", //Success (green)
-              borderColor: "#00a65a" //Success (green)
-            },
-            {
-              title: 'Click for Google',
-              start: new Date(y, m, 28),
-              end: new Date(y, m, 29),
-              url: 'http://google.com/',
-              backgroundColor: "#3c8dbc", //Primary (light-blue)
-              borderColor: "#3c8dbc" //Primary (light-blue)
+            error: function() {
+                alert('there was an error while fetching events!');
             }
-          ],
+        }
+
+        // any other sources...
+
+    ],
+
+          
           editable: true,
           droppable: true, // this allows things to be dropped onto the calendar !!!
-          drop: function (date, allDay) { // this function is called when something is dropped
+          
+eventClick: function(calEvent, jsEvent, view) {
+
+
+//get_cal_event
+
+if (calEvent.editable == false) {
+
+
+
+
+   $.ajax({
+   url: ACTIONPATH,
+   data: {
+                mode: 'get_cal_event',
+                uniq_code: calEvent.id
+
+            },
+   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+   type: "POST",
+   dataType: "json",
+   success: function(json) {
+    //alert("insert Successfully");
+    $.each(json, function(i, item) {
+$("#ei_name").text(item.title);
+$("#ei_desc").text(item.description);
+$("#ei_period").text(item.period);
+$("#ei_author").html(item.author);
+    })
+    $('#event_modal_info').modal('show');
+}
+});
+
+
+
+
+
+
+
+
+
+
+
+}
+
+else if (calEvent.editable == true) {
+
+
+   $.ajax({
+   url: ACTIONPATH,
+   data: {
+                mode: 'get_cal_event',
+                uniq_code: calEvent.id
+
+            },
+   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+   type: "POST",
+   dataType: "json",
+   success: function(json) {
+    //alert("insert Successfully");
+    $.each(json, function(i, item) {
+
+$("#event_name").val(item.title);
+$("#event_desc").val(item.description);
+//$("#visibility").val();
+
+$("#visibility").val(item.visibility);
+
+$("#current_backgroundColor").val(item.backgroundColor);
+$("#current_borderColor").val(item.borderColor);
+
+$("#cur_color_event").css({"background-color": item.backgroundColor, "border-color": item.borderColor});
+
+//console.log(item.allDay);
+$("#reservation").val(item.start+" - "+item.end);
+
+$("#current_start").val(item.start);
+$("#current_end").val(item.end);
+
+
+if (item.allDay == true) {
+$("input#all_day").iCheck('check');
+$("#reservation").prop('disabled', true);
+}
+else if (item.allDay == false){
+$("input#all_day").iCheck('uncheck');
+$("#reservation").prop('disabled', false);
+}
+
+
+
+    });
+   }
+   });
+
+
+
+
+
+
+$("#current_event_hash").val(calEvent.id);
+
+$('#event_modal').modal('show');
+
+
+}
+    //alert('Event id: ' + calEvent.id);
+},
+
+
+
+drop: function (date, allDay) { // this function is called when something is dropped
 
             // retrieve the dropped element's stored Event Object
             var originalEventObject = $(this).data('eventObject');
@@ -4728,23 +4864,150 @@ if (ispath('calendar')) {
             copiedEventObject.backgroundColor = $(this).css("background-color");
             copiedEventObject.borderColor = $(this).css("border-color");
 
+//console.log(copiedEventObject.title);
+
+
+   $.ajax({
+   url: ACTIONPATH,
+   data: {
+                mode: 'cal_insert_events',
+                title: copiedEventObject.title,
+                start: date.format(),
+                end: date.format(),
+                backgroundColor:$(this).css("background-color"),
+                borderColor:$(this).css("border-color")
+
+            },
+   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+   type: "POST",
+   success: function(json) {
+    //alert("insert Successfully");
+   }
+   });
+
+
             // render the event on the calendar
             // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+            //$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+            //$('#calendar').fullCalendar("refetchEvents");
 
+
+
+            loadCal("0,1,2");
+
+$(".make_event_filter").iCheck('check');
+
+            //$('#calendar').fullCalendar('refresh' );
             // is the "remove after drop" checkbox checked?
             if ($('#drop-remove').is(':checked')) {
               // if so, remove the element from the "Draggable Events" list
               $(this).remove();
             }
 
-          }
+          },
+
+eventDrop: function(event, delta) {
+   //var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
+   //var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
+//var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
+var end = (event.end == null) ? start : event.end.format();
+
+
+
+//console.log(event.end.format());
+
+
+   
+   $.ajax({
+   url: ACTIONPATH,
+   data: {
+                mode: 'cal_drop_events',
+                title: event.title,
+                start: start,
+                end: end,
+                id: event.id,
+                allday: event.allDay
+
+            },
+   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+   type: "POST",
+   success: function(json) {
+   // alert("Updated Successfully");
+   }
+   });
+
+
+//console.log("a: "+event.id);
+   },
+
+
+   eventResize: function(event) {
+
+var start=moment(event.start).format("YYYY-MM-DD HH:mm:ss");
+var end=moment(event.end).format("YYYY-MM-DD HH:mm:ss");
+
+//console.log(cr);
+   $.ajax({
+   url: ACTIONPATH,
+   data: {
+                mode: 'cal_resize_events',
+                title: event.title,
+                start: start,
+                end: end,
+                id: event.id,
+                allday: event.allDay
+
+            },
+   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+   type: "POST",
+   success: function(json) {
+   // alert("Updated Successfully");
+   }
+   });
+
+},
+
+eventRender: function(event, element) {
+
+            element.popover({
+            title: event.name,
+            html: true,
+            trigger: 'manual',
+            placement: 'top',
+            title: event.title,
+            content: "<small>"+ event.description+ "</small>",
+        }).on("mouseenter", function() {
+            var _this = this;
+            $(this).popover("show");
+            $(this).siblings(".popover").on("mouseleave", function() {
+                $(_this).popover('hide');
+            });
+        }).on("mouseleave", function() {
+            var _this = this;
+            setTimeout(function() {
+                if (!$(".popover:hover").length) {
+                    $(_this).popover("hide")
+                }
+            }, 100)});
+
+            
+}
+
+
+
+
+
+
+
         });
+}
 
         /* ADDING EVENTS */
         var currColor = "#3c8dbc"; //Red by default
         //Color chooser button
         var colorChooser = $("#color-chooser-btn");
+
         $("#color-chooser > li > a").click(function (e) {
           e.preventDefault();
           //Save color
@@ -4772,6 +5035,95 @@ if (ispath('calendar')) {
           //Remove event from text input
           $("#new-event").val("");
         });
+
+
+
+
+        $("#color-chooser_event > li > a").click(function (e) {
+          e.preventDefault();
+          //Save color
+          currColor = $(this).css("color");
+          //Add color effect to button
+          $('#cur_color_event').css({"background-color": currColor, "border-color": currColor});
+
+$("#current_backgroundColor").val(currColor);
+$("#current_borderColor").val(currColor);
+
+
+        });
+
+
+
+//cal_delete_current
+//.fullCalendar( 'removeEvent', id )
+
+
+        $('body').on('click', 'button#cal_delete_current', function(event) {
+            event.preventDefault();
+var cih=$("#current_event_hash").val();
+
+
+            
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=cal_del_event"+
+                "&uniq_code="+cih,
+                success: function() {
+                    //window.location = MyHOSTNAME + "config";
+                                $('#calendar').fullCalendar( 'removeEvents', cih );
+                                $('#event_modal').modal('hide');
+                }
+            });
+        
+        });
+
+
+//make_event_filter
+
+
+
+
+
+//event_save_action
+        $('body').on('click', 'button#event_save_action', function(event) {
+            event.preventDefault();
+var cih=$("#current_event_hash").val();
+var eventname=$("#event_name").val();
+var eventdesc=$("#event_desc").val();
+var eventpriv=$("#visibility").val();
+var bc=$("#current_backgroundColor").val();
+var bbc=$("#current_borderColor").val();
+
+var alldayp=$("#all_day").prop('checked');
+
+var cs=$("#current_start").val();
+var ce=$("#current_end").val();
+            
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: {
+                mode: 'cal_edit_event',
+                uniq_code: cih,
+                name: eventname,
+                desc: eventdesc,
+                priv: eventpriv,
+                color: bc,
+                color_b: bbc,
+                allday: alldayp,
+                start: cs,
+                end: ce
+            },
+                
+                success: function() {
+                    //window.location = MyHOSTNAME + "config";
+                                $('#calendar').fullCalendar("refetchEvents");
+                                $('#event_modal').modal('hide');
+                }
+            });
+        });
+
 
 
 

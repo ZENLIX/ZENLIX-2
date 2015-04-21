@@ -693,6 +693,139 @@ function update_val_by_key($key, $val) {
     return true;
 }
 
+
+
+
+
+function calendar_get_events_today() {
+    global $dbConnection;
+
+
+if (calendar_get_count() == 0) {
+?>
+
+no
+
+<?php
+}
+if (calendar_get_count() != 0) {
+    
+
+
+$res_main=array();
+
+    $stmt = $dbConnection->prepare('SELECT * from calendar where visibility=0 and user_id=:uid and DATE(dtStart) = DATE(NOW())');
+    $stmt->execute(array(':uid'=>$_SESSION['helpdesk_user_id']));
+    $res_1 = $stmt->fetchAll();
+    $res_main=array_merge($res_main, $res_1);
+
+    
+     $stmt2 = $dbConnection->prepare('SELECT * from calendar where visibility=1 and DATE(dtStart) = DATE(NOW())');
+     $stmt2->execute();
+     $res_2 = $stmt2->fetchAll();
+foreach ($res_2 as $key => $value) {
+    # code...
+    if (!check_admin_user_priv($value['user_id'])) {
+        unset($res_2[$key]);
+    }
+}
+$res_main=array_merge($res_main, $res_2);
+
+
+
+
+
+
+
+    $stmt3 = $dbConnection->prepare('SELECT * from calendar where visibility=2 and DATE(dtStart) = DATE(NOW())');
+    $stmt3->execute();
+    $res_3 = $stmt3->fetchAll();
+    $res_main=array_merge($res_main, $res_3);
+
+usort($res_main, function($a1, $a2) {
+   $v1 = strtotime($a1['dtStart']);
+   $v2 = strtotime($a2['dtStart']);
+   return $v1 - $v2; // $v2 - $v1 to reverse direction
+});
+
+
+$allday=lang('CALENDAR_allday');
+
+
+foreach ($res_main as $value) {
+    $allday=lang('CALENDAR_allday');
+
+if ($value['allday'] == 'false') {
+    $allday="<time id=\"e\" datetime=\"".$value['dtStart']."\"></time>";
+}
+
+$de="";
+if ($value['description'] != "0") {
+    $de=$value['description'];
+}
+
+    # code...?>
+    <li><!-- start message -->
+                        <a href="calendar">
+                          <h4 style="margin:0px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;">
+                           <i style="font-size:10px; color:<?=$value['backgroundColor'];?>" class="fa fa-circle"></i> <?=cutstr_api($value['title'], 50);?>
+                            <small><i class="fa fa-clock-o"></i> <?=$allday;?></small>
+                          </h4>
+                          <p style="margin:0px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;"><?=$de;?></p>
+                        </a>
+                      </li>
+    <?php
+}
+}
+
+}
+
+
+
+function calendar_get_count() {
+        global $dbConnection;
+
+$res_main=array();
+
+    $stmt = $dbConnection->prepare('SELECT * from calendar where visibility=0 and user_id=:uid and DATE(dtStart) = DATE(NOW())');
+    $stmt->execute(array(':uid'=>$_SESSION['helpdesk_user_id']));
+    $res_1 = $stmt->fetchAll();
+    $res_main=array_merge($res_main, $res_1);
+
+    
+     $stmt2 = $dbConnection->prepare('SELECT * from calendar where visibility=1 and DATE(dtStart) = DATE(NOW())');
+     $stmt2->execute();
+     $res_2 = $stmt2->fetchAll();
+foreach ($res_2 as $key => $value) {
+    # code...
+    if (!check_admin_user_priv($value['user_id'])) {
+        unset($res_2[$key]);
+    }
+}
+$res_main=array_merge($res_main, $res_2);
+
+
+
+
+
+
+
+    $stmt3 = $dbConnection->prepare('SELECT * from calendar where visibility=2 and DATE(dtStart) = DATE(NOW())');
+    $stmt3->execute();
+    $res_3 = $stmt3->fetchAll();
+    $res_main=array_merge($res_main, $res_3);
+
+
+
+
+
+return count($res_main);
+    //$res_main=array_merge($res_main, $res_1);
+
+
+}
+
+
 function randomPassword() {
     $alphabet = "abcdefghijklmnopqrstuwxyz0123456789";
     $pass = array();
@@ -6969,6 +7102,8 @@ function cutstr_api($input, $c) {
     return $result;
     if ($result != $input) return '...';
 }
+
+
 
 function cutstr($input) {
     

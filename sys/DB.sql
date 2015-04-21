@@ -24,6 +24,22 @@ CREATE TABLE IF NOT EXISTS `user_fields` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE IF NOT EXISTS `calendar` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(2048) DEFAULT NULL,
+  `dtStart` varchar(64) DEFAULT NULL,
+  `dtStop` varchar(64) DEFAULT NULL,
+  `allday` varchar(64) NOT NULL DEFAULT 'false',
+  `backgroundColor` varchar(64) DEFAULT NULL,
+  `borderColor` varchar(64) DEFAULT NULL,
+  `description` varchar(1024) NOT NULL DEFAULT '0',
+  `user_id` int(11) DEFAULT NULL,
+  `uniq_hash` varchar(512) DEFAULT NULL,
+  `visibility` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE IF NOT EXISTS `sla_plans` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,

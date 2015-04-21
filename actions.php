@@ -2469,7 +2469,7 @@ values
             $stmt2->execute(array(':user_id' => get_user_val_by_hash($hn, 'id'), ':mail' => $mail_nf, ':pb' => '', ':sms' => ''));
         }
 
-        
+
         if ($mode == "del_ticket") {
             
             $t_hash = $_POST['t_hash'];
@@ -7443,6 +7443,238 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 </div>
             <?php
         }
+
+
+
+if ($mode == "get_cal_event") {
+     $stmt = $dbConnection->prepare('SELECT * from calendar where uniq_hash=:uh');
+    $stmt->execute(array(':uh'=>$_POST['uniq_code']));
+    $res1 = $stmt->fetchAll();
+    foreach ($res1 as $row) {
+       $period=$row['dtStart']." - ".$row['dtStop'];
+      $ad=false;
+ if ($row['allday'] == "true") {$ad=true; $period="all day";}
+      
+
+$d=$row['description'];
+if ($row['description'] == "0") {
+    $d="";
+}
+
+
+$author_tag="<a href=\"view_user?".get_user_hash_by_id($row['user_id'])."\">".nameshort(name_of_user_ret($row['user_id']))."</a>";
+
+        $data[] = array(
+            'id'=>$row['uniq_hash'],
+            'title' => $row['title'], 
+            'description'=>$d,
+            'visibility'=>$row['visibility'],
+            //'url' => '/ticket?'.$row['hash_name'], 
+            'start' => $row['dtStart'], 
+            'end' => $row['dtStop'], 
+            'allDay'=>$ad,
+            'backgroundColor' => $row['backgroundColor'], 
+            'borderColor' => $row['borderColor'],
+            'editable'  => true,
+            'period'    => $period,
+            'author'    => $author_tag
+            );
+    }
+    
+    echo json_encode($data);
+}
+
+
+if ($mode == "get_cal_events") {
+
+
+$fe=$_POST['filter'];
+
+if ($fe == "") { $fe="5";}
+
+
+$fe=explode(",",$fe);
+
+//0 - только USER_ID=me
+//1 - узнать id всех пользователей моего отдела
+//2 - all
+
+$res_main=array();
+foreach ($fe as $value) {
+    # code...
+
+
+
+if ($value == "0") {
+    $stmt = $dbConnection->prepare('SELECT * from calendar where visibility=0 and user_id=:uid and dtStart between :start AND :end');
+    $stmt->execute(array(':uid'=>$_SESSION['helpdesk_user_id'],
+                        ':start'=>$_POST['start'],
+                        ':end'=>$_POST['end']
+                        ));
+    $res_1 = $stmt->fetchAll();
+    $res_main=array_merge($res_main, $res_1);
+}
+else if ($value == "1") {
+
+    $stmt = $dbConnection->prepare('SELECT * from calendar where visibility=1 and dtStart between :start AND :end');
+    $stmt->execute(array(':start'=>$_POST['start'],
+                         ':end'=>$_POST['end']));
+$res_1 = $stmt->fetchAll();
+
+
+foreach ($res_1 as $key => $value) {
+    # code...
+    if (!check_admin_user_priv($value['user_id'])) {
+        unset($res_1[$key]);
+    }
+}
+
+
+    $res_main=array_merge($res_main, $res_1);
+}
+else if ($value == "2") {
+    $stmt = $dbConnection->prepare('SELECT * from calendar where visibility=2 and dtStart between :start AND :end');
+    $stmt->execute(array(':start'=>$_POST['start'],
+                         ':end'=>$_POST['end']));
+    $res_2 = $stmt->fetchAll();
+    $res_main=array_merge($res_main, $res_2);
+}
+
+
+
+}
+
+
+    foreach ($res_main as $row) {
+      $period=$row['dtStart']." - ".$row['dtStop'];
+      $ad=false;
+ if ($row['allday'] == "true") {$ad=true; $period=lang('CALENDAR_allday');}
+      
+      $d=$row['description'];
+if ($row['description'] == "0") {
+    $d="";
+}
+
+
+$priv_val = priv_status($_SESSION['helpdesk_user_id']);
+$editable=false;
+
+
+if ($row['user_id'] == $_SESSION['helpdesk_user_id']) {
+    $editable=true;
+}
+if ($row['user_id'] != $_SESSION['helpdesk_user_id']) {
+    if ($priv_val == 2) {
+    $editable=true;
+}
+    if ($priv_val == 0) {
+    $editable=true;
+}
+    if ($priv_val == 1) {
+    $editable=false;
+}
+
+
+}
+
+
+
+
+
+        $data[] = array(
+            'id'=>$row['uniq_hash'],
+            'title' => $row['title'], 
+            'description'=>$d,
+            //'url' => '/ticket?'.$row['hash_name'], 
+            'start' => $row['dtStart'], 
+            'end' => $row['dtStop'], 
+            'allDay'=>$ad,
+            'backgroundColor' => $row['backgroundColor'], 
+            'borderColor' => $row['borderColor'],
+            'editable'  => $editable,
+            'period'=>$period
+            );
+    }
+    
+    echo json_encode($data);
+}
+
+if ($mode == "cal_drop_events") {
+
+     $stmt = $dbConnection->prepare('update calendar set title=:title, dtStart=:dtStart, dtStop=:dtStop, allday=:ad where uniq_hash=:id');
+    $stmt->execute(array(
+        ':title'    =>$_POST['title'],
+        ':dtStart'  =>$_POST['start'],
+        ':dtStop'   =>$_POST['end'],
+        ':id'       =>$_POST['id'],
+        ':ad'       =>$_POST['allday']
+        ));
+
+}
+
+if ($mode == "cal_resize_events") {
+
+     $stmt = $dbConnection->prepare('update calendar set title=:title, dtStart=:dtStart, dtStop=:dtStop, allday=:ad where uniq_hash=:id');
+    $stmt->execute(array(
+        ':title'    =>$_POST['title'],
+        ':dtStart'  =>$_POST['start'],
+        ':dtStop'   =>$_POST['end'],
+        ':id'       =>$_POST['id'],
+        ':ad'       =>$_POST['allday']
+        ));
+
+}
+
+
+if ($mode == "cal_del_event") {
+    $stmt = $dbConnection->prepare('delete from calendar where uniq_hash=:u');
+    $stmt->execute(array(':u'=>$_POST['uniq_code']));
+}
+
+if ($mode == "cal_edit_event") {
+
+
+     $stmt = $dbConnection->prepare('update calendar set title=:title, description=:description, visibility=:visibility, backgroundColor=:backgroundColor, borderColor=:borderColor, allday=:allday,
+        dtStart=:dtStart, dtStop=:dtStop
+      where uniq_hash=:id');
+    $stmt->execute(array(
+        ':title'    =>$_POST['name'],
+        ':description'  =>$_POST['desc'],
+        ':visibility'   =>$_POST['priv'],
+        ':id'       =>$_POST['uniq_code'],
+        ':backgroundColor'=>$_POST['color'],
+        ':borderColor'=>$_POST['color_b'],
+        ':allday'   => $_POST['allday'],
+        ':dtStart'  =>$_POST['start'],
+        ':dtStop'   =>$_POST['end']
+        ));
+
+
+}
+
+if ($mode == "cal_insert_events") {
+
+     $stmt = $dbConnection->prepare('insert into calendar 
+        (title, dtStart, dtStop, allday, backgroundColor, borderColor, uniq_hash, user_id) 
+        values (:title, :dtStart, :dtStop, :ad, :backgroundColor, :borderColor, :uniq_hash, :user_id)');
+    $stmt->execute(array(
+        ':title'    =>$_POST['title'],
+        ':dtStart'  =>$_POST['start'],
+        ':dtStop'   =>$_POST['end'],
+        ':ad'       =>'true',
+        ':backgroundColor'         =>$_POST['backgroundColor'],
+        ':borderColor'         =>$_POST['borderColor'],
+        ':uniq_hash'        =>md5(time()),
+        ':user_id'  => $_SESSION['helpdesk_user_id']
+        ));
+
+}
+
+
+
+
+
+
         
         if ($mode == "add_ticket") {
             $type = ($_POST['type_add']);

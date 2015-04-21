@@ -943,7 +943,7 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
             /*
             выбрать все заявки, которые состоят с моих отделах
             */
-            
+             
             if (isset($_SESSION['hd.rustem_sort_in'])) {
                 
                 if ($_SESSION['hd.rustem_sort_in'] == "ok") {

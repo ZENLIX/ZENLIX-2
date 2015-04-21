@@ -183,6 +183,7 @@ if ( get_current_URL_name('helper') || get_current_URL_name('subj') || get_curre
 <?php
 if (get_current_URL_name('calendar')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/fullcalendar.min.js?<?=get_conf_param('version');?>"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/daterangepicker.js?<?=get_conf_param('version');?>"></script>
 <?php
 } ?>
 

@@ -188,6 +188,26 @@ CREATE TABLE `scheduler_ticket` (
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `calendar`;
+CREATE TABLE `calendar` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(2048) DEFAULT NULL,
+  `dtStart` varchar(64) DEFAULT NULL,
+  `dtStop` varchar(64) DEFAULT NULL,
+  `allday` varchar(64) NOT NULL DEFAULT 'false',
+  `backgroundColor` varchar(64) DEFAULT NULL,
+  `borderColor` varchar(64) DEFAULT NULL,
+  `description` varchar(1024) NOT NULL DEFAULT '0',
+  `user_id` int(11) DEFAULT NULL,
+  `uniq_hash` varchar(512) DEFAULT NULL,
+  `visibility` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+
+
+
 
 DROP TABLE IF EXISTS `messages`;
 

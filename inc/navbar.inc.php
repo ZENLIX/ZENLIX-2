@@ -33,6 +33,13 @@ if (in_array($current_file_name, $p2)) {
 }
 
 
+$cal_e=calendar_get_count();
+
+if ($cal_e != 0) {
+    $cal_et = "<small class=\"badge pull-right bg-info\">" . $cal_e . "</small>";
+} else if ($cal_e == 0) {
+    $cal_et = "";
+}
 
 
 
@@ -175,7 +182,10 @@ if (!empty($re)) {
                                 <span class="label label-warning label_unread_msg"><?php echo $atm_v; ?></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header" id="nav_t_msgs"><?php echo $title; ?></li>
+                            <p class="header" id="nav_t_msgs"> 
+                                <center>
+
+                                <?php echo $title; ?></center></p>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu" id="unread_msgs_content">
@@ -213,7 +223,53 @@ foreach ($re as $rews) {
                             </ul>
                         </li>
                         
-                        
+           
+
+
+
+<?php
+if (calendar_get_count() != 0) {
+?>
+
+<li class="dropdown messages-menu" id="">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-calendar"></i>
+                                <span class="label label-info"><?=calendar_get_count();?></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <p class="header" id="nav_t_events"> 
+                                <center><?=lang('CALENDAR_NAVBAR_W');?></center> </p>
+                                <li>
+                                    <!-- inner menu: contains the actual data -->
+                                    <ul class="menu" id="">
+<?=calendar_get_events_today();?>
+
+
+
+
+
+
+                                    </ul>
+                                    </li>
+                                    
+                                    </ul>
+                                    </li>
+
+<?php
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
                         
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="dropdown user user-menu">
@@ -310,14 +366,14 @@ border-color: rgba(255, 255, 255, 0.2);" />
                         
                         <li <?php echo echoActiveClassIfRequestMatches("create") ?>><a href="<?php echo $CONF['hostname'] ?>create"><i class="fa fa-tag"></i> <?php echo lang('NAVBAR_create_ticket'); ?></a></li>
                         
-                             <li <?php echo echoActiveClassIfRequestMatches("news") ?>><a href="<?php echo $CONF['hostname'] ?>news"><i class="fa fa-bullhorn"></i> <?php echo lang('NAVBAR_news'); ?></a></li>                   
-                        
-                        
-                        
-                        
+
                         
             <li <?php echo echoActiveClassIfRequestMatches("list") ?>><a href="<?php echo $CONF['hostname'] ?>list"><i class="fa fa-list-alt"></i> <?php echo lang('NAVBAR_list_ticket'); ?> <?php echo $newtickets ?></a></li>
-            
+
+
+            <li <?php echo echoActiveClassIfRequestMatches("news") ?>><a href="<?php echo $CONF['hostname'] ?>news"><i class="fa fa-bullhorn"></i> <?php echo lang('NAVBAR_news'); ?></a></li>   
+
+            <li <?php echo echoActiveClassIfRequestMatches("calendar") ?>><a href="<?php echo $CONF['hostname'] ?>calendar"><i class="fa fa-calendar"></i> <?php echo lang('CALENDAR_title'); ?><?=$cal_et;?></a></li> 
             
                         <li <?php echo echoActiveClassIfRequestMatches("messages") ?>><a href="<?php echo $CONF['hostname'] ?>messages"><i class="fa fa-comments"></i> <?php echo lang('MESSAGES_navbar'); ?> <?php echo $atm; ?></a></li>
             
@@ -378,7 +434,7 @@ if (validate_admin($_SESSION['helpdesk_user_id'])) {
 
 
 
-                    <li <?php echo echoActiveClassIfRequestMatches("users") ?>><a href="<?php echo $CONF['hostname'] ?>users"><i class="fa fa-users"></i> <?php echo lang('NAVBAR_users'); ?></a></li>
+                    <li <?php echo echoActiveClassIfRequestMatches("users") ?>><a href="<?php echo $CONF['hostname'] ?>users?list"><i class="fa fa-users"></i> <?php echo lang('NAVBAR_users'); ?></a></li>
 
                     <li <?php echo echoActiveClassIfRequestMatches("mailers") ?>><a href="<?php echo $CONF['hostname'] ?>mailers"><i class="fa fa-paper-plane-o"></i> <?php echo lang('NAVBAR_mailers'); ?></a></li>
 
