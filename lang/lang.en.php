@@ -8,9 +8,9 @@ function lang_en($phrase){
 
 
 
-'CALENDAR allday' => 'All Day',
-'CALENDAR title' => 'Calendar',
-'CALENDAR title_desc' => 'Events',
+'CALENDAR_allday' => 'All Day',
+'CALENDAR_title' => 'Calendar',
+'CALENDAR_title_desc' => 'Events',
 'CALENDAR_dr_ev' => 'Event set',
 'CALENDAR_ex_ev_1' => 'Important event',
 'CALENDAR_ex_ev_2' => 'The Holiday',

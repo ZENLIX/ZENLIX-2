@@ -415,7 +415,7 @@ SET @sql = (SELECT IF(
         table_name='users' and column_name='mob'
     ) > 0,
     "SELECT 0",
-    "ALTER TABLE users ADD mob int(24) NOT NULL DEFAULT 0;"
+    "ALTER TABLE users ADD mob varchar(64) NOT NULL DEFAULT 0;"
 ));
 PREPARE stmt FROM @sql;
 EXECUTE stmt;

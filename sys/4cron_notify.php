@@ -98,8 +98,9 @@ $ar_list=explode(",", get_conf_param('smsc_list_action'));
 if (in_array($type_op, $ar_list)) {
   if (check_notify_sms_user($type_op, $user_mail))
 {
-$S = new SMSC_SMPP();
-$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+
+send_sms($user_mail, $msg, 1);
+
 }
 }
 
@@ -119,8 +120,7 @@ $ar_list=explode(",", get_conf_param('smsc_list_action'));
 if (in_array($type_op, $ar_list)) {
     if (check_notify_sms_user($type_op, $user_mail))
 {
-$S = new SMSC_SMPP();
-$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+send_sms($user_mail, $msg, 1);
 }
 }
 
@@ -137,8 +137,7 @@ $ar_list=explode(",", get_conf_param('smsc_list_action'));
 if (in_array($type_op, $ar_list)) {
     if (check_notify_sms_user($type_op, $user_mail))
 {
-$S = new SMSC_SMPP();
-$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+send_sms($user_mail, $msg, 1);
 }
 }
  }
@@ -153,8 +152,7 @@ $ar_list=explode(",", get_conf_param('smsc_list_action'));
 if (in_array($type_op, $ar_list)) {
     if (check_notify_sms_user($type_op, $user_mail))
 {
-$S = new SMSC_SMPP();
-$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+send_sms($user_mail, $msg, 1);
 }
 }
 
@@ -170,8 +168,7 @@ $ar_list=explode(",", get_conf_param('smsc_list_action'));
 if (in_array($type_op, $ar_list)) {
     if (check_notify_sms_user($type_op, $user_mail))
 {
-$S = new SMSC_SMPP();
-$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+send_sms($user_mail, $msg, 1);
 }
 }
 
@@ -186,8 +183,7 @@ $ar_list=explode(",", get_conf_param('smsc_list_action'));
 if (in_array($type_op, $ar_list)) {
     if (check_notify_sms_user($type_op, $user_mail))
 {
-$S = new SMSC_SMPP();
-$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+send_sms($user_mail, $msg, 1);
 }
 }
 
@@ -203,8 +199,7 @@ $ar_list=explode(",", get_conf_param('smsc_list_action'));
 if (in_array($type_op, $ar_list)) {
     if (check_notify_sms_user($type_op, $user_mail))
 {
-$S = new SMSC_SMPP();
-$S->send_sms($user_mail, $msg, get_conf_param('name_of_firm'));
+send_sms($user_mail, $msg, 1);
 }
 }
 

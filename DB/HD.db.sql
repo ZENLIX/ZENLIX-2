@@ -723,7 +723,7 @@ CREATE TABLE `users` (
   `def_unit_id` int(11) NOT NULL DEFAULT '0',
   `def_user_id` varchar(1024) NOT NULL DEFAULT '0',
   `api_key` varchar(1024) DEFAULT NULL,
-  `mob` int(24) NOT NULL DEFAULT '0',
+  `mob` varchar(64) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 

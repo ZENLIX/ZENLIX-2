@@ -27,6 +27,7 @@ if (isset($data_json->mode)) {
                     ));
                     if ($stmt->rowCount() == 1) {
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                        $user_id = $row['id'];
                         $code = "ok";
                         $fio=$row['fio'];
                         $ui=$row['usr_img'];
