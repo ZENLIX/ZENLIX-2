@@ -681,6 +681,8 @@ $filesize=filesize($path);
 $ext = pathinfo($name, PATHINFO_EXTENSION);
         //$fileName_norm = $fhash.".".$ext;
 
+
+
 $stmt = $dbConnection->prepare('insert into files 
         (ticket_hash, original_name, file_hash, file_type, file_size, file_ext) values 
         (:ticket_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext)');
@@ -831,12 +833,13 @@ if (get_conf_param('email_gate_user_id')) {
 
 
 
-        echo $message->textHtml;
-        //$message->textPlain
+//echo $message->all;
+
+//print_r($message);
 
 
 $subj=strip_tags(xss_clean($message->subject));
-$msg=strip_tags(xss_clean($message->textHtml));
+$msg=strip_tags(xss_clean($message->all));
 
 
 
@@ -868,7 +871,7 @@ $prio='1';
                 $max_id_res_ticket = $max_id_ticket[0] + 1;
                 
                 $stmt = $dbConnection->prepare('INSERT INTO tickets
-                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_time, ok_date) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time, :ok_date)');
+                                (id, user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio, last_update, deadline_time) VALUES (:max_id_res_ticket, :user_init_id, :user_to_id, :n,:subj, :msg,:max_id,:unit_id, :status, :hashname, :prio, :nz, :deadline_time)');
                 $stmt->execute(array(
                     ':max_id_res_ticket' => $max_id_res_ticket,
                     ':user_init_id' => $user_init_id,
@@ -882,16 +885,24 @@ $prio='1';
                     ':prio' => $prio,
                     ':n' => $now_date_time,
                     ':nz' => $now_date_time,
-                    ':deadline_time'=> NULL,
-                    ':ok_date'=>$now_date_time
+                    ':deadline_time'=> NULL
                 ));
 
+$ft=get_conf_param('file_types');
+
+$ag=explode("|", $ft);
 
     foreach ($attachments as $attachment) {
     // Array of IncomingMailAttachment objects
         //       echo $attachment->filePath;
                 //$attachment->name;
+                $ext = pathinfo($attachment->filePath.'/'.$attachment->name, PATHINFO_EXTENSION);
+                
+                if (in_array($ext, $ag)) {
+                
+                
 add_file($hashname, $attachment->name, $attachment->filePath);
+}
 
     }
 
@@ -954,7 +965,7 @@ if (get_conf_param('email_gate_user_id')) {
 
 
 $subj=strip_tags(xss_clean($message->subject));
-$msg=strip_tags(xss_clean($message->textHtml));
+$msg=strip_tags(xss_clean($message->all));
 
 
 

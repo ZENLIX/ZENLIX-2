@@ -37,7 +37,10 @@ function lang_ua($phrase){
 'CALENDAR_del' => 'Видалити подію',
 'CALENDAR_save' => 'Зберегти',
 'CALENDAR_NAVBAR_W' => 'Список подій на сьогодні',
-
+'CALENDAR_today' => 'сьогодні',
+'CALENDAR_month' => 'місяць',
+'CALENDAR_week' => 'тиждень',
+'CALENDAR_day' => 'день',
 
 
 

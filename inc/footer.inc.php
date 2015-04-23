@@ -44,6 +44,11 @@ echo $lang; ?>";
     var MOMENTJS_MINUTE = "<?=lang('MOMENTJS_MINUTE');?>";
     var MOMENTJS_SEC = "<?=lang('MOMENTJS_SEC');?>";
 
+    var CAL_today="<?=lang('CALENDAR_today');?>";
+    var CAL_month="<?=lang('CALENDAR_month');?>";
+    var CAL_week="<?=lang('CALENDAR_week');?>";
+    var CAL_day="<?=lang('CALENDAR_day');?>";
+
 </script>
 <script src="<?php echo $CONF['hostname'] ?>js/jquery-2.1.3.min.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/bootstrap/js/bootstrap.min.js?<?=get_conf_param('version');?>"></script>
@@ -183,7 +188,9 @@ if ( get_current_URL_name('helper') || get_current_URL_name('subj') || get_curre
 <?php
 if (get_current_URL_name('calendar')) { ?>
 <script src="<?php echo $CONF['hostname'] ?>js/fullcalendar.min.js?<?=get_conf_param('version');?>"></script>
+<script src="<?php echo $CONF['hostname'] ?>js/lang-all.js?<?=get_conf_param('version');?>"></script>
 <script src="<?php echo $CONF['hostname'] ?>js/daterangepicker.js?<?=get_conf_param('version');?>"></script>
+
 <?php
 } ?>
 

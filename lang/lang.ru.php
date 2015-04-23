@@ -39,7 +39,10 @@ function lang_ru($phrase){
 'CALENDAR_del'=>'Удалить событие',
 'CALENDAR_save'=>'Сохранить',
 'CALENDAR_NAVBAR_W'=>'Список событий на сегодня',
-
+'CALENDAR_today'=>'сегодня',
+'CALENDAR_month'=>'месяц',
+'CALENDAR_week'=>'неделя',
+'CALENDAR_day'=>'день',
 
 
 'SLA_stat_res_by_nook'=>'Результаты по не выполненым заявкам',

@@ -41,7 +41,10 @@ function lang_en($phrase){
 'CALENDAR_del' => 'Delete entry',
 'CALENDAR_save' => 'Save',
 'CALENDAR_NAVBAR_W' => 'The list of events for today',
-
+'CALENDAR_today' => 'today',
+'CALENDAR_month' => 'month',
+'CALENDAR_week' => 'week',
+'CALENDAR_day' => 'day',
 
 'EXT_sms_noti' => 'SMS-notification',
 'EXT_sms_noti_login' => 'SMSC-login',

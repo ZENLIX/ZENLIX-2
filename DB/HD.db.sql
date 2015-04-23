@@ -690,6 +690,15 @@ CREATE TABLE `users_notify` (
 # Дамп таблицы users
 # ------------------------------------------------------------
 
+DROP TABLE IF EXISTS `user_devices`;
+CREATE TABLE `user_devices` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `device_token` varchar(2048) DEFAULT NULL,
+  `dt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (

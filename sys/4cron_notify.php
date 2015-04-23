@@ -36,7 +36,164 @@ include($base .'/library/smsc_smpp.php');
 
 
 
+function make_device_push($type_op, $usr_lang, $usr_id, $ticket_id)
+{
+  global $dbConnection,$base,$CONF;
 
+
+
+$MAIL_new=lang($lang,'MAIL_new');
+$MAIL_refer=lang($lang,'mail_msg_ticket_refer');
+$MAIL_refer_ext=lang($lang,'mail_msg_ticket_refer_ext');
+$MAIL_to_w=lang($lang,'mail_msg_ticket_to_ext');
+
+$MAIL_msg_comment=lang($lang,'mail_msg_ticket_comment');
+$MAIL_msg_comment_ext=lang($lang,'mail_msg_ticket_comment_ext');
+
+
+$MAIL_msg_lock=lang($lang,'mail_msg_ticket_lock');
+$MAIL_msg_lock_ext=lang($lang,'mail_msg_ticket_lock_ext');
+$MAIL_msg_unlock=lang($lang,'mail_msg_ticket_unlock');
+$MAIL_msg_unlock_ext=lang($lang,'mail_msg_ticket_unlock_ext');
+$MAIL_msg_ok=lang($lang,'mail_msg_ticket_ok');
+$MAIL_msg_ok_ext=lang($lang,'mail_msg_ticket_ok_ext');
+$MAIL_msg_no_ok=lang($lang,'mail_msg_ticket_no_ok');
+$MAIL_msg_no_ok_ext=lang($lang,'mail_msg_ticket_no_ok_ext');
+
+        $stmt = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+        $stmt->execute(array(':tid' => $ticket_id));
+        $ticket_res = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $h=$ticket_res['hash_name'];
+        $user_init_id=$ticket_res['user_init_id'];
+        $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
+
+        $nou=name_of_client_ret($ticket_res['client_id']);
+        $to_id=$ticket_res['user_to_id'];
+        $s=$ticket_res['subj'];
+        $m=$ticket_res['msg'];
+        $unit_id=$ticket_res['unit_id'];
+        //кому?
+        if ($ticket_res['user_to_id'] <> 0 ) {
+            $to_text="".name_of_user_ret($to_id)."";
+        }
+        else if ($ticket_res['user_to_id'] == 0 ) {
+            $to_text=view_array(get_unit_name_return($unit_id));
+        }
+        
+
+$stmt = $dbConnection->prepare('SELECT device_token from user_devices where user_id=:uid');
+    $stmt->execute(array(':uid' => $usr_id));
+    $res1 = $stmt->fetchAll();
+
+foreach ($res1 as $value) {
+  # code...
+
+if ($type_op == "ticket_create") {
+
+$msg=lang($lang,'MAIL_new').' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$content[] = array(
+'device_token'=>$value,
+'msg'=>$msg
+  );
+
+
+}
+else if ($type_op == "ticket_refer") {
+$msg=$MAIL_refer.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+  $content[] = array(
+'device_token'=>$value,
+'msg'=>$msg
+  );
+}
+else if ($type_op == "ticket_comment") {
+$msg=$MAIL_msg_comment.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+  $content[] = array(
+'device_token'=>$value,
+'msg'=>$msg
+  );
+}
+else if ($type_op == "ticket_lock") {
+$msg=$MAIL_msg_lock.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+  $content[] = array(
+'device_token'=>$value,
+'msg'=>$msg
+  );
+}
+else if ($type_op == "ticket_unlock") {
+$msg=$MAIL_msg_unlock.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+  $content[] = array(
+'device_token'=>$value,
+'msg'=>$msg
+  );
+}
+else if ($type_op == "ticket_ok") {
+$msg=$MAIL_msg_ok.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+  $content[] = array(
+'device_token'=>$value,
+'msg'=>$msg
+  );
+}
+else if ($type_op == "ticket_no_ok") {
+$msg=$MAIL_msg_no_ok.' #'.$ticket_id."\r\n";
+$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
+$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+  $content[] = array(
+'device_token'=>$value,
+'msg'=>$msg
+  );
+  
+}  
+
+
+/*
+$content[] = array(
+
+  );
+  */
+
+$url = "http://api.zenlix.com/api.php";    
+//$content = $results;
+
+$curl = curl_init($url);
+curl_setopt($curl, CURLOPT_HEADER, false);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curl, CURLOPT_HTTPHEADER,
+        array("Content-type: application/json"));
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+
+$json_response = curl_exec($curl);
+
+$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+if ( $status != 201 ) {
+    die("Error: call to URL $url failed with status $status, response $json_response, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
+}
+
+
+curl_close($curl);
+
+//$response = json_decode($json_response, true);
+
+
+}
+
+
+}
 
 
 
@@ -410,7 +567,28 @@ $msg.=lang($lang,'MAIL_msg').": ".$m."\r\n";
 
 
 
+function check_user_devices($id) {
+global $dbConnection, $CONF;
 
+$stmt = $dbConnection->prepare('SELECT device_token from user_devices where user_id=:uid');
+    $stmt->execute(array(':uid' => $id));
+    $res1 = $stmt->fetchAll();
+
+if (!empty($res1)) {
+return true;
+}
+if (empty($res1)) {
+    return false;
+}
+
+    //foreach ($res1 as $row) {}
+
+
+
+
+
+
+}
 
 
 
@@ -1489,13 +1667,15 @@ $ticket_id=$qrow['ticket_id'];
             //$val
             
             
-      $stmt = $dbConnection->prepare('SELECT email, pb, lang, mob FROM users where id=:tid');
+      $stmt = $dbConnection->prepare('SELECT email, pb, lang, mob, id FROM users where id=:tid');
             $stmt->execute(array(':tid' => $val));
             $usr_info = $stmt->fetch(PDO::FETCH_ASSOC);
             $pb=$usr_info['pb'];
       $usr_mail=$usr_info['email'];
       $usr_lang=$usr_info['lang'];
       $mob=$usr_info['mob'];
+
+      $usr_id=$usr_info['id'];
            // $lb=$fio['lock_by'];
             
             
@@ -1508,7 +1688,9 @@ $ticket_id=$qrow['ticket_id'];
             make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
             }
 
-
+if (check_user_devices($usr_id)) {
+  make_device_push($type_op, $usr_lang, $usr_id, $ticket_id);
+}
 
 
 if (get_conf_param('smsc_active') == "true") {
@@ -1517,6 +1699,11 @@ if (get_conf_param('smsc_active') == "true") {
             }
           }
             //make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
+
+
+
+
+
             
   }
 

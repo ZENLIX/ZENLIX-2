@@ -1375,6 +1375,22 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
                 
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 
+
+
+
+
+$r_js['tickets']=array();
+
+array_push($r_js['tickets'], array(
+
+        'tid'=> $row['id'],
+        'prio'=>$prio
+        
+
+    ));
+
+
+
 ?>
 
                 <tr id="tr_<?php

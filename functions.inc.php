@@ -2484,6 +2484,20 @@ function validate_user_by_api($input) {
 
 
 
+function reset_device_token($dt){
+global $dbConnection, $CONF;
+
+if (isset($dt)){
+            $stmt = $dbConnection->prepare("delete FROM user_devices where device_token=:id");
+            $stmt->execute(array(
+                ':id' => $dt
+            ));
+        }
+
+}
+
+
+
 function validate_user($user_id, $input) {
     
     global $dbConnection, $CONF;
@@ -5920,6 +5934,9 @@ if ($level != 0) { echo "<ul>"; }
     }
 echo "</ul>";
 }
+
+
+
 
 
 

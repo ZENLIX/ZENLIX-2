@@ -14,7 +14,7 @@ if (isset($data_json->mode)) {
     
     if ($mode == "auth") {
         
-        if (isset($data_json->login, $data_json->pass, $data_json->device_token)) {
+        if (isset($data_json->login, $data_json->pass)) {
             $login = ($data_json->login);
             $password = md5($data_json->pass);
             
@@ -69,6 +69,26 @@ if (isset($data_json->mode)) {
         
         $status = "ok";
 
+if (isset($data_json->device_token)) {
+
+
+$dtoken=$data_json->device_token;
+
+    $stmt = $dbConnection->prepare('delete from user_devices where device_token=:dt');
+            $stmt->execute(array(
+                ':dt' => $dtoken
+            ));
+
+        $stmt_n = $dbConnection->prepare('insert into user_devices (user_id, device_token, dt) VALUES (:user_id, :device_token, :dt)');
+    $stmt_n->execute(array(
+        ':user_id' => $user_id,
+        ':device_token' => $dtoken,
+        ':n' => $CONF['now_dt']
+    ));        
+
+
+}
+
 
 if (get_user_val_by_id($user_id, 'api_key')) {
     $ap_key=get_user_val_by_id($user_id, 'api_key');
@@ -95,6 +115,33 @@ $r=array(
 
         print json_encode($r);
     }
+
+
+
+else if ($mode == "reset_token") {
+
+
+ if (isset($data_json->device_token)) {
+
+
+$device_token=$data_json->device_token;
+
+reset_device_token($device_token);
+
+
+
+ }
+else {
+            $code = "error";
+            $error_msg = "input values not alls";
+        }
+
+
+}
+
+
+
+
 
     else if ($mode == "ticket_list") {
         if (isset($data_json->uniq_id, $data_json->type)) {
