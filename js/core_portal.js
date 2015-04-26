@@ -747,6 +747,9 @@ if (ispath('edit_some_qa')) {
     ['table', ['table']],
     ['link', ['link']],
     ['codeview', ['codeview']]],
+    onImageUpload: function(files, editor, welEditable) {
+                            sendFile(files[0], editor, welEditable);
+                        },
                         oninit: function() {
                         }
                     });
@@ -1008,6 +1011,9 @@ if (ispath('new_manual')) {
     ['table', ['table']],
     ['link', ['link']],
     ['codeview', ['codeview']]],
+    onImageUpload: function(files, editor, welEditable) {
+                            sendFile(files[0], editor, welEditable);
+                        },
                         oninit: function() {
                         }
                     });
@@ -1172,7 +1178,7 @@ if (ispath('new_post')) {
                         height: 300,
                         focus: true,
                         lang: get_lang_param('summernote_lang'),
-                        disableDragAndDrop: true,
+                        //disableDragAndDrop: false,
                         toolbar: [
     //['style', ['style']], // no style button
     ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -1182,6 +1188,9 @@ if (ispath('new_post')) {
     ['height', ['height']],
     ['table', ['table']],
     ['link', ['link']]],
+    onImageUpload: function(files, editor, welEditable) {
+                            sendFile(files[0], editor, welEditable);
+                        },
                         oninit: function() {
                         }
                     });
@@ -1818,7 +1827,7 @@ $(".direct-chat-msg").on({
 $('body').on('click', '.main-post-del', function(event) {
             event.preventDefault();
 //var v=$(this).val();
-var p=$("#post").val();
+var p=$(this).attr('value');
 //var type=$("#post").attr('value');
 bootbox.confirm(get_lang_param('JS_del'), function(result) {
                 if (result == true) {
@@ -1828,9 +1837,9 @@ $.ajax({
                 url: ACTIONPATH_PORTAL,
                 data: {mode: 'del_post', post_hash: p},
                 success: function(html) {
-                    //console.log(html);
+                    console.log(html);
                     window.location = MyHOSTNAME;
-                    //$("#"+v+" .editable_text").html(html);
+                    
                 }
             });
 }
@@ -2020,7 +2029,7 @@ $("#"+v+" .editable_text").summernote({
     ['codeview', ['codeview']]],
                         lang: get_lang_param('summernote_lang'),
                         onImageUpload: function(files, editor, welEditable) {
-                            //sendFile(files[0], editor, welEditable);
+                            sendFile(files[0], editor, welEditable);
                         },
                         oninit: function() {
                         }
@@ -2060,7 +2069,7 @@ $("#"+v+" .editable_text").summernote({
     ['codeview', ['codeview']]],
                         lang: get_lang_param('summernote_lang'),
                         onImageUpload: function(files, editor, welEditable) {
-                            //sendFile(files[0], editor, welEditable);
+                            sendFile(files[0], editor, welEditable);
                         },
                         oninit: function() {
                         }

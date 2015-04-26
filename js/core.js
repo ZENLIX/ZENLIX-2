@@ -22,9 +22,18 @@ $(".mf").fadeIn(800);
     //push_msg_action2user
     socket.on("new_msg", function(data) {
 
+var zen_sid;
+zen_sid=false;
+if ((USER_HASH == data.user_hash) && (data.zen_sid != ZENLIX_session_id)) {
+    zen_sid=true;
+}
+
         switch (data.type_op) {
             case 'ticket_create':
+                if (USER_HASH != data.user_hash) {
                 active_noty_msg('ticket_create', data.t_id);
+                }
+                if (data.zen_sid != ZENLIX_session_id) {
                 update_labels();
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                    // if ((def_filename == "dashboard")) {
@@ -38,9 +47,13 @@ $(".mf").fadeIn(800);
                     makemytime(true);
                 };
                 if (ispath('news')) {refresh_news();};
+            }
                 break;
             case 'ticket_refer':
+            if (USER_HASH != data.user_hash) {
                 active_noty_msg('ticket_refer', data.t_id);
+            }
+            if (data.zen_sid != ZENLIX_session_id) {
                 update_labels();
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                   //  if ((def_filename == "dashboard")) {
@@ -57,9 +70,13 @@ $(".mf").fadeIn(800);
                     update_ticket_page(data.t_id);
                 };
                 if (ispath('news')) {refresh_news();};
+            }
                 break;
             case 'ticket_ok':
+            if (USER_HASH != data.user_hash) {
                 active_noty_msg('ticket_ok', data.t_id);
+            }
+            if (data.zen_sid != ZENLIX_session_id) {
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
                         if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
@@ -78,9 +95,13 @@ $(".mf").fadeIn(800);
                     update_labels();
                 };
                 if (ispath('news')) {refresh_news();};
+            }
                 break;
             case 'ticket_no_ok':
+            if (USER_HASH != data.user_hash) {
                 active_noty_msg('ticket_no_ok', data.t_id);
+            }
+            if (data.zen_sid != ZENLIX_session_id) {
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
                         if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
@@ -99,9 +120,13 @@ $(".mf").fadeIn(800);
                     update_labels();
                 };
                 if (ispath('news')) {refresh_news();};
+            }
                 break;
             case 'ticket_lock':
+            if (USER_HASH != data.user_hash) {
                 active_noty_msg('ticket_lock', data.t_id);
+            }
+            if (data.zen_sid != ZENLIX_session_id) {
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
                         if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
@@ -117,9 +142,13 @@ $(".mf").fadeIn(800);
                     update_ticket_page(data.t_id);
                 };
                 if (ispath('news')) {refresh_news();};
+            }
                 break;
             case 'ticket_unlock':
+            if (USER_HASH != data.user_hash) {
                 active_noty_msg('ticket_unlock', data.t_id);
+            }
+            if (data.zen_sid != ZENLIX_session_id) {
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                    // if ((def_filename == "dashboard")) {
                     if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
@@ -135,9 +164,13 @@ $(".mf").fadeIn(800);
                     update_ticket_page(data.t_id);
                 };
                 if (ispath('news')) {refresh_news();};
+            }
                 break;
             case 'ticket_comment':
+            if (USER_HASH != data.user_hash) {
                 active_noty_msg('ticket_comment', data.t_id);
+}
+if (data.zen_sid != ZENLIX_session_id) {
                 if (ispath('ticket')) {
                     if ($('#ticket_id').val() == data.t_id) {
                         get_comments(data.t_id);
@@ -145,9 +178,12 @@ $(".mf").fadeIn(800);
                     }
                 }
                 if (ispath('news')) {refresh_news();};
+            }
                 break;
             case 'message_send':
                 //console.log(data.chat_id);
+                if (USER_HASH != data.user_hash) {
+                    if (data.zen_sid != ZENLIX_session_id) {
                 if (!ispath('messages')) {
                     noty_message(data.chat_id);
                 }
@@ -159,6 +195,8 @@ $(".mf").fadeIn(800);
                 if (ispath('messages')) {
                     refresh_message_usr_list();
                 }
+            }
+            }
                 //console.log('yes');
                 break;
             case 'logout':

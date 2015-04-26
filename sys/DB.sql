@@ -348,6 +348,23 @@ EXECUTE stmt;
 ######################################################
 
 
+
+#######UPDATE notification_msg_pool.session_id####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='notification_msg_pool' and column_name='session_id'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE notification_msg_pool ADD session_id varchar(512) DEFAULT NULL;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
+
+
 #######UPDATE files.obj_type####################
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)

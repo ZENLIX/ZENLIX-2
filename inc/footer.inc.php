@@ -44,6 +44,8 @@ echo $lang; ?>";
     var MOMENTJS_MINUTE = "<?=lang('MOMENTJS_MINUTE');?>";
     var MOMENTJS_SEC = "<?=lang('MOMENTJS_SEC');?>";
 
+    var ZENLIX_session_id= "<?=$_SESSION['zenlix.session_id'];?>";
+
     var CAL_today="<?=lang('CALENDAR_today');?>";
     var CAL_month="<?=lang('CALENDAR_month');?>";
     var CAL_week="<?=lang('CALENDAR_week');?>";

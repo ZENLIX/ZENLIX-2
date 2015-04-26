@@ -80,10 +80,10 @@ $dtoken=$data_json->device_token;
             ));
 
         $stmt_n = $dbConnection->prepare('insert into user_devices (user_id, device_token, dt) VALUES (:user_id, :device_token, :dt)');
-    $stmt_n->execute(array(
+        $stmt_n->execute(array(
         ':user_id' => $user_id,
         ':device_token' => $dtoken,
-        ':n' => $CONF['now_dt']
+        ':dt' => $CONF['now_dt']
     ));        
 
 

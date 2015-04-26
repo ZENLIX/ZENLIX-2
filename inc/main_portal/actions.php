@@ -485,13 +485,14 @@ $stmt1 = $dbConnection->prepare('delete from portal_news where uniq_id=:u');
     }
 
 if ($mode== "del_post") {
-	$v=$_POST['post_hash'];
+	
+    $v=$_POST['post_hash'];
 
 $idp=get_post_val_by_hash($v, 'id');
 
 
 $stmt1 = $dbConnection->prepare('delete from portal_posts where uniq_id=:u');
-    $stmt1->execute(array(
+$stmt1->execute(array(
         ':u' => $v
     ));
     
@@ -508,20 +509,20 @@ $stmt1 = $dbConnection->prepare('delete from portal_posts where uniq_id=:u');
 
             }
             }
-            $stmt = $dbConnection->prepare('delete from post_files where post_hash=:id');
-            $stmt->execute(array(
+            $stmt2 = $dbConnection->prepare('delete from post_files where post_hash=:id');
+            $stmt2->execute(array(
                 ':id' => $v
             ));
 
-$stmt = $dbConnection->prepare("SELECT *
+$stmt3 = $dbConnection->prepare("SELECT *
                             from post_comments where p_id=:id");
-            $stmt->execute(array(':id' => $idp));
-            $result = $stmt->fetchAll();
-foreach ($result as $row) {
+            $stmt3->execute(array(':id' => $idp));
+            $result2 = $stmt3->fetchAll();
+foreach ($result2 as $row1) {
 
                 $stmtf = $dbConnection->prepare("SELECT *
                             from post_files where post_hash=:id");
-            $stmtf->execute(array(':id' => $row['uniq_hash']));
+            $stmtf->execute(array(':id' => $row1['uniq_hash']));
             $resultf = $stmtf->fetchAll();
             foreach ($resultf as $rowf) {
             	unlink(realpath(dirname(dirname(dirname(__FILE__)))) . "/upload_files/" . $rowf['file_hash'] . "." . $rowf['file_ext']);

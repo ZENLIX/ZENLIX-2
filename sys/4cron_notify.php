@@ -1,5 +1,11 @@
 <?php
 
+
+
+
+
+
+
 ini_set('max_execution_time', 300);
 
 $base = dirname(dirname(__FILE__)); 
@@ -88,15 +94,16 @@ $stmt = $dbConnection->prepare('SELECT device_token from user_devices where user
 
 foreach ($res1 as $value) {
   # code...
-
+unset($content);
+$content = array();
 if ($type_op == "ticket_create") {
 
 $msg=lang($lang,'MAIL_new').' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
 
-$content[] = array(
-'device_token'=>$value,
+$content = array(
+'device_token'=>$value['device_token'],
 'msg'=>$msg
   );
 
@@ -106,8 +113,8 @@ else if ($type_op == "ticket_refer") {
 $msg=$MAIL_refer.' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
-  $content[] = array(
-'device_token'=>$value,
+  $content = array(
+'device_token'=>$value['device_token'],
 'msg'=>$msg
   );
 }
@@ -115,8 +122,8 @@ else if ($type_op == "ticket_comment") {
 $msg=$MAIL_msg_comment.' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
-  $content[] = array(
-'device_token'=>$value,
+  $content = array(
+'device_token'=>$value['device_token'],
 'msg'=>$msg
   );
 }
@@ -124,8 +131,8 @@ else if ($type_op == "ticket_lock") {
 $msg=$MAIL_msg_lock.' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
-  $content[] = array(
-'device_token'=>$value,
+  $content = array(
+'device_token'=>$value['device_token'],
 'msg'=>$msg
   );
 }
@@ -133,8 +140,8 @@ else if ($type_op == "ticket_unlock") {
 $msg=$MAIL_msg_unlock.' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
-  $content[] = array(
-'device_token'=>$value,
+  $content = array(
+'device_token'=>$value['device_token'],
 'msg'=>$msg
   );
 }
@@ -142,8 +149,8 @@ else if ($type_op == "ticket_ok") {
 $msg=$MAIL_msg_ok.' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
-  $content[] = array(
-'device_token'=>$value,
+  $content = array(
+'device_token'=>$value['device_token'],
 'msg'=>$msg
   );
 }
@@ -151,11 +158,11 @@ else if ($type_op == "ticket_no_ok") {
 $msg=$MAIL_msg_no_ok.' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
-  $content[] = array(
-'device_token'=>$value,
+  $content = array(
+'device_token'=>$value['device_token'],
 'msg'=>$msg
   );
-  
+
 }  
 
 
@@ -165,29 +172,28 @@ $content[] = array(
   );
   */
 
-$url = "http://api.zenlix.com/api.php";    
+//print_r($content);
+
+$url = "http://api.zenlix.com/api.php";   
+
+$ch = curl_init( $url );
+# Setup request to send json via POST.
+$payload = json_encode($content);
+curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
+curl_setopt( $ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+# Return response instead of printing.
+curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+# Send request.
+$result = curl_exec($ch);
+curl_close($ch);
+
+//API Url
+
+ 
+
+
 //$content = $results;
 
-$curl = curl_init($url);
-curl_setopt($curl, CURLOPT_HEADER, false);
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($curl, CURLOPT_HTTPHEADER,
-        array("Content-type: application/json"));
-curl_setopt($curl, CURLOPT_POST, true);
-curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
-
-$json_response = curl_exec($curl);
-
-$status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-if ( $status != 201 ) {
-    die("Error: call to URL $url failed with status $status, response $json_response, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
-}
-
-
-curl_close($curl);
-
-//$response = json_decode($json_response, true);
 
 
 }

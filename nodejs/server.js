@@ -67,7 +67,12 @@ setInterval(function(){
         */
         
         		var p=rows[i].id;
-				io.sockets.in(rows[i].delivers_id).emit('new_msg', {type_op: rows[i].type_op, t_id: rows[i].ticket_id, chat_id: rows[i].chat_msg_id});
+				io.sockets.in(rows[i].delivers_id).emit('new_msg', {
+                    type_op: rows[i].type_op, 
+                    t_id: rows[i].ticket_id, 
+                    chat_id: rows[i].chat_msg_id,
+                    user_hash: rows[i].delivers_id,
+                    zen_sid: rows[i].session_id});
 				db.query('delete from notification_msg_pool WHERE ID = ?', [p])
 				}
     

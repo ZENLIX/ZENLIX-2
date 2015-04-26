@@ -354,7 +354,7 @@ CREATE TABLE `news` (
   `target_user` varchar(128) DEFAULT NULL,
   `ticket_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `notification_msg_pool`;
@@ -366,8 +366,9 @@ CREATE TABLE `notification_msg_pool` (
   `ticket_id` int(11) DEFAULT NULL,
   `dt` datetime DEFAULT NULL,
   `chat_msg_id` int(11) DEFAULT NULL,
+  `session_id` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
 
