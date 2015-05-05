@@ -71,7 +71,7 @@ setInterval(function(){
                     type_op: rows[i].type_op, 
                     t_id: rows[i].ticket_id, 
                     chat_id: rows[i].chat_msg_id,
-                    user_hash: rows[i].delivers_id,
+                    user_init: rows[i].user_init,
                     zen_sid: rows[i].session_id});
 				db.query('delete from notification_msg_pool WHERE ID = ?', [p])
 				}

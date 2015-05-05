@@ -17,7 +17,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 ?>
 
 
-
+<style>
+.fc-sat {
+  color: rgb(223, 79, 79);
+}
+.fc-sun {
+  color: rgb(223, 79, 79);
+}
+</style>
 
 <section class="content-header">
                     <h1>

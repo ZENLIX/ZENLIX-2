@@ -1,0 +1,110 @@
+{% if aha == "0" %}
+<div class="well well-large well-transparent lead">
+                <center>
+                    {{MSG_no_records}}
+                </center>
+            </div>
+
+{% endif %}
+{% if aha != "0" %}
+<input type="hidden" value="{{get_total_pages_out}}" id="val_menu">
+
+
+            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+                <thead>
+                <tr>
+                    <th><center>
+
+                    <a href="#" style="color: black;" value="id" id="make_sort"> {{sort_type_start_id | raw}}#{{sort_type_stop_id | raw}}
+                    </a>
+                    </center></th>
+                    <th><center>
+                    <a href="#" style="color: black;" value="prio" id="make_sort"> 
+                    {{sort_type_start_prio | raw}}
+                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="{{t_LIST_prio}}"></i>
+                    {{sort_type_stop_prio | raw}}
+                    </a></center></th>
+                    <th><center>
+                    <a href="#" style="color: black;" value="subj" id="make_sort"> 
+                    {{sort_type_start_subj | raw}}
+                    {{t_LIST_subj | raw}}
+                    {{sort_type_stop_subj | raw}}
+                    </a></center></th>
+                    <th><center>
+                    <a href="#" style="color: black;" value="client_id" id="make_sort"> 
+                    {{sort_type_start_client_id | raw}}
+                    {{t_LIST_worker | raw}}
+                    {{sort_type_stop_client_id | raw}}
+                    </a>
+                    </center></th>
+                    <th><center>
+<a href="#" style="color: black;" value="date_create" id="make_sort"> 
+{{sort_type_start_date_create | raw}}
+{{t_LIST_create | raw}}
+{{sort_type_stop_date_create | raw}}
+</a></center></th>
+                    <th><center>{{t_LIST_ago}}</center></th>
+                    <th><center>
+                        <a href="#" style="color: black;" value="user_init_id" id="make_sort"> 
+                    
+                    {{sort_type_start_user_init_id | raw}}
+                    {{t_LIST_init | raw}}
+                    {{sort_type_stop_user_init_id | raw}}
+
+                    </a></center></th>
+                    <th><center>{{t_LIST_to}}</center></th>
+                    <th><center>{{t_LIST_status}}</center></th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+
+
+
+
+
+
+{% for item in ar_res %}
+
+
+<tr id="{{item.id}}" class="{{item.style}}">
+                        <td style=" vertical-align: middle; "><small><center>{{item.id}}</center></small></td>
+                        <td style=" vertical-align: middle; "><small><center>{{item.prio | raw}}</center></small></td>
+                        <td style=" vertical-align: middle; "><a class="{{item.muclass}} pops"  
+                    title="{{item.subj}}"
+                    data-content="<small>{{item.msg}}</small>" 
+                    
+                    
+                    href="ticket?{{item.hashname}}">{{item.cut_subj}}</a></td>
+                        <td style=" vertical-align: middle; "><small>
+                        <a href="view_user?{{item.get_user_hash_by_id_client}}">
+                        {{item.client}}
+                        </a>
+                        </small></td>
+                        <td style=" vertical-align: middle; "><small><center><time id="c" datetime="{{item.date_create}}"></time></center></small></td>
+                        <td style=" vertical-align: middle; "><small><center><time id="a" datetime="{{item.t_ago}}"></time>
+
+                        {{item.get_deadline_label | raw}}</center></small></td>
+
+
+<td style=" vertical-align: middle; "><small class="{{item.muclass}}">{{item.name_of_user_ret | raw}}</small></td>
+
+
+                        <td style=" vertical-align: middle; ">
+                            <small>{{item.to_text | raw}}</small>
+                            
+                        </td>
+                        
+                        
+                        <td style=" vertical-align: middle; "><small><center>{{item.st | raw}}</center>
+                            </small></td>
+                        
+                    </tr>
+
+{% endfor %}
+
+
+                </tbody>
+            </table>
+
+{% endif %}

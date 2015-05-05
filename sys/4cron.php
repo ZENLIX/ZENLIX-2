@@ -766,7 +766,7 @@ $i++;
 
 
     $message = $mailbox->getMail($id);
-    $attachments=$message->getAttachments();
+    //$attachments=$message->getAttachments();
 //$vv=$message->m_id;
 
 /*
@@ -777,7 +777,7 @@ echo "rto:".$message->in_reply_to."<br>";
 
 
 $mref=$message->references;
-
+$mid_code=$message->m_id;
 //echo "<pre>".$message->all."</pre>";
 
 //to code place
@@ -854,8 +854,8 @@ $msg=strip_tags(xss_clean($message->all));
     
     */
 
-
-
+//echo $mref."<br>";
+//echo $mid_code;
 
 
 
@@ -892,20 +892,55 @@ $ft=get_conf_param('file_types');
 
 $ag=explode("|", $ft);
 
+
+
+/*
+
+
+ Весь текст в $message->all
+ загруженные данные сначала проверить расширение, размер и тд, если норм то добавить в бд
+ если нет то удалить
+
+ в текст письма вставлять 
+ ----------------------не удаляйте данный текст-------------------------
+
+ если есть такое то добавлять к комментарию заявке
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
     foreach ($attachments as $attachment) {
     // Array of IncomingMailAttachment objects
-        //       echo $attachment->filePath;
-                //$attachment->name;
-                $ext = pathinfo($attachment->filePath.'/'.$attachment->name, PATHINFO_EXTENSION);
+
+                //echo $attachment->name;
+                $ext = pathinfo($attachment->filePath, PATHINFO_EXTENSION);
                 
+                //echo $attachment->filePath;
+
                 if (in_array($ext, $ag)) {
                 
                 
 add_file($hashname, $attachment->name, $attachment->filePath);
+
+
 }
 
     }
-
+*/
 
 
 //$unow=$user_init_id;
@@ -997,7 +1032,7 @@ $prio='1';
                     ':deadline_time'=> NULL
                 ));
 
-
+/*
 
     foreach ($attachments as $attachment) {
     // Array of IncomingMailAttachment objects
@@ -1006,7 +1041,7 @@ $prio='1';
 add_file($hashname, $attachment->name, $attachment->filePath);
 
     }
-
+*/
 
 //$unow=$user_init_id;
                 $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');

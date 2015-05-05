@@ -367,6 +367,7 @@ CREATE TABLE `notification_msg_pool` (
   `dt` datetime DEFAULT NULL,
   `chat_msg_id` int(11) DEFAULT NULL,
   `session_id` varchar(512) DEFAULT NULL,
+  `user_init` varchar(512) DEFAULT NULL,  
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

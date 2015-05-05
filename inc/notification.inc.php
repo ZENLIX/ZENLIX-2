@@ -112,15 +112,15 @@ $zenlix_session_id="api";
                 unset($delivers_ids[$key]);
             }
             
-
+$init_user_h=get_user_hash_by_id($user_init_id);
 
             /*  ADD TO notification_msg_pool: uniq_id  */
             
             foreach ($del_node as $uniq_id_row) {
                 
                 $u_hash = get_user_hash_by_id($uniq_id_row);
-                $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id) VALUES (:delivers_id, :type_op, :tid, :n, :s)');
-                $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_create', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+                $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+                $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_create', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
             }
             
             $res_str = implode(",", $delivers_ids);
@@ -177,14 +177,14 @@ $zenlix_session_id="api";
             if (($key = array_search($user_init_id, $nr)) !== false) {
                 unset($nr[$key]);
             }
-            
+            $init_user_h=get_user_hash_by_id($user_init_id);
             /*  ADD TO notification_msg_pool: uniq_id  */
             
             foreach ($del_nodes as $uniq_id_row) {
                 
                 $u_hash = get_user_hash_by_id($uniq_id_row);
-                $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id) VALUES (:delivers_id, :type_op, :tid, :n, :s)');
-                $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_create', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+                $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+                $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_create', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
             }
             
             $su = implode(",", $nr);
@@ -216,11 +216,12 @@ $del_node=$delivers_ids;
             if (($key = array_search($_SESSION['helpdesk_user_id'], $delivers_ids)) !== false) {
                 unset($delivers_ids[$key]);
             }
+            $init_user_h=get_user_hash_by_id($user_init_id);
             foreach ($del_node as $uniq_id_row) {
                 
                 $u_hash = get_user_hash_by_id($uniq_id_row);
-                $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id) VALUES (:delivers_id, :type_op, :tid, :n, :s)');
-                $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_refer', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+                $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+                $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_refer', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
             }
             
             $res_str = implode(",", $delivers_ids);
@@ -269,12 +270,12 @@ $del_node=$delivers_ids;
             }
             
 
-
+$init_user_h=get_user_hash_by_id($user_init_id);
             foreach ($del_nodes as $uniq_id_row) {
                 
                 $u_hash = get_user_hash_by_id($uniq_id_row);
-                $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt,session_id) VALUES (:delivers_id, :type_op, :tid, :n,:s)');
-                $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => $type, ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+                $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt,session_id,user_init) VALUES (:delivers_id, :type_op, :tid, :n,:s, :ui)');
+                $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => $type, ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
             }
             
             $su = implode(",", $nr);
@@ -342,18 +343,19 @@ $del_node=$delivers_ids;
         $res = $who_last[0];
         
 
-$del_nodes=$delivers_ids;
+
 
         $delivers_ids = array_unique($delivers_ids);
+        $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        
+        $init_user_h=get_user_hash_by_id($user_init_id);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
-            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id) VALUES (:delivers_id, :type_op, :tid, :n, :s)');
-            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_comment', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_comment', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id,':ui'=>$init_user_h));
         }
         
         $delivers_ids = implode(",", array_unique($delivers_ids));
@@ -414,12 +416,12 @@ $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        
+        $init_user_h=get_user_hash_by_id($user_init_id);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
-            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id) VALUES (:delivers_id, :type_op, :tid, :n, :s)');
-            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_lock', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_lock', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
         }
         
         $delivers_ids = implode(",", array_unique($delivers_ids));
@@ -474,12 +476,12 @@ $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        
+        $init_user_h=get_user_hash_by_id($user_init_id);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
-            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id) VALUES (:delivers_id, :type_op, :tid, :n, :s)');
-            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_unlock', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id,user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_unlock', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
         }
         
         $delivers_ids = implode(",", array_unique($delivers_ids));
@@ -532,12 +534,12 @@ $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        
+        $init_user_h=get_user_hash_by_id($user_init_id);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
-            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id) VALUES (:delivers_id, :type_op, :tid, :n, :s)');
-            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_ok', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_ok', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
         }
         
         $delivers_ids = implode(",", array_unique($delivers_ids));
@@ -592,12 +594,12 @@ $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        
+        $init_user_h=get_user_hash_by_id($user_init_id);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
-            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id) VALUES (:delivers_id, :type_op, :tid, :n, :s)');
-            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_no_ok', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id));
+            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+            $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_no_ok', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
         }
         
         $delivers_ids = implode(",", array_unique($delivers_ids));

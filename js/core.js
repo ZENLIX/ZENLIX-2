@@ -22,18 +22,15 @@ $(".mf").fadeIn(800);
     //push_msg_action2user
     socket.on("new_msg", function(data) {
 
-var zen_sid;
-zen_sid=false;
-if ((USER_HASH == data.user_hash) && (data.zen_sid != ZENLIX_session_id)) {
-    zen_sid=true;
-}
+
 
         switch (data.type_op) {
             case 'ticket_create':
-                if (USER_HASH != data.user_hash) {
-                active_noty_msg('ticket_create', data.t_id);
-                }
+
                 if (data.zen_sid != ZENLIX_session_id) {
+                    if (data.user_init != USER_HASH) {
+                    active_noty_msg('ticket_create', data.t_id);
+                }
                 update_labels();
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                    // if ((def_filename == "dashboard")) {
@@ -50,10 +47,11 @@ if ((USER_HASH == data.user_hash) && (data.zen_sid != ZENLIX_session_id)) {
             }
                 break;
             case 'ticket_refer':
-            if (USER_HASH != data.user_hash) {
+
+            if (data.zen_sid != ZENLIX_session_id) {
+                if (data.user_init != USER_HASH) {
                 active_noty_msg('ticket_refer', data.t_id);
             }
-            if (data.zen_sid != ZENLIX_session_id) {
                 update_labels();
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                   //  if ((def_filename == "dashboard")) {
@@ -73,10 +71,11 @@ if ((USER_HASH == data.user_hash) && (data.zen_sid != ZENLIX_session_id)) {
             }
                 break;
             case 'ticket_ok':
-            if (USER_HASH != data.user_hash) {
+
+            if (data.zen_sid != ZENLIX_session_id) {
+if (data.user_init != USER_HASH) {
                 active_noty_msg('ticket_ok', data.t_id);
             }
-            if (data.zen_sid != ZENLIX_session_id) {
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
                         if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
@@ -98,10 +97,11 @@ if ((USER_HASH == data.user_hash) && (data.zen_sid != ZENLIX_session_id)) {
             }
                 break;
             case 'ticket_no_ok':
-            if (USER_HASH != data.user_hash) {
+
+            if (data.zen_sid != ZENLIX_session_id) {
+if (data.user_init != USER_HASH) {
                 active_noty_msg('ticket_no_ok', data.t_id);
             }
-            if (data.zen_sid != ZENLIX_session_id) {
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
                         if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
@@ -123,10 +123,15 @@ if ((USER_HASH == data.user_hash) && (data.zen_sid != ZENLIX_session_id)) {
             }
                 break;
             case 'ticket_lock':
-            if (USER_HASH != data.user_hash) {
+
+            //consloe.log(USER_HASH+" == "+data.user_hash);
+
+
+            
+            if (data.zen_sid != ZENLIX_session_id) {
+if (data.user_init != USER_HASH) {
                 active_noty_msg('ticket_lock', data.t_id);
             }
-            if (data.zen_sid != ZENLIX_session_id) {
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
                         if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
@@ -145,10 +150,11 @@ if ((USER_HASH == data.user_hash) && (data.zen_sid != ZENLIX_session_id)) {
             }
                 break;
             case 'ticket_unlock':
-            if (USER_HASH != data.user_hash) {
+
+            if (data.zen_sid != ZENLIX_session_id) {
+if (data.user_init != USER_HASH) {
                 active_noty_msg('ticket_unlock', data.t_id);
             }
-            if (data.zen_sid != ZENLIX_session_id) {
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                    // if ((def_filename == "dashboard")) {
                     if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
@@ -167,10 +173,13 @@ if ((USER_HASH == data.user_hash) && (data.zen_sid != ZENLIX_session_id)) {
             }
                 break;
             case 'ticket_comment':
-            if (USER_HASH != data.user_hash) {
-                active_noty_msg('ticket_comment', data.t_id);
-}
+
 if (data.zen_sid != ZENLIX_session_id) {
+if (data.user_init != USER_HASH) {
+    if (!ispath('ticket')) {
+    active_noty_msg('ticket_comment', data.t_id);
+}
+}
                 if (ispath('ticket')) {
                     if ($('#ticket_id').val() == data.t_id) {
                         get_comments(data.t_id);
@@ -185,7 +194,9 @@ if (data.zen_sid != ZENLIX_session_id) {
                 if (USER_HASH != data.user_hash) {
                     if (data.zen_sid != ZENLIX_session_id) {
                 if (!ispath('messages')) {
+                    if (data.user_init != USER_HASH) {
                     noty_message(data.chat_id);
+                }
                 }
                 if (ispath('messages')) {
                     messages_update_window(data.t_id);

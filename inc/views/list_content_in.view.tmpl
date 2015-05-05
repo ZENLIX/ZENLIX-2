@@ -1,0 +1,143 @@
+{% if aha == "0" %}
+<div class="well well-large well-transparent lead">
+                <center>
+                    {{MSG_no_records}}
+                </center>
+            </div>
+
+{% endif %}
+{% if aha != "0" %}
+<input type="hidden" value="{{get_total_pages_in}}" id="val_menu">
+            <input type="hidden" value="{{user_id}}" id="user_id">
+            <input type="hidden" value="" id="total_tickets">
+            <input type="hidden" value="" id="last_total_tickets">
+
+
+ <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+            <thead>
+            <tr>
+                <th><center><div id="sort_id" action="{{helpdesk_sort_id}}">
+<a href="#" style="color: black;" value="id" id="make_sort"> 
+{{sort_type_start_id | raw}}
+                #{{id_icon | raw}}
+{{sort_type_stop_id | raw}}
+</a>
+
+                </div></center></th>
+                <th><center><div id="sort_prio" action="{{helpdesk_sort_prio}}">
+
+                    <a href="#" style="color: black;" value="prio" id="make_sort"> 
+                    {{sort_type_start_prio | raw}}
+                <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="{{t_LIST_prio}}"></i>
+                {{sort_type_stop_prio | raw}}
+                </a>
+                {{prio_icon}}</div></center></th>
+
+
+                <th><center><div id="sort_subj" action="{{helpdesk_sort_subj}}">
+
+                <a href="#" style="color: black;" value="subj" id="make_sort">
+{{sort_type_start_subj | raw}}
+                {{t_LIST_subj | raw}}
+{{sort_type_stop_subj | raw}}
+</a>
+                {{subj_icon}}
+
+                </div></center></th>
+                <th><center><div id="sort_cli" action="{{helpdesk_sort_clientid}}">
+                    <a href="#" style="color: black;" value="client_id" id="make_sort">
+                    {{sort_type_start_client_id | raw}}
+                {{t_LIST_worker | raw}}
+                {{sort_type_stop_client_id | raw}}
+                    </a>
+               
+
+                {{cli_icon}}</div></center></th>
+                <th><center>
+                <a href="#" style="color: black;" value="date_create" id="make_sort">
+
+{{sort_type_start_date_create | raw}}
+{{t_LIST_create | raw}}
+{{sort_type_stop_date_create | raw}}              
+                
+                
+                </a>
+                </center></th>
+                <th><center>{{t_LIST_ago}}</center></th>
+                <th><center><div id="sort_init" action="{{helpdesk_sort_userinitid}}">
+<a href="#" style="color: black;" value="user_init_id" id="make_sort">
+
+{{sort_type_start_user_init_id | raw}}
+{{t_LIST_init | raw}}
+{{sort_type_stop_user_init_id | raw}}
+
+</a>
+
+                {{init_icon}}</div></center></th>
+                <th><center>{{t_LIST_to}}</center></th>
+                <th><center>{{t_LIST_status}}</center></th>
+                <th style="width:60px;"><center>{{t_LIST_action}}</center></th>
+            </tr>
+            </thead>
+            <tbody>
+
+
+
+
+{% for item in ar_res %}
+
+<tr id="tr_{{item.id}}" class="{{item.style}}">
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}"><center>{{item.id}}</center></small></td>
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}"><center>{{item.prio | raw}}</center></small></td>
+                    <td style=" vertical-align: middle; "><a class="{{item.muclass}} pops"  
+                    title="{{item.subj}}"
+                    data-content="<small>{{item.msg}}</small>" 
+                    
+                    
+                    href="ticket?{{item.hashname}}">{{item.cut_subj | raw}}</a></td>
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}">
+                    <a href="view_user?{{item.get_user_hash_by_id_client}}">
+                    {{item.client | raw}}
+                    </a>
+                    
+                    </small></td>
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}"><center><time id="c" datetime="{{item.date_create}}"></time></center></small></td>
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}"><center><time id="a" datetime="{{item.t_ago}}"></time>
+
+                    {{item.get_deadline_label | raw}}
+
+                    </center></small></td>
+
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}">
+                    <a href="view_user?{{item.init_hash}}">
+                    {{item.init_fio | raw}}
+                    </a>
+                    </small></td>
+
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}">
+                            {{item.to_text | raw}}
+                        </small></td>
+                    <td style=" vertical-align: middle; "><small><center>
+                                {{item.st | raw}} </center>
+                        </small></td>
+                    <td style=" vertical-align: middle; ">
+                        <center>
+                            <div class="btn-group btn-group-xs actions ">
+                                <button {{item.get_b_lb}}
+                                 data-toggle="tooltip" data-placement="bottom" title="{{item.lb_tooltip}}" type="button" class="btn btn-warning ela_{{item.id}}" user="{{item.user_id}}" value="{{item.id}}" id="action_list_lock" status="{{item.lb_status}}">
+                                 {{item.lb_text | raw}}</button>
+
+                                <button {{item.get_b_ob}} data-toggle="tooltip" data-placement="bottom" title="{{item.ob_tooltip}}" type="button" class="btn btn-success elb_{{item.id}}" user="{{item.user_id}}" value="{{item.id}}" id="action_list_ok" status="{{item.ob_status}}">{{item.ob_text | raw}}</button>
+                            </div>
+                        </center>
+                    </td>
+                </tr>
+
+{% endfor %}
+
+
+                </tbody>
+            </table>
+
+
+{% endif %}

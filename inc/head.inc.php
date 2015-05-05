@@ -1,99 +1,231 @@
-<!DOCTYPE html>
-<html lang="ru" class="c">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="author" content="">
-    
-    <title><?php echo $CONF['title_header']; ?></title>
-
-
-</head>
-
-
-
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap/css/bootstrap.min.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/jquery-ui.min.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/ionicons.min.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/style.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/font-awesome/css/font-awesome.min.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/chosen.min.css?<?=get_conf_param('version');?>">
-
-
-
-
-<?php
-if ( get_current_URL_name('subj') || get_current_URL_name('config') ) {?>
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css?<?=get_conf_param('version');?>">
-<?php }
-?>
-<?php
-if ((get_current_URL_name('create')) || get_current_URL_name('deps') || get_current_URL_name('scheduler')) { ?>
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/daterangepicker-bs3.css?<?=get_conf_param('version');?>">
-<?php
-} ?>
-
-
-
-
-<?php
-if ((get_current_URL_name('create')) || get_current_URL_name('ticket') || get_current_URL_name('users') || get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('config') || get_current_URL_name('mailers') || get_current_URL_name('sla_rep') || get_current_URL_name('portal') || get_current_URL_name('profile') ) { ?>
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/s2/select2-bootstrap.css?<?=get_conf_param('version');?>">
-
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/dropzone.css?<?=get_conf_param('version');?>">
-<?php
-} ?>
-
-<style type="text/css" media="all">
-    .chosen-rtl .chosen-drop { left: -9000px; }
-</style>
-
-<?php
-if ((get_current_URL_name('helper')) || get_current_URL_name('notes') || get_current_URL_name('mailers')) { ?>
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>js/fancybox/jquery.fancybox.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/dropzone.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote-bs3.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/summernote.css?v2.5">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/js/bootstrap3-editable/css/bootstrap-editable.css?<?=get_conf_param('version');?>">
-<?php
-} ?>
-
-<?php
-if (true == false) { ?>
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/jquery.fileupload.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/jquery.fileupload-ui.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/uploadfile.css?<?=get_conf_param('version');?>">
-<?php
-} ?>
-
-<?php
-if (get_current_URL_name('user_stats') || get_current_URL_name('scheduler') || get_current_URL_name('main_stats') || get_current_URL_name('sla_rep')) { ?>
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/daterangepicker-bs3.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/bootstrap-timepicker.min.css?<?=get_conf_param('version');?>">
 <?php
 
+if (get_current_URL_name('subj')) {
+	$rstyle=array(
+'js/bootstrap3-editable/css/bootstrap-editable.css'
+		);
 }
 
+
+
+
+if (get_current_URL_name('create')) {
+	$rstyle=array(
+'js/bootstrap3-editable/css/bootstrap-editable.css',
+'css/daterangepicker-bs3.css',
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css'
+		);
+}
+
+if (get_current_URL_name('deps')) {
+	$rstyle=array(
+'js/bootstrap3-editable/css/bootstrap-editable.css',
+'css/daterangepicker-bs3.css'
+		);
+}
+
+
+if (get_current_URL_name('scheduler')) {
+	$rstyle=array(
+'js/bootstrap3-editable/css/bootstrap-editable.css',
+'css/daterangepicker-bs3.css',
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css',
+'css/bootstrap-timepicker.min.css'
+		);
+}
+
+if (get_current_URL_name('ticket')) {
+	$rstyle=array(
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css'
+		);
+}
+
+if (get_current_URL_name('users')) {
+	$rstyle=array(
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css'
+		);
+}
+
+if (get_current_URL_name('user_stats')) {
+	$rstyle=array(
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css',
+'css/daterangepicker-bs3.css',
+'css/bootstrap-timepicker.min.css'
+		);
+}
+
+if (get_current_URL_name('main_stats')) {
+	$rstyle=array(
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css',
+'css/daterangepicker-bs3.css',
+'css/bootstrap-timepicker.min.css'
+		);
+}
+
+if (get_current_URL_name('config')) {
+	$rstyle=array(
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css',
+'js/bootstrap3-editable/css/bootstrap-editable.css'
+		);
+}
+
+
+
+if (get_current_URL_name('sla_rep')) {
+	$rstyle=array(
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css',
+'css/daterangepicker-bs3.css',
+'css/bootstrap-timepicker.min.css'
+		);
+}
+
+if (get_current_URL_name('portal')) {
+	$rstyle=array(
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css'
+		);
+}
+
+if (get_current_URL_name('profile')) {
+	$rstyle=array(
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css',
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css'
+
+		);
+}
+
+if (get_current_URL_name('helper')) {
+	$rstyle=array(
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css',
+'css/summernote-bs3.css',
+'css/summernote.css',
+'js/bootstrap3-editable/css/bootstrap-editable.css'
+
+		);
+}
+
+if (get_current_URL_name('notes')) {
+	$rstyle=array(
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css',
+'css/summernote-bs3.css',
+'css/summernote.css',
+'js/bootstrap3-editable/css/bootstrap-editable.css'
+		);
+}
+
+if (get_current_URL_name('mailers')) {
+	$rstyle=array(
+'js/fancybox/jquery.fancybox.css',
+'css/dropzone.css',
+'css/summernote-bs3.css',
+'css/summernote.css',
+'js/bootstrap3-editable/css/bootstrap-editable.css',
+'js/s2/select2.css',
+'js/s2/select2-bootstrap.css'
+		);
+}
+
+if (get_current_URL_name('calendar')) {
+	$rstyle=array(
+'css/fullcalendar.min.css',
+'css/daterangepicker-bs3.css'
+		);
+}
+
+
+
+
+$main_styles_start=array(
+'js/bootstrap/css/bootstrap.min.css',
+'css/jquery-ui.min.css',
+'css/ionicons.min.css',
+'css/style.css',
+'css/font-awesome/css/font-awesome.min.css',
+'css/chosen.min.css'
+);
+
+$main_styles_end=array(
+'css/print.css',
+'css/AdminLTE.css',
+'css/skin-blue.css'
+);
+
+
+
+$basedir = dirname(dirname(__FILE__)); 
+
+ try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('head.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+'title_header'=>$CONF['title_header'],
+'hostname'=>$CONF['hostname'],
+'main_styles_start'=>$main_styles_start,
+'main_styles_end'=>$main_styles_end,
+'version'=>get_conf_param('version'),
+'page_style'=>$rstyle
+
+
+            ));
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
 ?>
-<?php
-if ( get_current_URL_name('calendar')  ) {?>
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/fullcalendar.min.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/daterangepicker-bs3.css?<?=get_conf_param('version');?>">
-<?php }
-?>
-
-<link rel="stylesheet"type="text/css" media="print" href="<?php echo $CONF['hostname'] ?>/css/print.css?<?=get_conf_param('version');?>">
 
 
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/AdminLTE.css?<?=get_conf_param('version');?>">
-<link rel="stylesheet" href="<?php echo $CONF['hostname'] ?>/css/skin-blue.css?<?=get_conf_param('version');?>">
-<body class="skin-blue" style="">
+
+
+
+
+
+
+
+
+
   
 
   

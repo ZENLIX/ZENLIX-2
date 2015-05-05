@@ -255,14 +255,7 @@ if (isset($_SESSION['hd.rustem_sort_out'])) {
         $res1 = $stmt->fetchAll();
         
         $aha = get_total_pages('out', $user_id);
-        if ($aha == "0") {
-?>
-            <div id="spinner" class="well well-large well-transparent lead">
-                <center><?php echo lang('MSG_no_records'); ?></center>
-            </div>
-        <?php
-        }
-        if ($aha <> "0") { 
+         
 
 
 
@@ -314,62 +307,11 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
 
     }
 
-?>
 
 
 
-            <input type="hidden" value="<?php
-            echo get_total_pages('out', $user_id); ?>" id="val_menu">
+$ar_res=array();
 
-
-            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
-                <thead>
-                <tr>
-                    <th><center>
-
-                    <a href="#" style="color: black;" value="id" id="make_sort"> <?=$sort_type_start['id'];?>#<?=$sort_type_stop['id'];?>
-                    </a>
-                    </center></th>
-                    <th><center>
-                    <a href="#" style="color: black;" value="prio" id="make_sort"> 
-                    <?=$sort_type_start['prio'];?>
-                    <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_LIST_prio'); ?>"></i>
-                    <?=$sort_type_stop['prio'];?>
-                    </a></center></th>
-                    <th><center>
-                    <a href="#" style="color: black;" value="subj" id="make_sort"> 
-                    <?=$sort_type_start['subj'];?>
-                    <?php echo lang('t_LIST_subj'); ?>
-                    <?=$sort_type_stop['subj'];?>
-                    </a></center></th>
-                    <th><center>
-                    <a href="#" style="color: black;" value="client_id" id="make_sort"> 
-                    <?=$sort_type_start['client_id'];?>
-                    <?php echo lang('t_LIST_worker'); ?>
-                    <?=$sort_type_stop['client_id'];?>
-                    </a>
-                    </center></th>
-                    <th><center>
-<a href="#" style="color: black;" value="date_create" id="make_sort"> 
-<?=$sort_type_start['date_create'];?>
-<?php echo lang('t_LIST_create'); ?>
-<?=$sort_type_stop['date_create'];?>
-</a></center></th>
-                    <th><center><?php echo lang('t_LIST_ago'); ?></center></th>
-                    <th><center>
-                        <a href="#" style="color: black;" value="user_init_id" id="make_sort"> 
-                        <?=$sort_type_start['user_init_id'];?>
-                    <?php echo lang('t_LIST_init') ?>
-                    <?=$sort_type_stop['user_init_id'];?>
-                    </a></center></th>
-                    <th><center><?php echo lang('t_LIST_to'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_status'); ?></center></th>
-                    <!--th><center><?php echo lang('t_LIST_action'); ?></center></th-->
-                </tr>
-                </thead>
-                <tbody>
-
-                <?php
             foreach ($res1 as $row) {
                 $lb = $row['lock_by'];
                 $ob = $row['ok_by'];
@@ -470,68 +412,91 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
                 }
                 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
                 
                 
-?>
 
-                    <tr id="tr_<?php
-                echo $row['id']; ?>" class="<?php echo $style ?>">
-                        <td style=" vertical-align: middle; "><small><center><?php
-                echo $row['id']; ?></center></small></td>
-                        <td style=" vertical-align: middle; "><small><center><?php echo $prio ?></center></small></td>
-                        <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
-                    title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg'])), 'no')); ?></small>" 
-                    
-                    
-                    href="ticket?<?php
-                echo $row['hash_name']; ?>"><?php
-                cutstr(make_html($row['subj'], 'no')); ?></a></td>
-                        <td style=" vertical-align: middle; "><small>
-                        <a href="view_user?<?php echo get_user_hash_by_id($row['client_id']); ?>">
-                        <?php echo get_user_val_by_id($row['client_id'], 'fio'); ?>
-                        </a>
-                        </small></td>
-                        <td style=" vertical-align: middle; "><small><center><time id="c" datetime="<?php echo $row['date_create']; ?>"></time></center></small></td>
-                        <td style=" vertical-align: middle; "><small><center><time id="a" datetime="<?php echo $t_ago; ?>"></time>
-
-                        <?=get_deadline_label($row['id']);?></center></small></td>
-
-
-<td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><?php
-                echo nameshort(name_of_user_ret($row['user_init_id'])); ?></small></td>
-
-
-                        <td style=" vertical-align: middle; ">
-                            <small><?php echo $to_text; ?></small>
-                            
-                        </td>
-                        
-                        
-                        <td style=" vertical-align: middle; "><small><center><?php echo $st; ?></center>
-                            </small></td>
-                        <!--td style=" vertical-align: middle; ">
-                            <center>
-                                <div class="btn-group btn-group-xs actions">
-                                    <button data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_list_a_ok_no'); ?>" type="button" <?php echo $dis_status; ?> class="btn btn-success" user="<?php echo $user_id ?>" value="<?php
-                echo $row['id']; ?>" id="action_list_ok" status="<?php echo $ob_status ?>"><?php echo $ob_text ?></button>
-                                </div>
-                            </center>
-                        </td-->
-                    </tr>
-                <?php
-            }
-?>
-                </tbody>
-            </table>
+        ob_start();
+        
+        //Start output buffer
+        cutstr(make_html($row['subj'], 'no'));
+        $cut_subj = ob_get_contents();
+        
+        //Grab output
+        ob_end_clean();
 
 
 
 
+array_push($ar_res, array(
+
+    'id'=>$row['id'],
+    'style'=>$style,
+    'prio'=>$prio,
+    'muclass'=>$muclass,
+    'subj'=>make_html($row['subj'], 'no'),
+    'msg'=>str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg'])), 'no')),
+    'hashname'=>$row['hash_name'],
+    'cut_subj'=>$cut_subj,
+    'get_user_hash_by_id_client'=>get_user_hash_by_id($row['client_id']),
+    'client'=>get_user_val_by_id($row['client_id'], 'fio'),
+    'date_create'=>$row['date_create'],
+    't_ago'=>$t_ago,
+    'get_deadline_label'=>get_deadline_label($row['id']),
+    'name_of_user_ret'=>nameshort(name_of_user_ret($row['user_init_id'])),
+    'to_text'=>$to_text,
+    'st'=>$st));
 
 
-        <?php
+}
+$basedir = dirname(dirname(__FILE__)); 
+            ////////////
+    try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('list_content_out.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+                'get_total_pages_out' => get_total_pages('out', $user_id),
+                'sort_type_start_id'=>$sort_type_start['id'],
+                'sort_type_stop_id'=>$sort_type_stop['id'],
+                'sort_type_start_prio'=>$sort_type_start['prio'],
+                't_LIST_prio'=>lang('t_LIST_prio'),
+                'sort_type_stop_prio'=>$sort_type_stop['prio'],
+                'sort_type_start_subj'=>$sort_type_start['subj'],
+                't_LIST_subj'=>lang('t_LIST_subj'),
+                'sort_type_stop_subj'=>$sort_type_stop['subj'],
+                'sort_type_start_client_id'=>$sort_type_start['client_id'],
+                't_LIST_worker'=>lang('t_LIST_worker'),
+                'sort_type_stop_client_id'=>$sort_type_stop['client_id'],
+                'sort_type_start_date_create'=>$sort_type_start['date_create'],
+                't_LIST_create'=>lang('t_LIST_create'),
+                'sort_type_stop_date_create'=>$sort_type_stop['date_create'],
+                't_LIST_ago'=>lang('t_LIST_ago'),
+                'sort_type_start_user_init_id'=>$sort_type_start['user_init_id'],
+                't_LIST_init'=>lang('t_LIST_init'),
+                'sort_type_stop_user_init_id'=>$sort_type_stop['user_init_id'],
+                't_LIST_to'=>lang('t_LIST_to'),
+                't_LIST_status'=>lang('t_LIST_status'),
+                'ar_res'=>$ar_res,
+                'aha'=>$aha,
+                'MSG_no_records'=>lang('MSG_no_records')
+
+
+            ));
         }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
     }
     
     if ($_POST['menu'] == 'find') {
@@ -592,33 +557,11 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
             $res1 = $stmt->fetchAll();
         }
         
-        if (empty($res1)) {
-?>
-            <div class="well well-large well-transparent lead">
-                <center>
-                    <?php echo lang('MSG_no_records') ?>
-                </center>
-            </div>
-        <?php
-        } else if (!empty($res1)) {
-?>
-            <center><small class="text-mutted"><em><?php echo lang('t_list_a_top') ?></em></small></center>
-            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
-            <thead>
-            <tr>
-                <th><center>#</center></th>
-                <th><center><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_LIST_prio') ?>"></i></center></th>
-                <th><center><?php echo lang('t_LIST_subj') ?></center></th>
-                <th><center><?php echo lang('t_LIST_worker') ?></center></th>
-                <th><center><?php echo lang('t_LIST_create') ?></center></th>
-                <th><center><?php echo lang('t_LIST_ago') ?></center></th>
-                <th><center><?php echo lang('t_LIST_init') ?></center></th>
-                <th><center><?php echo lang('t_LIST_to') ?></center></th>
-                <th><center><?php echo lang('t_LIST_status') ?></center></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
+$ar_res=array();
+
+if (empty($res1)) {$aha="0"; }
+else if (!empty($res1)) {$aha="1"; }
+
             foreach ($res1 as $row) {
                 $lb = $row['lock_by'];
                 $ob = $row['ok_by'];
@@ -787,64 +730,84 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
                 if ($row['status'] == 0) {
                     $t_ago = $row['date_create'];
                 }
-?>
-                <tr id="tr_<?php
-                echo $row['id']; ?>" class="<?php echo $style ?>">
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center>
-                   <?=$row['id'];?>
+
+            
+            
+        ob_start();
+        
+        //Start output buffer
+        cutstr(make_html($row['subj'], 'no'));
+        $cut_subj = ob_get_contents();
+        
+        //Grab output
+        ob_end_clean();
 
 
-                </center></small></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php echo $prio ?></center></small></td>
-                    <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
-                    title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg']), 'no'))); ?></small>" 
-                    
-                    
-                    href="ticket?<?php
-                echo $row['hash_name']; ?>"><?php
-                cutstr(make_html($row['subj'], 'no')); ?></a></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
-                    <a href="view_user?<?php echo get_user_hash_by_id($row['client_id']); ?>">
-                    <?php echo get_user_val_by_id($row['client_id'], 'fio'); ?>
-                    </a>
-                    </small></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="c" datetime="<?php echo $row['date_create']; ?>"></time></center></small></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center>
-                    <time id="a" datetime="<?php echo $t_ago; ?>"></time>
-                     <?=get_deadline_label($row['id']);?>
-                    </center></small></td>
 
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><?php
-                echo nameshort(name_of_user_ret($row['user_init_id'])); ?></small></td>
 
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
-                            <?php echo $to_text
-?>
-                        </small></td>
-                    <td style=" vertical-align: middle; ">
-                        <center><small>
-                                <?php echo $st; ?>
-                            </small>
-                        </center>
-                    </td>
-                </tr>
-            <?php
+array_push($ar_res, array(
+
+    'id'=>$row['id'],
+    'style'=>$style,
+    'prio'=>$prio,
+    'muclass'=>$muclass,
+    'subj'=>make_html($row['subj'], 'no'),
+    'msg'=>str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg'])), 'no')),
+    'hashname'=>$row['hash_name'],
+    'cut_subj'=>$cut_subj,
+    'get_user_hash_by_id_client'=>get_user_hash_by_id($row['client_id']),
+    'client'=>get_user_val_by_id($row['client_id'], 'fio'),
+    'date_create'=>$row['date_create'],
+    't_ago'=>$t_ago,
+    'get_deadline_label'=>get_deadline_label($row['id']),
+    'name_of_user_ret'=>nameshort(name_of_user_ret($row['user_init_id'])),
+    'to_text'=>$to_text,
+    'st'=>$st));
+
             }
-?>
-            </tbody>
-            </table>
+
+$basedir = dirname(dirname(__FILE__)); 
+            ////////////
+    try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('list_content_find.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+                't_list_a_top' => lang('t_list_a_top'),
+                't_LIST_prio'=>lang('t_LIST_prio'),
+                't_LIST_subj'=>lang('t_LIST_subj'),
+                't_LIST_worker'=>lang('t_LIST_worker'),
+                't_LIST_create'=>lang('t_LIST_create'),
+                't_LIST_ago'=>lang('t_LIST_ago'),
+                't_LIST_init'=>lang('t_LIST_init'),
+                't_LIST_to'=>lang('t_LIST_to'),
+                't_LIST_status'=>lang('t_LIST_status'),
+                'ar_res'=>$ar_res,
+                'aha'=>$aha,
+                'MSG_no_records'=>lang('MSG_no_records')
 
 
-
-        <?php
+            ));
         }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+        
     }
      
     if ($_POST['menu'] == 'in') {
         
         $page = ($_POST['page']);
-        
+        $ar_res=array();
         $perpage = '10';
         if (isset($_SESSION['hd.rustem_list_in'])) {
             $perpage = $_SESSION['hd.rustem_list_in'];
@@ -1080,30 +1043,8 @@ if (!isset($_SESSION['hd.rustem_sort_out'])) {
         }
         
         $aha = get_total_pages('in', $user_id);
-        if ($aha == "0") {
-?>
-            <div id="spinner" class="well well-large well-transparent lead">
-                <center>
-                    <?php echo lang('MSG_no_records'); ?>
-                </center>
-            </div>
-        <?php
-        }
-        if ($aha <> "0") {
-?>
-
-            <input type="hidden" value="<?php
-            echo get_total_pages('in', $user_id); ?>" id="val_menu">
-            <input type="hidden" value="<?php
-            echo $user_id; ?>" id="user_id">
-            <input type="hidden" value="" id="total_tickets">
-            <input type="hidden" value="" id="last_total_tickets">
 
 
-
-
-
-<?php
 
 if (!isset($_SESSION['hd.rustem_sort_in'])) {
         if (isset($_SESSION['zenlix_list_in_sort'])) {
@@ -1146,71 +1087,7 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
 
     }
 
-?>
 
-
- 
-            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
-            <thead>
-            <tr>
-                <th><center><div id="sort_id" action="<?php echo $_SESSION['helpdesk_sort_id']; ?>">
-<a href="#" style="color: black;" value="id" id="make_sort"> 
-<?=$sort_type_start['id'];?>
-                #<?php echo $id_icon; ?>
-<?=$sort_type_stop['id'];?>
-</a>
-
-                </div></center></th>
-                <th><center><div id="sort_prio" action="<?php echo $_SESSION['helpdesk_sort_prio']; ?>">
-
-                    <a href="#" style="color: black;" value="prio" id="make_sort"> 
-                    <?=$sort_type_start['prio'];?>
-                <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="<?php echo lang('t_LIST_prio'); ?>"></i>
-                <?=$sort_type_stop['prio'];?>
-                </a>
-                <?php echo $prio_icon; ?></div></center></th>
-                <th><center><div id="sort_subj" action="<?php echo $_SESSION['helpdesk_sort_subj']; ?>">
-
-                <a href="#" style="color: black;" value="subj" id="make_sort">
-<?=$sort_type_start['subj'];?>
-                <?php echo lang('t_LIST_subj'); ?>
-<?=$sort_type_stop['subj'];?>
-</a>
-                <?php echo $subj_icon; ?>
-
-                </div></center></th>
-                <th><center><div id="sort_cli" action="<?php echo $_SESSION['helpdesk_sort_clientid']; ?>">
-                    <a href="#" style="color: black;" value="client_id" id="make_sort">
-                    <?=$sort_type_start['client_id'];?>
-                <?php echo lang('t_LIST_worker'); ?>
-                <?=$sort_type_stop['client_id'];?>
-                    </a>
-
-                <?php echo $cli_icon; ?></div></center></th>
-                <th><center>
-                <a href="#" style="color: black;" value="date_create" id="make_sort">
-                <?=$sort_type_start['date_create'];?>
-                <?php echo lang('t_LIST_create'); ?>
-                <?=$sort_type_stop['date_create'];?>
-                </a>
-                </center></th>
-                <th><center><?php echo lang('t_LIST_ago'); ?></center></th>
-                <th><center><div id="sort_init" action="<?php echo $_SESSION['helpdesk_sort_userinitid']; ?>">
-<a href="#" style="color: black;" value="user_init_id" id="make_sort">
-<?=$sort_type_start['user_init_id'];?>
-                <?php echo lang('t_LIST_init'); ?>
-<?=$sort_type_stop['user_init_id'];?>
-</a>
-
-                <?php echo $init_icon; ?></div></center></th>
-                <th><center><?php echo lang('t_LIST_to'); ?></center></th>
-                <th><center><?php echo lang('t_LIST_status'); ?></center></th>
-                <th style="width:60px;"><center><?php echo lang('t_LIST_action'); ?></center></th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <?php
             foreach ($res1 as $row) {
                 $lb = $row['lock_by'];
                 $ob = $row['ok_by'];
@@ -1376,89 +1253,132 @@ if (!isset($_SESSION['hd.rustem_sort_in'])) {
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 
 
-
-
-
-$r_js['tickets']=array();
-
-array_push($r_js['tickets'], array(
-
-        'tid'=> $row['id'],
-        'prio'=>$prio
+        ob_start();
         
+        //Start output buffer
+        cutstr(make_html($row['subj'], 'no'));
+        $cut_subj = ob_get_contents();
+        
+        //Grab output
+        ob_end_clean();
+
+
+
+            
+array_push($ar_res, array(
+
+    'id'=>$row['id'],
+    'style'=>$style,
+    'prio'=>$prio,
+    'muclass'=>$muclass,
+    'subj'=>make_html($row['subj'], 'no'),
+    'msg'=>str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg'])), 'no')),
+    'hashname'=>$row['hash_name'],
+    'cut_subj'=>$cut_subj,
+    'get_user_hash_by_id_client'=>get_user_hash_by_id($row['client_id']),
+    'client'=>get_user_val_by_id($row['client_id'], 'fio'),
+    'date_create'=>$row['date_create'],
+    't_ago'=>$t_ago,
+    'get_deadline_label'=>get_deadline_label($row['id']),
+    'name_of_user_ret'=>nameshort(name_of_user_ret($row['user_init_id'])),
+
+    'init_hash'=>get_user_hash_by_id($row['user_init_id']),
+    'init_fio'=>nameshort(name_of_user_ret($row['user_init_id'])),
+    'to_text'=>$to_text,
+    'st'=>$st,
+
+    'get_b_lb'=>get_button_act_status(get_ticket_action_priv($row['id']), $lb_status),
+    'lb_tooltip'=>$lb_tooltip,
+    'user_id'=>$user_id,
+    'lb_status'=>$lb_status,
+    'lb_text'=>$lb_text,
+
+    'get_b_ob'=>get_button_act_status(get_ticket_action_priv($row['id']), $status_ok_status),
+    'ob_tooltip'=>$ob_tooltip,
+    'ob_status'=>$ob_status,
+    'ob_text'=>$ob_text
+
+
+
+
+
+
+
+
 
     ));
 
 
+}
+$basedir = dirname(dirname(__FILE__)); 
+            ////////////
+    try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('list_content_in.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+                'get_total_pages_in' => get_total_pages('in', $user_id),
+                'user_id'=>$user_id,
+                'helpdesk_sort_id'=>$_SESSION['helpdesk_sort_id'],
+                'sort_type_start_id'=>$sort_type_start['id'],
+                'sort_type_stop_id'=>$sort_type_stop['id'],
+                'id_icon'=>$id_icon,
 
-?>
+                'helpdesk_sort_prio'=>$_SESSION['helpdesk_sort_prio'],
 
-                <tr id="tr_<?php
-                echo $row['id']; ?>" class="<?php echo $style ?>">
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php
-                echo $row['id']; ?></center></small></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><?php echo $prio ?></center></small></td>
-                    <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
-                    title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg']), 'no'))); ?></small>" 
-                    
-                    
-                    href="ticket?<?php
-                echo $row['hash_name']; ?>"><?php
-                cutstr(make_html($row['subj'], 'no')); ?></a></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
-                    <a href="view_user?<?php echo get_user_hash_by_id($row['client_id']); ?>">
-                    <?php echo get_user_val_by_id($row['client_id'], 'fio'); ?>
-                    </a>
-                    
-                    </small></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="c" datetime="<?php echo $row['date_create']; ?>"></time></center></small></td>
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>"><center><time id="a" datetime="<?php echo $t_ago; ?>"></time>
+                'sort_type_start_prio'=>$sort_type_start['prio'],
+                't_LIST_prio'=>lang('t_LIST_prio'),
+                'sort_type_stop_prio'=>$sort_type_stop['prio'],
+                'prio_icon'=>$prio_icon,
 
-                    <?=get_deadline_label($row['id']);?>
+                'helpdesk_sort_subj'=>$_SESSION['helpdesk_sort_subj'],
 
-                    </center></small></td>
+                'sort_type_start_subj'=>$sort_type_start['subj'],
+                't_LIST_subj'=>lang('t_LIST_subj'),
+                'sort_type_stop_subj'=>$sort_type_stop['subj'],
+                'subj_icon'=>$subj_icon,
 
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
-                    <a href="view_user?<?php echo get_user_hash_by_id($row['user_init_id']); ?>">
-                    <?php
-                echo nameshort(name_of_user_ret($row['user_init_id'])); ?>
-                    </a>
-                    </small></td>
+                'helpdesk_sort_clientid'=>$_SESSION['helpdesk_sort_clientid'],
 
-                    <td style=" vertical-align: middle; "><small class="<?php echo $muclass; ?>">
-                            <?php echo $to_text
-?>
-                        </small></td>
-                    <td style=" vertical-align: middle; "><small><center>
-                                <?php echo $st; ?> </center>
-                        </small></td>
-                    <td style=" vertical-align: middle; ">
-                        <center>
-                            <div class="btn-group btn-group-xs actions ">
-                                <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $lb_status);?>
-                                 data-toggle="tooltip" data-placement="bottom" title="<?php echo $lb_tooltip ?>" type="button" class="btn btn-warning ela_<?php
-                echo $row['id']; ?>" user="<?php echo $user_id ?>" value="<?php
-                echo $row['id']; ?>" id="action_list_lock" status="<?php echo $lb_status ?>"><?php echo $lb_text ?></button>
-
-                                <button <?=get_button_act_status(get_ticket_action_priv($row['id']), $status_ok_status);?> data-toggle="tooltip" data-placement="bottom" title="<?php echo $ob_tooltip ?>" type="button" class="btn btn-success elb_<?php
-                echo $row['id']; ?>" user="<?php echo $user_id ?>" value="<?php
-                echo $row['id']; ?>" id="action_list_ok" status="<?php echo $ob_status ?>"><?php echo $ob_text ?></button>
-                            </div>
-                        </center>
-                    </td>
-                </tr>
-            <?php
-            }
-?>
-            </tbody>
-            </table>
+                'sort_type_start_client_id'=>$sort_type_start['client_id'],
+                't_LIST_worker'=>lang('t_LIST_worker'),
+                'sort_type_stop_client_id'=>$sort_type_stop['client_id'],
+                'cli_icon'=>$cli_icon,
 
 
+                'sort_type_start_date_create'=>$sort_type_start['date_create'],
+                't_LIST_create'=>lang('t_LIST_create'),
+                'sort_type_stop_date_create'=>$sort_type_stop['date_create'],
+
+                't_LIST_ago'=>lang('t_LIST_ago'),
+
+                'helpdesk_sort_userinitid'=>$_SESSION['helpdesk_sort_userinitid'],
+
+                'sort_type_start_user_init_id'=>$sort_type_start['user_init_id'],
+                't_LIST_init'=>lang('t_LIST_init'),
+                'sort_type_stop_user_init_id'=>$sort_type_stop['user_init_id'],
+                'init_icon'=>$init_icon,
+                't_LIST_to'=>lang('t_LIST_to'),
+                't_LIST_status'=>lang('t_LIST_status'),
+                'ar_res'=>$ar_res,
+                'aha'=>$aha,
+                'MSG_no_records'=>lang('MSG_no_records'),
+                't_LIST_action'=>lang('t_LIST_action'),
 
 
-
-        <?php
+            ));
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
         }
     }
     if ($_POST['menu'] == 'arch') {
@@ -1540,40 +1460,8 @@ array_push($r_js['tickets'], array(
         }
         
         $aha = get_total_pages('arch', $user_id);
-        if ($aha == "0") {
-?>
-            <div id="spinner" class="well well-large well-transparent lead">
-                <center>
-                    <?php echo lang('MSG_no_records'); ?>
-                </center>
-            </div>
-        <?php
-        } else if ($aha <> "0") {
-?>
-
-            <input type="hidden" value="<?php
-            echo get_total_pages('arch', $user_id); ?>" id="val_menu">
-            <input type="hidden" value="<?php
-            echo $user_id; ?>" id="user_id">
-            <input type="hidden" value="" id="total_tickets">
-            <input type="hidden" value="" id="last_total_tickets">
-
-            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
-                <thead>
-                <tr>
-                    <th><center>#</center></th>
-                    <th><center><?php echo lang('t_LIST_subj'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_worker'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_create'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_init'); ?></center></th>
-                    <th><center><?php echo lang('t_LIST_to'); ?></center></th>
-                    <th><center><?php echo lang('t_list_a_user_ok'); ?></center></th>
-                    <th><center><?php echo lang('t_list_a_date_ok'); ?></center></th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <?php
+       
+       $ar_res=array();
             
             foreach ($res1 as $row) {
                 
@@ -1583,40 +1471,102 @@ array_push($r_js['tickets'], array(
                 if ($row['user_to_id'] == 0) {
                     $to_text = "<strong data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"" . view_array(get_unit_name_return($row['unit_id'])) . "\">" . lang('t_list_a_all') . "</strong>";
                 }
-?>
-                    <tr >
-                        <td style=" vertical-align: middle; "><small><center><?php
-                echo $row['id']; ?></center></small></td>
-                        <td style=" vertical-align: middle; "><a class="<?php echo $muclass; ?> pops"  
-                    title="<?php echo make_html($row['subj'], 'no'); ?>"
-                    data-content="<small><?php echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg']), 'no'))); ?></small>" 
-                    
-                    
-                    href="ticket?<?php
-                echo $row['hash_name']; ?>"><?php
-                cutstr(make_html($row['subj'], 'no')); ?></a></td>
-                        <td style=" vertical-align: middle; "><small><?php echo get_user_val_by_id($row['client_id'], 'fio'); ?></small></td>
-                        <td style=" vertical-align: middle; "><small><center><time id="c" datetime="<?php echo $row['date_create']; ?>"></time></center></small></td>
-                        <td style=" vertical-align: middle; "><small><?php echo nameshort(name_of_user_ret($row['user_init_id'])); ?></small></td>
 
-                        <td style=" vertical-align: middle; "><small>
-                                <?php echo $to_text
-?>
-                            </small></td>
-                        <td style=" vertical-align: middle; "><small>
-                                <?php echo nameshort(name_of_user_ret($row['ok_by'])); ?>
-                            </small></td>
-                        <td style=" vertical-align: middle; "><small><center>
-                        <time id="c" datetime="<?php echo $row['ok_date']; ?>"></time>
-                        </center></small></td>
-                    </tr>
-                <?php
+
+
+ob_start();
+        
+        //Start output buffer
+        cutstr(make_html($row['subj'], 'no'));
+        $cut_subj = ob_get_contents();
+        
+        //Grab output
+        ob_end_clean();
+
+
+array_push($ar_res, array(
+
+    'id'=>$row['id'],
+    'muclass'=>$muclass,
+    'subj'=>make_html($row['subj'], 'no'),
+    'msg'=>str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg'])), 'no')),
+    'hashname'=>$row['hash_name'],
+
+    'cut_subj'=>$cut_subj,
+    'get_user_hash_by_id_client'=>get_user_hash_by_id($row['client_id']),
+    'client'=>get_user_val_by_id($row['client_id'], 'fio'),
+    'date_create'=>$row['date_create'],
+    't_ago'=>$t_ago,
+    'get_deadline_label'=>get_deadline_label($row['id']),
+    'name_of_user_ret'=>nameshort(name_of_user_ret($row['user_init_id'])),
+
+    'init_hash'=>get_user_hash_by_id($row['user_init_id']),
+    'init_fio'=>nameshort(name_of_user_ret($row['user_init_id'])),
+    'to_text'=>$to_text,
+    'ok_by'=>nameshort(name_of_user_ret($row['ok_by'])),
+    'ok_date'=>$row['ok_date'],
+
+
+
+
+
+
+
+
+
+
+
+    ));
+
+
+
             }
-?>
-                </tbody>
-            </table>
-        <?php
+
+
+
+$basedir = dirname(dirname(__FILE__)); 
+            ////////////
+    try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('list_content_arch.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+                'get_total_pages_arch' => get_total_pages('arch', $user_id),
+                'user_id'=>$user_id,
+                't_LIST_subj'=>lang('t_LIST_subj'),
+                't_LIST_worker'=>lang('t_LIST_worker'),
+                't_LIST_create'=>lang('t_LIST_create'),
+                't_LIST_init'=>lang('t_LIST_init'),
+                't_LIST_to'=>lang('t_LIST_to'),
+                'ar_res'=>$ar_res,
+                'aha'=>$aha,
+                'MSG_no_records'=>lang('MSG_no_records'),
+                't_list_a_user_ok'=>lang('t_list_a_user_ok'),
+                't_list_a_date_ok'=>lang('t_list_a_date_ok')
+
+
+
+
+
+
+            ));
         }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
     }
 }
 ?>

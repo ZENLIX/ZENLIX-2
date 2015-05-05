@@ -1,0 +1,48 @@
+
+</div>
+</div>
+
+<div id="main-footer" class="mf" style=" padding-bottom: 20px; {{style_hide}}">
+    <div class="" style=" padding: 20px; ">
+        <div class="col-md-12">
+            <p class="text-muted credit pull-right"><small>Developed by <a href="http://zenlix.com/">ZENLIX</a> (с) {{date}}.</p>
+            </small>
+        </div>
+
+
+    </div>
+</div>
+
+</div>     
+                
+            
+
+<script type="text/javascript">
+
+{% for key, item in JS_conf_arr %}
+var {{key}} = "{{item}}";
+{% endfor %}
+    
+</script>
+
+
+{% for item in main_js_start %}
+<script src="{{hostname}}{{item}}?{{version}}"></script>
+{% endfor %}
+
+
+
+{% for item in page_js %}
+<script src="{{hostname}}{{item}}?{{version}}"></script>
+{% endfor %}
+
+
+{% for item in main_js_stop %}
+<script src="{{hostname}}{{item}}?{{version}}"></script>
+{% endfor %}
+
+
+
+
+</body>
+</html>

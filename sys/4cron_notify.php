@@ -38,6 +38,14 @@ include($base .'/library/smsc_smpp.php');
 
 получатель будет получать весь лог только тому кому надо
 
+
+
+номер заявки
+действие
+кто инициатор фам и7о7
+
+
+
 */
 
 
@@ -46,7 +54,11 @@ function make_device_push($type_op, $usr_lang, $usr_id, $ticket_id)
 {
   global $dbConnection,$base,$CONF;
 
+$th=get_ticket_hash_by_id($ticket_id);
+$cat_ticket="in";
 
+
+$lang=$usr_lang;
 
 $MAIL_new=lang($lang,'MAIL_new');
 $MAIL_refer=lang($lang,'mail_msg_ticket_refer');
@@ -72,6 +84,9 @@ $MAIL_msg_no_ok_ext=lang($lang,'mail_msg_ticket_no_ok_ext');
         
         $h=$ticket_res['hash_name'];
         $user_init_id=$ticket_res['user_init_id'];
+
+$uss = nameshort(name_of_user_ret($user_init_id));
+
         $uin=name_of_user_ret($user_init_id);//????? IF CLIENT /////
 
         $nou=name_of_client_ret($ticket_res['client_id']);
@@ -86,6 +101,13 @@ $MAIL_msg_no_ok_ext=lang($lang,'mail_msg_ticket_no_ok_ext');
         else if ($ticket_res['user_to_id'] == 0 ) {
             $to_text=view_array(get_unit_name_return($unit_id));
         }
+
+
+if ($user_init_id == $usr_id) {
+  $cat_ticket="out";
+}
+
+
         
 
 $stmt = $dbConnection->prepare('SELECT device_token from user_devices where user_id=:uid');
@@ -98,69 +120,96 @@ unset($content);
 $content = array();
 if ($type_op == "ticket_create") {
 
+
+$msg=$uss." ".lang($lang,'NEWS_action_create')." #".$ticket_id."\r\n";
+$msg.=lang($lang,'NEW_subj').": ".$s."\r\n";
+
+/*
 $msg=lang($lang,'MAIL_new').' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+*/
 
 $content = array(
 'device_token'=>$value['device_token'],
-'msg'=>$msg
+'msg'=>$msg,
+'th'=>$th,
+'cat'=>get_ticket_action_priv_api_arr($ticket_id, $usr_id)
   );
 
 
 }
 else if ($type_op == "ticket_refer") {
-$msg=$MAIL_refer.' #'.$ticket_id."\r\n";
-$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
-$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+
+$msg=$uss." ".lang($lang, 'NEWS_action_refer')." #".$ticket_id."\r\n";
+$msg.=lang($lang,'NEW_subj').": ".$s."\r\n";
+
+
   $content = array(
 'device_token'=>$value['device_token'],
-'msg'=>$msg
+'msg'=>$msg,
+'th'=>$th,
+'cat'=>get_ticket_action_priv_api_arr($ticket_id, $usr_id)
   );
 }
+/*
 else if ($type_op == "ticket_comment") {
 $msg=$MAIL_msg_comment.' #'.$ticket_id."\r\n";
 $msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
 $msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
   $content = array(
 'device_token'=>$value['device_token'],
-'msg'=>$msg
+'msg'=>$msg,
+'th'=>$th,
+'cat'=>$cat_ticket,
+'ticket_id'=>$ticket_id,
+'ticket_action'=>$type_op,
+'ticket_user_init'=>$uss
   );
 }
+*/
 else if ($type_op == "ticket_lock") {
-$msg=$MAIL_msg_lock.' #'.$ticket_id."\r\n";
-$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
-$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+
+$msg=$uss." ".lang($lang,'NEWS_action_lock')." #".$ticket_id."\r\n";
+$msg.=lang($lang,'NEW_subj').": ".$s."\r\n";
+
   $content = array(
 'device_token'=>$value['device_token'],
-'msg'=>$msg
+'msg'=>$msg,
+'th'=>$th,
+'cat'=>get_ticket_action_priv_api_arr($ticket_id, $usr_id)
   );
 }
 else if ($type_op == "ticket_unlock") {
-$msg=$MAIL_msg_unlock.' #'.$ticket_id."\r\n";
-$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
-$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg=$uss." ".lang($lang, 'NEWS_action_unlock')." #".$ticket_id."\r\n";
+$msg.=lang($lang, 'NEW_subj').": ".$s."\r\n";
+
   $content = array(
 'device_token'=>$value['device_token'],
-'msg'=>$msg
+'msg'=>$msg,
+'th'=>$th,
+'cat'=>get_ticket_action_priv_api_arr($ticket_id, $usr_id)
   );
 }
 else if ($type_op == "ticket_ok") {
-$msg=$MAIL_msg_ok.' #'.$ticket_id."\r\n";
-$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
-$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg=$uss." ".lang($lang,'NEWS_action_ok')." #".$ticket_id."\r\n";
+$msg.=lang($lang,'NEW_subj').": ".$s."\r\n";
   $content = array(
 'device_token'=>$value['device_token'],
-'msg'=>$msg
+'msg'=>$msg,
+'th'=>$th,
+'cat'=>get_ticket_action_priv_api_arr($ticket_id, $usr_id)
   );
 }
 else if ($type_op == "ticket_no_ok") {
-$msg=$MAIL_msg_no_ok.' #'.$ticket_id."\r\n";
-$msg.=lang($lang,'MAIL_subj').": ".$s."\r\n";
-$msg.=lang($lang,'MAIL_created').": ".$uin."\r\n";
+$msg=$uss." ".lang($lang,'NEWS_action_no_ok')." #".$ticket_id." ".lang($lang, 'NEWS_action_no_ok')."\r\n";
+$msg.=lang($lang,'NEW_subj').": ".$s."\r\n";
   $content = array(
 'device_token'=>$value['device_token'],
-'msg'=>$msg
+'msg'=>$msg,
+'th'=>$th,
+'cat'=>get_ticket_action_priv_api_arr($ticket_id, $usr_id)
   );
 
 }  
@@ -175,7 +224,7 @@ $content[] = array(
 //print_r($content);
 
 $url = "http://api.zenlix.com/api.php";   
-
+//print_r($content);
 $ch = curl_init( $url );
 # Setup request to send json via POST.
 $payload = json_encode($content);
@@ -375,9 +424,277 @@ send_sms($user_mail, $msg, 1);
 
 }
 
+function get_ticket_val_by_hash($what, $in) {
+    global $CONF;
+    global $dbConnection;
+    
+    $stmt = $dbConnection->prepare('SELECT ' . $what . ' FROM tickets where hash_name=:in');
+    $stmt->execute(array(
+        ':in' => $in
+    ));
+    
+    $fior = $stmt->fetch(PDO::FETCH_NUM);
+    
+    return $fior[0];
+}
+
+function get_user_val_by_id($id, $in) {
+    
+    //val.id
+    global $CONF;
+    global $dbConnection;
+    
+    $stmt = $dbConnection->prepare('SELECT ' . $in . ' FROM users where id=:id');
+    $stmt->execute(array(
+        ':id' => $id
+    ));
+    
+    $fior = $stmt->fetch(PDO::FETCH_NUM);
+    
+    return $fior[0];
+}
+
+function get_ticket_action_priv_api_arr($ticked_id, $user_id) {
+    global $CONF,$dbConnection;
+
+
+$priv_res_arr=array();
+
+$ticket_hash=get_ticket_hash_by_id($ticked_id);
+
+$ticket['arch']=get_ticket_val_by_hash('arch', $ticket_hash);
+$ticket['status']=get_ticket_val_by_hash('status',$ticket_hash);
+$ticket['ok_by']=get_ticket_val_by_hash('ok_by',$ticket_hash);
+$ticket['lock_by']=get_ticket_val_by_hash('lock_by',$ticket_hash);
+$ticket['user_init_id']=get_ticket_val_by_hash('user_init_id',$ticket_hash);
+$ticket['user_to_id']=get_ticket_val_by_hash('user_to_id',$ticket_hash);
+$ticket['user_units']=get_ticket_val_by_hash('unit_id',$ticket_hash);
+
+$user['priv']=get_user_val_by_id($user_id, 'priv');
+$user['units']=get_user_val_by_id($user_id, 'unit');
+
+$haystack=explode(",", $ticket['user_to_id']);
+$haystack_units=explode(",", $user['units']);
+
+
+if ($ticket['arch'] == 1) {
+    $st = 'arch';
+}
+else if ($ticket['arch'] == 0) {
+                if ($ticket['status'] == 1) {
+                    //$st = 'ok';
+                        if ($ticket['ok_by'] == $user_id) {
+                            $st = "ok_by_me";
+                        }
+                        
+                        if ($ticket['ok_by'] <> $user_id) {
+                            $st = "ok_by_other";
+                        }
+
+
+                }
+                if ($ticket['status'] == 0) {
+                    if ($ticket['lock_by'] <> 0) {
+                        
+                        if ($ticket['lock_by'] == $user_id) {
+                            $st = "lock_by_me";
+                        }
+                        
+                        if ($ticket['lock_by'] <> $user_id) {
+                            $st = "lock_by_other";
+                        }
+                    }
+                    else if ($ticket['lock_by'] == 0) {
+                        $st = "free";
+                    }
+                }
+            }
+
+//echo $st;
+
+$tpriv=false;
+
+
+$priv_res="no_priv";
+
+//Если я инициатор
+//Если заявка мне
+//Если заявка моему отделу
+
+
+if ($user['priv'] == 1) {
+
+if ($ticket['user_init_id'] == $user_id) {$tpriv=true;}
+if (in_array($ticket['user_units'], $haystack_units)) {
+    if ($ticket['user_to_id'] == 0) {$tpriv=true;}
+    else if ($ticket['user_to_id'] != 0) {
+        if (in_array($user_id, $haystack)) {$tpriv=true;}
+    }
+}
+
+    if ($tpriv==true) {
+    switch ($st) {
+        case 'arch':
+            $priv_res="no_priv";
+            array_push($priv_res_arr, "no_priv");
+            # code...
+            break;
+        case 'free':
+            $priv_res="ref,lock";
+            //array_push($priv_res_arr, "ref");
+            array_push($priv_res_arr, "lock");
+            # code...
+            break;
+        case 'ok_by_me':
+            $priv_res="un_ok";
+            array_push($priv_res_arr, "un_ok");
+            # code...
+            break;
+        case 'ok_by_other':
+            $priv_res="no_priv";
+            array_push($priv_res_arr, "no_priv");
+            # code...
+            break;
+        case 'lock_by_me':
+            $priv_res="ref,unlock,ok";
+            //array_push($priv_res_arr, "ref");
+            array_push($priv_res_arr, "unlock");
+            array_push($priv_res_arr, "ok");
+            # code...
+            break;
+        case 'lock_by_other':
+            $priv_res="no_priv";
+            array_push($priv_res_arr, "no_priv");
+            # code...
+            break;
+        
+        default:
+            $priv_res="no_priv";
+            array_push($priv_res_arr, "no_priv");
+            break;
+    }
+}
+else if ($tpriv==true) {
+    $priv_res="no_priv";
+    array_push($priv_res_arr, "no_priv");
+}
+}
+
+
+if ($user['priv'] == 0) {
+
+if ($ticket['user_init_id'] == $user_id) {$tpriv=true;}
+if (in_array($ticket['user_units'], $haystack_units)) {
+    $tpriv=true;
+}
+
+    if ($tpriv==true) {
+    switch ($st) {
+        case 'arch':
+            $priv_res="no_priv";
+            array_push($priv_res_arr, "no_priv");
+            # code...
+            break;
+        case 'free':
+            $priv_res="ref,lock";
+            //array_push($priv_res_arr, "ref");
+            array_push($priv_res_arr, "lock");
+            # code...
+            break;
+        case 'ok_by_me':
+            $priv_res="un_ok";
+            array_push($priv_res_arr, "un_ok");
+            # code...
+            break;
+        case 'ok_by_other':
+            $priv_res="un_ok";
+            array_push($priv_res_arr, "un_ok");
+            # code...
+            break;
+        case 'lock_by_me':
+            $priv_res="ref,unlock,ok";
+            //array_push($priv_res_arr, "ref");
+            array_push($priv_res_arr, "unlock");
+            array_push($priv_res_arr, "ok");
+            # code...
+            break;
+        case 'lock_by_other':
+            $priv_res="unlock";
+            array_push($priv_res_arr, "unlock");
+            # code...
+            break;
+        
+        default:
+            $priv_res="no_priv";
+            array_push($priv_res_arr, "no_priv");
+            break;
+    }
+}
+else if ($tpriv==true) {
+    $priv_res="no_priv";
+    array_push($priv_res_arr, "no_priv");
+}
+}
 
 
 
+if ($user['priv'] == 2) {
+    
+    switch ($st) {
+        case 'arch':
+            $priv_res="no_priv";
+            array_push($priv_res_arr, "no_priv");
+            # code...
+            break;
+        case 'free':
+            $priv_res="ref,lock";
+            //array_push($priv_res_arr, "ref");
+            array_push($priv_res_arr, "lock");
+            # code...
+            break;
+        case 'ok_by_me':
+            $priv_res="un_ok";
+            array_push($priv_res_arr, "un_ok");
+            # code...
+            break;
+        case 'ok_by_other':
+            $priv_res="un_ok";
+            array_push($priv_res_arr, "un_ok");
+            # code...
+            break;
+        case 'lock_by_me':
+            $priv_res="ref,unlock,ok";
+            //array_push($priv_res_arr, "ref");
+            array_push($priv_res_arr, "unlock");
+            array_push($priv_res_arr, "ok");
+            # code...
+            break;
+        case 'lock_by_other':
+            $priv_res="unlock";
+            array_push($priv_res_arr, "unlock");
+            # code...
+            break;
+        
+        default:
+            $priv_res="no_priv";
+            array_push($priv_res_arr, "no_priv");
+            break;
+    }
+
+}
+
+/*
+foreach ($priv_res_arr as $key => $value) {
+    # code...
+    $ares[$value]=$value;
+}
+*/
+
+$ares=implode(",", $priv_res_arr);
+
+return $ares;
+//echo $lo;
+}
 
 
 function send_pushbullet($type_op, $lang, $user_mail, $ticket_id) {
@@ -597,7 +914,10 @@ if (empty($res1)) {
 }
 
 
-
+function nameshort($name) {
+    $nameshort = preg_replace('/(\w+) (\w)\w+ (\w)\w+/iu', '$1 $2.$3.', $name);
+    return $nameshort;
+}
 
 function get_conf_param($in) {
     global $dbConnection;
@@ -741,7 +1061,18 @@ return $res;
 
 
 
-
+function get_ticket_hash_by_id($in) {
+    global $dbConnection;
+    
+    $stmt = $dbConnection->prepare('select hash_name from tickets where id=:in');
+    $stmt->execute(array(
+        ':in' => $in
+    ));
+    $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    $tt = $total_ticket['hash_name'];
+    return $tt;
+}
 
 
 
@@ -755,6 +1086,14 @@ $v=parse_url("http://".get_conf_param('hostname'));
 if(!isset($msg_id)) {
   $msg_id=md5(time());
 }
+
+
+
+
+//$msg_r="------------------- PLEASE DO NOT REMOVE THIS LINE ---------------------\n\r";
+//$msg_r.="UNIQ_TICKET_CODE:";
+//$msg=$msg_r.$msg;
+
 
 
   //echo "helo";
@@ -1695,6 +2034,7 @@ $ticket_id=$qrow['ticket_id'];
             }
 
 if (check_user_devices($usr_id)) {
+
   make_device_push($type_op, $usr_lang, $usr_id, $ticket_id);
 }
 

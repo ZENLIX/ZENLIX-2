@@ -1,0 +1,64 @@
+{% if aha == "0" %}
+<div class="well well-large well-transparent lead">
+                <center>
+                    {{MSG_no_records}}
+                </center>
+            </div>
+
+{% endif %}
+{% if aha != "0" %}
+
+
+            <input type="hidden" value="{{get_total_pages_arch}}" id="val_menu">
+            <input type="hidden" value="{{user_id}}" id="user_id">
+            <input type="hidden" value="" id="total_tickets">
+            <input type="hidden" value="" id="last_total_tickets">
+
+            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+                <thead>
+                <tr>
+                    <th><center>#</center></th>
+                    <th><center>{{t_LIST_subj}}</center></th>
+                    <th><center>{{t_LIST_worker}}</center></th>
+                    <th><center>{{t_LIST_create}}</center></th>
+                    <th><center>{{t_LIST_init}}</center></th>
+                    <th><center>{{t_LIST_to}}</center></th>
+                    <th><center>{{t_list_a_user_ok}}</center></th>
+                    <th><center>{{t_list_a_date_ok}}</center></th>
+                </tr>
+                </thead>
+                <tbody>
+{% for item in ar_res %}
+
+
+<tr >
+                        <td style=" vertical-align: middle; "><small><center>{{item.id}}</center></small></td>
+                        <td style=" vertical-align: middle; "><a class="{{item.muclass}} pops"  
+                    title="{{item.subj}}"
+                    data-content="<small>{{item.msg}}</small>" 
+                    
+                    
+                    href="ticket?{{item.hashname}}">{{item.cut_subj}}</a></td>
+                        <td style=" vertical-align: middle; "><small>{{item.client | raw}}</small></td>
+                        <td style=" vertical-align: middle; "><small><center><time id="c" datetime="{{item.date_create}}"></time></center></small></td>
+                        <td style=" vertical-align: middle; "><small>{{item.init_fio | raw}}</small></td>
+
+                        <td style=" vertical-align: middle; "><small>
+                                {{item.to_text | raw}}
+                            </small></td>
+                        <td style=" vertical-align: middle; "><small>
+                                {{item.ok_by | raw}}
+                            </small></td>
+                        <td style=" vertical-align: middle; "><small><center>
+                        <time id="c" datetime="{{item.ok_date}}"></time>
+                        </center></small></td>
+                    </tr>
+
+
+
+{% endfor %}
+
+
+                </tbody>
+            </table>
+{% endif %}

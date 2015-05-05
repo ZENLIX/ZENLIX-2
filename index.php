@@ -19,13 +19,6 @@ if ((validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) || (valida
    // $validate_p = false;
 if ($val_sta == true) {
 
-/*
-preg_match_all('/function (\w+\(.*?\))/', file_get_contents("functions.inc.php"), $m);
-foreach ($m[1] as $key => $value) {
-    # code...
-    echo $value."<br>";
-}
-*/
 
     if (isset($_GET['logout'])) {
         session_destroy();
@@ -553,36 +546,6 @@ if ($main_portal == "false") {
 }
 
 
-
-
-
-
-            /*
-}
-
-
-else  if ($main_portal == true) {
-
-
-
-    if (!isset($_GET['page'])) {
-        include 'inc/main_portal/index.php';
-    }
-    if (isset($_GET['page'])) {
-                    
-                    switch ($_GET['page']) {
-                        case 'auth':
-            include ("inc/head.inc.php");
-            include 'inc/auth.php';
-                            break;
-
-                        }
-                    }
-
-
-}
-
-*/
 
             
         }

@@ -4,6 +4,10 @@ include_once ('sys/class.phpmailer.php');
 include_once ('sys/Parsedown.php');
 require 'library/HTMLPurifier.auto.php';
 include_once ('library/gump.class.php');
+require_once 'library/Twig/Autoloader.php';
+
+Twig_Autoloader::register();
+
 
 include_once('inc/main_portal/portal.functions.inc.php');
 //include_once('integration/PushBullet.class.php');
@@ -58,6 +62,18 @@ $CONF_MAIL = array(
     'from' => get_conf_param('mail_from') ,
     'debug' => 'false'
 );
+
+
+if (substr($CONF['hostname'], -1) != "/") {
+    $CONF['hostname']=$CONF['hostname']."/";
+}
+
+
+
+
+
+
+
 
 if ($CONF_HD['debug_mode'] == false) {
     error_reporting(E_ALL ^ E_NOTICE);
@@ -2604,7 +2620,7 @@ function get_total_users_online() {
     $total_ticket = $stmt->fetch(PDO::FETCH_ASSOC);
     $lt = $total_ticket['cou'];
     
-    echo $lt;
+    return $lt;
 }
 
 function get_user_status_text($in) {

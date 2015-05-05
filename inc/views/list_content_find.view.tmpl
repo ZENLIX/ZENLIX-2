@@ -1,0 +1,74 @@
+{% if aha == "0" %}
+<div class="well well-large well-transparent lead">
+                <center>
+                    {{MSG_no_records}}
+                </center>
+            </div>
+
+{% endif %}
+{% if aha != "0" %}
+
+
+           <center><small class="text-mutted"><em>{{t_list_a_top}}</em></small></center>
+            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+            <thead>
+            <tr>
+                <th><center>#</center></th>
+                <th><center><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="{{t_LIST_prio}}"></i></center></th>
+                <th><center>{{t_LIST_subj}}</center></th>
+                <th><center>{{t_LIST_worker}}</center></th>
+                <th><center>{{t_LIST_create}}</center></th>
+                <th><center>{{t_LIST_ago}}</center></th>
+                <th><center>{{t_LIST_init}}</center></th>
+                <th><center>{{t_LIST_to}}</center></th>
+                <th><center>{{t_LIST_status}}</center></th>
+            </tr>
+            </thead>
+            <tbody>
+{% for item in ar_res %}
+
+<tr id="tr_{{item.id}}" class="{{item.style}}">
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}"><center>
+                   {{item.id}}
+
+
+                </center></small></td>
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}"><center>{{item.prio | raw}}</center></small></td>
+                    <td style=" vertical-align: middle; "><a class="{{item.muclass}} pops"  
+                    title="{{item.subj}}"
+                    data-content="<small>{{item.msg}}</small>" 
+                    
+                    
+                    href="ticket?{{item.hashname}}">{{item.cut_subj}}</a></td>
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}">
+                    <a href="view_user?{{item.get_user_hash_by_id_client}}">
+                    {{item.client | raw}}
+                    </a>
+                    </small></td>
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}"><center><time id="c" datetime="{{item.date_create}}"></time></center></small></td>
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}"><center>
+                    <time id="a" datetime="{{item.t_ago}}"></time>
+                     {{item.get_deadline_label | raw}}
+                    </center></small></td>
+
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}">{{item.name_of_user_ret | raw}}</small></td>
+
+                    <td style=" vertical-align: middle; "><small class="{{item.muclass}}">
+                            {{item.to_text | raw}}
+                        </small></td>
+                    <td style=" vertical-align: middle; ">
+                        <center><small>
+                                {{item.st | raw}}
+                            </small>
+                        </center>
+                    </td>
+                </tr>
+
+
+
+{% endfor %}
+
+
+                </tbody>
+            </table>
+{% endif %}
