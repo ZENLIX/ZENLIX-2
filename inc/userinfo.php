@@ -159,7 +159,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 }
 ?>
         <div class="panel panel-default">
-  <div class="panel-heading"><i class="fa fa-ticket"></i> <a href="<?php echo $CONF['hostname'] ?>/ticket?<?php echo $row['hash_name'] ?>"> <?php echo lang('TICKET_name'); ?> <strong>#<?php echo $row['id'] ?></strong></a></div>
+  <div class="panel-heading"><i class="fa fa-ticket"></i> <a href="<?php echo $CONF['hostname'] ?>/ticket&<?php echo $row['hash_name'] ?>"> <?php echo lang('TICKET_name'); ?> <strong>#<?php echo $row['id'] ?></strong></a></div>
   <div class="panel-body">
         <table class="table table-bordered">
                 <tbody>

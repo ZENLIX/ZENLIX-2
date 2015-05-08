@@ -228,7 +228,7 @@ href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]=<?php echo urlencod
 <?php if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) { ?> 
                 <div class="btn-group ">
 <button class="btn btn-xs bg-maroon" id="delete_version" value="<?=$news_item['uniq_id'];?>"><?=lang('PORTAL_act_del');?></button> 
-<a class="btn btn-xs bg-orange btn-flat" href="version?<?=$news_item['uniq_id'];?>&edit_feed"><?=lang('PORTAL_act_edit');?></a>
+<a class="btn btn-xs bg-orange btn-flat" href="version&<?=$news_item['uniq_id'];?>&edit_feed"><?=lang('PORTAL_act_edit');?></a>
  </div>
 <?php } ?>
 
@@ -530,7 +530,7 @@ foreach ($news_arr as $n) {
                     <li class="item">
                       
                       <div class="product-info" style="margin-left:0px;">
-                        <a href="version?<?=$n['uniq_id'];?>" class="product-title"><h4><?=$n['subj'];?></h4> </a>
+                        <a href="version&<?=$n['uniq_id'];?>" class="product-title"><h4><?=$n['subj'];?></h4> </a>
                         <span class="product-description">
                           <?=$n['title'];?>
                         </span>

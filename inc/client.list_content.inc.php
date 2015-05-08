@@ -173,7 +173,7 @@ if (isset($_POST['menu'])) {
                     data-content="<small><?php echo str_replace('"', "", make_html(strip_tags($row['msg']), 'no')); ?></small>" 
                     
                     
-                    href="ticket?<?php
+                    href="ticket&<?php
                 echo $row['hash_name']; ?>"><?php
                 cutstr(make_html($row['subj'], 'no')); ?></a></td>
 

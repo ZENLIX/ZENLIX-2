@@ -86,7 +86,7 @@
             </table>
 
 {% if tdata == true %}<br>
-<small class="text-muted"><?=lang('FIELD_add_title');?>: </small>
+<small class="text-muted">{{FIELD_add_title}}: </small>
 <table class="table table-bordered">
                 <tbody>
 {% for item in tdata_arr %}
@@ -113,7 +113,7 @@
                             <small class="text-muted" >
                                 {{get_ticket_info}}
                             </small>
-                                <a href="print_ticket?{{hn}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-print"></i> {{TICKET_print}}</a>
+                                <a href="print_ticket&{{hn}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-print"></i> {{TICKET_print}}</a>
                             {% if can_edit == true %}
 
             <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>  {{CONF_act_edit}}</button> {% endif %}
@@ -135,8 +135,8 @@
                                     
                                     
                     <tr>
-                        <td style="width:20px;"><small>{{item.ic}}</small></td>
-                        <td><small>{{item.ct}}</small></td>
+                        <td style="width:20px;"><small>{{item.ic | raw}}</small></td>
+                        <td><small>{{item.ct | raw}}</small></td>
                         <td><small>{{item.size}} Mb</small></td>
                     </tr>
 {% endfor %}

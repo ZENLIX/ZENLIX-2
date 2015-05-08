@@ -157,7 +157,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 <tbody>
                 <tr>
                     <td style="width:50px;"><small><strong><?php echo lang('TICKET_t_from'); ?> </strong></small></td>
-                    <td><small><a href="view_user?<?php echo get_user_hash_by_id($row['user_init_id']); ?>"><?php echo name_of_user($row['user_init_id']) ?> </a></small></td>
+                    <td><small><a href="view_user&<?php echo get_user_hash_by_id($row['user_init_id']); ?>"><?php echo name_of_user($row['user_init_id']) ?> </a></small></td>
                     
                     <td><small><strong><?php echo lang('TICKET_t_prio'); ?></strong></small>
                     </td>

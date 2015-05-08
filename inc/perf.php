@@ -210,11 +210,11 @@ $menu_active['main']="active";
   <a href="config" class="list-group-item <?=$menu_active['main'];?>">
     <?=lang('PERF_menu_main_conf');?>
   </a>
-  <a href="config?ti_conf" class="list-group-item <?=$menu_active['tickets'];?>"><?=lang('PERF_menu_ticket_conf');?></a>
-    <a href="config?slaplans" class="list-group-item <?=$menu_active['sla'];?>"><?=lang('PERF_menu_sla');?></a>
-    <a href="config?subj" class="list-group-item <?=$menu_active['subj'];?>"><?php echo lang('NAVBAR_subjs'); ?></a>
-  <a href="config?notify" class="list-group-item <?=$menu_active['notify'];?>"><?=lang('PERF_menu_notify_conf');?></a>
-  <a href="config?inform" class="list-group-item <?=$menu_active['inform'];?>"><?=lang('PERF_menu_info_conf');?></a>
+  <a href="config&ti_conf" class="list-group-item <?=$menu_active['tickets'];?>"><?=lang('PERF_menu_ticket_conf');?></a>
+    <a href="config&slaplans" class="list-group-item <?=$menu_active['sla'];?>"><?=lang('PERF_menu_sla');?></a>
+    <a href="config&subj" class="list-group-item <?=$menu_active['subj'];?>"><?php echo lang('NAVBAR_subjs'); ?></a>
+  <a href="config&notify" class="list-group-item <?=$menu_active['notify'];?>"><?=lang('PERF_menu_notify_conf');?></a>
+  <a href="config&inform" class="list-group-item <?=$menu_active['inform'];?>"><?=lang('PERF_menu_info_conf');?></a>
   
 </div>
 

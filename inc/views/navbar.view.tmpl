@@ -48,7 +48,7 @@
 {% for item in ar_online %}
 
 <li><!-- start message -->
-                                            <a href="view_user?{{item.uniq_id}}">
+                                            <a href="view_user&{{item.uniq_id}}">
                                                 <div class="pull-left">
                                                     <img src="{{item.usr_img}}" class="img-circle" alt="User Image" />
                                                 </div>
@@ -91,7 +91,7 @@
                                     
                                     
                                         <li><!-- start message -->
-                                            <a href="messages?to={{item.user_code}}">
+                                            <a href="messages&to={{item.user_code}}">
                                                 <div class="pull-left">
                                                     <img src="{{item.usr_img}}" class="img-circle" alt="User Image"/>
                                                 </div>

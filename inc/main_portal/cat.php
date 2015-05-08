@@ -148,7 +148,7 @@ limit :start_pos, :perpage');
 ?>
 
                     <li>
- <a href="<?=$CONF['hostname']."thread?".$r['uniq_id'];?>">
+ <a href="<?=$CONF['hostname']."thread&".$r['uniq_id'];?>">
                     <strong style="
     font-size: 16px;
 "><?=get_cat_icon($r['type']);?> <?=$r['subj'];?> </strong>
@@ -315,15 +315,15 @@ if ($hn == "1") {
   ?>
 
 <div class="list-group">
-  <a href="cat?1" class="list-group-item <?=$status_label['def'];?>">
+  <a href="cat&1" class="list-group-item <?=$status_label['def'];?>">
  
     Все идеи
   </a>
-  <a href="cat?1&status=0" class="list-group-item <?=$status_label['0'];?>"><?=get_count_post('1', '0');?><span class=""><?=lang('PORTAL_status_1');?></span></a>
-  <a href="cat?1&status=1" class="list-group-item <?=$status_label['1'];?>"><?=get_count_post('1', '1');?><span class="text-warning <?=$status_text['1'];?>"><?=lang('PORTAL_status_2');?></span></a>
-  <a href="cat?1&status=2" class="list-group-item <?=$status_label['2'];?>"><?=get_count_post('1', '2');?><span class="text-success <?=$status_text['2'];?>"><?=lang('PORTAL_status_3');?></span></a>
-  <a href="cat?1&status=3" class="list-group-item <?=$status_label['3'];?>"><?=get_count_post('1', '3');?><span class="text-danger <?=$status_text['3'];?>"><?=lang('PORTAL_status_4');?></span></a>
-    <a href="cat?1&status=4" class="list-group-item <?=$status_label['4'];?>"><?=get_count_post('1', '4');?><span class="text-primary <?=$status_text['4'];?>"><?=lang('PORTAL_status_5');?></span></a>
+  <a href="cat&1&status=0" class="list-group-item <?=$status_label['0'];?>"><?=get_count_post('1', '0');?><span class=""><?=lang('PORTAL_status_1');?></span></a>
+  <a href="cat&1&status=1" class="list-group-item <?=$status_label['1'];?>"><?=get_count_post('1', '1');?><span class="text-warning <?=$status_text['1'];?>"><?=lang('PORTAL_status_2');?></span></a>
+  <a href="cat&1&status=2" class="list-group-item <?=$status_label['2'];?>"><?=get_count_post('1', '2');?><span class="text-success <?=$status_text['2'];?>"><?=lang('PORTAL_status_3');?></span></a>
+  <a href="cat&1&status=3" class="list-group-item <?=$status_label['3'];?>"><?=get_count_post('1', '3');?><span class="text-danger <?=$status_text['3'];?>"><?=lang('PORTAL_status_4');?></span></a>
+    <a href="cat&1&status=4" class="list-group-item <?=$status_label['4'];?>"><?=get_count_post('1', '4');?><span class="text-primary <?=$status_text['4'];?>"><?=lang('PORTAL_status_5');?></span></a>
 </div>
   <?php
 }
@@ -332,15 +332,15 @@ else if ( $hn == "2" ) {
 
   ?>
 <div class="list-group">
-  <a href="cat?2" class="list-group-item <?=$status_label['def'];?>">
+  <a href="cat&2" class="list-group-item <?=$status_label['def'];?>">
   
     Все проблемы
   </a>
-  <a href="cat?2&status=0" class="list-group-item <?=$status_label['0'];?>"><?=get_count_post('2', '0');?><span class=""><?=lang('PORTAL_status_1');?></span></a>
-  <a href="cat?2&status=1" class="list-group-item <?=$status_label['1'];?>"><?=get_count_post('2', '1');?><span class="text-warning <?=$status_text['1'];?>"><?=lang('PORTAL_status_2');?></span></a>
-  <a href="cat?2&status=2" class="list-group-item <?=$status_label['2'];?>"><?=get_count_post('2', '2');?><span class="text-success <?=$status_text['2'];?>"><?=lang('PORTAL_status_6');?></span></a>
-  <a href="cat?2&status=3" class="list-group-item <?=$status_label['3'];?>"><?=get_count_post('2', '3');?><span class="text-danger <?=$status_text['3'];?>"><?=lang('PORTAL_status_7');?></span></a>
-    <a href="cat?2&status=4" class="list-group-item <?=$status_label['4'];?>"><?=get_count_post('2', '4');?><span class="text-primary <?=$status_text['4'];?>"><?=lang('PORTAL_status_5');?></span></a>
+  <a href="cat&2&status=0" class="list-group-item <?=$status_label['0'];?>"><?=get_count_post('2', '0');?><span class=""><?=lang('PORTAL_status_1');?></span></a>
+  <a href="cat&2&status=1" class="list-group-item <?=$status_label['1'];?>"><?=get_count_post('2', '1');?><span class="text-warning <?=$status_text['1'];?>"><?=lang('PORTAL_status_2');?></span></a>
+  <a href="cat&2&status=2" class="list-group-item <?=$status_label['2'];?>"><?=get_count_post('2', '2');?><span class="text-success <?=$status_text['2'];?>"><?=lang('PORTAL_status_6');?></span></a>
+  <a href="cat&2&status=3" class="list-group-item <?=$status_label['3'];?>"><?=get_count_post('2', '3');?><span class="text-danger <?=$status_text['3'];?>"><?=lang('PORTAL_status_7');?></span></a>
+    <a href="cat&2&status=4" class="list-group-item <?=$status_label['4'];?>"><?=get_count_post('2', '4');?><span class="text-primary <?=$status_text['4'];?>"><?=lang('PORTAL_status_5');?></span></a>
 </div>
   <?php
 }

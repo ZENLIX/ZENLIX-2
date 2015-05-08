@@ -114,7 +114,7 @@ $stmt = $dbConnection->prepare("SELECT * from portal_posts where (portal_posts.s
 echo "<ul>";
 foreach ($result as $row) {
 
-	echo "<li style='list-style:none;'>".get_cat_icon($row['type'])." <a href=\"".$CONF['hostname']."thread?".$row['uniq_id']."\">".$row['subj']."</a></li>";
+	echo "<li style='list-style:none;'>".get_cat_icon($row['type'])." <a href=\"".$CONF['hostname']."thread&".$row['uniq_id']."\">".$row['subj']."</a></li>";
 	# code...
 }
 echo "</ul>";
@@ -130,7 +130,7 @@ $stmt = $dbConnection->prepare("SELECT * from portal_manual_cat where (name like
 echo "<ul>";
 foreach ($result as $row) {
 
-	echo "<li style='list-style:none;'><i class=\"fa fa-graduation-cap\"></i> <a href=\"".$CONF['hostname']."manual?".$row['uniq_id']."\">".$row['name']."</a></li>";
+	echo "<li style='list-style:none;'><i class=\"fa fa-graduation-cap\"></i> <a href=\"".$CONF['hostname']."manual&".$row['uniq_id']."\">".$row['name']."</a></li>";
 	# code...
 }
 echo "</ul>";
@@ -217,7 +217,7 @@ function view_top_news_bar()
                     <li class="item">
                       
                       <div class="product-info" style="margin-left:0px;">
-                        <a href="feed?<?=$k['uniq_id'];?>" class="product-title"><?=$k['subj'];?> </a>
+                        <a href="feed&<?=$k['uniq_id'];?>" class="product-title"><?=$k['subj'];?> </a>
                         <span class="product-description">
                          <small> <?=$k['title'];?></small>
                         </span>
@@ -276,7 +276,7 @@ function view_stat_cat() {
 <div class="row">
             <div class="col-md-12">
               <div class="info-box bg-green">
-               <a href="cat?1" style="color:white;"> <span class="info-box-icon"> <i class="fa fa-lightbulb-o"></i></span></a>
+               <a href="cat&1" style="color:white;"> <span class="info-box-icon"> <i class="fa fa-lightbulb-o"></i></span></a>
                 <div class="info-box-content">
                   <span class="info-box-text"><?=lang('PORTAL_idea');?></span>
                   <span class="info-box-number"><?=get_total_posts_by_type('1');?></span>
@@ -291,7 +291,7 @@ function view_stat_cat() {
             </div><!-- /.col -->
             <div class="col-md-12">
               <div class="info-box bg-red">
-                <a href="cat?2" style="color:white;"><span class="info-box-icon"><i class="fa fa-exclamation-triangle"></i></span></a>
+                <a href="cat&2" style="color:white;"><span class="info-box-icon"><i class="fa fa-exclamation-triangle"></i></span></a>
                 <div class="info-box-content">
                   <span class="info-box-text"><?=lang('PORTAL_trouble');?></span>
                   <span class="info-box-number"><?=get_total_posts_by_type('2');?></span>
@@ -306,7 +306,7 @@ function view_stat_cat() {
             </div><!-- /.col -->
             <div class="col-md-12">
               <div class="info-box bg-blue">
-                <a href="cat?3" style="color:white;"><span class="info-box-icon"><i class="fa fa-question-circle"></i></span></a>
+                <a href="cat&3" style="color:white;"><span class="info-box-icon"><i class="fa fa-question-circle"></i></span></a>
                 <div class="info-box-content">
                   <span class="info-box-text"><?=lang('PORTAL_question');?></span>
                   <span class="info-box-number"><?=get_total_posts_by_type('3');?></span>
@@ -321,7 +321,7 @@ function view_stat_cat() {
             </div><!-- /.col -->
             <div class="col-md-12">
               <div class="info-box bg-orange">
-               <a href="cat?4" style="color:white;"> <span class="info-box-icon"><i class="fa fa-heart"></i></span></a>
+               <a href="cat&4" style="color:white;"> <span class="info-box-icon"><i class="fa fa-heart"></i></span></a>
                 <div class="info-box-content">
                   <span class="info-box-text"><?=lang('PORTAL_thank');?></span>
                   <span class="info-box-number"><?=get_total_posts_by_type('4');?></span>
@@ -460,7 +460,7 @@ $i=0;
 <strong >
 <i class="fa fa-graduation-cap"></i>
 <?php
-                                            if ($row['type'] == "0") {echo "<a href=\"manual?".$row['uniq_id']."\">".$row['name']."</a>";}
+                                            if ($row['type'] == "0") {echo "<a href=\"manual&".$row['uniq_id']."\">".$row['name']."</a>";}
                                             else if ($row['type'] == "1") {echo $row['name'];}
                                             ?></strong>
                                             </p>
@@ -505,7 +505,7 @@ if ($row['parent_id'] != "0") {echo "<li style=\"list-style:none; padding: 3px 0
                                             
        
                                             <?php
-                                            if ($row['type'] == "0") {echo "<a href=\"manual?".$row['uniq_id']."\">".$row['name']."</a>";}
+                                            if ($row['type'] == "0") {echo "<a href=\"manual&".$row['uniq_id']."\">".$row['name']."</a>";}
                                             else if ($row['type'] == "1") {echo $row['name'];}
                                             ?>
                                                 
@@ -566,7 +566,7 @@ if ($row['parent_id'] != "0") {echo "<li style=\"list-style:none; padding: 3px 0
                                            
        
                                             <?php
-                                            if ($row['type'] == "0") {echo "<a href=\"manual?".$row['uniq_id']."\">".$row['name']."</a>";}
+                                            if ($row['type'] == "0") {echo "<a href=\"manual&".$row['uniq_id']."\">".$row['name']."</a>";}
                                             else if ($row['type'] == "1") {echo "<strong>".$row['name']."</strong>";}
                                             ?>
                                                 
@@ -816,7 +816,7 @@ if ($i==0) {$fel="in";}
                           </a>
                         </h4>
                         <div class="box-tools pull-right">
-                        <small><a href="manual?qa=<?=$row['uniq_id'];?>"><i class="fa fa-link"></i> <?=lang('PORTAL_adr');?> </a></small>
+                        <small><a href="manual&qa=<?=$row['uniq_id'];?>"><i class="fa fa-link"></i> <?=lang('PORTAL_adr');?> </a></small>
                         </div>
                       </div>
                       <div id="collapse_<?=$row['uniq_id'];?>" class="panel-collapse collapse <?=$fel;?>">

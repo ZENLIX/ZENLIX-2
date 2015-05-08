@@ -1240,7 +1240,7 @@ if ($_POST['menu'] == 'import') {
             <td><small><?php
             echo $row['login']; ?></small></td>
             <td><small><a href="<?php
-            echo $CONF['hostname']; ?>users?edit=<?php echo $row['uniq_id']; ?>"><?php
+            echo $CONF['hostname']; ?>users&edit=<?php echo $row['uniq_id']; ?>"><?php
             echo $row['fio']; ?></a></small></td>
             <td><small><?php
             echo $row['email']; ?></small></td>

@@ -664,7 +664,8 @@ $basedir = dirname(dirname(__FILE__));
                 'JS_save'=>lang('JS_save'),
                 't_true'=>$t_true,
                 'TICKET_t_no'=>lang('TICKET_t_no'),
-                'TICKET_file_list'=>lang('TICKET_file_list')
+                'TICKET_file_list'=>lang('TICKET_file_list'),
+                'FIELD_add_title'=>lang('FIELD_add_title')
 
 
             ));

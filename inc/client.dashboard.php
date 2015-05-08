@@ -80,7 +80,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['icon']="ban";
                                 <div class="icon">
                                     <i class="fa fa-upload"></i>
                                 </div>
-                                <a href="list?out" class="small-box-footer">
+                                <a href="list&out" class="small-box-footer">
                                     <?php echo lang('EXT_more_info'); ?> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -99,7 +99,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['icon']="ban";
                                 <div class="icon">
                                     <i class="fa fa-lock"></i>
                                 </div>
-                                <a href="list?in" class="small-box-footer">
+                                <a href="list&in" class="small-box-footer">
                                     <?php echo lang('EXT_more_info'); ?> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>
@@ -120,7 +120,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['icon']="ban";
                                 <div class="icon">
                                     <i class="fa fa-check"></i>
                                 </div>
-                                <a href="list?in" class="small-box-footer">
+                                <a href="list&in" class="small-box-footer">
                                     <?php echo lang('EXT_more_info'); ?> <i class="fa fa-arrow-circle-right"></i>
                                 </a>
                             </div>

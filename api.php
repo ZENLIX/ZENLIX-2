@@ -1368,6 +1368,24 @@ else if ($mode == "get_subj_list") {
 
 
 
+if (get_conf_param('sla_system') == "true") {
+        $stmt = $dbConnection->prepare('SELECT id, name FROM sla_plans');
+        $stmt->execute();
+        $dep = $stmt->fetchAll();
+
+
+$r['list'] = array();
+foreach ($dep as $value) {
+       array_push($r['list'], array(
+            'id' =>$value['id'],
+            'name' =>$value['name']
+
+        )); 
+
+        # code...
+}
+}
+else if (get_conf_param('sla_system') == "false") {
         $stmt = $dbConnection->prepare('SELECT id, name FROM subj');
         $stmt->execute();
         $dep = $stmt->fetchAll();
@@ -1383,6 +1401,11 @@ foreach ($dep as $value) {
 
         # code...
 }
+}
+
+
+
+
 
 
 $code = "ok";
@@ -1872,12 +1895,9 @@ prio (1 def)
 */
 $error_code=true;
 
-if (iconv_strlen($data_json->subj, 'UTF-8') > 2 ) {
-   $subj=$data_json->subj; 
-}
-if (iconv_strlen($data_json->subj, 'UTF-8') <= 2 ) {
-   $error_code=false;
-}
+
+   
+
 
 //проверить длину
 
@@ -1936,6 +1956,39 @@ if ($error_code == false)
 
 else if ($error_code == true)
 {
+
+
+if (get_conf_param('sla_system') == "true") {
+$subj_id=$data_json->subj; 
+        $stmt_subj = $dbConnection->prepare('SELECT name from sla_plans where id=:p_id');
+        $stmt_subj->execute(array(':p_id' => $subj_id));
+        $row_subj = $stmt_subj->fetch(PDO::FETCH_ASSOC);
+
+
+
+$subj=$row_subj['name'];
+$sla_plan_id=$data_json->subj;
+
+
+}
+
+
+
+
+
+
+if (get_conf_param('sla_system') == "false") {
+
+$subj_id=$data_json->subj; 
+
+        $stmt_subj = $dbConnection->prepare('SELECT name from subj where id=:p_id');
+        $stmt_subj->execute(array(':p_id' => $subj_id));
+        $row_subj = $stmt_subj->fetch(PDO::FETCH_ASSOC);
+
+$subj=$row_subj['name'];
+$sla_plan_id=0;
+}
+
     
                 $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");
                 $stmt->execute();
@@ -1957,7 +2010,8 @@ else if ($error_code == true)
                                  hash_name,
                                  prio,
                                  last_update,
-                                 deadline_time
+                                 deadline_time,
+                                 sla_plan_id
                                  ) VALUES (
                                   :max_id_res_ticket,
                                   :user_init_id,
@@ -1971,7 +2025,8 @@ else if ($error_code == true)
                                   :hashname,
                                   :prio,
                                   :nz,
-                                  :deadline_time)');
+                                  :deadline_time,
+                                  :sla_plan_id)');
                 $stmt->execute(array(
                     ':max_id_res_ticket' => $max_id_res_ticket,
                     ':user_init_id' => $user_init_id,
@@ -1985,7 +2040,8 @@ else if ($error_code == true)
                     ':prio' => $prio,
                     ':n' => $now_date_time,
                     ':nz' => $now_date_time,
-                    ':deadline_time'=> $dl
+                    ':deadline_time'=> $dl,
+                    ':sla_plan_id'=>$sla_plan_id
                 ));
 
 

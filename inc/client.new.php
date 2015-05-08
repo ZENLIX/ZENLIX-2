@@ -46,8 +46,8 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 ?>
     <div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-        <strong><i class="fa fa-check"></i> <?php echo lang('NEW_ok'); ?></strong> <?php echo lang('NEW_ok_1'); ?> <a class="" href="<?php echo $CONF['hostname'] ?>ticket?<?php echo $h; ?>"><?php echo lang('NEW_ok_2'); ?></a> <?php echo lang('NEW_ok_3'); ?>
-        <a class="" href="<?php echo $CONF['hostname'] ?>print_ticket?<?php echo $h; ?>"target="_blank"> <?php echo lang('NEW_ok_4'); ?></a>.
+        <strong><i class="fa fa-check"></i> <?php echo lang('NEW_ok'); ?></strong> <?php echo lang('NEW_ok_1'); ?> <a class="" href="<?php echo $CONF['hostname'] ?>ticket&<?php echo $h; ?>"><?php echo lang('NEW_ok_2'); ?></a> <?php echo lang('NEW_ok_3'); ?>
+        <a class="" href="<?php echo $CONF['hostname'] ?>print_ticket&<?php echo $h; ?>"target="_blank"> <?php echo lang('NEW_ok_4'); ?></a>.
     </div>
 <?php
         }

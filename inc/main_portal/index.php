@@ -144,7 +144,7 @@ switch (get_conf_param('portal_msg_type')) {
 
 <div class="box box-success">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-success" href="<?=$CONF['hostname']."cat?1";?>"><?=lang('PORTAL_idea');?></a></h3>
+                  <h3 class="box-title"><a class="text-success" href="<?=$CONF['hostname']."cat&1";?>"><?=lang('PORTAL_idea');?></a></h3>
                                     <div class="box-tools pull-right">
                     <h4> <i class="fa fa-lightbulb-o"></i></h4>
                   </div>
@@ -179,7 +179,7 @@ limit 3');
  foreach ($res1 as $r) {
 ?>
 <li>
- <a href="<?=$CONF['hostname']."thread?".$r['uniq_id'];?>">
+ <a href="<?=$CONF['hostname']."thread&".$r['uniq_id'];?>">
                     <strong style="
     font-size: 16px;
 "><i class="fa fa-lightbulb-o"></i> <?=$r['subj'];?> </strong>
@@ -212,7 +212,7 @@ limit 3');
 
                    
 
-                    <li><small class="text-muted"><a href="<?=$CONF['hostname']."cat?1";?>" class="text-muted"><?=lang('PORTAL_idea_all');?> (<?=get_total_posts_by_type('1');?>)</a></small></li>
+                    <li><small class="text-muted"><a href="<?=$CONF['hostname']."cat&1";?>" class="text-muted"><?=lang('PORTAL_idea_all');?> (<?=get_total_posts_by_type('1');?>)</a></small></li>
                   </ul>
 
                   <?php  }
@@ -237,7 +237,7 @@ else if (empty($res1)) {
 
 <div class="box box-danger">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-danger" href="<?=$CONF['hostname']."cat?2";?>"><?=lang('PORTAL_trouble');?></a></h3>
+                  <h3 class="box-title"><a class="text-danger" href="<?=$CONF['hostname']."cat&2";?>"><?=lang('PORTAL_trouble');?></a></h3>
                   <div class="box-tools pull-right">
                     <h4> <i class="fa fa-exclamation-triangle"></i></h4>
                   </div>
@@ -269,7 +269,7 @@ limit 3');
  foreach ($res1 as $r) {
 ?>
  <li>
- <a href="<?=$CONF['hostname']."thread?".$r['uniq_id'];?>">
+ <a href="<?=$CONF['hostname']."thread&".$r['uniq_id'];?>">
                     <strong style="
     font-size: 16px;
 "><i class="fa fa-exclamation-triangle"></i> <?=$r['subj'];?> </strong>
@@ -301,7 +301,7 @@ limit 3');
 
                    
 
-                    <li><small class="text-muted"><a href="<?=$CONF['hostname']."cat?2";?>" class="text-muted"><?=lang('PORTAL_trouble_all');?> (<?=get_total_posts_by_type('2');?>)</a></small></li>
+                    <li><small class="text-muted"><a href="<?=$CONF['hostname']."cat&2";?>" class="text-muted"><?=lang('PORTAL_trouble_all');?> (<?=get_total_posts_by_type('2');?>)</a></small></li>
                   </ul>
 
                   <?php  }
@@ -324,7 +324,7 @@ else if (empty($res1)) {
 
 <div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-info" href="<?=$CONF['hostname']."cat?3";?>"><?=lang('PORTAL_question');?></a></h3>
+                  <h3 class="box-title"><a class="text-info" href="<?=$CONF['hostname']."cat&3";?>"><?=lang('PORTAL_question');?></a></h3>
                                     <div class="box-tools pull-right">
                     <h4> <i class="fa fa-question-circle"></i></h4>
                   </div>
@@ -357,7 +357,7 @@ limit 3');
 ?>
 
                     <li>
- <a href="<?=$CONF['hostname']."thread?".$r['uniq_id'];?>">
+ <a href="<?=$CONF['hostname']."thread&".$r['uniq_id'];?>">
                     <strong style="
     font-size: 16px;
 "><i class="fa fa-question-circle"></i> <?=$r['subj'];?> </strong>
@@ -383,7 +383,7 @@ limit 3');
 
                    
 
-                    <li><small class="text-muted"><a href="<?=$CONF['hostname']."cat?3";?>" class="text-muted"><?=lang('PORTAL_question_all');?> (<?=get_total_posts_by_type('3');?>)</a></small></li>
+                    <li><small class="text-muted"><a href="<?=$CONF['hostname']."cat&3";?>" class="text-muted"><?=lang('PORTAL_question_all');?> (<?=get_total_posts_by_type('3');?>)</a></small></li>
                   </ul>
 
                   <?php  }
@@ -405,7 +405,7 @@ else if (empty($res1)) {
 
 <div class="box box-warning">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-warning" href="<?=$CONF['hostname']."cat?4";?>"><?=lang('PORTAL_thank');?></a></h3>
+                  <h3 class="box-title"><a class="text-warning" href="<?=$CONF['hostname']."cat&4";?>"><?=lang('PORTAL_thank');?></a></h3>
                    <div class="box-tools pull-right">
                     <h4> <i class="fa fa-heart"></i></h4>
                   </div>
@@ -438,7 +438,7 @@ limit 3');
 ?>
 
                     <li>
- <a href="<?=$CONF['hostname']."thread?".$r['uniq_id'];?>">
+ <a href="<?=$CONF['hostname']."thread&".$r['uniq_id'];?>">
                     <strong style="
     font-size: 16px;
 "><i class="fa fa-heart"></i> <?=$r['subj'];?> </strong>
@@ -464,7 +464,7 @@ limit 3');
 
                    
 
-                    <li><small class="text-muted"><a href="<?=$CONF['hostname']."cat?4";?>" class="text-muted"><?=lang('PORTAL_thank_all');?> (<?=get_total_posts_by_type('4');?>)</a></small></li>
+                    <li><small class="text-muted"><a href="<?=$CONF['hostname']."cat&4";?>" class="text-muted"><?=lang('PORTAL_thank_all');?> (<?=get_total_posts_by_type('4');?>)</a></small></li>
                   </ul>
 
                   <?php  }

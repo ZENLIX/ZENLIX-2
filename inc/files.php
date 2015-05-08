@@ -84,7 +84,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         
         
         <td><small><?php echo get_file_icon($row['file_hash']); ?> <?php echo $row['original_name']; ?></small></td>
-        <td><small><a href="./ticket?<?php echo $row['ticket_hash'] ?>">#<?php echo get_ticket_id_by_hash($row['ticket_hash']); ?></a></small></td>
+        <td><small><a href="./ticket&<?php echo $row['ticket_hash'] ?>">#<?php echo get_ticket_id_by_hash($row['ticket_hash']); ?></a></small></td>
         <td><small><?php echo round(($row['file_size'] / (1024 * 1024)), 2); ?> Mb</small></td>
 <td><small><center>
 <button id="files_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['file_hash']; ?>" title="<?php echo lang('FILES_del'); ?>"><i class="fa fa-trash-o"></i> </button>

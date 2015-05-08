@@ -697,7 +697,7 @@ $stmt = $dbConnection->prepare("SELECT * from portal_posts where (portal_posts.s
 echo "<ul>";
 foreach ($result as $row) {
 
-  echo "<li style='list-style:none;'>".get_cat_icon($row['type'])." <a href=\"".$CONF['hostname']."thread?".$row['uniq_id']."\">".$row['subj']."</a></li>";
+  echo "<li style='list-style:none;'>".get_cat_icon($row['type'])." <a href=\"".$CONF['hostname']."thread&".$row['uniq_id']."\">".$row['subj']."</a></li>";
   # code...
 }
 echo "</ul>";
@@ -713,7 +713,7 @@ $stmt = $dbConnection->prepare("SELECT * from portal_manual_cat where (name like
 echo "<ul>";
 foreach ($result as $row) {
 
-  echo "<li style='list-style:none;'><i class=\"fa fa-graduation-cap\"></i> <a href=\"".$CONF['hostname']."manual?".$row['uniq_id']."\">".$row['name']."</a></li>";
+  echo "<li style='list-style:none;'><i class=\"fa fa-graduation-cap\"></i> <a href=\"".$CONF['hostname']."manual&".$row['uniq_id']."\">".$row['name']."</a></li>";
   # code...
 }
 echo "</ul>";
@@ -900,7 +900,7 @@ else if (!isset($_GET['edit_manual'])) {
 <?php if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) { ?> 
                 <div class="btn-group ">
 <button class="btn btn-xs bg-maroon" id="delete_manual" value="<?=$news_item['id'];?>"><?=lang('PORTAL_act_del');?></button> 
-<a class="btn btn-xs bg-orange btn-flat" href="manual?<?=$news_item['uniq_id'];?>&edit_manual"><?=lang('PORTAL_act_edit');?></a>
+<a class="btn btn-xs bg-orange btn-flat" href="manual&<?=$news_item['uniq_id'];?>&edit_manual"><?=lang('PORTAL_act_edit');?></a>
  </div>
 <?php } ?>
 
@@ -1009,9 +1009,9 @@ if (!$hn) {
                   <h3 class="box-title"><?=lang('PORTAL_admin_menu');?></h3>
                 </div>
                 <div class="box-body">
-                <a href="manual?edit_cat" class="btn btn-default btn-block"><?=lang('PORTAL_cat_n_manag');?></a>
+                <a href="manual&edit_cat" class="btn btn-default btn-block"><?=lang('PORTAL_cat_n_manag');?></a>
                   <!--a href="manual?new_manual" class="btn btn-default btn-block">Создать статью</a-->
-                  <a href="manual?edit_qa" class="btn btn-default btn-block"><?=lang('PORTAL_q_manag');?></a>
+                  <a href="manual&edit_qa" class="btn btn-default btn-block"><?=lang('PORTAL_q_manag');?></a>
                   
                 </div>
               </div>

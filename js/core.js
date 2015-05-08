@@ -4034,7 +4034,7 @@ if(jQuery().fileupload) {
                     url: ACTIONPATH,
                     data: "mode=status_ok" + "&tid=" + tr_id + "&user=" + encodeURIComponent(us),
                     success: function() {
-                        $(elem).removeClass('success', 1000);
+                        $(elem).removeClass('success', 1000).addClass('warning', 1000).addClass('pops');
                     }
                 });
             }
