@@ -238,7 +238,7 @@ if (data.user_init != USER_HASH) {
                 //console.log(html);
                 if (html) {
                     $.each(html, function(i, item) {
-                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'' + item.url + '/ticket?' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
+                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'' + item.url + '/ticket&' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
                         noty({
                             text: t,
                             layout: USER_noty_layot,
@@ -264,7 +264,7 @@ if (data.user_init != USER_HASH) {
                 //console.log(html);
                 if (html) {
                     $.each(html, function(i, item) {
-                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'messages?to=' + item.uniq_id + '\'><strong><i class=\'fa fa-comments\'></i> ' + item.new_msg_text + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time_op + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><strong>' + item.user_from + ':</strong><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'> ' + item.user_chat + '</em>';
+                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'messages&to=' + item.uniq_id + '\'><strong><i class=\'fa fa-comments\'></i> ' + item.new_msg_text + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time_op + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><strong>' + item.user_from + ':</strong><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'> ' + item.user_chat + '</em>';
                         noty({
                             text: t,
                             layout: USER_noty_layot,
@@ -652,6 +652,7 @@ String.prototype.toHHMMSS = function () {
                     container: 'body',
                     html: true
                 });
+                makemytime(true);
             }
         });
         /*

@@ -310,7 +310,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 
                 //
                  
-                $files_def = array('/actions.php', '/functions.inc.php', '/index.php');
+                $files_def = array('/actions.php', '/functions.inc.php', '/index.php', '/.htaccess');
                 
                 $directory_def = array('/css/',
                  //subdirs

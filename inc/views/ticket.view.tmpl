@@ -566,7 +566,7 @@
 {% if status_ok == 1 %}
 <div class="callout callout-warning">
                                         <h4>{{MAIN_attention}}</h4>
-                                        <p><i class="fa fa-check-circle"></i> {{TICKET_t_ok}} <strong> {{ok_by_fio}}</strong> {{ok_date}}.<br> {{TICKET_t_ok_1}}</p>
+                                        <p><i class="fa fa-check-circle"></i> {{TICKET_t_ok}} <strong> {{ok_by_fio | raw}}</strong> {{ok_date}}.<br> {{TICKET_t_ok_1}}</p>
                                     </div>
 
 
@@ -577,7 +577,7 @@
                         {% if status_lock == "you" %}   
                             <div class="callout callout-warning">
                                         <h4>{{MAIN_attention}}</h4>
-                                        <p><i class="fa fa-check-circle"></i> {{TICKET_t_lock}} <strong> {{lock_by_fio}}</strong> .<br> {{TICKET_t_lock_1}}</p>
+                                        <p><i class="fa fa-check-circle"></i> {{TICKET_t_lock}} <strong> {{lock_by_fio | raw}}</strong> .<br> {{TICKET_t_lock_1}}</p>
                                     </div>
                                     
                                     
@@ -675,13 +675,13 @@
 
                 <div class="btn-group btn-group-justified">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-primary btn-xs {{prio_style_low}}" id="prio_low"><i id="lprio_low" class=""></i>{{NEW_prio_low}}</button>
+                        <button type="button" class="btn btn-primary btn-xs {{prio_style_low}}" id="prio_low"><i id="lprio_low" class=""></i>{{NEW_prio_low | raw}}</button>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-info btn-xs prio_style_normal" id="prio_normal"><i id="lprio_norm" class=""></i> {{NEW_prio_norm}}</button>
+                        <button type="button" class="btn btn-info btn-xs prio_style_normal" id="prio_normal"><i id="lprio_norm" class=""></i> {{NEW_prio_norm | raw}}</button>
                     </div>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-danger btn-xs prio_style_high" data-toggle="tooltip" data-placement="top" title="" id="prio_high"><i id="lprio_high" class=""></i>{{NEW_prio_high}}</button>
+                        <button type="button" class="btn btn-danger btn-xs prio_style_high" data-toggle="tooltip" data-placement="top" title="" id="prio_high"><i id="lprio_high" class=""></i>{{NEW_prio_high | raw}}</button>
                     </div>
                 </div>
             </div></div></div></div>

@@ -1902,12 +1902,12 @@ $error_code=true;
 //проверить длину
 
 //msg$msg=$data_json->msg;
-if (iconv_strlen($data_json->msg, 'UTF-8') > 2 ) {
+//if (iconv_strlen($data_json->msg, 'UTF-8') > 2 ) {
    $msg=$data_json->msg;
-}
-if (iconv_strlen($data_json->msg, 'UTF-8') <= 2 ) {
-   $error_code=false;
-}
+//}
+//if (iconv_strlen($data_json->msg, 'UTF-8') <= 2 ) {
+//   $error_code=false;
+//}
 //проверить длину
 
 
