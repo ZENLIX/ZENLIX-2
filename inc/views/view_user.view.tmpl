@@ -1,0 +1,251 @@
+<section class="content-header">
+    <h1>
+    <i class="fa fa-bullhorn"></i> {{VIEWUSER_title}}
+    <small>{{VIEWUSER_title_ext}}</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+        <li class="active">{{VIEWUSER_title}}</li>
+    </ol>
+</section>
+{% if find_user == false %}
+<div class="well well-large well-transparent lead">
+    <center>{{TICKET_t_no}}</center>
+</div>
+{% endif %}
+<section class="content">
+    {% if user_status == "2" %}
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box box-warning">
+                <div class="box-header">
+                    <h4 style="text-align:center;">{{user_fio}}</h4>
+                </div>
+                <div class="box-body">
+                    <center>
+                    <img  src="{{user_img}}" class="img-rounded img-responsive" alt="User Image">
+                    </center>
+                    </div><!-- /.box-body -->
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-12"><div class="box box-solid">
+                        <div class="box-body">
+                            <div class="panel-body">
+                                <section class="content">
+                                    <div class="error-page">
+                                        <div class="">
+                                            <h3><i class="fa fa-warning text-red"></i> {{USER_DEL_main}}</h3>
+                                            <p>
+                                            {{USER_DEL_info}}
+                                            </p>
+                                        </div>
+                                        </div><!-- /.error-page -->
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if user_status != "2" %}
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-3">
+                <div class="box box-warning">
+                    <div class="box-header">
+                        <h4 style="text-align:center;">{{user_fio}}<br><small>{{user_posada}}</small></h4>
+                    </div>
+                    <div class="box-body">
+                        <center>
+                        <img  src="{{user_img}}" class="img-rounded img-responsive" alt="User Image">
+                        </center>
+                        {% if user_last_time_status == true %}
+                        <center>
+                        <small>{{stats_last_time}} <br><i class="fa fa-clock-o"></i> <time id="c" datetime="{{user_last_time}}"></time></small>
+                        </center>
+                        {% endif %}
+                        {% if canWriteMessage == true %}
+                        <br> <a href="messages?to={{uniq_id}}" class="btn btn-primary btn-block btn-xs"><i class="fa fa-comments"></i> {{EXT_do_write_message}}</a>
+                        {% endif %}
+                        </div><!-- /.box-body -->
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        <div class="col-md-12"><div class="box box-solid">
+                            <div class="box-header">
+                                <h3 class="box-title"><i class="fa fa-user"></i> {{P_main}}</h3>
+                                <div class="box-tools pull-right">
+                                    {{get_user_status | raw}}
+                                </div>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="row">
+
+                                                    {% if uViewAdr == true %}
+                                                    <div class="col-md-3"><small class="text-muted">{{APPROVE_adr}}:</small></div>
+                                                    <div class="col-md-9"> <small>{{user_adr}}</small>
+                                                        <small>{{user_unit}}</small>
+                                                    </div>
+                                                    {% endif %}
+
+                                                    {% if canUserSkype == true %}
+                                                    <div class="col-md-3"><small class="text-muted">Skype:</small></div>
+                                                    <div class="col-md-9"><small>{{user_skype}}</small></div>
+                                                    {% endif %}
+
+                                                    {% if user_tel is not empty %}
+                                                    <div class="col-md-3"><small class="text-muted">{{APPROVE_tel}}:</small></div>
+                                                    <div class="col-md-9"><small>{{user_tel}}</small></div>
+                                                    {% endif %}
+                                                    {% if user_mail is not empty %}
+                                                    <div class="col-md-3"><small class="text-muted">{{APPROVE_mail}}:</small></div>
+                                                    <div class="col-md-9"><small>{{user_mail}}</small></div>{% endif %}
+                                                    {% if ufieldsStatus == true %}
+                                                    <br><br><br>
+                                                    <center>
+                                                    {{FIELD_add_title}}</center>
+                                                    <table class="table  ">
+                                                        <tbody>
+
+                                                            {% for item in ufields %}
+                                                            <tr>
+                                                                <td style=" width: 30px; "><small>{{item.udfn}}:</small></td>
+                                                                <td><small>{{item.udf}}</small></td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    {% endif %}
+                                                    {% if ufieldsStatus2 == true %}
+                                                    <br>
+                                                    <table class="table  ">
+                                                        <tbody>
+                                                            {% for item in ufields2 %}
+                                                            <tr>
+                                                                <td style=" width: 30px; "><small>{{item.udfn}}:</small></td>
+                                                                <td><small>{{item.udf}}</small></td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <div class="row">
+                                                    <div class="col-xs-4 text-center"
+                                                        {% if is_client == "0" %}
+                                                        style="border-right: 1px solid #f4f4f4"
+                                                        {% endif %}
+                                                        >
+                                                        <input type="text" class="knob" data-readonly="true" value="{{get_total_tickets_out}}" data-width="100" data-height="100" data-max="{{get_total_tickets_count}}" data-fgColor="#39CCCC"/>
+                                                        <div class="knob-label">{{EXT_t_created}}</div>
+                                                        </div><!-- ./col -->
+                                                        {% if is_client == "0" %}
+
+                                                        <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                                                            <input type="text" class="knob" data-readonly="true" value="{{get_total_tickets_lock}}" data-width="100" data-height="100" data-max="50" data-max="{{get_total_tickets_count}}" data-fgColor="#F4C01B"/>
+                                                            <div class="knob-label">{{EXT_t_locked}}</div>
+                                                            </div><!-- ./col -->
+                                                            <div class="col-xs-4 text-center">
+                                                                <input type="text" class="knob" data-readonly="true" value="{{get_total_tickets_ok}}" data-width="100" data-height="100" data-max="50" data-max="{{get_total_tickets_count}}" data-fgColor="#39CC57"/>
+                                                                <div class="knob-label">{{EXT_t_oked}}</div>
+                                                                </div><!-- ./col -->
+                                                                {% endif %}
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                </div><!-- /.box-body -->
+                                                <div class="col-md-12">
+                                                    {% if check_admin_user_priv == true%}
+                                                    <div class="row">
+                                                        <br>
+                                                        <div class="col-md-6">
+                                                            <div class="box" style="min-height: 10px; max-height: 400px; scroll-behavior: initial; overflow-y: scroll;">
+                                                                <div class="box-header">
+                                                                    <h3 class="box-title"><i class="fa fa-lock"></i> {{PROFILE_tickets_lock}}</h3>
+                                                                    </div><!-- /.box-header -->
+
+                                                                    {% if someStatStatus_one == false %}
+                                                                    <div class="box-body ">
+                                                                        <div id="" class="well well-large well-transparent lead">
+                                                                            <center>
+                                                                            {{MSG_no_records}}
+                                                                            </center>
+                                                                        </div>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% if someStatStatus_one == true %}
+                                                                    <div class="box-body ">
+                                                                        <table class="table table-condensed">
+                                                                            <tbody><tr>
+                                                                                <th style="width: 50px">#</th>
+                                                                                <th>{{NEW_subj}}</th>
+                                                                                <th>{{TICKET_t_date}}</th>
+                                                                            </tr>
+                                                                            {% for item in someStatStatus_arr %}
+                                                                            <tr>
+                                                                                <td style="width: 50px"><small><a href="ticket&{{item.hash_name}}">{{item.id}}</a></small></td>
+                                                                                <td><small>{{item.subj}}</small></td>
+                                                                                <td><small><time id="c" datetime="{{item.date_create}}"></time></small></td>
+                                                                            </tr>
+                                                                            {% endfor %}
+                                                                        </tbody></table>
+                                                                        </div><!-- /.box-body -->
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="box" style="min-height: 10px; max-height: 400px; scroll-behavior: initial; overflow-y: scroll;">
+                                                                        <div class="box-header">
+                                                                            <h3 class="box-title"><i class="fa fa-circle-o"></i> {{PROFILE_tickets_free}}</h3>
+                                                                            </div><!-- /.box-header -->
+                                                                            {% if someStatStatus_two == false %}
+                                                                            <div class="box-body">
+                                                                                <div id="" class="well well-large well-transparent lead">
+                                                                                    <center>
+                                                                                    {{MSG_no_records}}
+                                                                                    </center>
+                                                                                </div>
+                                                                            </div>
+                                                                            {% endif %}
+
+                                                                            {% if someStatStatus_two == true %}
+                                                                            <div class="box-body">
+                                                                                <table class="table table-condensed">
+                                                                                    <tbody><tr>
+                                                                                        <th style="width: 50px">#</th>
+                                                                                        <th>{{NEW_subj}}</th>
+                                                                                        <th>{{TICKET_t_date}}</th>
+                                                                                    </tr>
+                                                                                    {% for item in someStatStatus_arr_two %}
+                                                                                    <tr>
+                                                                                        <td style="width: 50px"><small><a href="ticket&{{item.hash_name}}">{{item.id}}</a></small></td>
+                                                                                        <td><small>{{item.subj}}</small></td>
+                                                                                        <td><small><time id="c" datetime="{{item.date_create}}"></time></small></td>
+                                                                                    </tr>
+                                                                                    {% endfor %}
+
+                                                                                </tbody></table>
+                                                                                </div><!-- /.box-body -->{% endif %}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endif %}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                            </section>

@@ -20,161 +20,117 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     
     
     */
-?>
-<section class="content-header">
-                    <h1>
-                        <i class="fa fa-users"></i> <?php echo lang('USERS_list'); ?>
-                        <small><?php echo lang('UNITS_title_ext'); ?></small>
-                    </h1>
-                    <ol class="breadcrumb">
-                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('USERS_list'); ?></li>
-                    </ol>
-                </section>
-                
-                
-<section class="content">
-
-
-<div class="row">
-
-<div class="col-md-3">
-
-
-<div class="row">
-
-<div class="col-md-12">
-	<div class="box box-solid">
-	<div class="box-body">
-	<?php
-    if (get_user_val('priv_add_client') == "1") { ?>
-	<a href="?add" class="btn btn-success btn-block"><i class="fa fa-male"></i> <?php echo lang('USERS_create'); ?></a>
-	<?php
-    } ?>
-	<a href="?list" class="btn btn-primary btn-block"><i class="fa fa-list-alt"></i> <?php echo lang('USERS_list'); ?></a>
-	
-	
-
-	</div>
-	</div>
-</div>
-<div class="col-md-12">
-                    
-
-                    <div class="callout ">
-                                        
-                                        <small> <i class="fa fa-info-circle"></i> 
-<?php echo lang('WORKERS_info'); ?>
-	     </small>
-                                    </div>
-                                    
-                                    
-                                    
-                    
-                    
-                    
-                    </div>
-                    
-                    
-</div>
-</div>
 
 
 
 
 
-<div class="col-md-9">
 
-<div class="row">
-	<?php
-    if ((!isset($_GET['add']) && (!isset($_GET['edit'])))) { ?> 
-<div class="col-md-12">
-	<div class="box box-solid">
-	<div class="box-body">
-	
-	<input type="text" class="form-control input-sm" id="fio_find_admin" autofocus placeholder="<?php echo lang('NEW_fio'); ?>">
-	
 
-	</div>
-	</div>
-</div>
-<?php
-    }
-?>
-	
-<div class="col-md-12">
-	
-	
-	
-	  <?php
-    if (isset($_GET['add'])) {
-        
-        //echo "in";
-        $_POST['menu'] = "new";
-        include_once ("clients.inc.php");
-    } else if (isset($_GET['list'])) {
-        
-        //echo "in";
-        
-?>
-		<div id="content_clients">
-		<?php
+
+
+
+
+
+
+
+$priv_add_client=false;
+if (get_user_val('priv_add_client') == "1") {
+$priv_add_client=true;
+}
+
+$ae=false;
+if ((!isset($_GET['add']) && (!isset($_GET['edit'])))) {
+$ae=true;
+}
+
+
+
+
+if (isset($_GET['add'])) {
+$get_menu="add";
+ob_start();
+$_POST['menu'] = "new";
+include_once ("clients.inc.php");
+$clients_inc = ob_get_contents();
+ob_end_clean();
+}
+
+
+
+else if (isset($_GET['list'])) {
+    $get_menu="list";
+    ob_start();
+$_POST['menu'] = "list";
+$_POST['page'] = "1";
+include_once ("clients.inc.php");
+$clients_inc = ob_get_contents();
+ob_end_clean();
+}
+
+else if (isset($_GET['edit'])) {
+    $get_menu="edit";
+ob_start();
+$_POST['menu'] = "edit";
+$_POST['id'] = $_GET['edit'];
+include_once ("clients.inc.php");
+$clients_inc = ob_get_contents();
+ob_end_clean();
+}
+
+else {
+    $get_menu="else";
+    ob_start();
+$_GET['list'] = "s";
         $_POST['menu'] = "list";
         $_POST['page'] = "1";
         include_once ("clients.inc.php");
-?>
-		</div>
-		
-		
-		
-		<div class="text-center"><ul id="example_clients" class="pagination pagination-sm"></ul></div>
-                    <input type="hidden" id="cur_page" value="1">
-                    <input type="hidden" id="total_pages" value="<?php echo get_total_pages_clients(); ?>">
-	
-		<?php
-    } else if (isset($_GET['edit'])) {
-        
-        //echo "in";
-        $_POST['menu'] = "edit";
-        $_POST['id'] = $_GET['edit'];
-        include_once ("clients.inc.php");
-    } else {
-?>
-		<div id="content_clients">
-		<?php
-        $_GET['list'] = "s";
-        $_POST['menu'] = "list";
-        $_POST['page'] = "1";
-        include_once ("clients.inc.php");
-?>
-		</div>
-		
-		
-		
-		<div class="text-center"><ul id="example_clients" class="pagination pagination-sm"></ul></div>
-                    <input type="hidden" id="cur_page" value="1">
-                    <input type="hidden" id="total_pages" value="<?php echo get_total_pages_clients(); ?>">
-	
-		<?php
-    }
-?>
-	
-	</div>
-</div>
+        $clients_inc = ob_get_contents();
+ob_end_clean();
+}
 
 
 
-
-
-</div>
-</section>
+    $basedir = dirname(dirname(__FILE__)); 
+            ////////////
+    try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('clients.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+                'hostname'=>$CONF['hostname'],
+                'name_of_firm'=>$CONF['name_of_firm'],
+                'UNITS_title_ext'=>lang('UNITS_title_ext'),
+                'USERS_list'=>lang('USERS_list'),
+                'priv_add_client'=>$priv_add_client,
+                'USERS_create'=>lang('USERS_create'),
+                'WORKERS_info'=>lang('WORKERS_info'),
+                'ae'=>$ae,
+                'NEW_fio'=>lang('NEW_fio'),
+                'clients_inc'=>$clients_inc,
+                'get_total_pages_clients'=>get_total_pages_clients(),
+                'get_menu'=>$get_menu
                 
 
-<?php
+
+
+            ));
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
     include ("footer.inc.php");
-?>
 
-<?php
 } else {
     include '../auth.php';
 }

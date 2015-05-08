@@ -2879,7 +2879,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                 echo $i; ?></center></small></td>
                     <td style=""><small><center><?php
                                 echo $row['ticket_id']; ?> </center>  </small></td>
-                    <td style=""><small><a href="ticket?<?php echo get_ticket_hash_by_id($row['ticket_id']); ?>">
+                    <td style=""><small><a href="ticket&<?php echo get_ticket_hash_by_id($row['ticket_id']); ?>">
                         <?php
                                 echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['ticket_id']))), 'no')); ?>
                     </a>
@@ -3005,7 +3005,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                         echo $i; ?></center></small></td>
                     <td style=""><small><center><?php
                         echo $row['ticket_id']; ?> </center>  </small></td>
-                    <td style=""><small><a href="ticket?<?php echo get_ticket_hash_by_id($row['ticket_id']); ?>">
+                    <td style=""><small><a href="ticket&<?php echo get_ticket_hash_by_id($row['ticket_id']); ?>">
                         <?php
                         echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['ticket_id']))), 'no')); ?>
                     </a>
@@ -3179,7 +3179,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                 echo $i; ?></center></small></td>
                     <td style=""><small><center><?php
                                 echo $row['id']; ?> </center>  </small></td>
-                    <td style=""><small><a href="ticket?<?php echo get_ticket_hash_by_id($row['id']); ?>">
+                    <td style=""><small><a href="ticket&<?php echo get_ticket_hash_by_id($row['id']); ?>">
                         <?php
                                 echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['id']))), 'no')); ?>
                     </a>
@@ -3385,7 +3385,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                         echo $i; ?></center></small></td>
                     <td style=""><small><center><?php
                         echo $row['id']; ?> </center>  </small></td>
-                    <td style=""><small><a href="ticket?<?php echo get_ticket_hash_by_id($row['id']); ?>">
+                    <td style=""><small><a href="ticket&<?php echo get_ticket_hash_by_id($row['id']); ?>">
                         <?php
                         echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['id']))), 'no')); ?>
                     </a>
@@ -3564,7 +3564,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                 echo $i; ?></center></small></td>
                     <td style=""><small><center><?php
                                 echo $row['ticket_id']; ?> </center>  </small></td>
-                    <td style=""><small><a href="ticket?<?php echo get_ticket_hash_by_id($row['ticket_id']); ?>">
+                    <td style=""><small><a href="ticket&<?php echo get_ticket_hash_by_id($row['ticket_id']); ?>">
                         <?php
                                 echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['ticket_id']))), 'no')); ?>
                     </a>
@@ -3672,7 +3672,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                 echo $i; ?></center></small></td>
                     <td style=""><small><center><?php
                                 echo $row['id']; ?> </center>  </small></td>
-                    <td style=""><small><a href="ticket?<?php echo get_ticket_hash_by_id($row['id']); ?>">
+                    <td style=""><small><a href="ticket&<?php echo get_ticket_hash_by_id($row['id']); ?>">
                         <?php
                                 echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['id']))), 'no')); ?>
                     </a>
@@ -3771,7 +3771,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                         echo $i; ?></center></small></td>
                     <td style=""><small><center><?php
                         echo $row['id']; ?> </center>  </small></td>
-                    <td style=""><small><a href="ticket?<?php echo get_ticket_hash_by_id($row['id']); ?>">
+                    <td style=""><small><a href="ticket&<?php echo get_ticket_hash_by_id($row['id']); ?>">
                         <?php
                         echo str_replace('"', "", make_html(strip_tags(get_ticket_val_by_hash('subj', get_ticket_hash_by_id($row['id']))), 'no')); ?>
                     </a>
@@ -4104,7 +4104,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                                     
                                                     </center></small></td>
                                                     <td style=" width: 70px; vertical-align: inherit;"><center><small>
-                                                       <a href="ticket?<?php
+                                                       <a href="ticket&<?php
                         echo get_ticket_hash_by_id($row['ticket_id']) ?>"> #<?php
                         echo $row['ticket_id'] ?></a>
                                                         </small></center></td>
@@ -4604,7 +4604,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                                     
                                     
                                         <li><!-- start message -->
-                                            <a href="messages?to=<?php
+                                            <a href="messages&to=<?php
                 echo get_user_val_by_id($rews['user_from'], 'uniq_id'); ?>">
                                                 <div class="pull-left">
                                                     <img src="<?php
@@ -4639,7 +4639,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
             foreach ($re as $rews) {
 ?>
 <li><!-- start message -->
-                                            <a href="view_user?<?php
+                                            <a href="view_user&<?php
                 echo $rews['uniq_id']; ?>">
                                                 <div class="pull-left">
                                                     <img src="<?php
@@ -5072,7 +5072,7 @@ a, a:visited {
 
                     <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper&h=<?php
                         echo $row['hashname']; ?>"><?php
                         echo $row['title']; ?></a></h5>
                                     <div class="box-tools pull-right">
@@ -5133,7 +5133,7 @@ a, a:visited {
 
                     <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper&h=<?php
                         echo $row['hashname']; ?>"><?php
                         echo $row['title']; ?></a></h5>
                                     <div class="box-tools pull-right">
@@ -5143,7 +5143,7 @@ a, a:visited {
                         if ($priv_h == "yes") {
                             echo " 
             <div class=\"btn-group\">
-            <a href=\"" . $CONF['hostname'] . "/helper?h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+            <a href=\"" . $CONF['hostname'] . "/helper&h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -5200,7 +5200,7 @@ a, a:visited {
 ?>
 <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i> </small><a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i> </small><a style="font-size: 18px;" class="text-light-blue" href="helper&h=<?php
                         echo $row['hashname']; ?>"><?php
                         echo $row['title']; ?></a></h5>
                                 </div>
@@ -5286,7 +5286,7 @@ a, a:visited {
 
 <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper&h=<?php
                             echo $row['hashname']; ?>"><?php
                             echo $row['title']; ?></a></h5>
                                     <div class="box-tools pull-right">
@@ -5296,7 +5296,7 @@ a, a:visited {
                             if ($priv_h == "yes") {
                                 echo " 
             <div class=\"btn-group\">
-<a href=\"" . $CONF['hostname'] . "/helper?h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+<a href=\"" . $CONF['hostname'] . "/helper&h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -5704,14 +5704,14 @@ a, a:visited {
                     echo str_replace('"', "", cutstr_help_ret(make_html(strip_tags($row['msg']), 'no'))); ?></small>" 
                     
                     
-                    href="ticket?<?php
+                    href="ticket&<?php
                     echo $row['hash_name']; ?>"><?php
                     cutstr(make_html($row['subj'], 'no')); ?></a></td>
                         
                         
                         <td style=" vertical-align: middle; "><small class="<?php
                     echo $muclass; ?>">
-                        <a href="view_user?<?php
+                        <a href="view_user&<?php
                     echo get_user_hash_by_id($row['client_id']); ?>">
                         <?php
                     echo get_user_val_by_id($row['client_id'], 'fio'); ?>
@@ -5728,7 +5728,7 @@ a, a:visited {
 
                         <td style=" vertical-align: middle; "><small class="<?php
                     echo $muclass; ?>">
-                        <a href="view_user?<?php
+                        <a href="view_user&<?php
                     echo get_user_hash_by_id($row['user_init_id']); ?>">
                         <?php
                     echo nameshort(name_of_user_ret($row['user_init_id'])); ?>
@@ -5989,7 +5989,7 @@ a, a:visited {
                 foreach ($results as $arr) {
 ?>
 
-                    <tr><td style=" width: 100px; vertical-align: inherit;"><small><i class="fa fa-tag"></i> </small><a href="ticket?<?php
+                    <tr><td style=" width: 100px; vertical-align: inherit;"><small><i class="fa fa-tag"></i> </small><a href="ticket&<?php
                     echo $arr['hash']; ?>"><small><?php
                     echo lang('TICKET_name'); ?> #<?php
                     echo $arr['name']; ?></small></a></td><td><small><?php
@@ -7462,7 +7462,7 @@ if ($row['description'] == "0") {
 }
 
 
-$author_tag="<a href=\"view_user?".get_user_hash_by_id($row['user_id'])."\">".nameshort(name_of_user_ret($row['user_id']))."</a>";
+$author_tag="<a href=\"view_user&".get_user_hash_by_id($row['user_id'])."\">".nameshort(name_of_user_ret($row['user_id']))."</a>";
 
         $data[] = array(
             'id'=>$row['uniq_hash'],

@@ -6,111 +6,71 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if ($_SESSION['helpdesk_user_id']) {
         include ("head.inc.php");
         include ("navbar.inc.php");
-?>
-    
-
-
-<section class="content-header">
-                    <h1>
-                        <i class="fa fa-bar-chart-o"></i>  <?php echo lang('STATS_TITLE'); ?>
-                        <small><?php echo lang('STATS_TITLE_ext'); ?></small>
-                    </h1>
-                    <ol class="breadcrumb">
-                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('STATS_TITLE'); ?></li>
-                    </ol>
-                </section>
-                
-                
-                <section class="content">
-
-                    <!-- row -->
-                    <div class="row">
-                    
-                    <div class="col-md-12">
-                    
-                    
-                    
-                    
-                    <div class="box box-solid">
-                                
-                                <div class="box-body">
-                                    <table class="table table-bordered">
-<tr>
-<td colspan="3" style="width:50%"><strong><center><?php echo lang('STATS_in'); ?></center></strong></td>
-<td colspan="4"><strong><center><?php echo lang('STATS_out'); ?></center></strong></td>
-</tr>
-<tr>
-<td><center><?php echo lang('STATS_new'); ?>            </center></td>
-<td><center><?php echo lang('STATS_lock'); ?>  </center></td>
-<td><center><?php echo lang('STATS_ok'); ?> </center></td>
-<td><center><?php echo lang('STATS_nook'); ?>           </center></td>  
-<td><center><?php echo lang('STATS_create'); ?> </center></td>
-<td><center><?php echo lang('STATS_lock_o'); ?>     </center></td>
-<td><center><?php echo lang('STATS_ok_o'); ?>       </center></td>
-</tr>
-<tr>
-<td><center><span class="text-danger"> <h4><?php echo get_total_tickets_free(); ?>          </h4></span>    </center></td>
-<td><center><span class="text-warning"><h4><?php echo get_total_tickets_lock(); ?>          </h4></span>    </center></td>
-<td><center><span class="text-success"><h4><?php echo get_total_tickets_ok(); ?>                </h4></span></center></td>  
-<td><center><span class="text-danger"> <h4><?php echo get_total_tickets_out_and_success(); ?></h4></span>   </center></td>
-<td><center><span class="">            <h4><?php echo get_total_tickets_out(); ?>           </h4></span>    </center></td>
-<td><center><span class="text-warning"><h4><?php echo get_total_tickets_out_and_lock(); ?>  </h4></span>    </center></td>
-<td><center><span class="text-success"><h4><?php echo get_total_tickets_out_and_ok(); ?>        </h4></span></center></td>
-</tr>
-<tr>
-<td colspan="3"><center><div class="col-md-12" id="chart_in">
-</div></center></td>
-<td colspan="4"><div class="col-md-12" id="chart_out">
-</div></td></tr>
-<tr>
-<td colspan="3"><small>
-<ul>
-    <?php echo lang('STATS_help1'); ?>
-</ul>
-</small></td>
-<td colspan="4">
-    
-    <small>
-<ul>
-    <?php echo lang('STATS_help2'); ?>
-</ul>
-</small>
-    
-</td>
-</tr>
-</table>
-                                    
-                                    
-                                    
-                                    
-                                    
-                                                                    </div><!-- /.box-body -->
-                            </div>
-                            
-                            
-                            
-                            
-                            
-                            
-                    
-                    
-                    
-                    
-                        
-                    </div>
-                    
-                    </div>
-                </section>
-                
-                
-                
-                
 
 
 
 
-<?php
+
+
+
+
+
+
+$basedir = dirname(dirname(__FILE__)); 
+            ////////////
+    try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('stats.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+$main_arr=array(
+                'hostname'=>$CONF['hostname'],
+                'name_of_firm'=>$CONF['name_of_firm'],
+                'STATS_TITLE'=>lang('STATS_TITLE'),
+                'STATS_TITLE_ext'=>lang('STATS_TITLE_ext'),
+                'STATS_in'=>lang('STATS_in'),
+                'STATS_lock'=>lang('STATS_lock'),
+                'STATS_out'=>lang('STATS_out'),
+                'STATS_new'=>lang('STATS_new'),
+                'STATS_ok'=>lang('STATS_ok'),
+                'STATS_nook'=>lang('STATS_nook'),
+                'STATS_create'=>lang('STATS_create'),
+                'STATS_lock_o'=>lang('STATS_lock_o'),
+                'STATS_ok_o'=>lang('STATS_ok_o'),
+                'get_total_tickets_free'=>get_total_tickets_free(),
+                'get_total_tickets_lock'=>get_total_tickets_lock(),
+                'get_total_tickets_ok'=>get_total_tickets_ok(),
+                'get_total_tickets_out_and_success'=>get_total_tickets_out_and_success(),
+                'get_total_tickets_out'=>get_total_tickets_out(),
+                'get_total_tickets_out_and_lock'=>get_total_tickets_out_and_lock(),
+                'get_total_tickets_out_and_ok'=>get_total_tickets_out_and_ok(),
+                'STATS_help1'=>lang('STATS_help1'),
+                'STATS_help2'=>lang('STATS_help2')
+
+
+           );
+
+
+$main_arr=array_merge($main_arr);
+
+            echo $template->render($main_arr);
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
         include ("footer.inc.php");
 ?>
 

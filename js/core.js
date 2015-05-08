@@ -4,6 +4,7 @@ $(document).ready(function() {
     // Disable caching of AJAX responses
     cache: false
 });
+    console.log(window.location.href);
 $(".main_i").css("display", "none");
 $(".main_i").fadeIn(800);
 $(".mf").css("display", "none");
@@ -570,7 +571,7 @@ String.prototype.toHHMMSS = function () {
         if (t_id == tic_id) {
             setInterval(function() {
                 if ($('input#msg:focus').length == 0) {
-                    window.location = MyHOSTNAME + "ticket?" + t_hash + "&refresh";
+                    window.location = MyHOSTNAME + "ticket&" + t_hash + "&refresh";
                 }
             }, 1000);
         }
@@ -1171,7 +1172,7 @@ $.post(
         });
         $('body').on('click', 'button#reset_cron', function(event) {
             event.preventDefault();
-            window.location = MyHOSTNAME + "scheduler?plus";
+            window.location = MyHOSTNAME + "scheduler&plus";
         });
         
 $("#user_info").hide();
@@ -2019,7 +2020,7 @@ $('.fancybox').fancybox(
                     //console.log(html);
                     $('#myModal').modal('hide');
                     //$(elem).removeClass().addClass('success', 1000);
-                    window.location = MyHOSTNAME + "ticket?" + t_hash;
+                    window.location = MyHOSTNAME + "ticket&" + t_hash;
                 }
             });
         });
@@ -2195,7 +2196,7 @@ clearInterval(intr);
                     data: "mode=update_to" + "&ticket_id=" + pp + "&to=" + encodeURIComponent(to) + "&tou=" + encodeURIComponent(u_do) + "&tom=" + encodeURIComponent(tom),
                     success: function(html) {
                         $("#ccc").hide().html(html).fadeIn(500);
-                        window.location = MyHOSTNAME + "list?in";
+                        window.location = MyHOSTNAME + "list&in";
                     }
                 });
             }
@@ -3114,7 +3115,7 @@ $.ajax({
                                 success: function(html) {
                             //$('#table_list').html(html);
                             console.log("ok");
-                            window.location = MyHOSTNAME + "helper?h="+$("#do_save_help").val()+"&edit";
+                            window.location = MyHOSTNAME + "helper&h="+$("#do_save_help").val()+"&edit";
                         }
 
     });
@@ -3830,7 +3831,7 @@ console.log(file);
                 success: function(html) {
                     //console.log(html);
 
-                    window.location = MyHOSTNAME + "create?ok&h=" + html;
+                    window.location = MyHOSTNAME + "create&ok&h=" + html;
                 }
             });
         }
@@ -3863,7 +3864,7 @@ console.log(file);
                     "&deadline_time="+deadline_time+"&"+add_from,
                     success: function(html) {
                         //window.location = "new.php?ok&h="+html;
-                        window.location = MyHOSTNAME + "create?ok&h=" + html;
+                        window.location = MyHOSTNAME + "create&ok&h=" + html;
                        // console.log(html);
                     }
                 });
@@ -3885,7 +3886,7 @@ console.log(file);
                     "&deadline_time="+deadline_time+"&"+add_from,
                     success: function(html) {
                         //console.log(html);
-                        window.location = MyHOSTNAME + "create?ok&h=" + html;
+                        window.location = MyHOSTNAME + "create&ok&h=" + html;
                         //console.log(html);
                     }
                 });
@@ -3975,7 +3976,7 @@ if(jQuery().fileupload) {
                 url: ACTIONPATH,
                 data: "mode=make_sort" + "&pt=" + encodeURIComponent(pt) + "&st=" + encodeURIComponent(tr_id),
                 success: function() {
-                    window.location = MyHOSTNAME + "list?" + pt;
+                    window.location = MyHOSTNAME + "list&" + pt;
                 }
             });
 
@@ -3993,7 +3994,7 @@ if(jQuery().fileupload) {
                 url: ACTIONPATH,
                 data: "mode=reset_sort" + "&pt=" + encodeURIComponent(pt),
                 success: function() {
-                    window.location = MyHOSTNAME + "list?" + pt;
+                    window.location = MyHOSTNAME + "list&" + pt;
                 }
             });
 
@@ -4100,7 +4101,7 @@ if(jQuery().fileupload) {
                 url: ACTIONPATH,
                 data: "mode=sort_list" + "&pt=" + encodeURIComponent(pt) + "&st=" + encodeURIComponent(st),
                 success: function() {
-                    window.location = MyHOSTNAME + "list?" + pt;
+                    window.location = MyHOSTNAME + "list&" + pt;
                 }
             });
         });
@@ -4113,7 +4114,7 @@ if(jQuery().fileupload) {
                 url: ACTIONPATH,
                 data: "mode=set_list_count" + "&pt=" + encodeURIComponent(pt) + "&v=" + encodeURIComponent(z),
                 success: function() {
-                    window.location = MyHOSTNAME + "list?" + pt;
+                    window.location = MyHOSTNAME + "list&" + pt;
                 }
             });
         });
@@ -4608,7 +4609,7 @@ var data= {
 //edit_sla_plan
 $('body').on('click', 'i#edit_sla_plan', function(event) {
             event.preventDefault();
-window.location = MyHOSTNAME + "config?slaplans&item="+$(this).attr('value');
+window.location = MyHOSTNAME + "config&slaplans&item="+$(this).attr('value');
         });
 
 
@@ -6016,7 +6017,7 @@ $.post( ACTIONPATH, { mode: "change_userfield_placeholder", hash: hash, name: na
                         data: "mode=re_user" + "&id=" + ids,
                         success: function(html) {
                             //$("#content_subj").html(html);
-                            window.location = MyHOSTNAME + "users?edit="+ids;
+                            window.location = MyHOSTNAME + "users&edit="+ids;
                         }
                     });
 
@@ -6046,7 +6047,7 @@ $.post( ACTIONPATH, { mode: "change_userfield_placeholder", hash: hash, name: na
                         data: "mode=del_user" + "&id=" + ids,
                         success: function(html) {
                             //$("#content_subj").html(html);
-                            window.location = MyHOSTNAME + "users?edit="+ids;
+                            window.location = MyHOSTNAME + "users&edit="+ids;
                         }
                     });
                 }
@@ -6102,7 +6103,7 @@ $.ajax({
                     //$("#ldap_res").html(html);
                     //$("#units_text").val('');
 
-                    window.location = MyHOSTNAME + "users?import_step_3";
+                    window.location = MyHOSTNAME + "users&import_step_3";
 
 
                 }
@@ -6138,7 +6139,7 @@ $.ajax({
                     //$("#ldap_res").html(html);
                     //$("#units_text").val('');
 
-                    window.location = MyHOSTNAME + "users?import_step_2";
+                    window.location = MyHOSTNAME + "users&import_step_2";
 
 
                 }
@@ -6478,7 +6479,7 @@ var add_from=$('#add_field_form').serialize();
                     "&def_user_id="+encodeURIComponent($("#users_do").val())+
                     "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked'))+"&"+add_from,
                     success: function(html) {
-                        window.location = MyHOSTNAME + "users?create&ok";
+                        window.location = MyHOSTNAME + "users&create&ok";
                     }
                 });
             } else {
@@ -6503,7 +6504,7 @@ var add_from=$('#add_field_form').serialize();
                     "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked'))+"&"+add_from,
                 success: function(html) {
                     //alert(html);
-                    window.location = MyHOSTNAME + "users?edit=" + usid + "&ok";
+                    window.location = MyHOSTNAME + "users&edit=" + usid + "&ok";
                 }
             });
         });
@@ -6635,7 +6636,7 @@ view_sla();
                     //$("#res").hide().html(html).fadeIn(500);
                     $.each(html, function(i, item) {
                         
-                        if (item.res == true) { window.location = MyHOSTNAME + "clients?add&ok"; }
+                        if (item.res == true) { window.location = MyHOSTNAME + "clients&add&ok"; }
                         else if (item.res == false) { 
                             $('#res').html(item.msg); 
                            
@@ -6660,7 +6661,7 @@ view_sla();
                     
                                         $.each(html, function(i, item) {
                         
-                        if (item.res == true) { window.location = MyHOSTNAME + "clients?edit=" + usrid + "&ok"; }
+                        if (item.res == true) { window.location = MyHOSTNAME + "clients&edit=" + usrid + "&ok"; }
                         else if (item.res == false) { 
                             $('#res').html(item.msg); 
                            

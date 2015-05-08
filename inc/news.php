@@ -85,68 +85,19 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     
     //print_r ($news_list->var);
     
-    
-?>
 
-                <section class="content-header">
-                    <h1>
-                        <i class="fa fa-bullhorn"></i> <?php
-    echo lang('NAVBAR_news'); ?>
-                        <small><?php
-    echo lang('DASHBOARD_last_news'); ?></small>
-                    </h1>
-                    <ol class="breadcrumb">
-                       <li><a href="<?php
-    echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php
-    echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php
-    echo lang('NAVBAR_news'); ?></li>
-                    </ol>
-                </section>
-                
-                
-                
-<section class="content">
+$res = $news_list->arr;
 
-                    <!-- row -->
-                    <div class="row">
-                        <div class="col-md-12">
-                        
-                        
+$news_arr=array();
 
-                        
-                            <!-- The time line -->
-                            <ul class="timeline">
-
-
-
-<?php
-    $res = $news_list->arr;
     foreach ($res as $rows) {
-        $nd = date('d-m-Y', strtotime($rows['date_op']));
-        if ($z != $nd) { ?> 
-                    
-                                <li class="time-label" style=" font-size: 10px; ">
-                                    <span class="bg-blue">
-                                    <?php
-            $today = date('d-m-Y');
-            $re_date = date('d-m-Y', strtotime($rows['date_op']));
-            
-            if ($today == $re_date) {
-                echo lang('NEWS_today') . " (<time id=\"d\" datetime=\"" . $rows['date_op'] . "\"></time>)";
-            } else {
-                echo "<time id=\"d\" datetime=\"" . $rows['date_op'] . "\"></time>";
-            }
-?>
-                                    
-                                    </span>
-                                </li>
-                                
-                    <?php
-        }
+
         
-        $z = date('d-m-Y', strtotime($rows['date_op']));
-        
+
+$today = date('d-m-Y');
+$re_date = date('d-m-Y', strtotime($rows['date_op']));
+
+
         $init_user = $rows['init_user_id'];
         $t_id = $rows['ticket_id'];
         $t_dc = $rows['date_op'];
@@ -167,160 +118,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $ticket_comment = $stmt_comment->fetch(PDO::FETCH_ASSOC);
         
         $tc = $ticket_comment['comment_text'];
-        
-        //echo $rows['date_op'].' '.$rows['msg'].'<br> ';
-        
-        if ($rows['msg'] == 'ticket_lock') {
-?>
-                    <li>
-                                    <i class="fa fa-lock bg-yellow"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><small><i class="fa fa-clock-o"></i> 
-                                        <time id="c" datetime="<?php
-            echo $t_dc
-?>"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user?<?php
-            echo get_user_hash_by_id($init_user); ?>"><?php
-            echo name_of_user_ret($init_user) ?></a> 
-                                        <?php
-            echo lang('NEWS_action_lock'); ?> <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>">#<?php
-            echo $t_id; ?></a></h3>
-<div class="timeline-body">
 
 
-                                <?php
-            echo make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'); ?>...
-                            
-                                           
-                                        </div>
-                                    </div>
-                                </li>
-                    <?php
-        } else if ($rows['msg'] == 'ticket_unlock') {
-?>
-                    <li>
-                                    <i class="fa fa-unlock bg-maroon"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="<?php
-            echo $t_dc
-?>"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user?<?php
-            echo get_user_hash_by_id($init_user); ?>"><?php
-            echo name_of_user_ret($init_user) ?></a>
-                                        
-                                        
-                                         <?php
-            echo lang('NEWS_action_unlock'); ?> <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>">#<?php
-            echo $t_id; ?></a></h3>
-<div class="timeline-body">
-
-
-                                <?php
-            echo make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'); ?>...
-                            
-                                           
-                                        </div>
-<div class="timeline-footer">
-                                            <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>" class="btn btn-xs bg-maroon"><?php
-            echo lang('EXT_news_view_t'); ?></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                    <?php
-        } else if ($rows['msg'] == 'ticket_ok') {
-?>
-                    <li>
-                                    <i class="fa fa-check-circle-o bg-green"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="<?php
-            echo $t_dc
-?>"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user?<?php
-            echo get_user_hash_by_id($init_user); ?>"><?php
-            echo name_of_user_ret($init_user) ?></a>
-                                        
-                                        
-                                         <?php
-            echo lang('NEWS_action_ok'); ?> <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>">#<?php
-            echo $t_id; ?></a></h3>
-                                         
-                                         <div class="timeline-body">
-
-
-                                <?php
-            echo make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'); ?>...
-                            
-                                           
-                                        </div>
-                                        
-                                    </div>
-                                </li>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                    <?php
-        } else if ($rows['msg'] == 'ticket_no_ok') {
-?>
-                    <li>
-                                    <i class="fa fa-circle-o bg-red"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="<?php
-            echo $t_dc
-?>"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user?<?php
-            echo get_user_hash_by_id($init_user); ?>"><?php
-            echo name_of_user_ret($init_user) ?></a>
-                                        
-                                        
-                                         <?php
-            echo lang('NEWS_action_no_ok'); ?> <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>">#<?php
-            echo $t_id; ?></a>, <?php
-            echo lang('NEWS_action_no_ok2'); ?></h3>
-                                         <div class="timeline-body">
-
-
-                                <?php
-            echo make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'); ?>...
-                            
-                                           
-                                        </div>
-                                         
-                                         
-                                         <div class="timeline-footer">
-                                            <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>" class="btn btn-xs bg-red"><?php
-            echo lang('EXT_news_view_t'); ?></a>
-                                        </div>
-                                         
-                                    </div>
-                                </li>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                    <?php
-        } else if ($rows['msg'] == 'ticket_refer') {
-            
-            $user2id = get_ticket_val_by_hash('user_to_id', get_ticket_hash_by_id($t_id));
+ $user2id = get_ticket_val_by_hash('user_to_id', get_ticket_hash_by_id($t_id));
             $unit2id = get_ticket_val_by_hash('unit_id', get_ticket_hash_by_id($t_id));
             
             if ($user2id <> 0) {
@@ -329,76 +129,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             if ($user2id == 0) {
                 $to_text = view_array(get_unit_name_return($unit2id));
             }
-?>
-                    <li>
-                                    <i class="fa fa fa-share bg-blue"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="<?php
-            echo $t_dc
-?>"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user?<?php
-            echo get_user_hash_by_id($init_user); ?>"><?php
-            echo name_of_user_ret($init_user) ?></a>
-                                        
-                                        
-                                         <?php
-            echo lang('NEWS_action_refer'); ?> <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>">#<?php
-            echo $t_id; ?></a>  <?php
-            echo lang('mail_msg_ticket_to_ext'); ?> <?php
-            echo $to_text; ?> </h3>
-                                        <div class="timeline-body">
 
 
-                                <?php
-            echo make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'); ?>...
-                            
-                                           
-                                        </div>
-                                        
-                                    </div>
-                     </li>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                    <?php
-        } else if ($rows['msg'] == 'ticket_comment') {
-?>
-                    <li>
-                                    <i class="fa fa-comments bg-purple"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="<?php
-            echo $t_dc
-?>"></time></small></span>
-<h3 class="timeline-header "><a href="view_user?<?php
-            echo get_user_hash_by_id($init_user); ?>"><?php
-            echo name_of_user_ret($init_user) ?></a>
-                                        
-                                        
-                                         <?php
-            echo lang('NEWS_action_comment'); ?> <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>">#<?php
-            echo $t_id; ?></a></h3>
-                                         <div class="timeline-body">
 
-
-                                <?php
-            echo make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'); ?>...
-                            <br><br>
-                            
-                            
-
-
-                                           <div class="callout" style=" margin: 0px; padding-bottom: 5px; padding-top: 5px;">
-                                        <small class="text-muted"><em><?php
-            echo lang('NEWS_text_comment'); ?>:</em></small>
-                                        <small><p>
-                                            <?php
-            if (substr($tc, 0, 6) === "[file:") {
+       if (substr($tc, 0, 6) === "[file:") {
                 
                 $arr_hash = explode(":", $tc);
                 $f_hash = substr($arr_hash[1], 0, -1);
@@ -428,114 +162,49 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             } else {
                 $ct = make_html($tc, 'no');
             }
-?>
-                                            <?php
-            echo $ct; ?>
-                                            
-                                            
-                                            
-                                            </p></small>
-                                    </div>
-                                        
-                                           
-                                        </div>
-                                        <div class="timeline-footer">
-                                            <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>" class="btn btn-xs bg-purple"><?php
-            echo lang('EXT_news_view_t'); ?></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                    <?php
-        } else if ($rows['msg'] == 'ticket_create') {
-?>
-                    <li>
-                                    <i class="fa fa-tag bg-aqua"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><small><i class="fa fa-clock-o"></i> 
-                                        <time id="c" datetime="<?php
-            echo $t_dc
-?>"></time></small>
-                                        </span>
-                                        <h3 class="timeline-header "><a href="view_user?<?php
-            echo get_user_hash_by_id($init_user); ?>"><?php
-            echo name_of_user_ret($init_user) ?></a>
-                                        
-                                        
-                                         <?php
-            echo lang('NEWS_action_create'); ?> <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>">#<?php
-            echo $t_id; ?></a></h3>
-                                        <div class="timeline-body">
 
 
-                                <?php
-            echo make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'); ?>...
-                            
-                                           
-                                        </div>
-<div class="timeline-footer">
-                                            <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>" class="btn btn-xs bg-aqua"><?php
-            echo lang('EXT_news_view_t'); ?></a>
-                                        </div>
-                                    </div>
-                                </li>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                    <?php
-        } else if ($rows['msg'] == 'ticket_arch') {
-?>
-                    <li>
-                                    <i class="fa fa-archive bg-gray"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><small><i class="fa fa-clock-o"></i> 
-                                        <time id="c" datetime="<?php
-            echo $t_dc
-?>"></time></small>
-                                        </span>
-                                        <h3 class="timeline-header ">
-                                        
-                                        
-                                         <?php
-            echo lang('FILES_ticket'); ?> <a href="ticket?<?php
-            echo get_ticket_hash_by_id($t_id) ?>">#<?php
-            echo $t_id; ?></a> <?php
-            echo lang('NEWS_action_ticket_arch'); ?></h3>
-                                        <div class="timeline-body">
+
+array_push($news_arr, array(
+
+'msg'=>$rows['msg'],
+'t_dc'=>$t_dc,
+'initUserHash'=>get_user_hash_by_id($init_user),
+'initUserName'=>name_of_user_ret($init_user),
+'NEWS_action_lock'=>lang('NEWS_action_lock'),
+'ticketHash'=>get_ticket_hash_by_id($t_id),
+'ticketID'=>$t_id,
+'htmlMSG'=>make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'),
+
+'today'=>date('d-m-Y'),
+'re_date'=>date('d-m-Y', strtotime($rows['date_op'])),
+'NEWS_today'=>lang('NEWS_today'),
+'date_op'=>$rows['date_op'],
+'NEWS_action_unlock'=>lang('NEWS_action_unlock'),
+'EXT_news_view_t'=>lang('EXT_news_view_t'),
+'NEWS_action_ok'=>lang('NEWS_action_ok'),
+'NEWS_action_no_ok'=>lang('NEWS_action_no_ok'),
+'NEWS_action_no_ok2'=>lang('NEWS_action_no_ok2'),
+'NEWS_action_refer'=>lang('NEWS_action_refer'),
+'mail_msg_ticket_to_ext'=>lang('mail_msg_ticket_to_ext'),
+'to_text'=>$to_text,
+'NEWS_action_comment'=>lang('NEWS_action_comment'),
+'NEWS_text_comment'=>lang('NEWS_text_comment'),
+'ct'=>$ct,
+'NEWS_action_create'=>lang('NEWS_action_create'),
+'FILES_ticket'=>lang('FILES_ticket'),
+'NEWS_action_ticket_arch'=>lang('NEWS_action_ticket_arch')
 
 
-                                <?php
-            echo make_html(get_ticket_val_by_hash('msg', get_ticket_hash_by_id($t_id)) , 'no'); ?>...
-                            
-                                           
-                                        </div>
 
-                                    </div>
-                                </li>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
-                    <?php
-        }
+
+
+
+
+    ));
+
+
     }
-?>
 
 
 
@@ -545,17 +214,38 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 
-                                <li>
-                                    <i class="fa fa-clock-o"></i>
-                                </li>
-                            </ul>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
+    $basedir = dirname(dirname(__FILE__)); 
+            ////////////
+    try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('news.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+                'NAVBAR_news'=>lang('NAVBAR_news'),
+                'DASHBOARD_last_news'=>lang('DASHBOARD_last_news'),
+                'hostname'=>$CONF['hostname'],
+                'name_of_firm'=>$CONF['name_of_firm'],
+                'news_arr'=>$news_arr,
 
-                    
 
-                </section>
-<?php
+
+            ));
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
     include ("footer.inc.php");
 ?>
 

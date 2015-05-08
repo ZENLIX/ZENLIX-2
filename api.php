@@ -1491,7 +1491,7 @@ foreach ($u as $dep) {
 
             'uniq_id'       =>$dep['uniq_id'],
             'fio'           =>$dep['fio'],
-            'status'        =>$dep['status'],
+            'status_user'        =>$dep['status'],
             'priv'          =>$dep['priv'],
             'unit'          =>$dep['unit'],
             'is_client'     =>$dep['is_client'],
@@ -1550,7 +1550,7 @@ $r['users'] = array();
 
 
 
-    $stmt = $dbConnection->prepare('SELECT * from users where find_in_set(:uid,unit)');
+    $stmt = $dbConnection->prepare('SELECT * from users where find_in_set(:uid,unit) and is_client=0 and status!=2 and id!=1');
     $stmt->execute(array(':uid' => $data_json->dep_code));
 
         $u = $stmt->fetchAll();
@@ -2008,6 +2008,7 @@ else if ($error_code == true)
 
 $code = "ok";
 $r['ticket_hash']=$hashname;
+$r['ticket_id']=$max_id_res_ticket;
         }
 
 

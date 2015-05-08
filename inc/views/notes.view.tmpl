@@ -1,0 +1,67 @@
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-book"></i> {{NOTES_title}}
+                        <small>{{NOTES_title_ext}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{NOTES_title}}</li>
+                    </ol>
+                </section>
+
+
+
+<section class="content">
+
+
+<div class="row">
+
+<div class="col-md-3">
+<button id="create_new_note" type="submit" class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{NOTES_create}}</button>
+<br>
+      <div class="">
+      <div class="">
+      <div id="table_list" style="margin-bottom: 0px; margin-bottom: 0px;">
+  
+</div>
+      </div></div>
+  
+</div>
+<div class="col-md-9">
+  <div class="box box-solid">
+      <div class="box-body">
+    <div id="summernote">
+                           <div class="text-muted well well-sm no-shadow">
+  <p>                <center>
+                    {{NOTES_cr}}
+                </center></p>
+  
+</div>
+  </div>
+  <div id="re">
+  </div>
+      </div></div>
+</div>
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">{{NOTES_link}}</h4>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+  <div class="form-group">
+    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" value="">
+  </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+</section>

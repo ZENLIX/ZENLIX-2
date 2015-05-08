@@ -1,0 +1,175 @@
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-bar-chart-o"></i> {{ALLSTATS_main}}
+                        <small>{{ALLSTATS_main_ext}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{ALLSTATS_main}}</li>
+                    </ol>
+                </section>
+
+
+
+<section class="content">
+
+
+<div class="row">
+
+
+<div class="col-md-3">
+
+    <div class="row">
+
+<div class="col-md-12">
+        <div class="box box-info">
+            <div class="box-header">
+            <h3 class="box-title">
+                {{EXT_graph_user_ext}}
+            </h3></div>
+                                <div class="box-body">
+                                    
+                                    
+                                    <form class="form-horizontal" role="form">
+                                    
+                <div class="form-group">
+                    
+                    <div class="col-md-12">
+                        <div class="input-group ">
+                            <span class="input-group-addon"><i class="fa fa-list"></i></span>
+                        <select class="form-control input-sm" id="unitstat_id" name="unitstat_id">
+                            <option value="0">{{HELP_all}}</option>
+                            {% for item in u_arr %}
+
+                                <option value="{{item.value}}">{{item.label}}</option>
+
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                    </div>
+                </div>
+
+
+
+
+  <div class="form-group">
+<div class="col-md-12">
+    <div class="input-group ">
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm"  value="{{date}} - {{date}}" />
+    </div>
+</div>
+  </div>
+
+ <div class="form-group">
+<div class="col-md-12">
+    <button class="btn btn-info btn-block btn-sm" id="main_stat_make">{{STATS_make}}</button>
+</div>
+</div>
+<input type="hidden" id="start_time" value="{{date}}">
+<input type="hidden" id="stop_time" value="{{date}}">
+
+</form>
+                                    
+                                    
+                                    
+                                                                    </div><!-- /.box-body -->
+                            </div>
+</div>
+
+
+<div class="col-md-12">
+
+    <div class="callout">
+                                        
+                                        <small> <i class="fa fa-info-circle"></i> 
+{{ALLSTATS_help}}
+         </small>
+                                    </div>
+                                </div></div>
+</div>
+
+<div class="col-md-9" id="ts_res">
+    <div class="box box-solid">
+            <div class="box-body">
+            <h4><center>{{ALLSTATS_unit}}</center></h4>
+            <table class="table table-bordered">
+<tbody>
+                                <tr>
+                    <td style="width: 300px;"></td>
+                    <td style=""><strong><small><center>{{ALLSTATS_unit_out}}   </center></small></strong></td>
+                    <td style=""><strong><small><center>
+                    {{ALLSTATS_unit_free}}  </center></small></strong></td>
+                    <td style=""><strong><small><center>{{ALLSTATS_unit_lock}}       </center></small></strong></td>
+                    <td style=""><strong><small><center>{{ALLSTATS_unit_ok}} </center></small></strong></td>
+                    
+                </tr>
+{% for item in user_arr %}
+
+
+
+                <tr>
+
+                    <td style=""><small>{{item.get_unit_name_return4news}}    </small></td>
+                    <td style=""><small><center>{{item.get_unit_stat_create}}   </center></small></td>
+                    <td style=""><small><center>{{item.get_unit_stat_free}}   </center></small></td>
+                    <td style=""><small><center>{{item.get_unit_stat_lock}}   </center></small></td>
+                    <td style=""><small><center>{{item.get_unit_stat_ok}}     </center></small></td>
+                </tr>
+
+                
+{% endfor %}
+</tbody>
+</table>
+<br>
+<h4><center>{{ALLSTATS_user}}</center></h4>
+<table class="table table-bordered table-hover">
+                <tbody>
+                <tr>
+                    <td style="width: 200px;">  <strong><small><center>{{ALLSTATS_user_fio | raw}}                 </center></small></strong></td>
+                    <td style="">               <strong><small><center>{{t_LIST_status | raw}}         </center></small></strong></td>
+                    <td style="">               <strong><small><center>{{ALLSTATS_user_free}}            </center></small></strong></td>
+                    <td style="">               <strong><small><center>{{ALLSTATS_user_lock}}            </center></small></strong></td>
+                    <td style="">               <strong><small><center>{{ALLSTATS_user_ok}}          </center></small></strong></td>
+                    <td style="">               <strong><small><center>{{ALLSTATS_user_out_all}}     </center></small></strong></td>
+                    <td style="">               <strong><small><center>{{ALLSTATS_user_out_all_not}} </center></small></strong></td>
+                </tr>
+{% for item in stat_arr %}
+
+<tr>
+                    <td style="width: 200px;"><small>{{item.name_of_user_ret | raw}}</small></td>
+                    <td style=""><small class="text-danger"><center>{{item.get_user_status | raw}}</center></small></td>
+                    <td style=""><small class="text-danger"><center>{{item.get_total_tickets_free}}</center></small></td>
+                    <td style=""><small class="text-warning"><center>{{item.get_total_tickets_lock}}</center></small></td>
+                    <td style=""><small class="text-success"><center>{{item.get_total_tickets_ok}}</center></small></td>
+                    <td style=""><small class=""><center>{{item.get_total_tickets_out}}</center></small></td>
+                    <td style=""><small class=""><center>{{item.get_total_tickets_out_and_success}}</center></small></td>
+</tr>
+
+
+
+
+
+
+{% endfor %}
+
+                </tbody>
+</table>
+
+            </div>
+    </div>
+    
+    
+    
+    
+    
+    
+</div>
+
+
+</div>
+
+
+
+</section>
+

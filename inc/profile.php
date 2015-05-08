@@ -12,9 +12,11 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
     include ("head.inc.php");
     include ("navbar.inc.php");
     
-    
-    
-    if ($_FILES["file"]) {
+
+
+
+
+if ($_FILES["file"]) {
         $output_dir = "upload_files/avatars/";
         $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
         $extension = end(explode(".", $_FILES["file"]["name"]));
@@ -73,24 +75,13 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
             
         }
     }
-?>
-
-<section class="content-header">
-                    <h1>
-                        <i class="fa fa-user"></i> <?php echo lang('NAVBAR_profile'); ?>
-                        <small><?php echo lang('NAVBAR_profile_ext'); ?></small>
-                    </h1>
-                    <ol class="breadcrumb">
-                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('NAVBAR_profile'); ?></li>
-                    </ol>
-                </section>
 
 
 
-<input type="hidden" id="main_last_new_ticket" value="<?php echo get_last_ticket_new($_SESSION['helpdesk_user_id']); ?>">
-<?php
-    $usid = $_SESSION['helpdesk_user_id'];
+
+
+
+        $usid = $_SESSION['helpdesk_user_id'];
     
     //$query = "SELECT fio, pass, login, status, priv, unit,email, lang from users where id='$usid'; ";
     //    $sql = mysql_query($query) or die(mysql_error());
@@ -128,174 +119,15 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
             $status_lang_ua = "selected";
         }
     }
-?>
 
 
 
-
-
-<section class="content">
-
-
-
-<div class="row">
-
-
-<div class="col-md-3">
-
-<div class="row">
-  <div class="col-md-12">
-                            <div class="box box-warning" >
-                                <div class="box-header" >
-                                
-                                    <h4 style="text-align:center;"><?php echo $fio; ?><br><small><?php if (get_user_val('posada') != 0)  {echo get_user_val('posada');}  ?></small></h4>
-
-                                </div>
-                                <div class="box-body">
-                                  
-                        <center>
-                            <img src="<?php echo get_user_img(); ?>" class="img-rounded img-responsive" alt="User Image">
-                        </center><br>
-                        
-                        
-                                <form action="<?php echo $CONF['hostname'] ?>profile" method="post" id="form_avatar" enctype="multipart/form-data"> 
-             
-             <span class="file-input btn btn-block btn-default btn-file" style="width:100%">
-                <?php echo lang('PROFILE_select_image'); ?> <input id="file_avatar" type="file" name="file">
-            </span>
-            <button id="del_profile_img" class="btn btn-block bg-maroon"><?php echo lang('PROFILE_del_image'); ?></button>
+if (get_user_val('posada') != 0)  {$get_user_val_posada= get_user_val('posada');}
 
 
 
-        </form>
-        
-        
-       
-        
-                           
-                                    
-                                    
-                                </div><!-- /.box-body -->
-                            </div>
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                            
-                          
-  </div>
-  <div class="col-md-12">      
-  
-  
-  
-  <div class="box box-info">
-                                
-                                <div class="box-body">
-                                    
-                                    <strong ><small><?php echo lang('PROFILE_priv'); ?>:</small></strong><br>
-                  <small><?php echo priv_status_name($usid); ?></small>
-                                    <hr>
-                                    <strong><small><?php echo lang('PROFILE_priv_unit'); ?>:</small></strong>
-                                    <p><small><?php echo view_array(get_unit_name_return(unit_of_user($_SESSION['helpdesk_user_id']))); ?></small></p>
-                                                                    </div><!-- /.box-body -->
-                                
-                            </div>
-
-      
-      </div>
-      
-      
-</div>
-
-
-</div>
-
-<div class="col-md-9">
-
-
-<div class="row">
-
-<div class="col-md-12">
-                            <div class="box box-solid">
-                                <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-user"></i> <?php echo lang('P_main'); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
-                                    
-                                    
-     
-      <div class="panel-body">
-      
-
-
-      
-      <form class="form-horizontal" role="form">
-      
-
-  
-      <div class="form-group" id="fio_user_grp">
-    <label for="fio" class="col-sm-4 control-label"><small><?php echo lang('WORKER_fio'); ?></small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="fio" type="text" class="form-control input-sm" id="fio" placeholder="<?php echo lang('WORKER_fio'); ?>" value="<?php echo $fio; ?>">
-        </div>
-  </div>
-  
-  
-    <div class="form-group">
-    <label for="mail" class="col-sm-4 control-label"><small><?php echo lang('P_mail'); ?></small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="<?php echo lang('P_mail'); ?>" value="<?php echo $email; ?>">
-    <p class="help-block"><small><?php echo lang('P_mail_desc'); ?></small></p>
-        </div>
-  </div>
-
-        <div class="form-group">
-    <label for="pb" class="col-sm-4 control-label"><small>Pushbullet</small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="push" type="text" class="form-control input-sm" id="pb" placeholder="push" value="<?php echo $push; ?>">
-        </div>
-  </div>
-  
-      <div class="form-group">
-    <label for="tel" class="col-sm-4 control-label"><small><?php echo lang('WORKER_tel_full'); ?></small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="<?php echo lang('WORKER_tel_full'); ?>" value="<?php echo $tel; ?>">
-    
-        </div>
-  </div>
-  
-        <div class="form-group">
-    <label for="skype" class="col-sm-4 control-label"><small>Skype</small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="skype" type="text" class="form-control input-sm" id="skype" placeholder="skype" value="<?php echo $skype; ?>">
-    
-        </div>
-  </div>
-  
-          <div class="form-group">
-    <label for="adr" class="col-sm-4 control-label"><small><?php echo lang('APPROVE_adr'); ?></small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="<?php echo lang('APPROVE_adr'); ?>" value="<?php echo $adr; ?>">
-    
-        </div>
-  </div>
-  
-  
-  
-  
-     <div class="control-group">
-    <div class="controls">
-        <div class="form-group">
-            <label for="posada" class="col-sm-4 control-label"><small><?php echo lang('WORKER_posada'); ?>: </small></label>
-            <div class="col-sm-8" style="">
-                <select name="posada" id="posada" data-placeholder="<?php echo lang('WORKER_posada'); ?>" class="chosen-select form-control input-sm">
-                    <option value="0"></option>
-                    <?php
-    $stmt = $dbConnection->prepare('SELECT name FROM posada order by name COLLATE utf8_unicode_ci ASC');
+$pos_arr=array();
+$stmt = $dbConnection->prepare('SELECT name FROM posada order by name COLLATE utf8_unicode_ci ASC');
     $stmt->execute();
     $res1 = $stmt->fetchAll();
     foreach ($res1 as $row) {
@@ -304,36 +136,20 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
         if ($posada == $row['name']) {
             $se = "selected";
         }
-?>
-
-                        <option <?php echo $se; ?> value="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></option>
-
-                    <?php
+array_push($pos_arr, array(
+'se'=>$se,
+'name'=>$row['name']
+    ));
     }
-?>
 
-                </select>
-            </div>
-        </div>
 
-    </div>
-</div>
 
-                                
-                                
- <div class="control-group">
-    <div class="controls">
-        <div class="form-group">
-            <label for="pidrozdil" class="col-sm-4 control-label"><small><?php echo lang('WORKER_unit'); ?>: </small></label>
-            <div class="col-sm-8" style="">
-                <select name="pid" id="pidrozdil" data-placeholder="<?php echo lang('WORKER_unit'); ?>" class="chosen-select form-control input-sm">
-                    <option value="0"></option>
-                    <?php
-    
-    /*$qstring = "SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC";
-                    $result = mysql_query($qstring);                    
-                    while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){*/
-    
+
+
+
+
+
+    $unit_arr=array();
     $stmt = $dbConnection->prepare('SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC');
     $stmt->execute();
     $res1 = $stmt->fetchAll();
@@ -343,186 +159,61 @@ $CONF['title_header'] = lang('NAVBAR_profile') . " - " . $CONF['name_of_firm'];
         if ($unitss == $row['name']) {
             $se2 = "selected";
         }
-?>
+array_push($unit_arr, array(
+'se'=>$se2,
+'name'=>$row['name']
+    ));
 
-                        <option <?php echo $se2; ?> value="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></option>
-
-                    <?php
     }
-?>
-
-                </select>
-            </div>
-        </div>
-
-    </div>
-</div> 
-  
-  
-  
-  
-          <div class="form-group">
-    <label for="lang" class="col-sm-4 control-label"><small><?php echo lang('SYSTEM_lang'); ?></small></label>
-        <div class="col-sm-8">
-    <select data-placeholder="<?php echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
-                    <option value="0"></option>
-                    
-                        <option <?php echo $status_lang_en; ?> value="en">English</option>
-                        <option <?php echo $status_lang_ru; ?> value="ru">Русский</option>
-                        <option <?php echo $status_lang_ua; ?> value="ua">Українська</option>
-</select>
-        </div>
-  </div>
-
-
-            <div class="form-group">
-    <label for="noty" class="col-sm-4 control-label"><small><?php echo lang('NOTY_layot'); ?></small></label>
-        <div class="col-sm-8">
-    <select data-placeholder="<?php echo lang('NOTY_layot'); ?>" class="chosen-select form-control input-sm" id="noty" name="noty">
-                    <option value="0"></option>
-                    
-                        <option <?php check_user_noty_layot('top'); ?> value="top">Top</option>
-                        <option <?php check_user_noty_layot('topLeft'); ?> value="topLeft">TopLeft</option>
-                        <option <?php check_user_noty_layot('topCenter'); ?> value="topCenter">TopCenter</option>
-                        <option <?php check_user_noty_layot('topRight'); ?> value="topRight">TopRight</option>         
-
-                        <option <?php check_user_noty_layot('centerLeft'); ?> value="centerLeft">CenterLeft</option>                        
-                        <option <?php check_user_noty_layot('center'); ?> value="center">Center</option>                        
-                        <option <?php check_user_noty_layot('centerRight'); ?> value="centerRight">CenterRight</option>    
-
-                        <option <?php check_user_noty_layot('bottomLeft'); ?> value="bottomLeft">BottomLeft</option>       
-                        <option <?php check_user_noty_layot('bottomCenter'); ?> value="bottomCenter">BottomCenter</option> 
-                        <option <?php check_user_noty_layot('bottomRight'); ?> value="bottomRight">BottomRight</option> 
-                        <option <?php check_user_noty_layot('bottom'); ?> value="bottom">Bottom</option>                  
-</select>
-        </div>
-  </div>
-
-
-  
-  
-    <div class="col-md-offset-3 col-md-6">
-<center>
-    <button type="submit" id="edit_profile_main" value="<?php echo $usid ?>" class="btn btn-success"><i class="fa fa-pencil"></i> <?php echo lang('P_edit'); ?></button>
-</center>
-</div>
-      </form>
-      
-      
-      
-      
-      
-      </div>
-      
-      <div id="m_info"></div>
-                                </div><!-- /.box-body -->
-                            </div>
-                            
-                            
-                            
-                            
-                            
-                            
-                          
-</div>
 
 
 
-<?php
+
+
+$ufields=false;
+$fields_arr=array();
         $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
         $stmt->execute(array(':n' => '1'));
         $res1 = $stmt->fetchAll();
 
         if (!empty($res1)) 
         {
+            $ufields=true;
+foreach ($res1 as $row) {
 
-?>
-
-
-<div class="col-md-12">
-<div class="box box-solid">
-<div class="box-header">
-<h3 class="box-title"><i class="fa fa-bookmark-o"></i> <?=lang('FIELD_add_title');?></h3>
-
-</div>
-      <div class="box-body">
-      <div class="panel-body">
-      
- <!--######### ADDITIONAL FIELDS ############## -->
-
-<form id="add_field_form" class="form-horizontal" role="form">
-    <div >
-<?php
-
-        foreach ($res1 as $row) {
-
-
-?>
-
-                      <div class="" id="">
-    <div class="">
-        <div class="form-group">
-            <label for="<?=$row['hash'];?>" class="col-sm-4 control-label"><small><?=$row['name'];?>: </small></label>
-
-            <div class="col-sm-8" style=" padding-top: 5px; ">
-
-<?php 
-//echo get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
-if ($row['t_type'] == "text") {
-    $v=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
-    //if ($row['value'] == "0") {$v="";}
-?>
-<input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
-<?php } ?>
-
-
-<?php 
-if ($row['t_type'] == "textarea") {
 $v=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
-?>
-<textarea rows="3" class="form-control input-sm animated" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>"><?=$v;?></textarea>
-<?php } ?>
-
-
-<?php 
-if ($row['t_type'] == "select") {
 $vs=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
 
 
-?>
-<select data-placeholder="<?=$row['placeholder'];?>" class="chosen-select form-control" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>">
 
-<?php 
+
+if ($row['t_type'] == "text") {
+    $v=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
+} 
+if ($row['t_type'] == "textarea") {
+    $v=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
+} 
+if ($row['t_type'] == "select") {
+$mf_arr=array();
 $v=explode(",", $row['value']);
 $vs=explode(",", $vs);
  foreach ($v as $value) {
      # code...
  $sc="";
  if (in_array($value, $vs)) {$sc="selected";}
-?>
-                            <option value="<?=$value;?>" <?=$sc;?>><?=$value;?></option>
+ array_push($mf_arr, array(
+'sc'=>$sc,
+'value'=>$value
+    ));
+}
 
-                            <?php
-                        }
-                            ?>
-                
-                        
-            </select>
-<?php } ?>
 
-<?php 
+$v=$mf_arr;
+}
 if ($row['t_type'] == "multiselect") {
-    $vs=get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
-
-?>
 
 
-
-
-
-<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple >
-
-<?php 
+    $mmf_arr=array();
 $v=explode(",", $row['value']);
 $vs=explode(",", $vs);
 
@@ -532,65 +223,51 @@ $vs=explode(",", $vs);
     //echo $value."<br>";
      $sc="";
  if (in_array($value, $vs)) {$sc="selected";}
- 
-?>
-                            <option value="<?=$value;?>" <?=$sc;?>><?=$value;?></option>
 
-                            <?php
-                        }
-                            ?>
-                
-                        
-            </select>
-<?php } ?>
-                
-            </div>
-            
-        </div>
-    </div>
-    
-    </div> 
-
-    <?php
-}
-    ?>
-</div>
-    </form>
-    
-<!--######### ADDITIONAL FIELDS ############## -->
-    <div class="col-md-offset-3 col-md-6">
-<center>
-    <button type="submit" id="edit_profile_ad_f" value="<?php echo $usid ?>" class="btn btn-success"><i class="fa fa-pencil"></i> <?php echo lang('P_edit'); ?></button>
-</center>
-</div>
-</div><div id="ad_f_res"></div>
-
-      </div>
-      </div>
-      </div>
-<?php 
+ array_push($mmf_arr, array(
+'sc'=>$sc,
+'value'=>$value
+    ));
 
 }
-?>
 
-<div class="col-md-12">
-<div class="box box-solid">
-                                <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-bell"></i> <?php echo lang('PROFILE_perf_notify'); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
-                                <div class="panel-body">
-
-<form class="form-horizontal" role="form">
+$v=$mmf_arr;
+}
 
 
-              <div class="form-group">
-    <label for="mail_nf" class="col-sm-4 control-label"><small><?php echo lang('CONF_mail_status'); ?></small></label>
-        <div class="col-sm-8">
-    <select data-placeholder="<?php echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
 
-<?php
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+array_push($fields_arr, array(
+'hash'=>$row['hash'],
+'name'=>$row['name'],
+'t_type'=>$row['t_type'],
+'v'=>$v,
+'placeholder'=>$row['placeholder']
+
+
+
+    ));
+
+}
+
+        }
+
+
+///////////////////////////////
+$mailnf_arr=array();
 $stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
     $stmt2->execute(array(':uto' => $_SESSION['helpdesk_user_id']));
     $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
@@ -619,28 +296,23 @@ else if (!$tt2['mail']) {
 $sc="selected";
 
 }
+array_push($mailnf_arr, array(
+
+'key'=>$key,
+'sc'=>$sc,
+'value'=>$value
 
 
-?>
-                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
-
-
-              <?php
+    ));
 }
-              ?>  
-                        
-            </select>
-        </div>
-  </div>
+
+///////////////////////////////
 
 
-              <div class="form-group">
-    <label for="sms_nf" class="col-sm-4 control-label"><small><?php echo lang('EXT_sms_noti'); ?></small></label>
-        <div class="col-sm-8">
-    <select data-placeholder="<?php echo lang('EXT_sms_noti'); ?>" class="multi_field" id="sms_nf" name="sms_nf[]" multiple="multiple" >
 
-<?php
 
+////////////////////////////////////
+$smsc_arr=array();
 $stmt2 = $dbConnection->prepare('SELECT sms from users_notify where user_id=:uto');
     $stmt2->execute(array(':uto' => $_SESSION['helpdesk_user_id']));
     $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
@@ -676,154 +348,148 @@ $sc="";
 }
 
 if (in_array($key, $nla)) {
-?>
-                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+
+array_push($smsc_arr, array(
+
+'key'=>$key,
+'sc'=>$sc,
+'value'=>$value
 
 
-              <?php
-          }
+    ));
+
 }
-              ?>  
-                        
-            </select>
-        </div>
-  </div>
-
-          <div class="form-group">
-    <label for="mob" class="col-sm-4 control-label"><small><?php echo lang('EXT_SMS_noti_mob'); ?></small></label>
-        <div class="col-sm-8">
-
-<div class="input-group">
-    <span class="input-group-addon"><small>+</small></span>
-      
-   
-
-
-    <input autocomplete="off" name="mob" type="text" class="form-control input-sm" id="mob" placeholder="Ex. 380501234567" value="<?php echo $mob; ?>">
-    </div>
-        </div>
-  </div>
-
-  <div class="col-md-offset-3 col-md-6">
-<center>
-    <button type="submit" id="edit_nf" value="<?php echo $usid ?>" class="btn btn-success"><i class="fa fa-pencil"></i> <?php echo lang('P_edit'); ?></button>
-</center>
-</div>
-</form>
-                                </div>
-<div id="nf_info"></div>
+}
+////////////////////////////////////
 
 
 
-                                </div>
-                                </div>
-</div>
-
-<div class="col-md-12">
-  <?php
+$check_ldap_user=false;
     $ul = get_userlogin_byid($_SESSION['helpdesk_user_id']);
     if (get_user_authtype($login) == false) {
-?>
+$check_ldap_user=true;
 
-                       <div class="box box-solid">
-                                <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-key"></i> <?php echo lang('P_passedit'); ?></h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
-                                <div class="panel-body">
-      <form class="form-horizontal" role="form">
-      
-              <div class="form-group">
-    <label for="old_pass" class="col-sm-4 control-label"><small><?php echo lang('P_pass_old'); ?></small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="old_pass" type="password" class="form-control input-sm" id="old_pass" placeholder="<?php echo lang('P_pass_old2'); ?>">
-        </div>
-  </div>
-      
-      
-        <div class="form-group">
-    <label for="new_pass" class="col-sm-4 control-label"><small><?php echo lang('P_pass_new'); ?></small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="new_pass" type="password" class="form-control input-sm" id="new_pass" placeholder="<?php echo lang('P_pass_new2'); ?>">
-        </div>
-  </div>
-  
-          <div class="form-group">
-    <label for="new_pass2" class="col-sm-4 control-label"><small><?php echo lang('P_pass_new_re'); ?></small></label>
-        <div class="col-sm-8">
-    <input autocomplete="off" name="new_pass2" type="password" class="form-control input-sm" id="new_pass2" placeholder="<?php echo lang('P_pass_new_re2'); ?>">
-        </div>
-  </div>
-  <div class="col-md-offset-3 col-md-6">
-<center>
-    <button type="submit" id="edit_profile_pass" value="<?php echo $usid ?>" class="btn btn-success"><i class="fa fa-pencil"></i> <?php echo lang('P_do_edit_pass'); ?></button>
-</center>
-</div>
-  
-  
-      </form>
-  
-      </div>
-      <div id="p_info"></div>
-                                </div>
-                       </div>
-                                
-                     
+    }
 
-<?php
-    } ?>
-</div>
 
-<div class="col-md-12">
-<?php
 
+
+$api_status=false;
 if (get_conf_param('api_status') == "true") {
-?>
 
-
-<div class="box box-solid">
-                                <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-key"></i> API code</h3>
-                                </div><!-- /.box-header -->
-                                <div class="box-body">
-                                <div class="panel-body">
-                                <pre><strong id="api_code"><?=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'api_key');?></strong> <button class="pull-right btn btn-default btn-xs" id="gen_new_api"><i class="fa fa-refresh"></i></button></pre>
-                                </div>
-                                </div>
-
-
-<? } ?>
-</div>
-</div>
-
-
-</div>
-
-
-</div>
-
-
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    </div>
+$api_status=true;
+}
 
 
 
 
+ $basedir = dirname(dirname(__FILE__)); 
+            ////////////
+    try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('profile.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+$main_arr=array(
+                'hostname'=>$CONF['hostname'],
+                'name_of_firm'=>$CONF['name_of_firm'],
+                'NAVBAR_profile'=>lang('NAVBAR_profile'),
+                'NAVBAR_profile_ext'=>lang('NAVBAR_profile_ext'),
+                'get_last_ticket_new'=>get_last_ticket_new($_SESSION['helpdesk_user_id']),
+                'fio'=>$fio,
+                'get_user_val_posada'=>$get_user_val_posada,
+                'get_user_img'=>get_user_img(),
+                'PROFILE_select_image'=>lang('PROFILE_select_image'),
+                'PROFILE_del_image'=>lang('PROFILE_del_image'),
+                'PROFILE_priv'=>lang('PROFILE_priv'),
+                'priv_status_name'=>priv_status_name($usid),
+                'PROFILE_priv_unit'=>lang('PROFILE_priv_unit'),
+                'units_u'=>view_array(get_unit_name_return(unit_of_user($_SESSION['helpdesk_user_id']))),
+                'P_main'=>lang('P_main'),
+                'WORKER_fio'=>lang('WORKER_fio'),
+                'P_mail'=>lang('P_mail'),
+                'email'=>$email,
+                'P_mail_desc'=>lang('P_mail_desc'),
+                'push'=>$push,
+                'WORKER_tel_full'=>lang('WORKER_tel_full'),
+                'tel'=>$tel,
+                'skype'=>$skype,
+                'APPROVE_adr'=>lang('APPROVE_adr'),
+                'adr'=>$adr,
+                'WORKER_posada'=>lang('WORKER_posada'),
+                'pos_arr'=>$pos_arr,
+                'WORKER_unit'=>lang('WORKER_unit'),
+                'unit_arr'=>$unit_arr,
+                'SYSTEM_lang'=>lang('SYSTEM_lang'),
+                'status_lang_en'=>$status_lang_en,
+                'status_lang_ru'=>$status_lang_ru,
+                'status_lang_ua'=>$status_lang_ua,
+                'NOTY_layot'=>lang('NOTY_layot'),
+                'check_user_noty_layot_top'=>check_user_noty_layot('top'),
+                'check_user_noty_layot_topLeft'=>check_user_noty_layot('topLeft'),
+                'check_user_noty_layot_topCenter'=>check_user_noty_layot('topCenter'),
+                'check_user_noty_layot_topRight'=>check_user_noty_layot('topRight'),
+                'check_user_noty_layot_centerLeft'=>check_user_noty_layot('centerLeft'),
+                'check_user_noty_layot_center'=>check_user_noty_layot('center'),
+                'check_user_noty_layot_centerRight'=>check_user_noty_layot('centerRight'),
+                'check_user_noty_layot_bottomLeft'=>check_user_noty_layot('bottomLeft'),
+                'check_user_noty_layot_bottomCenter'=>check_user_noty_layot('bottomCenter'),
+                'check_user_noty_layot_bottomRight'=>check_user_noty_layot('bottomRight'),
+                'check_user_noty_layot_bottom'=>check_user_noty_layot('bottom'),
+                'P_edit'=>lang('P_edit'),
+                'usid'=>$usid,
+                'ufields'=>$ufields,
+                'fields_arr'=>$fields_arr,
 
-<?php
+                'FIELD_add_title'=>lang('FIELD_add_title'),
+                'PROFILE_perf_notify'=>lang('PROFILE_perf_notify'),
+                'CONF_mail_status'=>lang('CONF_mail_status'),
+                'mailnf_arr'=>$mailnf_arr,
+                'EXT_sms_noti'=>lang('EXT_sms_noti'),
+                'smsc_arr'=>$smsc_arr,
+                'EXT_SMS_noti_mob'=>lang('EXT_SMS_noti_mob'),
+                'mob'=>$mob,
+                'check_ldap_user'=>$check_ldap_user,
+                'P_passedit'=>lang('P_passedit'),
+                'P_pass_old'=>lang('P_pass_old'),
+                'P_pass_old2'=>lang('P_pass_old2'),
+                'P_pass_new'=>lang('P_pass_new'),
+                'P_pass_new2'=>lang('P_pass_new2'),
+                'P_pass_new_re'=>lang('P_pass_new_re'),
+                'P_pass_new_re2'=>lang('P_pass_new_re2'),
+                'P_do_edit_pass'=>lang('P_do_edit_pass'),
+                'api_status'=>$api_status,
+                'api_key'=>get_user_val_by_id($_SESSION['helpdesk_user_id'], 'api_key')
+
+           );
+
+
+$main_arr=array_merge($main_arr);
+
+            echo $template->render($main_arr);
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
+
+
+
     include ("footer.inc.php");
-?>
 
-<?php
-    
-    //}
     
 } else {
     include 'auth.php';

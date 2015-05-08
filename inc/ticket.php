@@ -548,6 +548,10 @@ $basedir = dirname(dirname(__FILE__));
             
             // инициализируем Twig
             $twig = new Twig_Environment($loader);
+          /*  $twig = new Twig_Environment($loader, array(
+    'cache' => $basedir.'/inc/cache',
+    ));
+    */
             
             // подгружаем шаблон
             $template = $twig->loadTemplate('ticket.view.tmpl');

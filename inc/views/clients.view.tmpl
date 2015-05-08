@@ -1,0 +1,129 @@
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-users"></i> {{USERS_list}}
+                        <small>{{UNITS_title_ext}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{USERS_list}}</li>
+                    </ol>
+                </section>
+                
+                
+<section class="content">
+
+
+<div class="row">
+
+<div class="col-md-3">
+
+
+<div class="row">
+
+<div class="col-md-12">
+	<div class="box box-solid">
+	<div class="box-body">
+
+{% if priv_add_client == true %}
+
+	
+	<a href="clients&add" class="btn btn-success btn-block"><i class="fa fa-male"></i> {{USERS_create}}</a>
+	{% endif %}
+	<a href="clients&list" class="btn btn-primary btn-block"><i class="fa fa-list-alt"></i> {{USERS_list}}</a>
+	
+	
+
+	</div>
+	</div>
+</div>
+<div class="col-md-12">
+                    
+
+                    <div class="callout ">
+                                        
+                                        <small> <i class="fa fa-info-circle"></i> 
+{{WORKERS_info}}
+	     </small>
+                                    </div>
+                                    
+                                    
+                                    
+                    
+                    
+                    
+                    </div>
+                    
+                    
+</div>
+</div>
+
+
+
+
+
+<div class="col-md-9">
+
+<div class="row">
+	{% if ae == true %}
+<div class="col-md-12">
+	<div class="box box-solid">
+	<div class="box-body">
+	
+	<input type="text" class="form-control input-sm" id="fio_find_admin" autofocus placeholder="{{NEW_fio}}">
+	
+
+	</div>
+	</div>
+</div>
+{% endif %}
+	
+<div class="col-md-12">
+	
+	
+{% if get_menu == "add" %}
+{{clients_inc  | raw}}
+{% endif %}
+
+
+{% if get_menu == "list" %}
+	 
+		<div id="content_clients">
+		{{clients_inc | raw}}
+		</div>
+		
+		
+		
+		<div class="text-center"><ul id="example_clients" class="pagination pagination-sm"></ul></div>
+                    <input type="hidden" id="cur_page" value="1">
+                    <input type="hidden" id="total_pages" value="{{get_total_pages_clients}}">
+	{% endif %}
+
+{% if get_menu == "edit" %}
+
+		{{clients_inc | raw}}
+
+{% endif %}
+
+{% if get_menu == "else" %}
+   
+		<div id="content_clients">
+		{{clients_inc | raw}}
+		</div>
+		
+		
+		
+		<div class="text-center"><ul id="example_clients" class="pagination pagination-sm"></ul></div>
+                    <input type="hidden" id="cur_page" value="1">
+                    <input type="hidden" id="total_pages" value="{{get_total_pages_clients}}">
+	
+{% endif %}
+	
+	</div>
+</div>
+
+
+
+
+
+</div>
+</section>

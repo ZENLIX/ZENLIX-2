@@ -1,0 +1,297 @@
+ <section class="content-header">
+                    <h1>
+                        <i class="fa fa-bullhorn"></i> {{NAVBAR_news}}
+                        <small>{{DASHBOARD_last_news}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{NAVBAR_news}}</li>
+                    </ol>
+                </section>
+                
+                
+                
+<section class="content">
+
+                    <!-- row -->
+                    <div class="row">
+                        <div class="col-md-12">
+                        
+                        
+
+                        
+                            <!-- The time line -->
+                            <ul class="timeline">
+
+
+
+
+
+
+
+
+{% for item in news_arr %}
+                    
+                                <li class="time-label" style=" font-size: 10px; ">
+                                    <span class="bg-blue">
+                                    
+
+            {% if item.today == item.re_date %}
+
+                {{item.NEWS_today}} (<time id="d" datetime="{{item.date_op}}"></time>)
+           {% endif %}
+            {% if item.today != item.re_date %}
+                <time id="d" datetime="{{item.date_op}} "></time>
+            {% endif %}
+
+                                    
+                                    </span>
+                                </li>
+                               
+                    
+        
+       
+{% if item.msg == 'ticket_lock' %}
+                    <li>
+                                    <i class="fa fa-lock bg-yellow"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><small><i class="fa fa-clock-o"></i> 
+                                        <time id="c" datetime="{{item.t_dc}}"></time></small></span>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a> 
+                                        {{item.NEWS_action_lock}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+<div class="timeline-body">
+
+
+                                {{item.htmlMSG | raw}}...
+                            
+                                           
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endif %}
+
+
+
+{% if item.msg == 'ticket_unlock' %}
+                    <li>
+                                    <i class="fa fa-unlock bg-maroon"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        
+                                        
+                                         {{item.NEWS_action_unlock}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+<div class="timeline-body">
+
+
+                                {{item.htmlMSG | raw}}...
+                            
+                                           
+                                        </div>
+<div class="timeline-footer">
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-maroon">{{item.EXT_news_view_t}}</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                
+                                
+                                
+                                
+                                {% endif %}
+                                {% if item.msg == 'ticket_ok' %}
+                    
+                    <li>
+                                    <i class="fa fa-check-circle-o bg-green"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        
+                                        
+                                         {{item.NEWS_action_ok}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+                                         
+                                         <div class="timeline-body">
+
+
+                                {{item.htmlMSG | raw}}...
+                            
+                                           
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-green">{{item.EXT_news_view_t}}</a>
+                                        </div>
+                                    </div>
+                                </li>
+                               
+{% endif %}                                
+{% if item.msg == 'ticket_no_ok' %}
+                    <li>
+                                    <i class="fa fa-circle-o bg-red"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        
+                                        
+                                         {{item.NEWS_action_no_ok}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a>, {{item.NEWS_action_no_ok2}}</h3>
+                                         <div class="timeline-body">
+
+
+                                {{item.htmlMSG | raw}}...
+                            
+                                           
+                                        </div>
+                                         
+                                         
+                                        <div class="timeline-footer">
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-red">{{item.EXT_news_view_t}}</a>
+                                        </div>
+                                         
+                                    </div>
+                                </li>
+                                
+                                
+                                
+                                
+                                
+  {% endif %}                                
+{% if item.msg == 'ticket_refer' %}                              
+                                
+                    
+                    <li>
+                                    <i class="fa fa fa-share bg-blue"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        
+                                        
+                                         {{item.NEWS_action_refer}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a>  {{item.mail_msg_ticket_to_ext}} {{item.to_text}} </h3>
+                                        <div class="timeline-body">
+
+
+                               {{item.htmlMSG | raw}}...
+                            
+                                           
+                                        </div>
+                                        
+                                    </div>
+                     </li>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+{% endif %}                                
+{% if item.msg == 'ticket_comment' %} 
+
+                    <li>
+                                    <i class="fa fa-comments bg-purple"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
+<h3 class="timeline-header "><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        
+                                        
+                                         {{item.NEWS_action_comment}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+                                         <div class="timeline-body">
+
+
+                                {{item.htmlMSG | raw}}...
+                            <br><br>
+                            
+                            
+
+
+                                           <div class="callout" style=" margin: 0px; padding-bottom: 5px; padding-top: 5px;">
+                                        <small class="text-muted"><em>{{item.NEWS_text_comment}}:</em></small>
+                                        <small><p>
+                                            
+                                            {{item.ct | raw}}
+                                            
+                                            
+                                            
+                                            </p></small>
+                                    </div>
+                                        
+                                           
+                                        </div>
+                                        <div class="timeline-footer">
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-purple">{{item.EXT_news_view_t}}</a>
+                                        </div>
+                                    </div>
+                                </li>
+{% endif %}                                
+{% if item.msg == 'ticket_create' %}    
+                    
+                    <li>
+                                    <i class="fa fa-tag bg-aqua"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><small><i class="fa fa-clock-o"></i> 
+                                        <time id="c" datetime="{{item.t_dc}}"></time></small>
+                                        </span>
+                                        <h3 class="timeline-header "><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        
+                                        
+                                         {{item.NEWS_action_create}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+                                        <div class="timeline-body">
+
+
+                                {{item.htmlMSG | raw}}...
+                            
+                                           
+                                        </div>
+ <div class="timeline-footer">
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-aqua">{{item.EXT_news_view_t}}</a>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                
+                                
+                                
+                                
+{% endif %}                                
+{% if item.msg == 'ticket_arch' %}         
+                    
+                    <li>
+                                    <i class="fa fa-archive bg-gray"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><small><i class="fa fa-clock-o"></i> 
+                                        <time id="c" datetime="{{item.t_dc}}"></time></small>
+                                        </span>
+                                        <h3 class="timeline-header ">
+                                        
+                                        
+                                         {{item.FILES_ticket}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a> {{item.NEWS_action_ticket_arch}}</h3>
+                                        <div class="timeline-body">
+
+
+                                 {{item.htmlMSG | raw}}...
+                            
+                                           
+                                        </div>
+ <div class="timeline-footer">
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-gray">{{item.EXT_news_view_t}}</a>
+                                        </div>
+                                    </div>
+                                </li>
+{% endif %}  
+{% endfor %}
+
+
+
+
+
+
+
+
+                                <li>
+                                    <i class="fa fa-clock-o"></i>
+                                </li>
+                            </ul>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+                    
+
+                </section>

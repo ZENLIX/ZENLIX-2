@@ -94,9 +94,9 @@
                     data-content="<small>{{item.msg}}</small>" 
                     
                     
-                    href="ticket?{{item.hashname}}">{{item.cut_subj | raw}}</a></td>
+                    href="ticket&{{item.hashname}}">{{item.cut_subj | raw}}</a></td>
                     <td style=" vertical-align: middle; "><small class="{{item.muclass}}">
-                    <a href="view_user?{{item.get_user_hash_by_id_client}}">
+                    <a href="view_user&{{item.get_user_hash_by_id_client}}">
                     {{item.client | raw}}
                     </a>
                     
@@ -109,7 +109,7 @@
                     </center></small></td>
 
                     <td style=" vertical-align: middle; "><small class="{{item.muclass}}">
-                    <a href="view_user?{{item.init_hash}}">
+                    <a href="view_user&{{item.init_hash}}">
                     {{item.init_fio | raw}}
                     </a>
                     </small></td>

@@ -1,0 +1,418 @@
+    
+{% if menu == "new" %}
+
+{% if oks == true %}
+    <div class="alert alert-success">
+        
+        {{EXT_client_add_after}}
+        
+    </div>
+{% endif %}
+
+
+
+<div class="box box-solid">
+<div class="box-header">
+                                    <h3 class="box-title">{{USERS_new_add}}</h3>
+                                </div>
+                                
+                                
+                                
+    <div class="box-body">
+<div id="form_message"></div>
+
+<form class="form-horizontal" role="form">
+
+
+
+  <div class="form-group" id="login_user_grp">
+    <label for="login" class="col-sm-2 control-label"><small>{{USERS_login}}</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="login_user" type="" class="form-control input-sm" id="login_user" placeholder="{{USERS_login}}">
+        </div>
+  </div>
+  
+  
+  
+  
+    
+      <div class="form-group" id="fio_user_grp">
+    <label for="fio" class="col-sm-2 control-label"><small>{{USERS_fio}}</small></label>
+    <div class="col-sm-10">
+    <input autocomplete="off" id="fio_user" name="fio_user" type="" class="form-control input-sm" placeholder="{{USERS_fio_full}}">
+    </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+    <div class="form-group">
+    <label for="mail" class="col-sm-2 control-label"><small>{{USERS_mail}}</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="{{USERS_mail}}">
+        </div>
+  </div>
+  
+  
+
+  
+  
+    <div class="form-group">
+    <label for="tel" class="col-sm-2 control-label"><small>{{WORKER_tel}}</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="{{WORKER_tel}}">
+        </div>
+  </div>
+  
+      <div class="form-group">
+    <label for="skype" class="col-sm-2 control-label"><small>Skype</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="skype" type="text" class="form-control input-sm" id="skype" placeholder="skype">
+        </div>
+  </div>
+  
+      <div class="form-group">
+    <label for="adr" class="col-sm-2 control-label"><small>{{APPROVE_adr}}</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="{{APPROVE_adr}}">
+        </div>
+  </div>
+  
+  
+   <div class="control-group">
+    <div class="controls">
+        <div class="form-group">
+            <label for="posada" class="col-sm-2 control-label"><small>{{WORKER_posada}}: </small></label>
+            <div class="col-sm-10" style="">
+                <select name="posada" id="posada" data-placeholder="{{WORKER_posada}}" class="chosen-select form-control input-sm">
+                    <option value="0"></option>
+                    {% for item in pos_arr %}
+
+                        <option value="{{item.name}}">{{item.name}}</option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+                                
+                                
+ <div class="control-group">
+    <div class="controls">
+        <div class="form-group">
+            <label for="pidrozdil" class="col-sm-2 control-label"><small>{{WORKER_unit}}: </small></label>
+            <div class="col-sm-10" style="">
+                <select name="pid" id="pidrozdil" data-placeholder="{{WORKER_unit}}" class="chosen-select form-control input-sm">
+                    <option value="0"></option>
+                    {% for item in unit_arr %}
+
+                        <option value="{{item.name}}">{{item.name}}</option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>  
+  
+  
+ <div class=""><hr></div>
+<div class="">
+<center>
+    <button type="submit" id="create_user_approve" class="btn btn-success">{{USERS_make_create}}</button>
+</center>
+
+<div id="res"></div>
+
+</div>
+</form>
+    </div>
+</div>
+
+
+
+
+
+    {% endif %}
+    {% if menu == "list" %}
+<div class="box box-solid">
+<div class="box-header">
+
+                                </div>
+                                
+                                
+                                
+    <div class="box-body">
+    
+    
+
+  
+  <div class="panel-body">
+
+
+
+
+{% for item in list_arr %}
+
+
+
+
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title "><a href="{{hostname}}view_user?{{item.uniq_id}}" class="text-light-blue">{{item.fio_r}}</a></h3>
+                                    <div class="box-tools pull-right">
+{{item.r | raw}}{{item.get_user_status | raw}}
+
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                    
+                                    <div class="col-md-2">
+                                         
+
+<img style=" border: 1px solid #dddddd;" src="{{item.get_user_img_by_id}}" alt="user image" class="img-responsive"/>
+
+
+
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="row">
+
+
+
+                                            {% if item.adr_t == true %}
+                                            <div class="col-md-6"> <small class="text-muted"> {{APPROVE_adr}}: </small></div>
+                                            <div class="col-md-6"> <small>{{item.adr_r}}</small></div>
+                                            {% endif %}
+
+                                            {% if item.skype_t == true %}
+                                            <div class="col-md-6"> <small class="text-muted"> Skype: </small></div>
+                                            <div class="col-md-6"> <small>{{item.skype_r}}</small></div>
+                                            {% endif %}
+
+                                            {% if item.tel_t == true %}
+                                            <div class="col-md-6"> <small class="text-muted"> {{WORKER_tel}}: </small></div>
+                                            <div class="col-md-6"> <small>{{item.tel_r}}</small></div>          
+                                            {% endif %}
+
+                                            {% if item.mail_t == true %}
+                                            <div class="col-md-6"> <small class="text-muted"> {{USERS_mail}}: </small></div>
+                                            <div class="col-md-6"> <small>{{item.email_r}}</small></div>        
+                                            {% endif %}                                                                                                                                                               
+
+                                        </div>
+                                        
+                                       
+                                        
+                                        
+                                    
+                                       
+                                        
+                                    </div>
+                                    <div class="col-md-3">
+                                    
+                                    </div>
+                                    <div class="col-md-4">
+{% if NAVBAR_all_t == "list" %}
+
+
+<a href="{{hostname}}userinfo&user={{item.uniq_id}}" class="btn btn-default btn-xs btn-block" ><i class="fa fa-tag"></i> {{item.NAVBAR_all_tickets}} ({{item.get_clients_total_ticket}})</a>
+
+
+{% endif %}
+
+
+
+                                       {% if priv_edit_client == true %}
+             <a href="{{hostname}}clients&edit={{item.uniq_id}}" class="btn btn-default btn-xs btn-block" ><i class="fa fa-pencil"></i> {{item.CONF_act_edit}}</a>{% endif %}
+                                                                                
+                 
+                                    </div>
+                                    
+                                    </div>
+                                    
+                                </div><!-- /.box-body -->
+                            </div>
+
+
+
+                            {% endfor %}
+
+    
+
+
+      </div>
+</div>
+</div>
+
+
+
+{% endif %}
+
+
+
+{% if menu == "edit" %}
+
+
+
+        {% if oks2 == true %}
+        <div class="alert alert-success">
+        
+        {{EXT_client_add_after}}
+        
+    </div>
+    {% endif %}
+
+
+
+
+<div class="box box-solid">
+<div class="box-header">
+                                    <h3 class="box-title">{{USERS_make_edit_user}}</h3>
+                                </div>
+                                
+                                
+                                
+    <div class="box-body">
+    
+    
+    
+    
+    
+    <form class="form-horizontal" role="form">
+
+
+
+  <div class="form-group" id="login_user_grp">
+    <label for="login" class="col-sm-2 control-label"><small>{{USERS_login}}</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="login_user" type="" class="form-control input-sm" id="login_user2" exclude-param="{{login}}" placeholder="USERS_login" value="{{login}}">
+        </div>
+  </div>
+  
+
+    
+      <div class="form-group" id="fio_user_grp">
+    <label for="fio" class="col-sm-2 control-label"><small>{{USERS_fio}}</small></label>
+    <div class="col-sm-10">
+    <input autocomplete="off" id="fio_user" name="fio_user" type="" class="form-control input-sm" placeholder="{{USERS_fio_full}}" value="{{fio}}">
+    </div>
+  </div>
+    
+    
+    
+    
+    
+    
+    
+    <div class="form-group">
+    <label for="mail" class="col-sm-2 control-label"><small>{{USERS_mail}}</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="{{USERS_mail}}" value="{{email}}">
+        </div>
+  </div>
+  
+
+  
+  
+    <div class="form-group">
+    <label for="tel" class="col-sm-2 control-label"><small>{{WORKER_tel}}</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="{{WORKER_tel}}" value="{{tel}}">
+        </div>
+  </div>
+  
+      <div class="form-group">
+    <label for="skype" class="col-sm-2 control-label"><small>Skype</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="skype" type="text" class="form-control input-sm" id="skype" placeholder="skype" value="{{skype}}">
+        </div>
+  </div>
+  
+      <div class="form-group">
+    <label for="adr" class="col-sm-2 control-label"><small>{{APPROVE_adr}}</small></label>
+        <div class="col-sm-10">
+    <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="{{APPROVE_adr}}" value="{{adr}}">
+        </div>
+  </div>
+  
+  
+   <div class="control-group">
+    <div class="controls">
+        <div class="form-group">
+            <label for="posada" class="col-sm-2 control-label"><small>{{WORKER_posada}}: </small></label>
+            <div class="col-sm-10" style="">
+                <select name="posada" id="posada" data-placeholder="{{WORKER_posada}}" class="chosen-select form-control input-sm">
+                    <option value="0"></option>
+                    
+{% for item in pos_arr11 %}
+                        <option {{item.se}} value="{{item.name}}">{{item.name}}</option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+                                
+                                
+ <div class="control-group">
+    <div class="controls">
+        <div class="form-group">
+            <label for="pidrozdil" class="col-sm-2 control-label"><small>{{WORKER_unit}}: </small></label>
+            <div class="col-sm-10" style="">
+                <select name="pid" id="pidrozdil" data-placeholder="{{WORKER_unit}}" class="chosen-select form-control input-sm">
+                    <option value="0"></option>
+                    {% for item in pos_arr22 %}
+
+                        <option {{item.se}} value="{{item.name}}">{{item.name}}</option>
+
+                    {% endfor %}
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div>  
+  
+
+<div class=""><hr></div>
+<div class="">
+{% if priv_edit_client == true %}
+<center>
+    <button type="submit" id="edit_user_approve" value="{{usid}}" class="btn btn-success">{{USERS_make_edit_user}}</button>
+</center>
+{% endif %}
+</div>
+
+
+<div id="res"></div>
+
+
+</form>
+    
+
+    
+
+    </div>
+</div>
+
+
+
+
+
+{% endif %}

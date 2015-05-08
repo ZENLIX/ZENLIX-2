@@ -9,7 +9,10 @@ function cur_file_name() {
     //$file = explode("?", basename($file));
     
     //if ($current_file_name == $requestUri) echo 'class="active"';
-    return $current_file_name;
+        $current_file_name=explode('&',$current_file_name);
+    $cfn=$current_file_name[0];
+    
+    return $cfn;
 }
 
 
@@ -20,16 +23,24 @@ $p2=array('main_stats', 'user_stats', 'sla_rep');
     $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
     $file = $_SERVER['REQUEST_URI'];
     $file = explode("?", basename($file));
+
+
+
     $current_file_name = $file[0];
+
+    $current_file_name=explode('&',$current_file_name);
+    $cfn=$current_file_name[0];
 
 $tree_admin_class="";
 $tree_stat_class="";
 
 
-if (in_array($current_file_name, $p1)) {
+//echo $current_file_name;
+
+if (in_array($cfn, $p1)) {
     $tree_admin_class="active";
 }
-if (in_array($current_file_name, $p2)) {
+if (in_array($cfn, $p2)) {
     $tree_stat_class="active";
 }
 

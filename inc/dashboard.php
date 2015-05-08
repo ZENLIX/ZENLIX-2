@@ -59,6 +59,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         ob_end_clean();
          //Discard output buffer
         
+
+
+
+
+
+
         try {
             
             // указывае где хранятся шаблоны
