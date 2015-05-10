@@ -3,6 +3,20 @@ session_start();
 
 include_once ("conf.php");
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+//если нет файла конфигурации то открыть установку системы
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
 
 
@@ -48,6 +62,21 @@ include ('inc/register.php');
         include ('inc/forgot.php');
     } else {
         
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////////////////START IF LOGIN-AUTH FORM SUBMITTED/////////////////////////
+
         //echo($_COOKIE['authhash_code']);
         $rq = 0;
         if (isset($_POST['login']) && isset($_POST['password'])) {
@@ -155,7 +184,7 @@ $_SESSION['z.times_lt']=time();
 
         }
 
-
+/////////////////END IF LOGIN-AUTH FORM SUBMITTED/////////////////////////
 
 
 
@@ -170,10 +199,10 @@ $_SESSION['z.times_lt']=time();
             
             if ($rq == 1) {
                 if ($main_portal == "false") {
-                header("Location: ".site_proto(). $url['host'] . $req_url);
+                header("Location: ".site_proto(). $url['host'] ."/". $req_url);
             }
             else if ($main_portal == "true") {
-                header("Location: " . site_proto() . get_conf_param('hostname') . "dashboard");
+                header("Location: " . site_proto() . get_conf_param('hostname') . "/dashboard");
             }
             }
             if ($rq == 0) {
@@ -202,7 +231,7 @@ else if ($main_portal == "false") {
 case 'auth':
  
 if ($val_sta == true) {
-    header("Location: " . site_proto() . get_conf_param('hostname') . "dashboard");
+    header("Location: " . site_proto() . get_conf_param('hostname') . "/dashboard");
 }
 else if ($val_sta == false) {
     include 'inc/auth.php';
@@ -366,10 +395,10 @@ case 'mailers':
             
             if ($rq == 1) {
                 if ($main_portal == "false") {
-                header("Location: ".site_proto() . $url['host'] . $req_url);
+                header("Location: ".site_proto() . $url['host'] ."/". $req_url);
             }
             else if ($main_portal == "true") {
-                header("Location: " . site_proto() . get_conf_param('hostname') . "index.php");
+                header("Location: " . site_proto() . get_conf_param('hostname') . "/index.php");
             }
             }
             if ($rq == 0) {
@@ -401,7 +430,7 @@ else if ($main_portal == "false") {
 case 'auth':
  
 if ($val_sta == true) {
-    header("Location: " . site_proto() . get_conf_param('hostname') . "dashboard");
+    header("Location: " . site_proto() . get_conf_param('hostname') . "/dashboard");
 }
 else if ($val_sta == false) {
     include 'inc/auth.php';

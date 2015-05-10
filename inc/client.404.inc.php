@@ -9,35 +9,51 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         
         //check_unlinked_file();
         
+
+
+
+
+
+
+
+$basedir = dirname(dirname(__FILE__)); 
+
+ try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('client.404.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+'hostname'=>$CONF['hostname'],
+'name_of_firm'=>$CONF['name_of_firm']
+
+
+
+
+            ));
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
+
+
+
+
         
-?>
-<section class="content-header">
-                    <h1>
-                        404 Error Page
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active">404 error</li>
-                    </ol>
-                </section>
-               
-<section class="content">
 
-                    <div class="error-page">
-                        <h2 class="headline text-info"> 404</h2>
-                        <div class="error-content">
-                            <h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>
-                            <p>
-                                We could not find the page you were looking for.
-                                Meanwhile, you may <a href="<?php echo $CONF['hostname'] ?>index.php">return to dashboard</a> or try using the search form.
-                            </p>
-                            
-                        </div><!-- /.error-content -->
-                    </div><!-- /.error-page -->
-
-                </section>
-
-<?php
 include ("footer.inc.php");
     }
 }

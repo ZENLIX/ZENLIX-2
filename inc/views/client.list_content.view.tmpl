@@ -1,0 +1,74 @@
+
+
+{% if aha == "0" %}
+
+<div id="spinner" class="well well-large well-transparent lead">
+                <center>{{MSG_no_records}}</center>
+            </div>
+{% endif %}
+
+
+
+
+
+
+
+
+{% if aha != "0" %}
+
+            <input type="hidden" value="{{get_total_pages}}" id="val_menu">
+
+
+            <table class="table table-bordered table-hover" style=" font-size: 14px; ">
+                <thead>
+                <tr>
+                    <th><center>#</center></th>
+                    <th><center><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="{{t_LIST_prio}}"></i></center></th>
+                    <th><center>{{t_LIST_subj}}</center></th>
+                    <th><center>{{t_LIST_create}}</center></th>
+                    <th><center>{{t_LIST_ago}}</center></th>
+                    <th><center>{{t_LIST_to}}</center></th>
+                    <th><center>{{t_LIST_status}}</center></th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+{% for item in ticket_arr %}
+
+<tr id="tr_{{item.id}}" class="{{item.style}}">
+                        <td style=" vertical-align: middle; "><small><center>{{item.id}}</center></small></td>
+                        <td style=" vertical-align: middle; "><small><center>{{item.prio | raw}}</center></small></td>
+                        <td style=" vertical-align: middle; "><a class="{{item.muclass}} pops"  
+                    title="{{item.subj}}"
+                    data-content="<small>{{item.msg}}</small>" 
+                    
+                    
+                    href="ticket&{{item.hash_name}}">{{item.subj_cut}}</a></td>
+
+
+                        <td style=" vertical-align: middle; "><small><center><time id="c" datetime="{{item.date_create}}"></time></center></small></td>
+                        <td style=" vertical-align: middle; "><small><center><time id="a" datetime="{{item.t_ago}}"></time></center></small></td>
+                        <td style=" vertical-align: middle; ">
+                            <small>{{item.to_text | raw}}</small>
+                            
+                        </td>
+                        
+                        
+                        <td style=" vertical-align: middle; "><small><center>{{item.st | raw}}</center>
+                            </small></td>
+                            
+                            
+                       
+                    </tr>
+
+{% endfor %}
+
+
+</tbody>
+            </table>
+
+
+
+
+{% endif %}

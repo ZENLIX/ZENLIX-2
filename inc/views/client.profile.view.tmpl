@@ -1,0 +1,394 @@
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-user"></i> {{NAVBAR_profile}}
+                        <small>{{NAVBAR_profile_ext}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{NAVBAR_profile}}</li>
+                    </ol>
+                </section>
+
+
+
+<input type="hidden" id="main_last_new_ticket" value="{{get_last_ticket_new}}">
+
+
+<section class="content">
+
+
+
+<div class="row">
+
+
+<div class="col-md-3">
+
+<div class="row">
+  <div class="col-md-12">
+                            <div class="box box-warning" >
+                                <div class="box-header" >
+                                
+                                    <h4 style="text-align:center;">{{fio}}<br><small>{{posada}}</small></h4>
+
+                                </div>
+                                <div class="box-body">
+                                  
+                        <center>
+                            <img src="{{get_user_img}}" class="img-rounded" alt="User Image">
+                        </center><br>
+                        
+                        
+                                <form action="{{hostname}}profile" method="post" id="form_avatar" enctype="multipart/form-data"> 
+             
+             <span class="file-input btn btn-block btn-default btn-file" style="width:100%">
+                {{PROFILE_select_image}} <input id="file_avatar" type="file" name="file">
+            </span>
+            <button id="del_profile_img" class="btn btn-block bg-maroon">{{PROFILE_del_image}}</button>
+
+
+
+        </form>
+        
+        
+       
+        
+                           
+                                    
+                                    
+                                </div><!-- /.box-body -->
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                          
+  </div>
+  
+      
+      
+</div>
+
+
+</div>
+
+<div class="col-md-9">
+
+
+<div class="row">
+
+<div class="col-md-12">
+                            <div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-user"></i> {{P_main}}</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    
+                                    
+     
+      <div class="panel-body">
+      
+
+
+      
+      <form class="form-horizontal" role="form">
+      
+          <div class="form-group">
+    <label for="fio" class="col-sm-4 control-label"><small>{{WORKER_fio}}</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="fio" type="text" class="form-control input-sm" id="fio" placeholder="fio" value="{{fio}}">
+        </div>
+  </div>
+  
+  
+  
+  
+    <div class="form-group">
+    <label for="mail" class="col-sm-4 control-label"><small>{{P_mail}}</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="{{P_mail}}" value="{{email}}">
+    <p class="help-block"><small>{{P_mail_desc}}</small></p>
+        </div>
+  </div>
+
+
+
+        <div class="form-group">
+    <label for="pb" class="col-sm-4 control-label"><small>Pushbullet</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="push" type="text" class="form-control input-sm" id="pb" placeholder="push" value="{{push}}">
+        </div>
+  </div>
+
+
+  
+      <div class="form-group">
+    <label for="tel" class="col-sm-4 control-label"><small>{{WORKER_tel_full}}</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="{{WORKER_tel_full}}" value="{{tel}}">
+    
+        </div>
+  </div>
+  
+        <div class="form-group">
+    <label for="skype" class="col-sm-4 control-label"><small>Skype</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="skype" type="text" class="form-control input-sm" id="skype" placeholder="skype" value="{{skype}}">
+    
+        </div>
+  </div>
+  
+            <div class="form-group">
+    <label for="adr" class="col-sm-4 control-label"><small>{{APPROVE_adr}}</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="adr" value="{{adr}}">
+    
+        </div>
+  </div>
+  
+  
+  
+          <div class="form-group">
+    <label for="lang" class="col-sm-4 control-label"><small>{{SYSTEM_lang}}</small></label>
+        <div class="col-sm-8">
+    <select data-placeholder="{{SYSTEM_lang}}" class="chosen-select form-control input-sm" id="lang" name="lang">
+                    <option value="0"></option>
+                    
+                        <option {{status_lang_en}} value="en">English</option>
+                        <option {{status_lang_ru}} value="ru">Русский</option>
+                        <option {{status_lang_ua}} value="ua">Українська</option>
+</select>
+        </div>
+  </div>
+  
+  
+    <div class="col-md-offset-3 col-md-6">
+<center>
+    <button type="submit" id="edit_profile_main_client" value="{{usid}}" class="btn btn-success"><i class="fa fa-pencil"></i> {{P_edit}}</button>
+</center>
+</div>
+      </form>
+      
+      
+      
+      
+      
+      </div>
+      
+      <div id="m_info"></div>
+                                </div><!-- /.box-body -->
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                          
+</div>
+
+
+
+{% if ad_fields == true %}
+
+<div class="col-md-12">
+<div class="box box-solid">
+<div class="box-header">
+<h3 class="box-title"><i class="fa fa-bookmark-o"></i> {{FIELD_add_title}}</h3>
+
+</div>
+      <div class="box-body">
+      <div class="panel-body">
+      
+ <!--######### ADDITIONAL FIELDS ############## -->
+
+<form id="add_field_form" class="form-horizontal" role="form">
+    <div >
+
+{% for item in ad_fields_arr%}
+                      <div class="" id="">
+    <div class="">
+        <div class="form-group">
+            <label for="{{item.hash}}" class="col-sm-4 control-label"><small>{{item.name}}: </small></label>
+
+            <div class="col-sm-8" style=" padding-top: 5px; ">
+
+{% if item.t_type == "text" %}
+
+<input type="text" class="form-control input-sm" name="{{item.hash}}" id="{{item.hash}}" placeholder="{{item.placeholder}}" value='{{item.vr}}'>
+{% endif %}
+{% if item.t_type == "textarea" %}
+
+
+<textarea rows="3" class="form-control input-sm animated" name="{{item.hash}}" id="{{item.hash}}" placeholder="{{item.placeholder}}">{{item.vr}}</textarea>
+{% endif %}
+{% if item.t_type == "select" %}
+<select data-placeholder="{{item.placeholder}}" class="chosen-select form-control" id="{{item.hash}}" name="{{item.hash}}">
+
+{% for itemf in item.vr %}
+                            <option value="{{itemf.value}}" {{itemf.sc}}>{{itemf.value}}</option>
+
+                            {% endfor %}
+                
+                        
+            </select>
+{% endif %}
+{% if item.t_type == "multiselect" %}
+
+
+
+
+
+<select data-placeholder="{{item.placeholder}}" class="multi_field" id="{{item.hash}}" name="{{item.hash}}[]" multiple="multiple" >
+
+{% for itemf in item.vr %}
+                            <option value="{{itemf.value}}" {{itemf.sc}}>{{itemf.value}}</option>
+
+                            {% endfor %}
+                
+                        
+            </select>
+{% endif %}
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    </div> 
+
+{% endfor %}
+</div>
+    </form>
+    
+<!--######### ADDITIONAL FIELDS ############## -->
+    <div class="col-md-offset-3 col-md-6">
+<center>
+    <button type="submit" id="edit_profile_ad_f" value="{{usid}}" class="btn btn-success"><i class="fa fa-pencil"></i> {{P_edit}}</button>
+</center>
+</div>
+</div><div id="ad_f_res"></div>
+
+      </div>
+      </div>
+      </div>
+
+{% endif %}
+<div class="col-md-12">
+<div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-bell"></i> {{PROFILE_perf_notify}}</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                <div class="panel-body">
+
+<form class="form-horizontal" role="form">
+
+
+              <div class="form-group">
+    <label for="mail_nf" class="col-sm-4 control-label"><small>{{CONF_mail_status}}</small></label>
+        <div class="col-sm-8">
+    <select data-placeholder="{{CONF_mail_status}}" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
+
+{% for item in mail_arr %}
+                            <option value="{{item.key}}" {{item.sc}}>{{item.value}}</option>
+
+
+              {% endfor %}
+                        
+            </select>
+        </div>
+  </div>
+
+
+
+  
+
+  <div class="col-md-offset-3 col-md-6">
+<center>
+    <button type="submit" id="edit_nf" value="{{usid}}" class="btn btn-success"><i class="fa fa-pencil"></i> {{P_edit}}</button>
+</center>
+</div>
+</form>
+                                </div>
+<div id="nf_info"></div>
+
+
+
+                                </div>
+                                </div>
+</div>
+
+
+<div class="col-md-12">
+{% if canChangePw == true %}
+
+                       <div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-key"></i> {{P_passedit}}</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                <div class="panel-body">
+      <form class="form-horizontal" role="form">
+      
+              <div class="form-group">
+    <label for="old_pass" class="col-sm-4 control-label"><small>{{P_pass_old}}</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="old_pass" type="password" class="form-control input-sm" id="old_pass" placeholder="{{P_pass_old2}}">
+        </div>
+  </div>
+      
+      
+        <div class="form-group">
+    <label for="new_pass" class="col-sm-4 control-label"><small>{{P_pass_new}}</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="new_pass" type="password" class="form-control input-sm" id="new_pass" placeholder="{{P_pass_new2}}">
+        </div>
+  </div>
+  
+          <div class="form-group">
+    <label for="new_pass2" class="col-sm-4 control-label"><small>{{P_pass_new_re}}</small></label>
+        <div class="col-sm-8">
+    <input autocomplete="off" name="new_pass2" type="password" class="form-control input-sm" id="new_pass2" placeholder="{{P_pass_new_re2}}">
+        </div>
+  </div>
+  <div class="col-md-offset-3 col-md-6">
+<center>
+    <button type="submit" id="edit_profile_pass" value="{{usid}}" class="btn btn-success"><i class="fa fa-pencil"></i> {{P_do_edit_pass}}</button>
+</center>
+</div>
+  
+  
+      </form>
+  
+      </div>
+      <div id="p_info"></div>
+                                </div>
+                       </div>
+                                
+                     
+
+{% endif %}
+</div>
+</div>
+
+
+</div>
+
+
+</div>
+
+
+                    
+                    
+                    </section>
+                    
+                    
+                    
+                    
+                    
+                    

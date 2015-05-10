@@ -1,0 +1,219 @@
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-bullhorn"></i> {{VIEWUSER_title}}
+                        <small>{{VIEWUSER_title_ext}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{VIEWUSER_title}}</li>
+                    </ol>
+                </section>
+
+
+
+
+{% if finduser == false %}
+<section class="content">
+        <div class="well well-large well-transparent lead">
+            <center>{{TICKET_t_no}}</center>
+        </div>
+</section>
+{% endif %}
+
+
+
+
+        {% if finduser == true %}
+{% if user_status == "2" %}
+
+<section class="content">
+<div class="row">
+                            <div class="col-md-3">
+                                <div class="box box-warning">
+                                <div class="box-header">
+                                <h4 style="text-align:center;">{{user_fio}}</h4>
+                                </div>
+                                <div class="box-body">
+                                  
+                        <center>
+                            <img  src="{{user_img}}" class="img-rounded" alt="User Image">
+                        </center>
+                        
+        
+                           
+                                    
+                                    
+                                </div><!-- /.box-body -->
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            </div>
+
+
+
+ <div class="col-md-9">
+                                
+                                <div class="row">
+                                    
+                                    <div class="col-md-12"><div class="box box-solid">
+                                
+                                <div class="box-body">
+                                    
+                                    
+     
+      <div class="panel-body">
+      <section class="content">
+
+          <div class="error-page">
+            
+            <div class="">
+              <h3><i class="fa fa-warning text-red"></i> {{USER_DEL_main}}</h3>
+              <p>
+                {{USER_DEL_info}}
+              </p>
+              
+            </div>
+          </div><!-- /.error-page -->
+
+        </section>
+      </div>
+      </div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+
+
+
+
+</div>
+{% endif %}
+{% if user_status != "2" %}
+<section class="content">
+                    <!-- row -->
+                    <div class="row">
+                    
+                    
+                            <div class="col-md-3">
+                                <div class="box box-warning">
+                                <div class="box-header">
+                                <h4 style="text-align:center;">{{user_fio}}<br><small>{{user_posada}}</small></h4>
+                                </div>
+                                <div class="box-body">
+                                  
+                        <center>
+                            <img  src="{{user_img}}" class="img-rounded" alt="User Image">
+                        </center>
+                        
+
+
+        
+                           
+                                    
+                                    
+                                </div><!-- /.box-body -->
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            
+                            </div>
+                            
+                            
+                            
+                            
+                            
+                            <div class="col-md-9">
+                                
+                                <div class="row">
+                                    
+                                    <div class="col-md-12"><div class="box box-solid">
+                                <div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-user"></i> {{P_main}}</h3>
+                                    <div class="box-tools pull-right">
+                                    {{get_user_status | raw}}
+                                        
+                                    </div>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">
+                                    
+                                    
+     
+      <div class="panel-body">
+      
+      
+      <div class="row">
+      
+      
+      <div class="col-md-5">
+          
+          
+          <div class="row">
+              
+
+              {% if user_mail is not empty %}
+              
+                          <div class="col-md-3"><small class="text-muted">{{APPROVE_mail}}:</small></div>
+              <div class="col-md-9"><small>{{user_mail}}</small></div>
+
+              {% endif %}
+              
+              
+          </div>
+          
+         
+                         
+                                
+          
+                            
+                            
+                            
+          
+      </div>
+
+      
+      
+      
+      </div>
+ 
+      
+      </div>
+      
+      
+                                </div><!-- /.box-body -->
+                                
+                                
+                            </div></div>
+                            
+                            
+                            
+                                    
+                                    
+                                </div>
+                                
+                                
+                            
+                            
+                            
+                            
+                            
+                            
+                            </div>
+                    </div>
+                    
+                    
+{% endif %}
+</section>
+                    {% endif %}
+                    
+                    
+                    

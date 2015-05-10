@@ -1,0 +1,175 @@
+
+{% if get_type == "h" %}
+
+
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-globe"></i> {{HELPER_title}}
+                        
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{HELPER_title}}</li>
+                    </ol>
+                </section>
+                
+                
+                
+            <section class="content">
+
+
+<div class="row">
+    <div class="col-md-1">
+        <a id="go_back" class="btn btn-primary btn-sm btn-block"><i class="fa fa-reply"></i> {{HELPER_back}}</a>
+    </div>
+    
+    
+    <div class="col-md-10">
+        <div class="box box-solid">
+            <div class="box-body">
+            <h3 style=" margin-top: 0px; ">{{title | raw}}</h3>
+    <p>{{message | raw}}</p>
+    <hr>
+    
+    <p class="text-right"><small class="text-muted">{{HELPER_pub}}: {{user_init_id | raw}}</small><br><small class="text-muted"> <time id="c" datetime="{{dt}}"></time></small>
+    <br><a id="print_t" class="btn btn-default btn-xs"> <i class="fa fa-print"></i> {{HELPER_print}}</a>
+        </p>
+            </div>
+        </div>
+    </div>
+</div>
+            </section>
+
+{% endif %}
+
+
+
+
+{% if get_type == "cat" %}
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-globe"></i> {{HELPER_title}}
+                        <small>{{name}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active"><a href="helper">{{HELPER_title}}</a></li>
+                        <li class="active">{{name}}</li>
+                    </ol>
+</section>
+                
+                
+                
+            <section class="content">
+
+
+
+
+
+
+
+                    <!-- row -->
+                    <div class="row">
+                    
+                    
+                    
+                                        <div class="col-md-3">
+                    
+
+                    <div class="col-md-12" id="help_content">
+                    
+                    </div>
+                                    
+                                    
+                                    
+                    
+                    
+                    
+                    </div>
+
+                    
+                    <div class="col-md-9">
+                         <div class="box box-solid">
+
+
+                                <div class="">
+                                   {{show_item_helper_cat | raw}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+{% endif %}
+
+
+
+
+
+
+{% if get_type == "else" %}
+ <section class="content-header">
+                    <h1>
+                        <i class="fa fa-globe"></i> {{HELPER_title}}
+                        <small>{{HELPER_title_ext}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{HELPER_title}}</li>
+                    </ol>
+                </section>
+                
+                
+                
+            <section class="content">
+
+
+<div class="row">
+    
+    <div class="col-md-12">
+        <div class="box box-solid">
+            <div class="box-body"><div class="input-group">
+                        <input type="text" class="form-control input-sm" id="find_helper" autofocus placeholder="{{HELPER_desc}}">
+      <span class="input-group-btn">
+        <button id="" class="btn btn-default btn-sm" type="submit"><i class="fa fa-search"></i> {{HELPER_find}}</button>
+      </span>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+                    <!-- row -->
+                    <div class="row">
+                    
+                    
+                    
+                                        <div class="col-md-3">
+                    <div class="callout callout-info">
+                                        
+                                        <small> <i class="fa fa-info-circle"></i> 
+{{HELPER_info}}
+         </small>
+                                    </div>
+                                    
+                                    
+                                    
+                    
+                    
+                    
+                    </div>
+                    
+                    <div class="col-md-9" id="help_content">
+                    
+                    </div>
+                    
+                    
+                    
+                    
+                    
+                    </div>
+            </section>    
+{% endif %}
+
