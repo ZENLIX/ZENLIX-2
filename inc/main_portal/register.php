@@ -8,83 +8,51 @@ include "head.inc.php";
 include "navbar.inc.php";
 
 
-?>
-<?php if (get_conf_param('allow_register') == "true") { ?>
-<div class="content-wrapper">
-<section class="content">
-
-
-
-
-
-<section class="invoice">
-          <!-- title row -->
-          <div class="row">
-
-
-
-<div class="col-md-4 col-md-offset-4">
-<div class="box box-default">
-                <div class="box-header with-border">
-                  <center><h3 class="box-title"><?=lang('PORTAL_reg_user');?></h3></center>
-<div class="box-tools pull-right">
-                   
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
-<center><img src="<?=get_logo_img(); ?>" width="128"></center><br><hr>
-</div>
-<form class="form-horizontal" id="main_form_register">
-
-
-<div class="col-sm-12">
- <input id="login_fio" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_fio');?>"><br>
-</div>
-
-<div class="col-sm-12">
- <input id="login_name" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_login_name');?>"><br>
-</div>
-
-<div class="col-sm-12">
- <input id="login_mail" class="form-control input-lg" type="text" placeholder="<?=lang('PORTAL_email');?>"><br>
-</div>
-
-<div class="col-sm-12">
-  <button class="btn btn-block btn-success btn-lg" id="register_new"><?=lang('PORTAL_reg');?> </button>
-</div>
-<div class="col-sm-12"><br><br></div>
-<div class="col-sm-12" id="error_result">
-
-</div>
-
-</form>
-
-                </div><!-- /.footer -->
-                </div>
-                </div>
-
-</div>
+if (get_conf_param('allow_register') == "true") { 
 
 
 
 
 
 
-          </div>
-          <!-- info row -->
-          
-        </section>
+$basedir = dirname(dirname(dirname(__FILE__))); 
+
+ try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/main_portal/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('register.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+'hostname'=>$CONF['hostname'],
+'PORTAL_reg_user'=>lang('PORTAL_reg_user'),
+'get_logo_img'=>get_logo_img(),
+'PORTAL_fio'=>lang('PORTAL_fio'),
+'PORTAL_login_name'=>lang('PORTAL_login_name'),
+'PORTAL_email'=>lang('PORTAL_email'),
+'PORTAL_reg'=>lang('PORTAL_reg')
+
+
+
+            ));
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
 
 
 
 
-</section>
-</div>
 
 
-<?php
+
 }
 include "footer.inc.php";
 ?>

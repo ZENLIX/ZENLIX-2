@@ -635,6 +635,7 @@ $basedir = dirname(dirname(__FILE__));
                 'MAIN_attention'=>lang('MAIN_attention'),
                 'TICKET_t_in_arch'=>lang('TICKET_t_in_arch'),
                 'status_ok'=>$status_ok,
+                'status_ok_status'=>$status_ok_status,
                 'TICKET_t_ok'=>lang('TICKET_t_ok'),
                 'ok_by_fio'=>name_of_user_ret($ok_by),
                 'ok_date'=>$ok_date,

@@ -203,7 +203,7 @@ $main_js_stop=array(
     'js/socket.io-1.1.0.js',
     'js/core.js'
     );
-
+ 
 
 $basedir = dirname(dirname(__FILE__)); 
 

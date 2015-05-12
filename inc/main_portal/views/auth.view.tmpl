@@ -1,0 +1,133 @@
+<div class="content-wrapper">
+<section class="content">
+
+
+
+
+
+<section class="invoice">
+          <!-- title row -->
+          <div class="row">
+
+
+
+<div class="col-md-4 col-md-offset-4">
+<div class="box box-default">
+                <div class="box-header with-border">
+                  <center><h3 class="box-title">{{PORTAL_auth}}</h3></center>
+<div class="box-tools pull-right">
+                   
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                <div class="row">
+                <div class="col-sm-12">
+<center><img src="{{get_logo_img}}" width="128"></center><br><hr>
+</div>
+
+
+
+
+
+
+
+
+{% if login_form == false %}
+
+<div class="col-sm-12">
+<br>
+<div class="form-box" id="login-box">
+<div class="alert alert-warning alert-dismissable">
+                    
+                    <h4><i class="icon fa fa-warning"></i> {{LOGIN_ERROR_title}}!</h4>
+                    {{LOGIN_ERROR_desc}}
+                  </div>
+                  </div>
+                  </div>
+{% endif %}
+
+{% if login_form == true %}
+
+
+<form class="form-horizontal" action="{{hostname}}{{link}}" method="POST" autocomplete="off">
+
+
+<div class="col-sm-12">
+<input type="text" name="login" autocomplete="off" autocapitalize="off" autocorrect="off" class="form-control input-lg" placeholder="{{login}}"/><br>
+</div>
+
+<div class="col-sm-12">
+ <input type="password" name="password" class="form-control input-lg" placeholder="{{pass}}"/>
+</div>
+
+<div class="col-sm-12">
+ <div class="form-group">
+
+
+
+
+                        <div class="checkbox">
+                <center><label>
+                
+                    <input id="mc" name="remember_me" value="1" type="checkbox"> {{remember_me}}
+                
+                </label></center>
+            </div>
+                    </div>
+</div>
+
+<div class="col-sm-12">
+  <button class="btn btn-block btn-success btn-lg"><i class="fa fa-sign-in"></i>  {{log_in}} </button>
+</div>
+
+<div class="col-sm-12">
+  <br>
+<center>
+                    <small>
+                    {% if allow_register == "true" %}
+                     <a href="register" class="text-center">{{REG_new}}</a> 
+                    {% endif %}
+                    {% if allow_forgot == "true" %}
+                     | <a href="forgot" class="text-center">{{Forgot_pass_me}}</a> 
+                    {% endif %}
+                    </small>
+                    </center>
+</div>
+<div class="col-sm-12" id="error_result">
+
+
+{% if va == 'error' %}
+
+            <div class="alert alert-danger" style="margin:20px;">
+                <center>{{error_auth}}</center>
+            </div>
+
+ {% endif %}
+                    </div>
+                </div>
+                <input type="hidden" name="req_url" value="{{REQUEST_URI}}">
+</form>
+
+{% endif %}
+
+                </div><!-- /.footer -->
+                </div>
+                </div>
+
+</div>
+
+
+
+
+
+
+          </div>
+          <!-- info row -->
+          
+        </section>
+
+
+
+
+</section>
+</div>

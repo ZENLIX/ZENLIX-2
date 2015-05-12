@@ -647,7 +647,7 @@ CREATE TABLE `tickets` (
   `last_edit` datetime DEFAULT NULL,
   `ok_by` int(11) DEFAULT '0',
   `prio` int(4) NOT NULL DEFAULT '0',
-  `ok_date` datetime NOT NULL,
+  `ok_date` datetime DEFAULT NULL,
   `last_update` datetime DEFAULT NULL,
   `deadline_time` datetime DEFAULT NULL,
   `sla_plan_id` int(11) NOT NULL DEFAULT '0',

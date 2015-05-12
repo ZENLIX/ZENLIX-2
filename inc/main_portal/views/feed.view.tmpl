@@ -1,0 +1,304 @@
+<div class="content-wrapper">
+<section class="content">
+
+
+
+
+
+
+
+<section class="invoice">
+          <!-- title row -->
+          <div class="row">
+
+
+
+<div class="col-md-9">
+
+{% if hnset == true %}
+
+
+
+
+
+{% if hn == "new_feed" %}
+
+{% if val_user == true %}
+<div class="box box-default">
+                <div class="box-header with-border">
+                  <h3 class="box-title">{{PORTAL_new_msg}}</h3>
+<div class="box-tools pull-right">
+                    <h4> <i class="fa fa-comment"></i></h4>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                <div class="">
+
+
+ <form class="form-horizontal">
+  <div class="form-group">
+    
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_subj}}" value="">
+    </div>
+        <div class="col-sm-3">
+      
+    </div>
+        <div class="col-sm-12"><br>
+      <input type="text" class="form-control" id="title" placeholder="{{PORTAL_ann}}" value="">
+    </div>
+  </div>
+
+    <div class="form-group">
+    
+<div class="col-sm-12">
+<div id="note"></div>
+</div>
+<div class="col-sm-12" >
+
+
+</div>
+
+<div class="col-sm-12" id="post_res">
+
+
+
+</div>
+
+
+
+<div class="col-sm-6 col-sm-offset-3">
+<br>
+<button class="btn btn-block btn-info" id="make_new_feed" >{{PORTAL_news_create}}</button>
+<input type="hidden" value="{{time}}" id="news_hash">
+</div>
+
+  </div>
+
+
+  </form>
+
+
+
+                </div><!-- /.footer -->
+                </div>
+                </div>
+
+{% endif %}
+
+{% endif %}
+
+{% if hn == "edit_feed" %}
+{% if val_user == true %} 
+<div class="box box-default">
+                <div class="box-header with-border">
+                  <h3 class="box-title">{{PORTAL_new_msg}}</h3>
+<div class="box-tools pull-right">
+                    <h4> <i class="fa fa-comment"></i></h4>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                <div class="">
+
+
+ <form class="form-horizontal">
+  <div class="form-group">
+    
+    <div class="col-sm-9">
+      <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_subj}}" value="{{subj}}">
+    </div>
+        <div class="col-sm-3">
+      
+    </div>
+        <div class="col-sm-12"><br>
+      <input type="text" class="form-control" id="title" placeholder="{{PORTAL_ann}}" value="{{title}}">
+    </div>
+  </div>
+
+    <div class="form-group">
+    
+<div class="col-sm-12">
+<div id="note">{{msg | raw}}</div>
+</div>
+<div class="col-sm-12" >
+
+
+</div>
+
+<div class="col-sm-12" id="post_res">
+
+
+
+</div>
+
+
+
+<div class="col-sm-6 col-sm-offset-3">
+<br>
+<button class="btn btn-block btn-info" id="make_edit_feed" >{{PORTAL_news_save}}</button>
+<input type="hidden" value="{{uniq_id}}" id="news_hash">
+</div>
+
+  </div>
+
+
+  </form>
+
+
+
+                </div><!-- /.footer -->
+                </div>
+                </div>
+
+{% endif %}
+                {% endif %}
+  {% if hn == "else" %}
+<div class="box box-default">
+                <div class="box-header with-border">
+                  <h3 class="box-title">{{subj}}</h3>
+<div class="box-tools pull-right">
+                    <h4> <i class="fa fa-newspaper-o"></i></h4>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+<p class="text-muted">{{title}}</p>
+
+                {{msg | raw}}
+                </div>
+                <div class="box-footer">
+
+
+
+<a style="width:25px;" class="btn btn-xs btn-twitter" href="http://twitter.com/share?text={{title}}>&url={{REQUEST_URI}}" title="Share on Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+
+<a style="width:25px;" class="btn btn-xs btn-facebook" 
+href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{REQUEST_URI}}&p[title]={{title}}&p[summary]={{title}}&p[images][0]={{logo_img}}"
+
+
+><i class="fa fa-facebook"></i></a>
+<a style="width:25px;" class="btn btn-xs btn-google-plus" href="https://plus.google.com/share?url={{REQUEST_URI}}"><i class="fa fa-google-plus"></i></a>
+
+<a style="width:25px;" class="btn btn-xs btn-github" href="mailto:?subject=&body={{title}} - {{REQUEST_URI}}"><i class="fa fa-envelope"></i></a>
+<br>
+                <small class="text-muted">
+                <time id="c" datetime="{{dt}}"></time>
+                </small>
+
+                <small class="text-muted pull-right">
+                {{nameshort}}
+
+{% if val_user == true %}  
+                <div class="btn-group ">
+<button class="btn btn-xs bg-maroon" id="delete_news" value="{{uniq_id}}">{{PORTAL_act_del}}</button> 
+<a class="btn btn-xs bg-orange btn-flat" href="feed&{{uniq_id}}&edit_feed">{{PORTAL_act_edit}}</a>
+ </div>
+ {% endif %}
+
+                </small>
+                </div>
+                </div>
+
+ {% endif %}
+{% endif %}
+{% if hnset == false %}
+
+<div class="box box-default">
+                <div class="box-header with-border">
+                  <h3 class="box-title">{{PORTAL_news}}</h3>
+<div class="box-tools pull-right">
+                    <h4> <i class="fa fa-newspaper-o"></i> </h4>
+                  </div>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                <div class="">
+
+
+ <ul class="products-list product-list-in-box ">
+
+
+{% for item in news_arr %}
+
+
+
+                    <li class="item">
+                      
+                      <div class="product-info" style="margin-left:0px;">
+                        <a href="feed&{{item.uniq_id}}" class="product-title">
+                        <h4>{{item.subj}} </h4>
+
+                       </a>
+                        <span class="product-description">
+                          {{item.title}}
+                        </span>
+                         <small class="text-muted pull-right">
+
+<i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.dt}}"></time>
+                        </small>
+                      </div>
+                    </li><!-- /.item -->
+
+
+{% endfor %}
+
+
+
+
+
+                                        
+                    
+                  </ul>
+
+
+
+                </div><!-- /.footer -->
+                </div>
+                </div>
+
+
+
+{% endif %}
+
+
+
+</div>
+
+
+
+<div class="col-md-3">
+
+{% if val_user == true %} 
+<div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">{{PORTAL_admin_menu}}</h3>
+                </div>
+                <div class="box-body">
+                  <a href="feed&new_feed" class="btn btn-default btn-block">{{PORTAL_news_create}}</a>
+                </div>
+              </div>
+{% endif %}
+
+
+{{view_release_bar | raw}}
+
+
+{{view_stat_cat | raw}}
+
+
+
+
+
+
+
+</div>
+
+
+          </div>
+          <!-- info row -->
+          
+        </section>
+
+
+
+
+</section>
+</div>

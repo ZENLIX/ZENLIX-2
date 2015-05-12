@@ -19,6 +19,86 @@ include "head.inc.php";
 
 
 include "navbar.inc.php";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$basedir = dirname(dirname(dirname(__FILE__))); 
+
+ try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($basedir.'/inc/main_portal/views');
+            
+            // инициализируем Twig
+            $twig = new Twig_Environment($loader);
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('version.view.tmpl');
+            
+            // передаём в шаблон переменные и значения
+            // выводим сформированное содержание
+            echo $template->render(array(
+'hostname'=>$CONF['hostname'],
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>,
+''=>
+
+
+            ));
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
 <div class="content-wrapper">
 <section class="content">

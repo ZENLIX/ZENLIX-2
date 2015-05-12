@@ -180,7 +180,7 @@ $main_styles_end=array(
 'css/skin-blue.css'
 );
 
-
+ 
 
 $basedir = dirname(dirname(__FILE__)); 
 

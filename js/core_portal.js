@@ -286,6 +286,17 @@ console.log(result);
     };
 
 
+
+
+//find_in_manual
+$('body').on('click', 'button#find_in_manual', function(event) {
+            event.preventDefault();
+
+            window.location ="manual&find="+$("input#navbar-search-input").val();
+
+        });
+
+
 $('body').on('click', 'button#register_new', function(event) {
             event.preventDefault();
                 $.ajax({
