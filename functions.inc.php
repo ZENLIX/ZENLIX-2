@@ -1244,11 +1244,11 @@ function make_html($in, $type) {
     $config->set('Cache.DefinitionImpl', null);
     $config->set('AutoFormat.RemoveEmpty', false);
     $config->set('AutoFormat.AutoParagraph', true);
-    
+    $config->set('HTML', 'Allowed', 'p,ul,li,ol,br,strong,b,em,pre,code');
     //$config->set('URI.DisableExternal', true);
     if ($type == "no") {
         $config->set('HTML.ForbiddenElements', array(
-            'p'
+            'p','h'
         ));
     }
     

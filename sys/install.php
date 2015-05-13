@@ -181,10 +181,10 @@ $current .= "########################################\n";
 
 $current .= "//Access information to MySQL database\n";
 $current .= '$CONF_DB'." = array (\n";
-$current .= "	'host' 		=> '".$mysql_host."', \n";
-$current .= "	'username'	=> '".$mysql_username."',\n";
+$current .= "	'host'      => '".$mysql_host."', \n";
+$current .= "	'username'  => '".$mysql_username."',\n";
 $current .= "	'password'	=> '".$mysql_password."',\n";
-$current .= "	'db_name'	=> '".$mysql_database."'\n";
+$current .= "	'db_name'	  => '".$mysql_database."'\n";
 $current .= ");\n";
 
 $current .= "//System configuration variables and some options\n";
@@ -377,9 +377,10 @@ if (isset($_GET['mode'])) {
     
     In directory <?=realpath(dirname(dirname(__FILE__)))?> must create .htaccess with content:
     <code>
-RewriteEngine on
-RewriteRule ^([a-zA-Z0-9_-]+)$ index.php?page=$1  [QSA,L]
-RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?page=$1
 
     </code>
     
@@ -405,6 +406,16 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
 	                
                 </td>
             </tr>
+
+
+
+
+
+
+
+
+
+
              <tr>
                 <td>File of configuration DB</td>
                 <td width="100px;">
@@ -450,7 +461,35 @@ RewriteRule ^([a-zA-Z0-9_-]+)/$ index.php?page=$1  [QSA,L]
             </tr>
             
             
-                       
+                        <tr>
+                <td>File uploads avatars directory</td>
+                <td width="100px;">
+                  <?php
+    $filename=realpath(dirname(dirname(__FILE__)))."/upload_files/avatars";
+    if (!is_writable($filename)) { ?>
+    <span class="label label-danger">not active</span>
+    <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
+    <?php } if (is_writable($filename)) {?>
+    <span class="label label-success">Success</span>
+    <?php } ?>
+                </td>
+            </tr>           
+
+
+
+             <tr>
+                <td>Cache directory</td>
+                <td width="100px;">
+                  <?php
+    $filename=realpath(dirname(dirname(__FILE__)))."/inc/cache";
+    if (!is_writable($filename)) { ?>
+    <span class="label label-danger">not active</span>
+    <div class="alert alert-danger" role="alert">Permission-error: <em><?=$filename?></em> is not writable. <br> Add access to write.</a></div>
+    <?php } if (is_writable($filename)) {?>
+    <span class="label label-success">Success</span>
+    <?php } ?>
+                </td>
+            </tr>           
             
 </tbody>
             

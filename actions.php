@@ -1252,6 +1252,7 @@ values
         
         if ($mode == "conf_edit_pb") {
             update_val_by_key("pb_api", $_POST['api']);
+            update_val_by_key("pb_active", $_POST['pb_active']);
 ?>
                 <div class="alert alert-success">
                     <?php
@@ -1438,6 +1439,7 @@ values
                 //$bodytag = str_replace(",", "|", $_POST['file_types']);
                 update_val_by_key("allow_forgot", $_POST['allow_forgot']);
                 update_val_by_key("api_status", $_POST['api_status']);
+                update_val_by_key("twig_cache", $_POST['twig_cache']);
                 update_val_by_key("mail", $_POST['mail']);
                 $msg.= "<div class=\"alert alert-success\">" . lang('PROFILE_msg_ok') . "</div>";
             } 

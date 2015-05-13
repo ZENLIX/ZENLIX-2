@@ -260,7 +260,14 @@ $canChangePw=true;
             $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
             
             // инициализируем Twig
-            $twig = new Twig_Environment($loader);
+if (get_conf_param('twig_cache') == "true") {
+$twig = new Twig_Environment($loader,array(
+    'cache' => $basedir.'/inc/cache',
+));
+            }
+            else {
+$twig = new Twig_Environment($loader);
+            }
             
             // подгружаем шаблон
             $template = $twig->loadTemplate('client.profile.view.tmpl');

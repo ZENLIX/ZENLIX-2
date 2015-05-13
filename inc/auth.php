@@ -70,8 +70,14 @@ $upw=false;
             // указывае где хранятся шаблоны
             $loader = new Twig_Loader_Filesystem('inc/views');
             
-            // инициализируем Twig
-            $twig = new Twig_Environment($loader);
+if (get_conf_param('twig_cache') == "true") {
+$twig = new Twig_Environment($loader,array(
+    'cache' => $basedir.'/inc/cache',
+));
+            }
+            else {
+$twig = new Twig_Environment($loader);
+            }
             
             // подгружаем шаблон
             $template = $twig->loadTemplate('auth.view.tmpl');

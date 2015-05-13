@@ -308,6 +308,10 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (63, 'smsc_active', 'false') 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (64, 'smsc_list_action', 'ticket_create,ticket_refer,ticket_comment,ticket_lock,ticket_unlock,ticket_ok,ticket_no_ok') ON DUPLICATE KEY UPDATE `value` = `value`;
 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (65, 'api_status', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
+
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (66, 'twig_cache', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (67, 'pb_active', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
+
 #######UPDATE perf.value####################
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)

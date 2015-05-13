@@ -3,6 +3,7 @@ function lang_ua($phrase){
     static $lang = array(
     
 
+'twig_cache'=>'TWIG-кешування',
 
 'CALENDAR allday' => 'Весь день',
 'CALENDAR title' => 'Календар',

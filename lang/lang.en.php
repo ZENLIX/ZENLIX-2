@@ -6,7 +6,7 @@ function lang_en($phrase){
 'LOGIN_ERROR_title' => 'Error authorization',
 'LOGIN_ERROR_desc' => 'You have exceeded the allowed number of login attempts. Try again later. ',
 
-
+'twig_cache'=>'TWIG-cache',
 
 'CALENDAR_allday' => 'All Day',
 'CALENDAR_title' => 'Calendar',

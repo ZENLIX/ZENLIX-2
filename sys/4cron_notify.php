@@ -2023,15 +2023,16 @@ $ticket_id=$qrow['ticket_id'];
       $usr_id=$usr_info['id'];
            // $lb=$fio['lock_by'];
             
-            
+            if (get_conf_param('pb_active') == "true") {
             if ($pb) {
               send_pushbullet($type_op, $usr_lang, $pb, $ticket_id);
             }
-            
-            
+            }
+            if (get_conf_param('mail_active') == "true") {
             if ($usr_mail) {
             make_mail($type_op, $usr_lang, $usr_mail, $ticket_id);
             }
+        }
 
 if (check_user_devices($usr_id)) {
 

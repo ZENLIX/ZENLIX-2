@@ -1785,7 +1785,7 @@ else if (get_conf_param('global_msg_type') == "danger") {$gm_type['2']="checked"
     <label for="smsc_pass" class="col-sm-4 control-label"><small><?php
         echo lang('EXT_sms_noti_pass'); ?></small></label>
     <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="smsc_pass" placeholder="<?php
+      <input type="password" class="form-control input-sm" id="smsc_pass" placeholder="<?php
         echo lang('EXT_sms_noti_pass'); ?>" value="<?php
         echo get_conf_param('smsc_pass') ?>">
     </div>
@@ -1859,6 +1859,29 @@ if (in_array($key, $opt_ac_list)) {
       <div class="box-body">
       <form class="form-horizontal" role="form">
    
+
+
+    <div class="form-group">
+    <label for="pb_active" class="col-sm-4 control-label"><small><?=lang('t_LIST_status');?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="pb_active">
+  <option value="true" <?php
+        if (get_conf_param('pb_active') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('pb_active') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>   
+</div>
+  </div>
+
+
+
+
   
   <div class="form-group">
     <label for="from" class="col-sm-4 control-label"><small><?php
@@ -2181,7 +2204,23 @@ else {
 </div>
   </div>
 
-
+  <div class="form-group">
+    <label for="api_status" class="col-sm-4 control-label"><small><?=lang('twig_cache');?></small></label>
+    <div class="col-sm-8">
+  <select class="form-control input-sm" id="twig_cache">
+  <option value="true" <?php
+        if (get_conf_param('twig_cache') == "true") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_true'); ?></option>
+  <option value="false" <?php
+        if (get_conf_param('twig_cache') == "false") {
+            echo "selected";
+        } ?>><?php
+        echo lang('CONF_false'); ?></option>
+</select>    
+</div>
+  </div>
   
   
 <center>

@@ -373,7 +373,14 @@ $nn = get_last_ticket($_POST['menu'], $user_id);
             $loader = new Twig_Loader_Filesystem('inc/views');
             
             // инициализируем Twig
-            $twig = new Twig_Environment($loader);
+if (get_conf_param('twig_cache') == "true") {
+$twig = new Twig_Environment($loader,array(
+    'cache' => $basedir.'/inc/cache',
+));
+            }
+            else {
+$twig = new Twig_Environment($loader);
+            }
             
             // подгружаем шаблон
             $template = $twig->loadTemplate('list.view.tmpl');

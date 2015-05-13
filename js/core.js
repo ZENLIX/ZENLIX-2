@@ -5348,7 +5348,8 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_pb" + "&api=" + encodeURIComponent($("input#pb_api").val()),
+                data: "mode=conf_edit_pb" + "&api=" + encodeURIComponent($("input#pb_api").val())+
+                "&pb_active=" + encodeURIComponent($("select#pb_active").val()),
                 success: function(html) {
                     $("#conf_edit_pb_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {
@@ -5424,7 +5425,7 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) +"&allow_register=" + encodeURIComponent($("#allow_register").val())+"&lang="+encodeURIComponent($("#lang").val())+"&allow_forgot=" + encodeURIComponent($("#allow_forgot").val())+
-                "&api_status="+$("#api_status").val(),
+                "&api_status="+$("#api_status").val()+"&twig_cache="+$("#twig_cache").val(),
                 dataType: "json",
                 success: function(html) {
 

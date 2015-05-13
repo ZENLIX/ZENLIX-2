@@ -4,7 +4,7 @@ function lang_ru($phrase){
     
     
 
-
+'twig_cache'=>'TWIG-кэширование',
 
 'CALENDAR_allday'=>'Весь день',
 'CALENDAR_title'=>'Календарь',

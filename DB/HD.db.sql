@@ -472,7 +472,9 @@ VALUES
   (62, 'smsc_pass', ''),
   (63, 'smsc_active', 'false'),
   (64, 'smsc_list_action', 'ticket_create,ticket_refer,ticket_comment,ticket_lock,ticket_unlock,ticket_ok,ticket_no_ok'),
-  (65, 'api_status', 'true');
+  (65, 'api_status', 'true'),
+  (66, 'twig_cache', 'false'),
+  (67, 'pb_active', 'false');
 
 
 /*!40000 ALTER TABLE `perf` ENABLE KEYS */;

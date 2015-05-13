@@ -32,6 +32,19 @@ return $con['value'];
 
 }
 
+
+function generateRandomString($length = 5) {
+    $characters = '0123456789';
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString.= $characters[rand(0, strlen($characters) - 1) ];
+    }
+    
+    return $randomString;
+}
+
+
+
 $CONF = array (
 'days2arch'   => get_conf_param('days2arch'),
 'time_zone'   => get_conf_param('time_zone')
@@ -861,7 +874,7 @@ $msg=strip_tags(xss_clean($message->all));
 
 
 $status='0';
-$hashname=md5(time());
+$hashname=md5(time()).generateRandomString();
 $prio='1';
 
                 $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");

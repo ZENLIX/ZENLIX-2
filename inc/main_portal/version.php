@@ -21,19 +21,93 @@ include "head.inc.php";
 include "navbar.inc.php";
 
 
+$validate_user=false;
+if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
+$validate_user=true;
+}
+
+
+
+if ($hn) {
+    $hnset=true;
+
+
+if ($hn == "new_feed") {
+    $hnparam="new_feed";
+}
+else if ($hn != "new_feed") {
+    $hnparam="no_new_feed";
+    $news_item=get_version_info($hn);
+
+if (isset($_GET['edit_feed'])) {
+    $hnget="edit_feed";
+}
+else if (!isset($_GET['edit_feed'])) {
+$hnget="no_edit_feed";
+    }
+}
+
+
+}
+
+
+if (!$hn) {
+    $hnset=false;
+
+}
+
+
+
+$logo_img=$CONF['hostname']."upload_files/avatars/".get_conf_param('logo_img');
+if (strlen(get_conf_param('logo_img')) < 5) {
+  $logo_img=$CONF['hostname'].'img/ZENLIX_small.png';
+}
+
+
+$getna=array();
+$news_arr=get_version_array();
+foreach ($news_arr as $n) {
+    array_push($getna, array(
+
+'uniq_id'=>$n['uniq_id'],
+'subj'=>$n['subj'],
+'title'=>$n['title'],
+'dt'=>$n['dt']
+
+
+
+        ));
+    }
+
+
+
+
+ob_start();
+showMenu_todo();
+$showMenu_todo = ob_get_contents();
+ob_end_clean();
+
+
+ob_start();
+get_main_todo();
+$get_main_todo = ob_get_contents();
+ob_end_clean();
 
 
 
 
 
+ob_start();
+view_release_bar();
+$view_release_bar = ob_get_contents();
+ob_end_clean();
 
 
 
-
-
-
-
-
+ob_start();
+view_stat_cat();
+$view_stat_cat = ob_get_contents();
+ob_end_clean();
 
 
 
@@ -47,7 +121,14 @@ $basedir = dirname(dirname(dirname(__FILE__)));
             $loader = new Twig_Loader_Filesystem($basedir.'/inc/main_portal/views');
             
             // инициализируем Twig
-            $twig = new Twig_Environment($loader);
+if (get_conf_param('twig_cache') == "true") {
+$twig = new Twig_Environment($loader,array(
+    'cache' => $basedir.'/inc/cache',
+));
+            }
+            else {
+$twig = new Twig_Environment($loader);
+            }
             
             // подгружаем шаблон
             $template = $twig->loadTemplate('version.view.tmpl');
@@ -56,30 +137,44 @@ $basedir = dirname(dirname(dirname(__FILE__)));
             // выводим сформированное содержание
             echo $template->render(array(
 'hostname'=>$CONF['hostname'],
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>,
-''=>
+'validate_user'=>$validate_user,
+'hnset'=>$hnset,
+'hnparam'=>$hnparam,
+'hnget'=>$hnget,
+'PORTAL_new_msg'=>lang('PORTAL_new_msg'),
+'PORTAL_subj'=>lang('PORTAL_subj'),
+'PORTAL_t'=>lang('PORTAL_t'),
+'PORTAL_news_create'=>lang('PORTAL_news_create'),
+'time'=>md5(time()),
+'subj'=>$news_item['subj'],
+'title'=>$news_item['title'],
+'msg'=>$news_item['msg'],
+'PORTAL_news_save'=>lang('PORTAL_news_save'),
+'uniq_id'=>$news_item['uniq_id'],
+'logo_img'=>$logo_img,
+'REQUEST_URI'=>urlencode( $CONF['hostname'].$_SERVER['REQUEST_URI']),
+'dt'=>$news_item['dt'],
+'nameshort'=>nameshort(name_of_user_ret_nolink($news_item['author_id'])),
+'PORTAL_act_del'=>lang('PORTAL_act_del'),
+'PORTAL_act_edit'=>lang('PORTAL_act_edit'),
+'PORTAL_version_box_title'=>lang('PORTAL_version_box_title'),
+'portal_box_version_n'=>get_conf_param('portal_box_version_n'),
+'FIELD_type_text'=>lang('FIELD_type_text'),
+'portal_box_version_text'=>get_conf_param('portal_box_version_text'),
+'PORTAL_icon'=>lang('PORTAL_icon'),
+'portal_box_version_icon'=>get_conf_param('portal_box_version_icon'),
+'JS_save'=>lang('JS_save'),
+'PORTAL_todo_1'=>lang('PORTAL_todo_1'),
+'showMenu_todo'=>$showMenu_todo,
+'NOTES_create'=>lang('NOTES_create'),
+'PORTAL_todo_2'=>lang('PORTAL_todo_2'),
+'get_main_todo'=>$get_main_todo,
+'PORTAL_versions'=>lang('PORTAL_versions'),
+'getna'=>$getna,
+'PORTAL_admin_menu'=>lang('PORTAL_admin_menu'),
+'PORTAL_news_create'=>lang('PORTAL_news_create'),
+'view_stat_cat'=>$view_stat_cat,
+'view_release_bar'=>$view_release_bar
 
 
             ));
@@ -98,7 +193,7 @@ $basedir = dirname(dirname(dirname(__FILE__)));
 
 
 
-
+/*
 ?>
 <div class="content-wrapper">
 <section class="content">
@@ -416,10 +511,7 @@ if (!$hn) {
 
         .placeholder {
             outline: 1px dashed #4183C4;
-            /*-webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            margin: -1px;*/
+            
             height: 20px;
         }
 
@@ -450,30 +542,11 @@ if (!$hn) {
         }
 
         .sortable li div  {
-            /*
-            border: 1px solid #d4d4d4;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            border-color: #D4D4D4 #D4D4D4 #BCBCBC;
-            padding: 6px;
-            margin: 0;
-            cursor: move;
-            background: #f6f6f6;
-            background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
-            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-            background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-            background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-            background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
-            */
+
         }
 
         .sortable li.mjs-nestedSortable-branch div {
-           /* background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
-            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
-            */
+          
             list-style-type: none;
 
         }
@@ -698,5 +771,6 @@ foreach ($news_arr as $n) {
 
 
 <?php
+*/
 include "footer.inc.php";
 ?>
