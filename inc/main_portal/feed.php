@@ -2,7 +2,7 @@
 $rkeys = array_keys($_GET);
 
 
-$hn = $rkeys[1];
+$hn = $rkeys[0];
 
 
 

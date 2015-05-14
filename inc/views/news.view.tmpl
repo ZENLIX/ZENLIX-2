@@ -57,8 +57,8 @@
                                     <div class="timeline-item">
                                         <span class="time"><small><i class="fa fa-clock-o"></i> 
                                         <time id="c" datetime="{{item.t_dc}}"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user&{{item.initUserHash}}">{{item.initUserName | raw}}</a> 
-                                        {{item.NEWS_action_lock}} <a href="ticket&{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a> 
+                                        {{item.NEWS_action_lock}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
 <div class="timeline-body">
 
 
@@ -77,10 +77,10 @@
                                     <i class="fa fa-unlock bg-maroon"></i>
                                     <div class="timeline-item">
                                         <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user&{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
                                         
                                         
-                                         {{item.NEWS_action_unlock}} <a href="ticket&{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+                                         {{item.NEWS_action_unlock}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
 <div class="timeline-body">
 
 
@@ -89,7 +89,7 @@
                                            
                                         </div>
 <div class="timeline-footer">
-                                            <a href="ticket&{{item.ticketHash}}" class="btn btn-xs bg-maroon">{{item.EXT_news_view_t}}</a>
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-maroon">{{item.EXT_news_view_t}}</a>
                                         </div>
                                     </div>
                                 </li>
@@ -105,10 +105,10 @@
                                     <i class="fa fa-check-circle-o bg-green"></i>
                                     <div class="timeline-item">
                                         <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user&{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
                                         
                                         
-                                         {{item.NEWS_action_ok}} <a href="ticket&{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+                                         {{item.NEWS_action_ok}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
                                          
                                          <div class="timeline-body">
 
@@ -118,7 +118,7 @@
                                            
                                         </div>
                                         <div class="timeline-footer">
-                                            <a href="ticket&{{item.ticketHash}}" class="btn btn-xs bg-green">{{item.EXT_news_view_t}}</a>
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-green">{{item.EXT_news_view_t}}</a>
                                         </div>
                                     </div>
                                 </li>
@@ -129,10 +129,10 @@
                                     <i class="fa fa-circle-o bg-red"></i>
                                     <div class="timeline-item">
                                         <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user&{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
                                         
                                         
-                                         {{item.NEWS_action_no_ok}} <a href="ticket&{{item.ticketHash}}">#{{item.ticketID}}</a>, {{item.NEWS_action_no_ok2}}</h3>
+                                         {{item.NEWS_action_no_ok}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a>, {{item.NEWS_action_no_ok2}}</h3>
                                          <div class="timeline-body">
 
 
@@ -143,7 +143,7 @@
                                          
                                          
                                         <div class="timeline-footer">
-                                            <a href="ticket&{{item.ticketHash}}" class="btn btn-xs bg-red">{{item.EXT_news_view_t}}</a>
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-red">{{item.EXT_news_view_t}}</a>
                                         </div>
                                          
                                     </div>
@@ -161,10 +161,10 @@
                                     <i class="fa fa fa-share bg-blue"></i>
                                     <div class="timeline-item">
                                         <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
-                                        <h3 class="timeline-header"><a href="view_user&{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
                                         
                                         
-                                         {{item.NEWS_action_refer}} <a href="ticket&{{item.ticketHash}}">#{{item.ticketID}}</a>  {{item.mail_msg_ticket_to_ext}} {{item.to_text}} </h3>
+                                         {{item.NEWS_action_refer}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a>  {{item.mail_msg_ticket_to_ext}} {{item.to_text}} </h3>
                                         <div class="timeline-body">
 
 
@@ -189,10 +189,10 @@
                                     <i class="fa fa-comments bg-purple"></i>
                                     <div class="timeline-item">
                                         <span class="time"><small><i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.t_dc}}"></time></small></span>
-<h3 class="timeline-header "><a href="view_user&{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+<h3 class="timeline-header "><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
                                         
                                         
-                                         {{item.NEWS_action_comment}} <a href="ticket&{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+                                         {{item.NEWS_action_comment}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
                                          <div class="timeline-body">
 
 
@@ -216,7 +216,7 @@
                                            
                                         </div>
                                         <div class="timeline-footer">
-                                            <a href="ticket&{{item.ticketHash}}" class="btn btn-xs bg-purple">{{item.EXT_news_view_t}}</a>
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-purple">{{item.EXT_news_view_t}}</a>
                                         </div>
                                     </div>
                                 </li>
@@ -229,10 +229,10 @@
                                         <span class="time"><small><i class="fa fa-clock-o"></i> 
                                         <time id="c" datetime="{{item.t_dc}}"></time></small>
                                         </span>
-                                        <h3 class="timeline-header "><a href="view_user&{{item.initUserHash}}">{{item.initUserName | raw}}</a>
+                                        <h3 class="timeline-header "><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
                                         
                                         
-                                         {{item.NEWS_action_create}} <a href="ticket&{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
+                                         {{item.NEWS_action_create}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a></h3>
                                         <div class="timeline-body">
 
 
@@ -241,7 +241,7 @@
                                            
                                         </div>
  <div class="timeline-footer">
-                                            <a href="ticket&{{item.ticketHash}}" class="btn btn-xs bg-aqua">{{item.EXT_news_view_t}}</a>
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-aqua">{{item.EXT_news_view_t}}</a>
                                         </div>
                                     </div>
                                 </li>
@@ -262,7 +262,7 @@
                                         <h3 class="timeline-header ">
                                         
                                         
-                                         {{item.FILES_ticket}} <a href="ticket&{{item.ticketHash}}">#{{item.ticketID}}</a> {{item.NEWS_action_ticket_arch}}</h3>
+                                         {{item.FILES_ticket}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a> {{item.NEWS_action_ticket_arch}}</h3>
                                         <div class="timeline-body">
 
 
@@ -271,7 +271,7 @@
                                            
                                         </div>
  <div class="timeline-footer">
-                                            <a href="ticket&{{item.ticketHash}}" class="btn btn-xs bg-gray">{{item.EXT_news_view_t}}</a>
+                                            <a href="ticket?{{item.ticketHash}}" class="btn btn-xs bg-gray">{{item.EXT_news_view_t}}</a>
                                         </div>
                                     </div>
                                 </li>

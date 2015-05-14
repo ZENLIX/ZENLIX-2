@@ -153,7 +153,7 @@ $(document).ready(function() {
             $('button#change_pw').prop('disabled', true);
                 $.ajax({
                     type: "POST",
-                    url: "actions.php",
+                    url: "action",
                     dataType: "json",
                     data: "mode=forgot_pass_change"+
                         "&p1="+$('#pass_new').val()+
@@ -250,7 +250,7 @@ $(document).ready(function() {
             $('button#forgot').prop('disabled', true);
                 $.ajax({
                     type: "POST",
-                    url: "actions.php",
+                    url: "action",
                     dataType: "json",
                     data: "mode=forgot_pass"+
                         "&login="+$('#login_name').val()+

@@ -50,9 +50,9 @@
                                                     <a href="#">
 	                                                    <img style="width: 25px;
 height: 25px;" src="{{item.usr_img}}" class="img-circle" alt="User Image">
-                                                     {{item.name_user}}
+                                                     {{item.name_user | raw}}
                                                      
-                                                     {{item.tt}}
+                                                     {{item.tt | raw}}
                                                      </a>
                                                      </li>
                                                     {% endif %}
@@ -61,9 +61,9 @@ height: 25px;" src="{{item.usr_img}}" class="img-circle" alt="User Image">
                                                     <li class="user_li" user-id="{{item.uniq_id}}">
                                                     <a href="#">
 	                                                    <img style="width: 25px;height: 25px;" src="{{item.usr_img}}" class="img-circle" alt="User Image">
-                                                     {{item.name_user}}
+                                                     {{item.name_user | raw}}
                                                      
-                                                     {{item.tt}}
+                                                     {{item.tt | raw}}
                                                      </a>
                                                      </li>
 

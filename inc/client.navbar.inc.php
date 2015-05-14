@@ -30,7 +30,7 @@ $current_file_name = $file[0];
 
 
 
-
+$main_portal=$CONF['main_portal'];
 
 
 

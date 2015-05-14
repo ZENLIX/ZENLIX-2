@@ -5,31 +5,269 @@ include_once ("conf.php");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+if (!isset($CONF_DB)) {
+include "sys/install.php";
+exit(0);
+}
 
 //если нет файла конфигурации то открыть установку системы
 
 
+//если пользователь авторизирован:
+    //GET_logout
+
+
+//GET_register
+//GET_forgot
+//GET_api
+
+
+
+//if (isset($CONF_DB)) {
+include_once ("functions.inc.php");
+include_once('library/AltoRouter.php');
+
+include_once("inc/route_actions.php");
+
+
+
+
+$router = new AltoRouter();
+
+//echo get_base_path();
+$router->setBasePath(get_base_path());
+
+$router->map( 'GET', '/register', 'registerAction');
+$router->map( 'GET', '/forgot', 'forgotAction');
+$router->map( 'GET', '/index.php', 'indexAction' );
+$router->map( 'GET', '/', 'indexAction' );
+$router->map( 'GET', '/auth', 'auth_get');
+$router->map( 'GET', '/create', 'createAction');
+$router->map( 'GET', '/list', 'listAction');
+$router->map( 'GET', '/stats', 'statsAction');
+$router->map( 'GET', '/helper', 'helperAction');
+$router->map( 'GET', '/notes', 'notesAction');
+$router->map( 'GET', '/profile', 'profileAction');
+$router->map( 'GET', '/users', 'usersAction');
+$router->map( 'GET', '/help', 'helpAction');
+$router->map( 'GET', '/deps', 'depsAction');
+$router->map( 'GET', '/approve', 'approveAction');
+$router->map( 'GET', '/units', 'unitsAction');
+$router->map( 'GET', '/posada', 'posadaAction');
+$router->map( 'GET', '/ticket', 'ticketAction');
+$router->map( 'GET', '/subj', 'subjAction');
+$router->map( 'GET', '/view_user', 'view_userAction');
+$router->map( 'GET', '/userinfo', 'userinfoAction');
+$router->map( 'GET', '/config', 'perfAction');
+$router->map( 'GET', '/files', 'filesAction');
+$router->map( 'GET', '/news', 'newsAction');
+$router->map( 'GET', '/clients', 'clientsAction');
+$router->map( 'GET', '/main_stats', 'all_statsAction');
+$router->map( 'GET', '/user_stats', 'user_statsAction');
+$router->map( 'GET', '/sla_rep', 'sla_repAction');
+$router->map( 'GET', '/scheduler', 'schedulerAction');
+$router->map( 'GET', '/messages', 'messagesAction');
+$router->map( 'GET', '/print_ticket', 'print_ticketAction');
+$router->map( 'GET', '/calendar', 'calendarAction');
+$router->map( 'GET', '/portal', 'portalAction');
+$router->map( 'GET', '/mailers', 'mailersAction');
+
+
+///////////////////////////////////////
+$router->map( 'GET', '/manual','manualAction');
+
+$router->map( 'GET', '/version', 'versionAction');
+
+$router->map( 'GET', '/feed', 'feedAction');
+
+$router->map( 'GET', '/cat', 'catAction');
+
+$router->map( 'GET', '/new_post', 'new_postAction');
+
+$router->map( 'GET', '/thread', 'postAction');
+
+
+
+$router->map( 'POST', '/auth', 'auth');
+
+
+
+$router->map( 'POST', '/action', function() {
+    global $dbConnection, $CONF;
+    require 'actions.php';
+});
+
+
+$router->map( 'GET', '/dashboard', 'dashboardAction');
+
+
+
+$router->map( 'GET', '/logout', 'logoutAction');
+
+
+
+
+
+
+
+
+$match = $router->match();
+if( $match && is_callable( $match['target'] ) ) {
+    call_user_func_array( $match['target'], $match['params'] ); 
+} else {
+    // no route was matched
+    global $dbConnection, $CONF;
+    $privs=get_privs();
+    if ($privs == "CLIENT") {include ('inc/client.404.inc.php');}
+    else if ($privs == "USER") {include ('inc/404.inc.php');}
+    if ($privs == "GUEST") {include ('inc/auth.php');}
+}
+
+/*
+$router= new router();
+
+
+$router->map(array(
+'path'=>'register',
+'method'=>'GET',
+'params'=>'page',
+'privs'=>'GUEST', 
+'portal'=>false,
+'action'=>'inc/register.php'
+    ));
+
+
+$router->map(array(
+'path'=>'register',
+'method'=>'GET',
+'params'=>'page',
+'privs'=>'GUEST', 
+'portal'=>true,
+'action'=>'inc/main_portal/register.php'
+    ));
+
+
+
+
+$router->map(array(
+'path'=>'forgot',
+'method'=>'GET',
+'params'=>'page',
+'privs'=>'GUEST', 
+'portal'=>false, /////////////
+'action'=>'inc/forgot.php'
+    ));
+
+
+$router->map(array(
+'path'=>'api',
+'method'=>'GET',
+'params'=>'page',
+'privs'=>'GUEST', 
+'portal'=>false, /////////////
+'action'=>'api.php'
+    ));
+
+
+
+
+
+
+
+
+$router->release();
+
+
+*/
+
+//}
+//else {
+//    include "sys/install.php";
+//}
+
+
+
+
+
+
+
+/*
+по привилегиям USER/CLIENT/GUEST
+по типам GET/POST
+по порталу TRUE/FALSE
+
+
+
+
+
+function map($path, $type, $params, $privs, $portal) {
+
+
+
+if ($type == "post") {
+
+}
+if ($type == "get") {
+    
+
+    if ($_GET[$params] == $path) {
+
+        if ($privs == "GUEST") {
+
+        }
+
+    }
+
+
+}
+
+
+
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+*/
 
 
 
 
 
-
-
+/*
 if (isset($CONF_DB)) {
     
-    include ("functions.inc.php");
+//проверка файла конфигурации системы
+
+
+include ("functions.inc.php");
+
+
+
+
+
     $main_portal=$CONF['main_portal'];
 
+
+
+
+//проверка пользователя?
 $val_sta=false;
 if ((validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) || (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code']))) {
     $val_sta=true;
 }
+
+
+
+
+
+
+
+
+
+
+
    // $validate_p = false;
 if ($val_sta == true) {
 
@@ -58,9 +296,16 @@ include ('inc/main_portal/register.php');
 include ('inc/register.php');
         }
         
-    } else if ($_GET['page'] == "forgot") {
+    } else 
+
+    
+    if ($_GET['page'] == "forgot") {
         include ('inc/forgot.php');
-    } else {
+    } 
+    else if ($_GET['page'] == "api") {
+        include ('api.php');
+    }
+    else {
         
 
 
@@ -85,7 +330,7 @@ include ('inc/register.php');
 
  if ($_SESSION['z.times'] < 5 ) {
     
-
+ 
 
             $req_url = $_POST['req_url'];
             $rm = $_POST['remember_me'];
@@ -131,9 +376,7 @@ include ('inc/register.php');
                 $stmt = $dbConnection->prepare('SELECT id,login,fio from users where login=:login AND pass=:pass AND status=1');
                 $stmt->execute(array(':login' => $login, ':pass' => $password));
                 
-                /*$stmt_cli = $dbConnection->prepare('SELECT id,login,fio from clients where login=:login AND pass=:pass AND login_status=1');
-                $stmt_cli->execute(array(':login' => $login, ':pass' => $password));
-                */
+
                 
                 if ($stmt->rowCount() == 1) {
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -240,7 +483,9 @@ else if ($val_sta == false) {
                             break;
 
 
-
+                        case 'action':
+                            include ('actions.php');
+                            break;
 
 
 
@@ -438,6 +683,9 @@ else if ($val_sta == false) {
 
                             break;
 
+                        case 'action':
+                            include ('actions.php');
+                            break;
 
                         case 'create':
                             include ('inc/client.new.php');
@@ -510,10 +758,7 @@ include 'inc/main_portal/index.php';
 if (isset($_GET['page'])) {
                     switch ($_GET['page']) {
                         case 'auth':
-                      /*  if ($main_portal == false) {
-            include ("inc/head.inc.php");
-            include 'inc/auth.php';
-        }*/
+                      
        // if ($main_portal == true) {
 
  //include 'inc/main_portal/auth.php';
@@ -579,10 +824,16 @@ if ($main_portal == "false") {
             
         }
     }
+
+
+
+
+
+    //конец проверки файла конфигурации системы
 } else {
     include "sys/install.php";
 }
 
 //ob_end_flush();
-
+*/
 ?>

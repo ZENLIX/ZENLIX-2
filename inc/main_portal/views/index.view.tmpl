@@ -107,7 +107,7 @@
 
 <div class="box box-success">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-success" href="{{hostname}}cat&1">{{PORTAL_idea}}</a></h3>
+                  <h3 class="box-title"><a class="text-success" href="{{hostname}}cat?1">{{PORTAL_idea}}</a></h3>
                                     <div class="box-tools pull-right">
                     <h4> <i class="fa fa-lightbulb-o"></i></h4>
                   </div>
@@ -127,7 +127,7 @@
 
 {% for item in portal_posts_status_arr %}
 <li>
- <a href="{{hostname}}thread&{{item.uniq_id}}">
+ <a href="{{hostname}}thread?{{item.uniq_id}}">
                     <strong style="
     font-size: 16px;
 "><i class="fa fa-lightbulb-o"></i> {{item.subj}} </strong>
@@ -156,7 +156,7 @@
 
                    
 
-                    <li><small class="text-muted"><a href="{{hostname}}cat&1" class="text-muted">{{PORTAL_idea_all}} ({{get_total_posts_by_type1}})</a></small></li>
+                    <li><small class="text-muted"><a href="{{hostname}}cat?1" class="text-muted">{{PORTAL_idea_all}} ({{get_total_posts_by_type1}})</a></small></li>
                   </ul>
 {% endif %}
                   {% if portal_posts_status == false %}
@@ -176,7 +176,7 @@
 
 <div class="box box-danger">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-danger" href="{{hostname}}cat&2">{{PORTAL_trouble}}</a></h3>
+                  <h3 class="box-title"><a class="text-danger" href="{{hostname}}cat?2">{{PORTAL_trouble}}</a></h3>
                   <div class="box-tools pull-right">
                     <h4> <i class="fa fa-exclamation-triangle"></i></h4>
                   </div>
@@ -193,7 +193,7 @@
 
 {% for item in portal_posts_status_arr2 %}
  <li>
- <a href="{{hostname}}thread&{{item.uniq_id}}">
+ <a href="{{hostname}}thread?{{item.uniq_id}}">
                     <strong style="
     font-size: 16px;
 "><i class="fa fa-exclamation-triangle"></i> {{item.subj}} </strong>
@@ -214,7 +214,7 @@
 
                    
 
-                    <li><small class="text-muted"><a href="{{hostname}}cat&2" class="text-muted">{{PORTAL_trouble_all}} ({{get_total_posts_by_type2}})</a></small></li>
+                    <li><small class="text-muted"><a href="{{hostname}}cat?2" class="text-muted">{{PORTAL_trouble_all}} ({{get_total_posts_by_type2}})</a></small></li>
                   </ul>
 {% endif %}
 {% if portal_posts_status2 == false %}
@@ -233,7 +233,7 @@
 
 <div class="box box-info">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-info" href="{{hostname}}cat&3">{{PORTAL_question}}</a></h3>
+                  <h3 class="box-title"><a class="text-info" href="{{hostname}}cat?3">{{PORTAL_question}}</a></h3>
                                     <div class="box-tools pull-right">
                     <h4> <i class="fa fa-question-circle"></i></h4>
                   </div>
@@ -251,7 +251,7 @@
 {% for item in portal_posts_status_arr3 %}
 
                     <li>
- <a href="{{hostname}}thread&{{item.uniq_id}}">
+ <a href="{{hostname}}thread?{{item.uniq_id}}">
                     <strong style="
     font-size: 16px;
 "><i class="fa fa-question-circle"></i> {{item.subj}} </strong>
@@ -273,7 +273,7 @@
 
                    
 
-                    <li><small class="text-muted"><a href="{{hostname}}cat&3" class="text-muted">{{PORTAL_question_all}} ({{get_total_posts_by_type3}})</a></small></li>
+                    <li><small class="text-muted"><a href="{{hostname}}cat?3" class="text-muted">{{PORTAL_question_all}} ({{get_total_posts_by_type3}})</a></small></li>
                   </ul>
 {% endif %}
 
@@ -292,7 +292,7 @@
 
 <div class="box box-warning">
                 <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-warning" href="{{hostname}}cat&4">{{PORTAL_thank}}</a></h3>
+                  <h3 class="box-title"><a class="text-warning" href="{{hostname}}cat?4">{{PORTAL_thank}}</a></h3>
                    <div class="box-tools pull-right">
                     <h4> <i class="fa fa-heart"></i></h4>
                   </div>
@@ -310,7 +310,7 @@
 {% for item in portal_posts_status_arr4 %}
 
                     <li>
- <a href="{{hostname}}thread&{{item.uniq_id}}">
+ <a href="{{hostname}}thread?{{item.uniq_id}}">
                     <strong style="
     font-size: 16px;
 "><i class="fa fa-heart"></i> {{item.subj}} </strong>
@@ -332,7 +332,7 @@
 
                    
 
-                    <li><small class="text-muted"><a href="{{hostname}}cat&4" class="text-muted">{{PORTAL_thank_all}} ({{get_total_posts_by_type4}})</a></small></li>
+                    <li><small class="text-muted"><a href="{{hostname}}cat?4" class="text-muted">{{PORTAL_thank_all}} ({{get_total_posts_by_type4}})</a></small></li>
                   </ul>
 {% endif %}
                   {% if portal_posts_status4 == false %}

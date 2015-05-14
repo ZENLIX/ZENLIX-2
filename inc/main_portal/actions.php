@@ -1470,7 +1470,7 @@ $stmt = $dbConnection->prepare("SELECT * from portal_posts where (portal_posts.s
 echo "<ul>";
 foreach ($result as $row) {
 
-	echo "<li style='list-style:none;'>".get_cat_icon($row['type'])." <a href=\"".$CONF['hostname']."thread&".$row['uniq_id']."\">".$row['subj']."</a></li>";
+	echo "<li style='list-style:none;'>".get_cat_icon($row['type'])." <a href=\"".$CONF['hostname']."thread?".$row['uniq_id']."\">".$row['subj']."</a></li>";
 	# code...
 }
 echo "</ul>";
@@ -1486,7 +1486,7 @@ $stmt = $dbConnection->prepare("SELECT * from portal_manual_cat where (name like
 echo "<ul>";
 foreach ($result as $row) {
 
-	echo "<li style='list-style:none;'><i class=\"fa fa-graduation-cap\"></i> <a href=\"".$CONF['hostname']."manual&".$row['uniq_id']."\">".$row['name']."</a></li>";
+	echo "<li style='list-style:none;'><i class=\"fa fa-graduation-cap\"></i> <a href=\"".$CONF['hostname']."manual?".$row['uniq_id']."\">".$row['name']."</a></li>";
 	# code...
 }
 echo "</ul>";

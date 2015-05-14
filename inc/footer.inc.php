@@ -1,5 +1,9 @@
  
 <?php
+
+global $lang;
+
+
 if ($lang == "ua") {
     $lang = "uk";
 } 

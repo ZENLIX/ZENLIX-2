@@ -187,7 +187,7 @@ href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{REQUEST_URI}}&p[t
 {% if validate_user == true %} 
                 <div class="btn-group ">
 <button class="btn btn-xs bg-maroon" id="delete_version" value="{{uniq_id}}">{{PORTAL_act_del}}</button> 
-<a class="btn btn-xs bg-orange btn-flat" href="version&{{uniq_id}}&edit_feed">{{PORTAL_act_edit}}</a>
+<a class="btn btn-xs bg-orange btn-flat" href="version?{{uniq_id}}&edit_feed">{{PORTAL_act_edit}}</a>
  </div>
 {% endif %}
 
@@ -467,7 +467,7 @@ href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{REQUEST_URI}}&p[t
                     <li class="item">
                       
                       <div class="product-info" style="margin-left:0px;">
-                        <a href="version&{{item.uniq_id}}" class="product-title"><h4>{{item.subj}}</h4> </a>
+                        <a href="version?{{item.uniq_id}}" class="product-title"><h4>{{item.subj}}</h4> </a>
                         <span class="product-description">
                           {{item.title}}
                         </span>
@@ -513,7 +513,7 @@ href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{REQUEST_URI}}&p[t
                   <h3 class="box-title">{{PORTAL_admin_menu}}</h3>
                 </div>
                 <div class="box-body">
-                  <a href="version&new_feed" class="btn btn-default btn-block">{{PORTAL_news_create}}</a>
+                  <a href="version?new_feed" class="btn btn-default btn-block">{{PORTAL_news_create}}</a>
                 </div>
               </div>
 {% endif %}

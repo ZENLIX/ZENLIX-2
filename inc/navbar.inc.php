@@ -84,12 +84,14 @@ if ($tm != 0) {
     $atm_v = "";
 }
 
-
-
+$main_portal=$CONF['main_portal'];
+ 
 if ($main_portal == "true") {
+    $mp=true;
 $index_page="dashboard";
 }
 else if ($main_portal == "false") {
+    $mp=false;
 $index_page="index.php";
 }
 
@@ -198,7 +200,7 @@ $twig = new Twig_Environment($loader);
 'img_logo_small'=>get_logo_img('small'),
 'name_of_firm'=>$CONF['name_of_firm'],
 'EXT_toggle_nav'=>lang('EXT_toggle_nav'),
-'main_portal_active'=>$main_portal,
+'main_portal_active'=>$mp,
 'PORTAL_title'=>lang('PORTAL_title'),
 'get_total_users_online'=>get_total_users_online(),
 'EXT_users_online'=>lang('EXT_users_online'),

@@ -212,7 +212,7 @@ if (data.user_init != USER_HASH) {
                 //console.log('yes');
                 break;
             case 'logout':
-                window.location = MyHOSTNAME + "index.php?logout";
+                window.location = MyHOSTNAME + "logout";
                 break;
         };
             });
@@ -222,7 +222,7 @@ if (data.user_init != USER_HASH) {
         login: false,
         pass: false
     };
-    var ACTIONPATH = MyHOSTNAME + "actions.php";
+    var ACTIONPATH = MyHOSTNAME + "action";
     /*
 ###############################################
  FUNCTIONS begin
@@ -238,7 +238,7 @@ if (data.user_init != USER_HASH) {
                 //console.log(html);
                 if (html) {
                     $.each(html, function(i, item) {
-                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'' + item.url + '/ticket&' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
+                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'' + item.url + '/ticket?' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
                         noty({
                             text: t,
                             layout: USER_noty_layot,
@@ -264,7 +264,7 @@ if (data.user_init != USER_HASH) {
                 //console.log(html);
                 if (html) {
                     $.each(html, function(i, item) {
-                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'messages&to=' + item.uniq_id + '\'><strong><i class=\'fa fa-comments\'></i> ' + item.new_msg_text + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time_op + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><strong>' + item.user_from + ':</strong><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'> ' + item.user_chat + '</em>';
+                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'messages?to=' + item.uniq_id + '\'><strong><i class=\'fa fa-comments\'></i> ' + item.new_msg_text + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time_op + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><strong>' + item.user_from + ':</strong><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'> ' + item.user_chat + '</em>';
                         noty({
                             text: t,
                             layout: USER_noty_layot,
@@ -571,7 +571,7 @@ String.prototype.toHHMMSS = function () {
         if (t_id == tic_id) {
             setInterval(function() {
                 if ($('input#msg:focus').length == 0) {
-                    window.location = MyHOSTNAME + "ticket&" + t_hash + "&refresh";
+                    window.location = MyHOSTNAME + "ticket?" + t_hash + "&refresh";
                 }
             }, 1000);
         }
@@ -843,6 +843,8 @@ $.post(
     });
     var def_p = window.location.pathname.split("/");
     var def_filename = def_p[def_p.length - 1];
+
+    //console.log(def_filename);
     $.noty.defaults = {
         layout: USER_noty_layot,
         theme: 'relax',
@@ -1173,7 +1175,7 @@ $.post(
         });
         $('body').on('click', 'button#reset_cron', function(event) {
             event.preventDefault();
-            window.location = MyHOSTNAME + "scheduler&plus";
+            window.location = MyHOSTNAME + "scheduler?plus";
         });
         
 $("#user_info").hide();
@@ -1286,7 +1288,7 @@ php:
                                                 $('#edit_login').editable({
                                                     type: 'text',
                                                     pk: 1,
-                                                    url: MyHOSTNAME + 'actions.php',
+                                                    url: ACTIONPATH,
                                                     inputclass: 'input-sm',
                                                     emptytext: 'пусто',
                                                     params: {
@@ -1345,7 +1347,7 @@ php:
                                                     $('#new_login').editable({
                                                         type: 'text',
                                                         pk: 1,
-                                                        url: MyHOSTNAME + 'actions.php',
+                                                        url: ACTIONPATH,
                                                         inputclass: 'input-sm',
                                                         emptytext: 'пусто',
                                                         params: {
@@ -1940,7 +1942,9 @@ $('.fancybox').fancybox(
                 $("#for_msg").addClass('has-error');
             }
         });
-        $('textarea#msg').bind('keypress', function(e) {
+        $('textarea#msg').bind('keydown', function(e) {
+
+
             if (e.ctrlKey && e.keyCode == 13) {
                 $("button#do_comment").click();
             }
@@ -2021,7 +2025,7 @@ $('.fancybox').fancybox(
                     //console.log(html);
                     $('#myModal').modal('hide');
                     //$(elem).removeClass().addClass('success', 1000);
-                    window.location = MyHOSTNAME + "ticket&" + t_hash;
+                    window.location = MyHOSTNAME + "ticket?" + t_hash;
                 }
             });
         });
@@ -2197,7 +2201,7 @@ clearInterval(intr);
                     data: "mode=update_to" + "&ticket_id=" + pp + "&to=" + encodeURIComponent(to) + "&tou=" + encodeURIComponent(u_do) + "&tom=" + encodeURIComponent(tom),
                     success: function(html) {
                         $("#ccc").hide().html(html).fadeIn(500);
-                        window.location = MyHOSTNAME + "list&in";
+                        window.location = MyHOSTNAME + "list?in";
                     }
                 });
             }
@@ -2778,7 +2782,7 @@ php:
                                                 $('#edit_login').editable({
                                                     type: 'text',
                                                     pk: 1,
-                                                    url: MyHOSTNAME + 'actions.php',
+                                                    url: ACTIONPATH,
                                                     inputclass: 'input-sm',
                                                     emptytext: 'пусто',
                                                     params: {
@@ -2837,7 +2841,7 @@ php:
                                                     $('#new_login').editable({
                                                         type: 'text',
                                                         pk: 1,
-                                                        url: MyHOSTNAME + 'actions.php',
+                                                        url: ACTIONPATH,
                                                         inputclass: 'input-sm',
                                                         emptytext: 'пусто',
                                                         params: {
@@ -3116,7 +3120,7 @@ $.ajax({
                                 success: function(html) {
                             //$('#table_list').html(html);
                             console.log("ok");
-                            window.location = MyHOSTNAME + "helper&h="+$("#do_save_help").val()+"&edit";
+                            window.location = MyHOSTNAME + "helper?h="+$("#do_save_help").val()+"&edit";
                         }
 
     });
@@ -3832,7 +3836,7 @@ console.log(file);
                 success: function(html) {
                     //console.log(html);
 
-                    window.location = MyHOSTNAME + "create&ok&h=" + html;
+                    window.location = MyHOSTNAME + "create?ok&h=" + html;
                 }
             });
         }
@@ -3865,7 +3869,7 @@ console.log(file);
                     "&deadline_time="+deadline_time+"&"+add_from,
                     success: function(html) {
                         //window.location = "new.php?ok&h="+html;
-                        window.location = MyHOSTNAME + "create&ok&h=" + html;
+                        window.location = MyHOSTNAME + "create?ok&h=" + html;
                        // console.log(html);
                     }
                 });
@@ -3887,7 +3891,7 @@ console.log(file);
                     "&deadline_time="+deadline_time+"&"+add_from,
                     success: function(html) {
                         //console.log(html);
-                        window.location = MyHOSTNAME + "create&ok&h=" + html;
+                        window.location = MyHOSTNAME + "create?ok&h=" + html;
                         //console.log(html);
                     }
                 });
@@ -3977,7 +3981,7 @@ if(jQuery().fileupload) {
                 url: ACTIONPATH,
                 data: "mode=make_sort" + "&pt=" + encodeURIComponent(pt) + "&st=" + encodeURIComponent(tr_id),
                 success: function() {
-                    window.location = MyHOSTNAME + "list&" + pt;
+                    window.location = MyHOSTNAME + "list?" + pt;
                 }
             });
 
@@ -3995,7 +3999,7 @@ if(jQuery().fileupload) {
                 url: ACTIONPATH,
                 data: "mode=reset_sort" + "&pt=" + encodeURIComponent(pt),
                 success: function() {
-                    window.location = MyHOSTNAME + "list&" + pt;
+                    window.location = MyHOSTNAME + "list?" + pt;
                 }
             });
 
@@ -4102,7 +4106,7 @@ if(jQuery().fileupload) {
                 url: ACTIONPATH,
                 data: "mode=sort_list" + "&pt=" + encodeURIComponent(pt) + "&st=" + encodeURIComponent(st),
                 success: function() {
-                    window.location = MyHOSTNAME + "list&" + pt;
+                    window.location = MyHOSTNAME + "list?" + pt;
                 }
             });
         });
@@ -4115,7 +4119,7 @@ if(jQuery().fileupload) {
                 url: ACTIONPATH,
                 data: "mode=set_list_count" + "&pt=" + encodeURIComponent(pt) + "&v=" + encodeURIComponent(z),
                 success: function() {
-                    window.location = MyHOSTNAME + "list&" + pt;
+                    window.location = MyHOSTNAME + "list?" + pt;
                 }
             });
         });
@@ -4610,7 +4614,7 @@ var data= {
 //edit_sla_plan
 $('body').on('click', 'i#edit_sla_plan', function(event) {
             event.preventDefault();
-window.location = MyHOSTNAME + "config&slaplans&item="+$(this).attr('value');
+window.location = MyHOSTNAME + "config?slaplans&item="+$(this).attr('value');
         });
 
 
@@ -6019,7 +6023,7 @@ $.post( ACTIONPATH, { mode: "change_userfield_placeholder", hash: hash, name: na
                         data: "mode=re_user" + "&id=" + ids,
                         success: function(html) {
                             //$("#content_subj").html(html);
-                            window.location = MyHOSTNAME + "users&edit="+ids;
+                            window.location = MyHOSTNAME + "users?edit="+ids;
                         }
                     });
 
@@ -6049,7 +6053,7 @@ $.post( ACTIONPATH, { mode: "change_userfield_placeholder", hash: hash, name: na
                         data: "mode=del_user" + "&id=" + ids,
                         success: function(html) {
                             //$("#content_subj").html(html);
-                            window.location = MyHOSTNAME + "users&edit="+ids;
+                            window.location = MyHOSTNAME + "users?edit="+ids;
                         }
                     });
                 }
@@ -6105,7 +6109,7 @@ $.ajax({
                     //$("#ldap_res").html(html);
                     //$("#units_text").val('');
 
-                    window.location = MyHOSTNAME + "users&import_step_3";
+                    window.location = MyHOSTNAME + "users?import_step_3";
 
 
                 }
@@ -6141,7 +6145,7 @@ $.ajax({
                     //$("#ldap_res").html(html);
                     //$("#units_text").val('');
 
-                    window.location = MyHOSTNAME + "users&import_step_2";
+                    window.location = MyHOSTNAME + "users?import_step_2";
 
 
                 }
@@ -6481,7 +6485,7 @@ var add_from=$('#add_field_form').serialize();
                     "&def_user_id="+encodeURIComponent($("#users_do").val())+
                     "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked'))+"&"+add_from,
                     success: function(html) {
-                        window.location = MyHOSTNAME + "users&create&ok";
+                        window.location = MyHOSTNAME + "users?create&ok";
                     }
                 });
             } else {
@@ -6506,7 +6510,7 @@ var add_from=$('#add_field_form').serialize();
                     "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked'))+"&"+add_from,
                 success: function(html) {
                     //alert(html);
-                    window.location = MyHOSTNAME + "users&edit=" + usid + "&ok";
+                    window.location = MyHOSTNAME + "users?edit=" + usid + "&ok";
                 }
             });
         });
@@ -6638,7 +6642,7 @@ view_sla();
                     //$("#res").hide().html(html).fadeIn(500);
                     $.each(html, function(i, item) {
                         
-                        if (item.res == true) { window.location = MyHOSTNAME + "clients&add&ok"; }
+                        if (item.res == true) { window.location = MyHOSTNAME + "clients?add&ok"; }
                         else if (item.res == false) { 
                             $('#res').html(item.msg); 
                            
@@ -6663,7 +6667,7 @@ view_sla();
                     
                                         $.each(html, function(i, item) {
                         
-                        if (item.res == true) { window.location = MyHOSTNAME + "clients&edit=" + usrid + "&ok"; }
+                        if (item.res == true) { window.location = MyHOSTNAME + "clients?edit=" + usrid + "&ok"; }
                         else if (item.res == false) { 
                             $('#res').html(item.msg); 
                            
@@ -6842,7 +6846,7 @@ view_sla();
         });
     }
     if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
-
+//console.log('true');
          //if ((def_filename == "dashboard")) {
         $('body').on('click', 'button#dashboard_set_ticket', function(event) {
             event.preventDefault();

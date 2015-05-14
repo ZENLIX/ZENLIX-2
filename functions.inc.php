@@ -69,8 +69,21 @@ if (substr($CONF['hostname'], -1) != "/") {
 }
 
 
+function get_base_path() {
+    global $CONF;
+
+$path_arr=parse_url($CONF['hostname']);
+
+$v=$path_arr['path'];
+
+if (substr($v, -1) == "/") {
+    $v=rtrim($v, "/");
+  // $_POST['hostname']=$CONF['hostname']."/";
+}
 
 
+return $v;
+}
 
 
 
@@ -606,7 +619,7 @@ if (get_conf_param('ticket_last_time') == "true") {
 function get_current_URL_name($requestUri) {
     $current_file_name = basename($_SERVER['REQUEST_URI'], ".php");
     $file = $_SERVER['REQUEST_URI'];
-    $file = explode("&", basename($file));
+    $file = explode("?", basename($file));
     $current_file_name = $file[0];
     
     //$file = $_SERVER['REQUEST_URI'];
@@ -1204,7 +1217,7 @@ function view_log($tid) {
                                                     
                                                     </center></small></td>
                                                     <td style=" width: 200px; vertical-align: inherit;"><small><center>
-                                                    <a href="view_user&<?php
+                                                    <a href="view_user?<?php
             echo get_user_hash_by_id($row['init_user_id']); ?>"><?php
             echo $ru
 ?>
@@ -1478,7 +1491,7 @@ FROM
                                     
                             <div class="direct-chat-msg">
                       <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-left"><a href="view_user&<?php
+                        <span class="direct-chat-name pull-left"><a href="view_user?<?php
         echo get_user_hash_by_id($rews['user_from']); ?>" class="name">
                                                 
                                                 <?php
@@ -2219,7 +2232,7 @@ function view_comment($tid) {
  <!-- Message. Default to the left -->
                     <div class="direct-chat-msg">
                       <div class="direct-chat-info clearfix">
-                        <span class="direct-chat-name pull-left"><a href="view_user&<?php
+                        <span class="direct-chat-name pull-left"><a href="view_user?<?php
         echo get_user_hash_by_id($rews['user_id']); ?>" class="name">
                                                 
                                                 <?php
@@ -2235,7 +2248,7 @@ function view_comment($tid) {
         echo get_user_status_text($rews['user_id']); ?>"  src="<?php
         echo get_user_img_by_id($rews['user_id']); ?>" alt=""><!-- /.direct-chat-img -->
                       <div class="direct-chat-text">
-                     <small>    <?=$ct; ?></small>
+                     <?=$ct; ?>
                       </div><!-- /.direct-chat-text -->
                     </div><!-- /.direct-chat-msg -->
 
@@ -2993,7 +3006,7 @@ function get_client_helper() {
     } else if (!empty($result)) {
         foreach ($result as $row) {
 ?>
-                    <tr><td><small><i class="fa fa-file-text-o"></i> </small><a href="helper&h=<?php
+                    <tr><td><small><i class="fa fa-file-text-o"></i> </small><a href="helper?h=<?php
             echo $row['hashname']; ?>"><small><?php
             echo cutstr_help2_ret($row['title']); ?></small></a></td><td><small style="float:right;" class="text-muted">(<?php
             echo lang('DASHBOARD_author'); ?>: <?php
@@ -3061,11 +3074,11 @@ function get_helper() {
             
             if ($ac == "ok") {
 ?>
-                    <tr><td><small><i class="fa fa-file-text-o"></i> </small><a href="helper&h=<?php
+                    <tr><td><small><i class="fa fa-file-text-o"></i> </small><a href="helper?h=<?php
                 echo $row['hashname']; ?>"><small><?php
                 echo cutstr_help2_ret($row['title']); ?></small></a></td><td><small style="float:right;" class="text-muted">(<?php
                 echo lang('DASHBOARD_author'); ?>: 
-                    <a href="view_user&<?php
+                    <a href="view_user?<?php
                 echo get_user_hash_by_id($row['user_init_id']); ?>">
                     <?php
                 echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)
@@ -3310,7 +3323,7 @@ function get_client_info_ticket($id) {
                                  <small>
                         <?php
     if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo&user=<?php
+                        <a target="_blank" href="userinfo?user=<?php
         echo get_user_hash_by_id($id);
 ?>">
                             <?php
@@ -3329,7 +3342,7 @@ function get_client_info_ticket($id) {
             <small class="text-muted"><?php
         echo lang('WORKER_last'); ?>:</small>
                <small><?php
-        if ($priv_val <> "1") { ?><a target="_blank" href="userinfo&user=<?php
+        if ($priv_val <> "1") { ?><a target="_blank" href="userinfo?user=<?php
             echo get_user_hash_by_id($id);
 ?>"><?php
         } ?>
@@ -4565,7 +4578,7 @@ function get_my_info() {
                 <td><small class="text-muted">
                         <?php
     if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo&user=<?php
+                        <a target="_blank" href="userinfo?user=<?php
         echo get_user_hash_by_id($id);
 ?>"><?php
     } ?><?php
@@ -4581,7 +4594,7 @@ function get_my_info() {
                 <td><small class="text-muted">
                         <?php
         if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo&user=<?php
+                        <a target="_blank" href="userinfo?user=<?php
             echo get_user_hash_by_id($id);
 ?>">
                             <?php
@@ -4683,7 +4696,7 @@ function get_client_info($id) {
                <small class="text-muted">
                         <?php
         if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo&user=<?php
+                        <a target="_blank" href="userinfo?user=<?php
             echo get_user_hash_by_id($id);
 ?>"><?php
         } ?><?php
@@ -4697,7 +4710,7 @@ function get_client_info($id) {
                 <td><small class="text-muted">
                         <?php
             if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo&user=<?php
+                        <a target="_blank" href="userinfo?user=<?php
                 echo get_user_hash_by_id($id);
 ?>">
                             <?php
@@ -4912,7 +4925,7 @@ foreach ($resf as $fv) {
                                <small class="text-muted">
                         <?php
         if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo&user=<?php
+                        <a target="_blank" href="userinfo?user=<?php
             echo get_user_hash_by_id($id);
 ?>"><?php
         } ?><?php
@@ -4929,7 +4942,7 @@ foreach ($resf as $fv) {
            <small class="text-muted">
                         <?php
             if ($priv_val <> "1") { ?>
-                        <a target="_blank" href="userinfo&user=<?php
+                        <a target="_blank" href="userinfo?user=<?php
                 echo get_user_hash_by_id($id);
 ?>">
                             <?php
@@ -5814,7 +5827,7 @@ function show_item_helper_cat($id) {
 
                     <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper&h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
                                     <div class="box-tools pull-right">
 
                                     </div>
@@ -5879,13 +5892,13 @@ function show_item_helper_cat($id) {
 
                     <div class="box box-solid">
                                 <div class="box-header">
-                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper&h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
+                                    <h5 class="box-title"><small><i class="fa fa-file-text-o"></i></small> <a style="font-size: 18px;" class="text-light-blue" href="helper?h=<?php echo $row['hashname']; ?>"><?php echo $row['title']; ?></a></h5>
                                     <div class="box-tools pull-right">
 <small>(<?php echo lang('DASHBOARD_author'); ?>: <?php echo nameshort(name_of_user_ret($row['user_init_id'])); ?>)<?php
                         if ($priv_h == "yes") {
                             echo " 
             <div class=\"btn-group\">
-            <a href=\"" . $CONF['hostname']."/helper&h=".$row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+            <a href=\"" . $CONF['hostname']."helper?h=".$row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -5926,7 +5939,7 @@ if ($level != 0) { echo "<ul>"; }
                                             
                                             <!-- todo text -->
                                             <span class="text">
-                                        <a href="helper&cat=<?=$row['id'];?>" class="">
+                                        <a href="helper?cat=<?=$row['id'];?>" class="">
                                                 <?=$row['name'];?> 
                                                 <small class="text-muted">(<?=count_items_helper($row['id']);?>)</small>
                                             </a>
@@ -7082,7 +7095,7 @@ function name_of_user_ret($input) {
                 ':input' => $val
             ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-            $res.= "<a href='view_user&" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>, ";
+            $res.= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>, ";
         }
         $res = substr($res, 0, -2);
     } else if ($u_count <= 1) {
@@ -7091,7 +7104,7 @@ function name_of_user_ret($input) {
             ':input' => $input
         ));
         $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-        $res.= "<a href='view_user&" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>";
+        $res.= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>";
     }
     return ($res);
 }

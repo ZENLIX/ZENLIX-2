@@ -168,7 +168,7 @@
 
 <div class="box box-solid">
                                 <div class="box-header">
-                                    <h3 class="box-title "><a href="{{hostname}}view_user&{{item.uniq_id}}" class="text-light-blue">{{item.fio_r}}</a></h3>
+                                    <h3 class="box-title "><a href="{{hostname}}view_user?{{item.uniq_id}}" class="text-light-blue">{{item.fio_r}}</a></h3>
                                     <div class="box-tools pull-right">
 {{item.r | raw}}{{item.get_user_status | raw}}
 
@@ -226,7 +226,7 @@
 {% if NAVBAR_all_t == "list" %}
 
 
-<a href="{{hostname}}userinfo&user={{item.uniq_id}}" class="btn btn-default btn-xs btn-block" ><i class="fa fa-tag"></i> {{item.NAVBAR_all_tickets}} ({{item.get_clients_total_ticket}})</a>
+<a href="{{hostname}}userinfo?user={{item.uniq_id}}" class="btn btn-default btn-xs btn-block" ><i class="fa fa-tag"></i> {{item.NAVBAR_all_tickets}} ({{item.get_clients_total_ticket}})</a>
 
 
 {% endif %}
@@ -234,7 +234,7 @@
 
 
                                        {% if priv_edit_client == true %}
-             <a href="{{hostname}}clients&edit={{item.uniq_id}}" class="btn btn-default btn-xs btn-block" ><i class="fa fa-pencil"></i> {{item.CONF_act_edit}}</a>{% endif %}
+             <a href="{{hostname}}clients?edit={{item.uniq_id}}" class="btn btn-default btn-xs btn-block" ><i class="fa fa-pencil"></i> {{item.CONF_act_edit}}</a>{% endif %}
                                                                                 
                  
                                     </div>

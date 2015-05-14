@@ -491,7 +491,7 @@ $sc="selected";
   <div class="col-sm-10">
     <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" >
+    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" checked="checked">
     <strong class="text-info">Info</strong>
   </label>
 </div>
@@ -952,7 +952,7 @@ if ($_POST['menu'] == 'import_step_2') {
   <div class="col-sm-10">
     <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" >
+    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" checked="checked">
     <strong class="text-info">Info</strong>
   </label>
 </div>
@@ -1240,7 +1240,7 @@ if ($_POST['menu'] == 'import') {
             <td><small><?php
             echo $row['login']; ?></small></td>
             <td><small><a href="<?php
-            echo $CONF['hostname']; ?>users&edit=<?php echo $row['uniq_id']; ?>"><?php
+            echo $CONF['hostname']; ?>users?edit=<?php echo $row['uniq_id']; ?>"><?php
             echo $row['fio']; ?></a></small></td>
             <td><small><?php
             echo $row['email']; ?></small></td>

@@ -70,7 +70,7 @@
                         </center>
                         {% endif %}
                         {% if canWriteMessage == true %}
-                        <br> <a href="messages&to={{uniq_id}}" class="btn btn-primary btn-block btn-xs"><i class="fa fa-comments"></i> {{EXT_do_write_message}}</a>
+                        <br> <a href="messages?to={{uniq_id}}" class="btn btn-primary btn-block btn-xs"><i class="fa fa-comments"></i> {{EXT_do_write_message}}</a>
                         {% endif %}
                         </div><!-- /.box-body -->
                     </div>
@@ -196,7 +196,7 @@
                                                                             </tr>
                                                                             {% for item in someStatStatus_arr %}
                                                                             <tr>
-                                                                                <td style="width: 50px"><small><a href="ticket&{{item.hash_name}}">{{item.id}}</a></small></td>
+                                                                                <td style="width: 50px"><small><a href="ticket?{{item.hash_name}}">{{item.id}}</a></small></td>
                                                                                 <td><small>{{item.subj}}</small></td>
                                                                                 <td><small><time id="c" datetime="{{item.date_create}}"></time></small></td>
                                                                             </tr>
@@ -231,7 +231,7 @@
                                                                                     </tr>
                                                                                     {% for item in someStatStatus_arr_two %}
                                                                                     <tr>
-                                                                                        <td style="width: 50px"><small><a href="ticket&{{item.hash_name}}">{{item.id}}</a></small></td>
+                                                                                        <td style="width: 50px"><small><a href="ticket?{{item.hash_name}}">{{item.id}}</a></small></td>
                                                                                         <td><small>{{item.subj}}</small></td>
                                                                                         <td><small><time id="c" datetime="{{item.date_create}}"></time></small></td>
                                                                                     </tr>

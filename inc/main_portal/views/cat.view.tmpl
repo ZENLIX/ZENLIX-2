@@ -43,7 +43,7 @@
 {% for item in sel_arr %}
 
                     <li>
- <a href="{{hostname}}thread&{{item.uniq_id}}">
+ <a href="{{hostname}}thread?{{item.uniq_id}}">
                     <strong style="
     font-size: 16px;
 ">{{item.type | raw}} {{item.subj}} </strong>
@@ -85,7 +85,7 @@
 {% if status_sel == true %}
 
 <input type="hidden" id="total_pages" value="{{get_total_pages_posts_status}}">
-<input type="hidden" id="st_str" value="&status={{status}}">
+<input type="hidden" id="st_str" value="?status={{status}}">
 
 {% endif %}
 
@@ -149,31 +149,31 @@ if ($hn == "1") {
 {% if hn == "1" %}
 
 <div class="list-group">
-  <a href="cat&1" class="list-group-item {{status_label_def | raw}}">
+  <a href="cat?1" class="list-group-item {{status_label_def | raw}}">
  
     {{PORTAL_idea_all}}
   </a>
-  <a href="cat&1&status=0" class="list-group-item {{status_label_0}}">{{get_count_post_1_0 | raw}}<span class="">{{PORTAL_status_1}}</span></a>
+  <a href="cat?1&status=0" class="list-group-item {{status_label_0}}">{{get_count_post_1_0 | raw}}<span class="">{{PORTAL_status_1}}</span></a>
 
-  <a href="cat&1&status=1" class="list-group-item {{status_label_1}}">{{get_count_post_1_1 | raw}}<span class="text-warning {{status_text_1}}">{{PORTAL_status_2}}</span></a>
+  <a href="cat?1&status=1" class="list-group-item {{status_label_1}}">{{get_count_post_1_1 | raw}}<span class="text-warning {{status_text_1}}">{{PORTAL_status_2}}</span></a>
 
 
-  <a href="cat&1&status=2" class="list-group-item {{status_label_2}}">{{get_count_post_1_2 | raw}}<span class="text-success {{status_text_2}}">{{PORTAL_status_3}}</span></a>
-  <a href="cat&1&status=3" class="list-group-item {{status_label_3}}">{{get_count_post_1_3 | raw}}<span class="text-danger {{status_text_3}}">{{PORTAL_status_4}}</span></a>
-    <a href="cat&1&status=4" class="list-group-item {{status_label_4}}">{{get_count_post_1_4 | raw}}<span class="text-primary {{status_text_4}}">{{PORTAL_status_5}}</span></a>
+  <a href="cat?1&status=2" class="list-group-item {{status_label_2}}">{{get_count_post_1_2 | raw}}<span class="text-success {{status_text_2}}">{{PORTAL_status_3}}</span></a>
+  <a href="cat?1&status=3" class="list-group-item {{status_label_3}}">{{get_count_post_1_3 | raw}}<span class="text-danger {{status_text_3}}">{{PORTAL_status_4}}</span></a>
+    <a href="cat?1&status=4" class="list-group-item {{status_label_4}}">{{get_count_post_1_4 | raw}}<span class="text-primary {{status_text_4}}">{{PORTAL_status_5}}</span></a>
 </div>
 {% endif %}
 {% if hn == "2" %}
 <div class="list-group">
-  <a href="cat&2" class="list-group-item {{status_label_def}}">
+  <a href="cat?2" class="list-group-item {{status_label_def}}">
   
     {{PORTAL_trouble_all}}
   </a>
-  <a href="cat&2&status=0" class="list-group-item {{status_label_0}}">{{get_count_post_2_0 | raw}}<span class="">{{PORTAL_status_1}}</span></a>
-  <a href="cat&2&status=1" class="list-group-item {{status_label_1}}">{{get_count_post_2_1 | raw}}<span class="text-warning {{status_text_1}}">{{PORTAL_status_2}}</span></a>
-  <a href="cat&2&status=2" class="list-group-item {{status_label_2}}">{{get_count_post_2_2 | raw}}<span class="text-success {{status_text_2}}">{{PORTAL_status_6}}</span></a>
-  <a href="cat&2&status=3" class="list-group-item {{status_label_3}}">{{get_count_post_2_3 | raw}}<span class="text-danger {{status_text_3}}">{{PORTAL_status_7}}</span></a>
-    <a href="cat&2&status=4" class="list-group-item {{status_label_4}}">{{get_count_post_2_4 | raw}}<span class="text-primary {{status_text_4}}">{{PORTAL_status_5}}</span></a>
+  <a href="cat?2&status=0" class="list-group-item {{status_label_0}}">{{get_count_post_2_0 | raw}}<span class="">{{PORTAL_status_1}}</span></a>
+  <a href="cat?2&status=1" class="list-group-item {{status_label_1}}">{{get_count_post_2_1 | raw}}<span class="text-warning {{status_text_1}}">{{PORTAL_status_2}}</span></a>
+  <a href="cat?2&status=2" class="list-group-item {{status_label_2}}">{{get_count_post_2_2 | raw}}<span class="text-success {{status_text_2}}">{{PORTAL_status_6}}</span></a>
+  <a href="cat?2&status=3" class="list-group-item {{status_label_3}}">{{get_count_post_2_3 | raw}}<span class="text-danger {{status_text_3}}">{{PORTAL_status_7}}</span></a>
+    <a href="cat?2&status=4" class="list-group-item {{status_label_4}}">{{get_count_post_2_4 | raw}}<span class="text-primary {{status_text_4}}">{{PORTAL_status_5}}</span></a>
 </div>
 {% endif %}
 

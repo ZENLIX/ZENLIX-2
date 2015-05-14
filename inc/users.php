@@ -76,12 +76,12 @@ else if (isset($_GET['ad_f'])) {
 
 
 <div class="list-group">
-<a href="users&list" class="list-group-item <?=$menu_active['list'];?>"><?php echo lang('USERS_list'); ?></a>
+<a href="users?list" class="list-group-item <?=$menu_active['list'];?>"><?php echo lang('USERS_list'); ?></a>
 
-  <a href="users&create" class="list-group-item <?=$menu_active['create'];?>"><?php echo lang('USERS_create'); ?></a>
+  <a href="users?create" class="list-group-item <?=$menu_active['create'];?>"><?php echo lang('USERS_create'); ?></a>
     
-    <a href="users&import" class="list-group-item <?=$menu_active['import'];?>"><?php echo lang('LDAP_IMPORT_user_t'); ?></a>
-<a href="users&ad_f" class="list-group-item <?=$menu_active['ad_f'];?>"><?php echo lang('FIELD_title'); ?></a>
+    <a href="users?import" class="list-group-item <?=$menu_active['import'];?>"><?php echo lang('LDAP_IMPORT_user_t'); ?></a>
+<a href="users?ad_f" class="list-group-item <?=$menu_active['ad_f'];?>"><?php echo lang('FIELD_title'); ?></a>
   
 </div>
 

@@ -12,8 +12,11 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 
-$rkeys = array_keys($_GET);
-    $hn = $rkeys[1];
+    $rkeys = array_keys($_GET);
+
+//print_r($rkeys);
+
+    $hn = $rkeys[0];
     $stmt = $dbConnection->prepare('SELECT
                             id, fio, posada, unit_desc, usr_img, tel, skype, last_time, status,email, adr, is_client, uniq_id
                             from users

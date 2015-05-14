@@ -4,7 +4,7 @@ session_start();
 include ("../functions.inc.php");
 $rkeys = array_keys($_GET);
 
-$CONF['title_header'] = lang('TICKET_name') . " #" . get_ticket_id_by_hash($rkeys[1]) ." (".get_ticket_val_by_hash('subj', $rkeys[1]).")". " - " . $CONF['name_of_firm'];
+$CONF['title_header'] = lang('TICKET_name') . " #" . get_ticket_id_by_hash($rkeys[0]) ." (".get_ticket_val_by_hash('subj', $rkeys[0]).")". " - " . $CONF['name_of_firm'];
 
 
 
@@ -15,7 +15,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     
     //echo $rkeys[1];
     //$hn=($_GET['hash']);
-    $hn = $rkeys[1];
+    $hn = $rkeys[0];
     $stmt = $dbConnection->prepare('SELECT 
                             * from tickets
                             where hash_name=:hn');

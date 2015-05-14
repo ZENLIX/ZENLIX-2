@@ -141,7 +141,7 @@ $(document).ready(function() {
             event.preventDefault();
                 $.ajax({
                     type: "POST",
-                    url: "actions.php",
+                    url: "action",
                     dataType: "json",
                     data: "mode=register_new"+
                         "&fio="+$('#login_fio').val()+

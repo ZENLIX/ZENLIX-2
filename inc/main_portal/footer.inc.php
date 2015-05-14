@@ -1,6 +1,6 @@
 <?php
 
-
+global $lang;
 
 
 $JS_conf_arr=array(

@@ -592,7 +592,7 @@
 {% if val_user == true %} 
                 <div class="btn-group ">
 <button class="btn btn-xs bg-maroon" id="delete_manual" value="{{id}}">{{PORTAL_act_del}}</button> 
-<a class="btn btn-xs bg-orange btn-flat" href="manual&{{uniq_id}}&edit_manual">{{PORTAL_act_edit}}</a>
+<a class="btn btn-xs bg-orange btn-flat" href="manual?{{uniq_id}}&edit_manual">{{PORTAL_act_edit}}</a>
  </div>
 {% endif %}
 
@@ -692,9 +692,9 @@
                   <h3 class="box-title">{{PORTAL_admin_menu}}</h3>
                 </div>
                 <div class="box-body">
-                <a href="manual&edit_cat" class="btn btn-default btn-block">{{PORTAL_cat_n_manag}}</a>
+                <a href="manual?edit_cat" class="btn btn-default btn-block">{{PORTAL_cat_n_manag}}</a>
                   <!--a href="manual?new_manual" class="btn btn-default btn-block">Создать статью</a-->
-                  <a href="manual&edit_qa" class="btn btn-default btn-block">{{PORTAL_q_manag}}</a>
+                  <a href="manual?edit_qa" class="btn btn-default btn-block">{{PORTAL_q_manag}}</a>
                   
                 </div>
               </div>

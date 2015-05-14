@@ -1,7 +1,7 @@
 <?php
 
 header('Content-Type: application/json');
-include ("functions.inc.php");
+include_once ("functions.inc.php");
 
 $data_json = json_decode( file_get_contents('php://input') );
 
@@ -1651,10 +1651,25 @@ $r['comments'] = array();
 
 foreach ($dep_r as $dep) {
 
+
+$ui=get_user_val_by_id($dep['user_id'], 'usr_img');
+
+if (strlen($ui) < 5) {
+    $ui="img/avatar5.png";
+}
+else {
+    $ui="upload_files/avatars/".$ui;
+}
+
+$fio=get_user_val_by_id($dep['user_id'], 'fio');
+
+
     array_push($r['comments'], array(
-            'author'           =>get_user_hash_by_id($dep['user_id']),
+            'author'            => get_user_hash_by_id($dep['user_id']),
             'text'              => $dep['comment_text'],
-            'dt'                => $dep['dt']
+            'dt'                => $dep['dt'],
+            'usr_img'           => $ui,
+            'usr_fio'           => $fio
 
         ));
 }

@@ -48,7 +48,7 @@
 {% for item in ar_online %}
 
 <li><!-- start message -->
-                                            <a href="view_user&{{item.uniq_id}}">
+                                            <a href="view_user?{{item.uniq_id}}">
                                                 <div class="pull-left">
                                                     <img src="{{item.usr_img}}" class="img-circle" alt="User Image" />
                                                 </div>
@@ -76,13 +76,13 @@
 <li class="dropdown messages-menu" id="unread_msg">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-envelope"></i>
-                                <span class="label label-warning label_unread_msg">{{atm_v}}</span>
+                                <span class="label label-warning label_unread_msg">{{atm_v | raw}}</span>
                             </a>
                             <ul class="dropdown-menu">
                             <p class="header" id="nav_t_msgs"> 
                                 <center>
 
-                                {{title_m}}</center></p>
+                                {{title_m | raw}}</center></p>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu" id="unread_msgs_content">
@@ -91,7 +91,7 @@
                                     
                                     
                                         <li><!-- start message -->
-                                            <a href="messages&to={{item.user_code}}">
+                                            <a href="messages?to={{item.user_code}}">
                                                 <div class="pull-left">
                                                     <img src="{{item.usr_img}}" class="img-circle" alt="User Image"/>
                                                 </div>
@@ -192,7 +192,7 @@ border-color: rgba(255, 255, 255, 0.2);" />
                                     </div>
                                     <div class="pull-right">
                                     
-                                        <a href="{{hostname}}index.php?logout" class="btn btn-default btn-flat"> <i class="fa fa-sign-out"></i> {{NAVBAR_logout}}</a>
+                                        <a href="{{hostname}}logout" class="btn btn-default btn-flat"> <i class="fa fa-sign-out"></i> {{NAVBAR_logout}}</a>
                                     </div>
                                 </li>
                             </ul>

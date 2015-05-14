@@ -105,7 +105,7 @@
             </table>
 {% endif %}
 
-            <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;   background-color: #FDFDFD;">
+            <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;   background-color: #FDFDFD;  word-wrap: break-word;">
                                 {{msg | raw}}
                             </div>
                             
@@ -113,7 +113,7 @@
                             <small class="text-muted" >
                                 {{get_ticket_info}}
                             </small>
-                                <a href="print_ticket&{{hn}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-print"></i> {{TICKET_print}}</a>
+                                <a href="print_ticket?{{hn}}" class="btn btn-default btn-xs pull-right"><i class="fa fa-print"></i> {{TICKET_print}}</a>
                             {% if can_edit == true %}
 
             <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>  {{CONF_act_edit}}</button> {% endif %}

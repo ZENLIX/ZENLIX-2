@@ -6,7 +6,7 @@ session_start();
 $rkeys = array_keys($_GET);
 
 
-$hn = $rkeys[1];
+$hn = $rkeys[0];
 
     $stmt = $dbConnection->prepare('SELECT * from portal_posts where uniq_id=:hn');
     $stmt->execute(array(':hn' => $hn));

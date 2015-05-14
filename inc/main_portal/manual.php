@@ -7,7 +7,7 @@
 $rkeys = array_keys($_GET);
 
 
-$hn = $rkeys[1];
+$hn = $rkeys[0];
 
 
 $CONF['title_header']=get_conf_param('name_of_firm')." - ".lang('PORTAL_help_center');

@@ -227,7 +227,7 @@ $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iChec
     };
     moment.lang(MyLANG);
        makemytime(true);
-var ACTIONPATH = MyHOSTNAME + "actions.php";
+var ACTIONPATH = MyHOSTNAME + "action";
 var ACTIONPATH_PORTAL = MyHOSTNAME + "inc/main_portal/actions.php";
 
 
@@ -292,7 +292,7 @@ console.log(result);
 $('body').on('click', 'button#find_in_manual', function(event) {
             event.preventDefault();
 
-            window.location ="manual&find="+$("input#navbar-search-input").val();
+            window.location ="manual?find="+$("input#navbar-search-input").val();
 
         });
 
@@ -397,7 +397,7 @@ $("#text_review").keyup(function (e) {
         $('body').on('click', 'button#new_post_page', function(event) {
             event.preventDefault();
             var v=$(this).val();
-            window.location = MyHOSTNAME + "new_post&p="+v+"&session_key=1";
+            window.location = MyHOSTNAME + "new_post?p="+v+"&session_key=1";
 
         });
 
@@ -417,7 +417,7 @@ $("#text_review").keyup(function (e) {
                             //console.log(html);
                             $.each(html, function(i, item) {
                             if (item.check_state == false) {
-                                window.location = MyHOSTNAME + "new_post&p=1&session_key=1";
+                                window.location = MyHOSTNAME + "new_post?p=1&session_key=1";
                                }
                             else if (item.check_state == true) {
 
@@ -461,7 +461,7 @@ $("#text_review").keyup(function (e) {
                             //console.log(html);
                             $.each(html, function(i, item) {
                             if (item.check_state == false) {
-                                window.location = MyHOSTNAME + "new_post&p=2&session_key=1";
+                                window.location = MyHOSTNAME + "new_post?p=2&session_key=1";
                                }
                             else if (item.check_state == true) {
 
@@ -503,7 +503,7 @@ $("#text_review").keyup(function (e) {
                             //console.log(html);
                             $.each(html, function(i, item) {
                             if (item.check_state == false) {
-                                window.location = MyHOSTNAME + "new_post&p=3&session_key=1";
+                                window.location = MyHOSTNAME + "new_post?p=3&session_key=1";
                                }
                             else if (item.check_state == true) {
 
@@ -546,7 +546,7 @@ $("#text_review").keyup(function (e) {
                             //console.log(html);
                             $.each(html, function(i, item) {
                             if (item.check_state == false) {
-                                window.location = MyHOSTNAME + "new_post&p=4&session_key=1";
+                                window.location = MyHOSTNAME + "new_post?p=4&session_key=1";
                                }
                             else if (item.check_state == true) {
 
@@ -585,7 +585,7 @@ $('body').on('click', 'i#edit_manual_cat', function(event) {
             event.preventDefault();
             //console.log('Pv');
 var v = $(this).attr('value');
-       window.location = MyHOSTNAME + "manual&"+v+"&edit_manual";
+       window.location = MyHOSTNAME + "manual?"+v+"&edit_manual";
         });
 
 
@@ -594,7 +594,7 @@ $('body').on('click', 'i#open_link', function(event) {
             event.preventDefault();
             //console.log('Pv');
 var v = $(this).attr('value');
-       window.location = MyHOSTNAME + "manual&"+v;
+       window.location = MyHOSTNAME + "manual?"+v;
         });
 
 
@@ -722,7 +722,7 @@ if (ispath('edit_some_qa')) {
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "manual&edit_qa";
+                window.location = MyHOSTNAME + "manual?edit_qa";
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 
@@ -806,7 +806,7 @@ $('body').on('click', 'i#edit_manual_qa', function(event) {
             event.preventDefault();
             //console.log('Pv');
 var v = $(this).attr('value');
-       window.location = MyHOSTNAME + "manual&"+"edit_some_qa="+v;
+       window.location = MyHOSTNAME + "manual?"+"edit_some_qa="+v;
         });
 
 
@@ -868,7 +868,7 @@ if (ispath('edit_manual')) {
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "manual&"+v;
+                window.location = MyHOSTNAME + "manual?"+v;
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 
@@ -989,7 +989,7 @@ console.log(file);
                         height: 300,
                         focus: true,
                         lang: get_lang_param('summernote_lang'),
-                        disableDragAndDrop: true,
+                        disableDragAndDrop: false,
                         toolbar: [
     //['style', ['style']], // no style button
     ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -1000,6 +1000,9 @@ console.log(file);
     ['table', ['table']],
     ['link', ['link']],
     ['codeview', ['codeview']]],
+    onImageUpload: function(files, editor, welEditable) {
+                            sendFile(files[0], editor, welEditable);
+                        },
                         oninit: function() {
                         }
                     });
@@ -1056,7 +1059,7 @@ if (ispath('new_manual')) {
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "manual&"+v;
+                window.location = MyHOSTNAME + "manual?"+v;
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 
@@ -1331,7 +1334,7 @@ console.log(file);
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "thread&"+v;
+                window.location = MyHOSTNAME + "thread?"+v;
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 
@@ -1368,7 +1371,7 @@ if (ispath('cat')) {
                 var current = $("#curent_page").attr('value');
                 var st_str=$("#st_str").attr('value');
                 if (page != current) {
-window.location = MyHOSTNAME + "cat&"+$("#cat").val()+st_str+"&p="+page;
+window.location = MyHOSTNAME + "cat?"+$("#cat").val()+st_str+"&p="+page;
 /*                                  &r=2
                     $("#spinner").fadeIn(300);
                     $("#curent_page").attr('value', page);
@@ -1430,7 +1433,7 @@ if (ispath('edit_feed')) {
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "feed&"+v;
+                window.location = MyHOSTNAME + "feed?"+v;
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 
@@ -1591,7 +1594,7 @@ view_todo();
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "version&"+v;
+                window.location = MyHOSTNAME + "version?"+v;
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 
@@ -1636,7 +1639,7 @@ view_todo();
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "version&"+v;
+                window.location = MyHOSTNAME + "version?"+v;
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 
@@ -1739,7 +1742,7 @@ if (ispath('new_feed')) {
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "feed&"+v;
+                window.location = MyHOSTNAME + "feed?"+v;
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 
@@ -1805,7 +1808,7 @@ $.ajax({
                 data: {mode: 'set_post_cat', post_hash: v, type: type},
                 success: function(html) {
                     //console.log(html);
-                    window.location = MyHOSTNAME + "thread&"+v;
+                    window.location = MyHOSTNAME + "thread?"+v;
                     //$("#"+v+" .editable_text").html(html);
                 }
             });
@@ -1902,7 +1905,7 @@ $.ajax({
                 data: {mode: 'delete_file', file_hash: code},
                 success: function(html) {
                     //console.log(html);
-                    window.location = MyHOSTNAME + "thread&"+type;
+                    window.location = MyHOSTNAME + "thread?"+type;
                     //$("#"+v+" .editable_text").html(html);
                 }
             });
@@ -2006,7 +2009,7 @@ $.ajax({
                 data: {mode: 'del_comment', post_hash: v, type:type},
                 success: function(html) {
                     //console.log(html);
-                    window.location = MyHOSTNAME + "thread&"+p;
+                    window.location = MyHOSTNAME + "thread?"+p;
                     //$("#"+v+" .editable_text").html(html);
                 }
             });
@@ -2108,7 +2111,7 @@ var options_comment_page = {
             onPageClicked: function(e, originalEvent, type, page) {
                 var current = $("#curent_page").attr('value');
                 if (page != current) {
-window.location = MyHOSTNAME + "thread&"+$("#post").val()+"&p="+page;
+window.location = MyHOSTNAME + "thread?"+$("#post").val()+"&p="+page;
 /*                                  &r=2
                     $("#spinner").fadeIn(300);
                     $("#curent_page").attr('value', page);
@@ -2150,7 +2153,7 @@ $.ajax({
                 data: {mode: 'set_post_like', post_hash: v, val:act},
                 success: function(html) {
                     //console.log(html);
-                    window.location = MyHOSTNAME + "thread&"+v;
+                    window.location = MyHOSTNAME + "thread?"+v;
                 }
             });
 
@@ -2174,7 +2177,7 @@ $.ajax({
                 data: {mode: 'set_post_status', post_hash: v, val:act},
                 success: function(html) {
                     //console.log(html);
-                    window.location = MyHOSTNAME + "thread&"+v;
+                    window.location = MyHOSTNAME + "thread?"+v;
                 }
             });
 
@@ -2213,7 +2216,7 @@ $.ajax({
                     console.log(html);
  $.each(html, function(i, item) {
             if (item.check_error == true) {
-                window.location = MyHOSTNAME + "thread&"+v;
+                window.location = MyHOSTNAME + "thread?"+v;
             }
             else if (item.check_error == false) { 
                             //$('#res').html(item.msg); 

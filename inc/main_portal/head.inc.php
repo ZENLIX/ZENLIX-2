@@ -8,20 +8,20 @@
 
 
 $main_styles_start=array(
-'/js/bootstrap/css/bootstrap.min.css',
-'/css/jquery-ui.min.css',
-'/css/ionicons.min.css',
-'/css/style.css',
-'/css/font-awesome/css/font-awesome.min.css',
-'/css/chosen.min.css',
-'/css/print.css',
-'/css/summernote-bs3.css',
-'/css/summernote.css',
-'js/fancybox/jquery.fancybox.css',
-'/inc/main_portal/css/AdminLTE.min.css',
-'/inc/main_portal/css/skins/_all-skins.min.css',
-'/css/dropzone.css',
-'/js/bootstrap3-editable/css/bootstrap-editable.css'
+'js/bootstrap/css/bootstrap.min.css',
+'css/jquery-ui.min.css',
+'css/ionicons.min.css',
+'css/style.css',
+'css/font-awesome/css/font-awesome.min.css',
+'css/chosen.min.css',
+'css/print.css',
+'s/fancybox/jquery.fancybox.css',
+'inc/main_portal/css/AdminLTE.min.css',
+'inc/main_portal/css/skins/_all-skins.min.css',
+'css/dropzone.css',
+'js/bootstrap3-editable/css/bootstrap-editable.css',
+'css/summernote-bs3.css',
+'css/summernote.css'
 
 );
 

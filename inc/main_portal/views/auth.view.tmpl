@@ -40,7 +40,7 @@
 <div class="alert alert-warning alert-dismissable">
                     
                     <h4><i class="icon fa fa-warning"></i> {{LOGIN_ERROR_title}}!</h4>
-                    {{LOGIN_ERROR_desc}}
+                    {{LOGIN_ERROR_desc | raw}}
                   </div>
                   </div>
                   </div>
@@ -99,7 +99,7 @@
 {% if va == 'error' %}
 
             <div class="alert alert-danger" style="margin:20px;">
-                <center>{{error_auth}}</center>
+                <center>{{error_auth | raw}}</center>
             </div>
 
  {% endif %}

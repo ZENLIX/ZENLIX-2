@@ -14,7 +14,7 @@
                     <ol class="breadcrumb">
                        <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
                        <li><a href="{{hostname}}helper ">{{HELPER_title}}</a></li>
-                       <li class="active"><a href="{{hostname}}helper&cat={{cat_id}}">{{get_helper_cat_name}}</a></li>
+                       <li class="active"><a href="{{hostname}}helper?cat={{cat_id}}">{{get_helper_cat_name}}</a></li>
                         
                     </ol>
                 </section>
@@ -228,7 +228,7 @@
                     <ol class="breadcrumb">
                        <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
                         <li><a href="{{hostname}}helper ">{{HELPER_title}}</a></li>
-                       <li class="active"><a href="{{hostname}}helper&cat={{cat_id}}">{{get_helper_cat_name}}</a></li>
+                       <li class="active"><a href="{{hostname}}helper?cat={{cat_id}}">{{get_helper_cat_name}}</a></li>
                         
                     </ol>
                 </section>
@@ -303,7 +303,7 @@
                                  
             <div class="btn-group pull-right">
             <a id="print_t" class="btn btn-default btn-xs"> <i class="fa fa-print"></i> {{HELPER_print}}</a>
-            <a href="{{hostname}}/helper&h={{h}}&edit" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i> {{CONF_act_edit}} </a>
+            <a href="{{hostname}}/helper?h={{h}}&edit" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i> {{CONF_act_edit}} </a>
             <button id="del_helper" value="{{h}}" type="button" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button>
             </div>
             
@@ -357,11 +357,11 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{hostname}}helper&add" class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{HELPER_create}}</a>
+                            <a href="{{hostname}}helper?add" class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{HELPER_create}}</a>
                     
 
                     {% if sc == true %}
-                    <a href="{{hostname}}helper&edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> {{HELP_cats_title}} </a>
+                    <a href="{{hostname}}helper?edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> {{HELP_cats_title}} </a>
                     {% endif %}
 <br>
                     <div class="callout ">
@@ -612,9 +612,9 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{hostname}}helper&add" class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{HELPER_create}}</a>
+                            <a href="{{hostname}}helper?add" class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{HELPER_create}}</a>
                     {% if sc2 == true %}
-                    <a href="{{hostname}}helper&edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> {{HELP_cats_title}} </a>
+                    <a href="{{hostname}}helper?edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> {{HELP_cats_title}} </a>
                     {% endif %}
 <br>
 
@@ -697,9 +697,9 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{hostname}}helper&add"  class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{HELPER_create}}</a>
+                            <a href="{{hostname}}helper?add"  class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{HELPER_create}}</a>
                     {% if sc == true %}
-                    <a href="{{hostname}}helper&edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> {{HELP_cats_title}} </a>
+                    <a href="{{hostname}}helper?edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> {{HELP_cats_title}} </a>
                     {% endif %}
 <br>
                     <div class="callout ">
@@ -924,9 +924,9 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                            <a href="{{hostname}}helper&add"  class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{HELPER_create}}</a>
+                            <a href="{{hostname}}helper?add"  class="btn btn-success btn-sm btn-block"><i class="fa fa-file-o"></i> {{HELPER_create}}</a>
                     {% if sc4 == true %}
-                    <a href="{{hostname}}helper&edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> {{HELP_cats_title}} </a>
+                    <a href="{{hostname}}helper?edit_cats" class="btn btn-default btn-sm btn-block"><i class="fa fa-list"></i> {{HELP_cats_title}} </a>
                     {% endif %}
 <br>
                     <div class="callout ">
