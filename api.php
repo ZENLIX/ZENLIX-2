@@ -1689,7 +1689,7 @@ $code = "ok";
 
 
 
-
+        $r['ticket_code']       = get_ticket_id_by_hash($data_json->ticket_hash);
         $r['status'] = $code;
         $r['error_description'] = $error_msg;
         $row_set[] = $r;

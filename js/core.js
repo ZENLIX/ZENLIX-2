@@ -3739,6 +3739,7 @@ console.log(file);
             var to = $("select#to").val();
             var m = $("#msg").val().length;
             var error_code = 0;
+            /*
             if ($('#s_start').length) {
                 //if ($(this).)
                 $('button#start_upload').popover('show');
@@ -3749,9 +3750,10 @@ console.log(file);
                 $('button#start_upload').popover('hide');
                 error_code = 0;
             }
+            */
             if ($('#fio').val().length == 0) {
                 error_code = 1;
-                $('#fio').popover('show');
+                //$('#fio').popover('show');
                 $('#for_fio').addClass('has-error');
                 setTimeout(function() {
                     $("#fio").popover('hide');
@@ -3759,7 +3761,7 @@ console.log(file);
             }
             if (to == '0') {
                 error_code = 1;
-                $('#dsd').popover('show');
+                //$('#dsd').popover('show');
                 $('#for_to').addClass('has-error');
                 setTimeout(function() {
                     $("#dsd").popover('hide');
@@ -3767,7 +3769,7 @@ console.log(file);
             }
             if ((s == null) || (s == "0")) {
                 error_code = 1;
-                $("#for_subj").popover('show');
+                //$("#for_subj").popover('show');
                 $("#for_subj").addClass('has-error');
                 setTimeout(function() {
                     $("#for_subj").popover('hide');
@@ -3775,7 +3777,7 @@ console.log(file);
             }
             if (m == 0) {
                 error_code = 1;
-                $("#msg").popover('show');
+                //$("#msg").popover('show');
                 $("#for_msg").addClass('has-error');
                 setTimeout(function() {
                     $("textarea#msg").popover('hide');

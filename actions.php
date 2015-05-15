@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 //include ("functions.inc.php");
 if (isset($_POST['mode'])) {
     

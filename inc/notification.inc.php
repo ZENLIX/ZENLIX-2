@@ -216,7 +216,19 @@ $del_node=$delivers_ids;
             if (($key = array_search($_SESSION['helpdesk_user_id'], $delivers_ids)) !== false) {
                 unset($delivers_ids[$key]);
             }
-            $init_user_h=get_user_hash_by_id($user_init_id);
+            
+
+/*
+        $stmt_log = $dbConnection->prepare('SELECT init_user_id FROM ticket_log where ticket_id=:tid and msg=:msg order by ID desc limit 1');
+        $stmt_log->execute(array(':tid' => $ticket_id, ':msg' => 'comment'));
+        $ticket_log_res = $stmt_log->fetch(PDO::FETCH_ASSOC);
+        $who_init = $ticket_log_res['init_user_id'];
+*/
+
+
+
+
+
             foreach ($del_node as $uniq_id_row) {
                 
                 $u_hash = get_user_hash_by_id($uniq_id_row);
@@ -232,6 +244,11 @@ $del_node=$delivers_ids;
             $ticket_log_res = $stmt_log->fetch(PDO::FETCH_ASSOC);
             $who_init = $ticket_log_res['init_user_id'];
             
+
+$init_user_h=get_user_hash_by_id($who_init);
+
+
+
             $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
 				 										   VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
             $stmt->execute(array(':msg' => $type, ':init_user_id' => $who_init, ':target_user' => $res_str, ':ticket_id' => $ticket_id, ':n' => $CONF['now_dt']));
@@ -270,7 +287,11 @@ $del_node=$delivers_ids;
             }
             
 
-$init_user_h=get_user_hash_by_id($user_init_id);
+
+$init_user_h=get_user_hash_by_id($who_init);
+
+
+
             foreach ($del_nodes as $uniq_id_row) {
                 
                 $u_hash = get_user_hash_by_id($uniq_id_row);
@@ -294,6 +315,20 @@ $init_user_h=get_user_hash_by_id($user_init_id);
                 $stmt->execute(array(':delivers_id' => $su, ':type_op' => $type, ':tid' => $ticket_id, ':n' => $CONF['now_dt']));
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     } else if ($type == "ticket_comment") {
         
         // отправить письмо автору заявки, исполнителям, всех кто есть в комментариях
@@ -350,7 +385,9 @@ $init_user_h=get_user_hash_by_id($user_init_id);
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        $init_user_h=get_user_hash_by_id($user_init_id);
+        
+$init_user_h=get_user_hash_by_id($res);
+
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
@@ -416,10 +453,11 @@ $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        $init_user_h=get_user_hash_by_id($user_init_id);
+        $init_user_h=get_user_hash_by_id($res);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
+
             $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
             $stmt_n->execute(array(':delivers_id' => $u_hash, ':type_op' => 'ticket_lock', ':tid' => $ticket_id, ':n' => $CONF['now_dt'], ':s'=>$zenlix_session_id, ':ui'=>$init_user_h));
         }
@@ -437,6 +475,19 @@ $del_nodes=$delivers_ids;
         
         $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
         $stmt->execute(array(':delivers_id' => $delivers_ids, ':type_op' => $type, ':tid' => $ticket_id, ':n' => $CONF['now_dt']));
+
+
+
+
+
+
+
+
+
+
+
+
+
     } else if ($type == "ticket_unlock") {
         
         //отправить автору
@@ -476,7 +527,7 @@ $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        $init_user_h=get_user_hash_by_id($user_init_id);
+        $init_user_h=get_user_hash_by_id($res);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
@@ -534,7 +585,7 @@ $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        $init_user_h=get_user_hash_by_id($user_init_id);
+        $init_user_h=get_user_hash_by_id($res);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);
@@ -594,7 +645,7 @@ $del_nodes=$delivers_ids;
         if (($key = array_search($res, $delivers_ids)) !== false) {
             unset($delivers_ids[$key]);
         }
-        $init_user_h=get_user_hash_by_id($user_init_id);
+        $init_user_h=get_user_hash_by_id($res);
         foreach ($del_nodes as $uniq_id_row) {
             
             $u_hash = get_user_hash_by_id($uniq_id_row);

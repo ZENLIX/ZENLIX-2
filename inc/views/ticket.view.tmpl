@@ -459,13 +459,13 @@
                 <div class="info-box-content">
                   <span class="info-box-text">{{SLA_perf_reaction}}</span>
                   <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;">
-{{get_ticket_time_reaction}}
+{{get_ticket_time_reaction | raw}}
                   </span>
                   <div class="progress">
                     <div class="progress-bar" style="width: {{per}}%"></div>
                   </div>
                   <span class="progress-description">
-                    {{SLA_REGLAMENT}}: {{sla_react}}
+                    {{SLA_REGLAMENT}}: {{sla_react | raw}}
                   </span>
                 </div><!-- /.info-box-content -->
               </div>
@@ -476,12 +476,12 @@
                 <div class="info-box-content">
                   <span class="info-box-text">{{SLA_perf_work_a}}</span>
 
-                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="work_timer" value="{{sl}}">{{get_ticket_time_lock}}</span>
+                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="work_timer" value="{{sl}}">{{get_ticket_time_lock | raw}}</span>
                   <div class="progress">
                     <div class="progress-bar" style="width: {perw}%"></div>
                   </div>
                   <span class="progress-description">
-                    {{SLA_REGLAMENT}}: {{sla_work}}
+                    {{SLA_REGLAMENT}}: {{sla_work | raw}}
                   </span>
                 </div><!-- /.info-box-content -->
               </div>
@@ -493,13 +493,13 @@
                 <span class="info-box-icon"><i class="fa fa-check-square"></i></span>
                 <div class="info-box-content">
                   <span class="info-box-text">{{SLA_perf_deadline_short}}</span>
-                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="deadline_timer" value="{{ls}}">{{left_secr}}
+                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="deadline_timer" value="{{ls}}">{{left_secr | raw}}
                   </span>
                   <div class="progress">
                     <div class="progress-bar" style="width: {{perd}}%"></div>
                   </div>
                   <span class="progress-description">
-                    {{SLA_REGLAMENT}}: <time id="f" datetime="{{sla_deadline}}"></time>
+                    {{SLA_REGLAMENT}}: <time id="f" datetime="{{sla_deadline | raw}}"></time>
                   </span>
                 </div><!-- /.info-box-content -->
               </div>

@@ -100,7 +100,7 @@
 
 
 
-        <div class="col-md-4" style="" id="dsd">
+        <div class="col-md-4" style="" id="dsd" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right" data-content="{{NEW_to_unit_desc}}">
     
     
     <select data-placeholder="{{NEW_to_user}}" id="users_do" name="unit_id" class="form-control input-sm" multiple disabled>
@@ -130,6 +130,9 @@
 
 
     <div class="form-group" id="for_to" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right">
+
+
+    
         <label for="to" class="col-md-2 control-label" ><small>{{NEW_to}}: </small></label>
         <div class="col-md-6">
             <select data-placeholder="{{NEW_to_unit}}" class="chosen-select form-control" id="to" name="unit_id">
