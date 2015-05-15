@@ -16,7 +16,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 //print_r(generate_timezone_list());
 
 
-      
+       
 class SimpleImage
     {
         
@@ -2025,8 +2025,8 @@ else {
       <img src="<?=get_logo_img('small');?>" >
     </div>
     <div class="col-sm-3">
-        <form action="<?php echo $CONF['hostname'] ?>config" method="post" id="form_logo" enctype="multipart/form-data"> 
-             
+        <form action="<?php echo $CONF['hostname'] ?>action" method="post" id="form_logo" enctype="multipart/form-data"> 
+             <input type="hidden" value="set_zenlix_logo" name="mode">
              <span class="file-input btn btn-block btn-default btn-file" style="width:100%">
                 <?php echo lang('PROFILE_select_image'); ?> <input id="file_logo" type="file" name="file">
             </span>

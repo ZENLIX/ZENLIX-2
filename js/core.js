@@ -23,7 +23,7 @@ $(".mf").fadeIn(800);
     //push_msg_action2user
     socket.on("new_msg", function(data) {
 
-
+//console.log(data.type_op);
 
         switch (data.type_op) {
             case 'ticket_create':
@@ -130,7 +130,9 @@ if (data.user_init != USER_HASH) {
 
             
             if (data.zen_sid != ZENLIX_session_id) {
+console.log("data.user_init:"+data.user_init+"| USER_HASH:"+USER_HASH);
 if (data.user_init != USER_HASH) {
+
                 active_noty_msg('ticket_lock', data.t_id);
             }
                 //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
@@ -145,6 +147,7 @@ if (data.user_init != USER_HASH) {
                     makemytime(true);
                 };
                 if (ispath('ticket')) {
+                    //console.log('locked');
                     update_ticket_page(data.t_id);
                 };
                 if (ispath('news')) {refresh_news();};
@@ -238,7 +241,7 @@ if (data.user_init != USER_HASH) {
                 //console.log(html);
                 if (html) {
                     $.each(html, function(i, item) {
-                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'' + item.url + '/ticket?' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
+                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'' + item.url + 'ticket?' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
                         noty({
                             text: t,
                             layout: USER_noty_layot,
@@ -2981,7 +2984,7 @@ php:
                     $('#summernote').summernote({
                         height: 500,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         onImageUpload: function(files, editor, welEditable) {
                             sendFile(files[0], editor, welEditable);
                         },
@@ -3055,7 +3058,7 @@ php:
                             $('#summernote').summernote({
                                 height: 300,
                                 focus: true,
-                                lang: get_lang_param('summernote_lang'),
+                                //lang: get_lang_param('summernote_lang'),
                                 onImageUpload: function(files, editor, welEditable) {
                                     sendFile(files[0], editor, welEditable);
                                 },
@@ -3234,7 +3237,7 @@ console.log(file);
                 $('#summernote_help').summernote({
                         height: 300,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                       // lang: get_lang_param('summernote_lang'),
                         onImageUpload: function(files, editor, welEditable) {
                             sendFile(files[0], editor, welEditable);
                         }
@@ -4436,7 +4439,7 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
         $('#mailers_msg').summernote({
                         height: 300,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         disableDragAndDrop: false,
                         toolbar: [
     //['style', ['style']], // no style button

@@ -6225,6 +6225,203 @@ a, a:visited {
             $stmt->execute(array(':id' => $uniq_code));
         }
         
+
+
+
+
+if ($mode == "set_zenlix_logo") {
+    class SimpleImage
+    {
+        
+        var $image;
+        var $image_type;
+        
+        function load($filename) {
+            $image_info = getimagesize($filename);
+            $this->image_type = $image_info[2];
+            if ($this->image_type == IMAGETYPE_JPEG) {
+                $this->image = imagecreatefromjpeg($filename);
+            } elseif ($this->image_type == IMAGETYPE_GIF) {
+                $this->image = imagecreatefromgif($filename);
+            } elseif ($this->image_type == IMAGETYPE_PNG) {
+                $this->image = imagecreatefrompng($filename);
+
+            }
+        }
+        function save($filename, $image_type = IMAGETYPE_PNG, $compression = 100, $permissions = null) {
+            if ($image_type == IMAGETYPE_JPEG) {
+                imagejpeg($this->image, $filename, $compression);
+            } elseif ($image_type == IMAGETYPE_GIF) {
+                imagegif($this->image, $filename);
+            } elseif ($image_type == IMAGETYPE_PNG) {
+                imagepng($this->image, $filename);
+            }
+            if ($permissions != null) {
+                chmod($filename, $permissions);
+            }
+        }
+        function output($image_type = IMAGETYPE_JPEG) {
+            if ($image_type == IMAGETYPE_JPEG) {
+                imagejpeg($this->image);
+            } elseif ($image_type == IMAGETYPE_GIF) {
+                imagegif($this->image);
+            } elseif ($image_type == IMAGETYPE_PNG) {
+                imagepng($this->image);
+            }
+        }
+        function getWidth() {
+            return imagesx($this->image);
+        }
+        function getHeight() {
+            return imagesy($this->image);
+        }
+        function resizeToHeight($height) {
+            $ratio = $height / $this->getHeight();
+            $width = $this->getWidth() * $ratio;
+            $this->resize($width, $height);
+        }
+        function resizeToWidth($width) {
+            $ratio = $width / $this->getWidth();
+            $height = $this->getheight() * $ratio;
+            $this->resize($width, $height);
+        }
+        function scale($scale) {
+            $width = $this->getWidth() * $scale / 100;
+            $height = $this->getheight() * $scale / 100;
+            $this->resize($width, $height);
+        }
+        function resize($width, $height) {
+            $new_image = imagecreatetruecolor($width, $height);
+            imagealphablending( $new_image, false );
+            imagesavealpha( $new_image, true );
+            imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
+            $this->image = $new_image;
+        }
+    }
+
+        if ($_FILES["file"]) {
+        $output_dir = "upload_files/avatars/";
+        $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
+        $extension = end(explode(".", $_FILES["file"]["name"]));
+        $fhash = randomhash();
+        $fileName = $_FILES["file"]["name"];
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName_norm = $fhash . "." . $ext;
+        $fileName_norm_logo = $fhash . "_logo." . $ext;
+        //echo $_FILES["file"]["size"];
+        
+        if ((($_FILES["file"]["type"] == "image/gif") || ($_FILES["file"]["type"] == "image/jpeg") || ($_FILES["file"]["type"] == "image/png") || ($_FILES["file"]["type"] == "image/pjpeg")) && ($_FILES["file"]["size"] < 2000000) && in_array($extension, $allowedExts)) {
+            
+            if ($_FILES["file"]["error"] > 0) {
+                
+                //echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
+                
+                
+            } else {
+                
+                move_uploaded_file($_FILES["file"]["tmp_name"], $output_dir . $fileName_norm);
+                $nf = $output_dir . $fileName_norm;
+                $nf_logo = $output_dir . $fileName_norm_logo;
+                $image = new SimpleImage();
+                $image->load($nf);
+                $image->resizeToHeight(128);
+                $image->save($nf);
+
+                $image_logo = new SimpleImage();
+                $image_logo->load($nf);
+                $image_logo->resizeToHeight(40);
+                $image_logo->save($nf_logo);
+                
+                //$u = $_SESSION['helpdesk_user_id'];
+                //$stmt = $dbConnection->prepare('update users set usr_img = :uimg where id=:uid ');
+                //$stmt->execute(array(':uimg' => $fileName_norm, ':uid' => $u));
+                update_val_by_key("logo_img", $fileName_norm);
+                //}
+                
+                //$_FILES["file"]["name"];
+                
+                
+            }
+        } else {
+            
+            //echo $_FILES["file"]["type"]."<br />";
+            //echo "Invalid file";
+            
+            
+        }
+    }
+    header("Location: " . site_proto() . get_conf_param('hostname') . "/config");
+}
+
+
+
+        if ($mode == "set_user_avatar") {
+            include_once ("library/SimpleImage.php");
+            if ($_FILES["file"]) {
+                //echo "ok";
+        $output_dir = "upload_files/avatars/";
+        $allowedExts = array("jpg", "jpeg", "gif", "png", "bmp");
+        $extension = end(explode(".", $_FILES["file"]["name"]));
+        $fhash = randomhash();
+        $fileName = $_FILES["file"]["name"];
+        $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileName_norm = $fhash . "." . $ext;
+        
+        //echo $_FILES["file"]["size"];
+        
+        if ((($_FILES["file"]["type"] == "image/gif") || ($_FILES["file"]["type"] == "image/jpeg") || ($_FILES["file"]["type"] == "image/png") || ($_FILES["file"]["type"] == "image/pjpeg")) && ($_FILES["file"]["size"] < 2000000) && in_array($extension, $allowedExts)) {
+            
+            if ($_FILES["file"]["error"] > 0) {
+                
+                //echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
+                
+                
+            } else {
+                
+                move_uploaded_file($_FILES["file"]["tmp_name"], $output_dir . $fileName_norm);
+                $nf = $output_dir . $fileName_norm;
+                
+
+                /*
+                $image = new SimpleImage();
+                $image->load($nf);
+                $image->resizeToHeight(200);
+
+                $image->save($nf);
+                */
+
+
+
+
+                $image = new abeautifulsite\SimpleImage($nf);
+                $image->adaptive_resize(250, 250)->save($nf);
+                //$image->save($nf);
+
+
+
+                $u = $_SESSION['helpdesk_user_id'];
+                $stmt = $dbConnection->prepare('update users set usr_img = :uimg where id=:uid ');
+                $stmt->execute(array(':uimg' => $fileName_norm, ':uid' => $u));
+                
+                //}
+                
+                //$_FILES["file"]["name"];
+                
+                
+            }
+        } else {
+            
+            //echo $_FILES["file"]["type"]."<br />";
+            //echo "Invalid file";
+            
+            
+        }
+    }
+    header("Location: " . site_proto() . get_conf_param('hostname') . "/profile");
+        }
+
+
+
         if ($mode == "delete_manual_file") {
             $uniq_code = $_POST['uniq_code'];
             

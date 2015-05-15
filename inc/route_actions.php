@@ -163,6 +163,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])
     || validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 $url = parse_url($CONF['hostname']);
+if ($rq == 1) {
+header("Location: ".site_proto(). $url['host'] ."". $req_url);
+}
+/*
             if ($rq == 1) {
                 if ($CONF['main_portal'] == "false") {
                 header("Location: ".site_proto(). $url['host'] ."". $req_url);
@@ -171,6 +175,7 @@ $url = parse_url($CONF['hostname']);
                 header("Location: " . site_proto() . get_conf_param('hostname') . "/dashboard");
             }
             }
+            */
 }
 else {
 include 'inc/auth.php';
@@ -307,7 +312,7 @@ function auth_get() {
 
 
 $privs=get_privs();
-
+$portalStatus=get_portal_status();
 if ($privs == "CLIENT") {
     header("Location: " . site_proto() . get_conf_param('hostname')."");
 }
@@ -318,7 +323,10 @@ else if ($privs == "USER") {
 
 
 else{
-    include 'inc/auth.php';
+
+    if (!$portalStatus) {include 'inc/auth.php';}
+    else if ($portalStatus) {include 'inc/main_portal/auth.php';}
+    
 }
 }
 

@@ -47,10 +47,12 @@
                         </center><br>
                         
                         
-                                <form action="{{hostname}}profile" method="post" id="form_avatar" enctype="multipart/form-data"> 
+                                <form action="{{hostname}}action" method="post" id="form_avatar" enctype="multipart/form-data"> 
              
              <span class="file-input btn btn-block btn-default btn-file" style="width:100%">
-                {{PROFILE_select_image}} <input id="file_avatar" type="file" name="file">
+                {{PROFILE_select_image}} 
+                <input id="file_avatar" type="file" name="file">
+                <input type="hidden" name="mode" value="set_user_avatar">
             </span>
             <button id="del_profile_img" class="btn btn-block bg-maroon">{{PROFILE_del_image}}</button>
 

@@ -746,7 +746,7 @@ if (ispath('edit_some_qa')) {
     $('#note').summernote({
                         height: 300,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         disableDragAndDrop: true,
                         toolbar: [
     //['style', ['style']], // no style button
@@ -988,7 +988,7 @@ console.log(file);
     $('#note').summernote({
                         height: 300,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         disableDragAndDrop: false,
                         toolbar: [
     //['style', ['style']], // no style button
@@ -1013,7 +1013,7 @@ if (ispath('new_manual')) {
     $('#note').summernote({
                         height: 300,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                       // lang: get_lang_param('summernote_lang'),
                         disableDragAndDrop: true,
                         toolbar: [
     //['style', ['style']], // no style button
@@ -1191,7 +1191,7 @@ if (ispath('new_post')) {
                     $('#note').summernote({
                         height: 300,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         //disableDragAndDrop: false,
                         toolbar: [
     //['style', ['style']], // no style button
@@ -1457,7 +1457,7 @@ if (ispath('edit_feed')) {
 $('#note').summernote({
                         height: 300,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         disableDragAndDrop: true,
                         toolbar: [
     //['style', ['style']], // no style button
@@ -1769,7 +1769,7 @@ if (ispath('new_feed')) {
                     $('#note').summernote({
                         height: 300,
                         focus: true,
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         disableDragAndDrop: true,
                         toolbar: [
     //['style', ['style']], // no style button
@@ -2041,7 +2041,7 @@ $("#"+v+" .editable_text").summernote({
     ['table', ['table']],
     ['link', ['link']],
     ['codeview', ['codeview']]],
-                        lang: get_lang_param('summernote_lang'),
+                       // lang: get_lang_param('summernote_lang'),
                         onImageUpload: function(files, editor, welEditable) {
                             sendFile(files[0], editor, welEditable);
                         },
@@ -2081,7 +2081,7 @@ $("#"+v+" .editable_text").summernote({
     ['table', ['table']],
     ['link', ['link']],
     ['codeview', ['codeview']]],
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         onImageUpload: function(files, editor, welEditable) {
                             sendFile(files[0], editor, welEditable);
                         },
@@ -2252,7 +2252,7 @@ $.ajax({
     ['table', ['table']],
     ['link', ['link']],
     ['codeview', ['codeview']]],
-                        lang: get_lang_param('summernote_lang'),
+                        //lang: get_lang_param('summernote_lang'),
                         onImageUpload: function(files, editor, welEditable) {
                             sendFile(files[0], editor, welEditable);
                         },
