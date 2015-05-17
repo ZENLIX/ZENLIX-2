@@ -267,7 +267,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 </div></div></section>
   <?php
             } 
-            else if (!$_GET['update_n-ow']) {
+            else if (!$_GET['update_now']) {
 ?>
 <section class="content-header">
                     <h1>

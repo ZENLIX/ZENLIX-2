@@ -183,7 +183,7 @@ if (isset($_POST['mode'])) {
                 
                 //$pass = generatepassword();
                 
-                $link4mail = $CONF['real_hostname'] . '/forgot?uc=' . $uc . '&ph=' . $ph . '&m=true';
+                $link4mail = $CONF['real_hostname'] . 'forgot?uc=' . $uc . '&ph=' . $ph . '&m=true';
                 
                 $subject = $CONF['name_of_firm'] . " - password recovery";
                 
@@ -359,6 +359,33 @@ if (isset($_POST['mode'])) {
     }
     
     if ((validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) || (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code']))) {
+        
+
+
+
+            if ($mode == "summernote_file_add") {
+if ($_FILES['file']['name']) {
+            if (!$_FILES['file']['error']) {
+                $name = md5(time());
+                $ext = explode('.', $_FILES['file']['name']);
+                $filename = $name . '.' . $ext[1];
+                $destination = realpath(dirname((__FILE__)))."/upload_files/user_content/" . $filename; //change this directory
+                $location = $_FILES["file"]["tmp_name"];
+                move_uploaded_file($location, $destination);
+                echo 'upload_files/user_content/' . $filename;//change this URL
+            }
+            else
+            {
+              echo  $message = 'Ooops!  Your upload triggered the following error:  '.$_FILES['file']['error'];
+            }
+        }
+            }
+
+
+
+
+
+
         
         if (validate_admin($_SESSION['helpdesk_user_id'])) {
             if ($mode == "sort_sla") {
@@ -759,23 +786,7 @@ deadline_time_high_prio=:deadline_time_high_prio
                 }
             }
 
-            if ($mode == "summernote_file_add") {
-if ($_FILES['file']['name']) {
-            if (!$_FILES['file']['error']) {
-                $name = md5(time());
-                $ext = explode('.', $_FILES['file']['name']);
-                $filename = $name . '.' . $ext[1];
-                $destination = realpath(dirname((__FILE__)))."/upload_files/user_content/" . $filename; //change this directory
-                $location = $_FILES["file"]["tmp_name"];
-                move_uploaded_file($location, $destination);
-                echo 'upload_files/user_content/' . $filename;//change this URL
-            }
-            else
-            {
-              echo  $message = 'Ooops!  Your upload triggered the following error:  '.$_FILES['file']['error'];
-            }
-        }
-            }
+
 
 
 
