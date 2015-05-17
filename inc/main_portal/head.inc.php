@@ -8,7 +8,7 @@ $main_styles_start = array(
     'css/font-awesome/css/font-awesome.min.css',
     'css/chosen.min.css',
     'css/print.css',
-    's/fancybox/jquery.fancybox.css',
+    'js/fancybox/jquery.fancybox.css',
     'inc/main_portal/css/AdminLTE.min.css',
     'inc/main_portal/css/skins/_all-skins.min.css',
     'css/dropzone.css',

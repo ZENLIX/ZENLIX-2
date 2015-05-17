@@ -103,7 +103,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         
         
         <td><small><a href="#" data-pk="<?php
-            echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php
+            echo $row['id'] ?>" data-url="actions" id="edit_deps" data-type="text"><?php
             echo $row['name']; ?></a></small></td>
 <td>
 

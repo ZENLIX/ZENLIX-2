@@ -430,10 +430,11 @@ $(document).ready(function() {
     function sendFile(file, editor, welEditable) {
         data = new FormData();
         data.append("file", file);
+        data.append("mode", 'summernote_file_add');
         $.ajax({
             data: data,
             type: "POST",
-            url: MyHOSTNAME + "sys/up_summernote.php",
+            url: ACTIONPATH,
             cache: false,
             contentType: false,
             processData: false,
@@ -1989,7 +1990,7 @@ php:
                     data: "mode=update_to" + "&ticket_id=" + pp + "&to=" + encodeURIComponent(to) + "&tou=" + encodeURIComponent(u_do) + "&tom=" + encodeURIComponent(tom),
                     success: function(html) {
                         $("#ccc").hide().html(html).fadeIn(500);
-                        window.location = MyHOSTNAME + "list?in";
+                        //window.location = MyHOSTNAME + "list?in";
                     }
                 });
             }

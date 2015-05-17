@@ -378,10 +378,9 @@ else if (!isset($_POST['mode'])) {
     
     In directory <?php echo realpath(dirname(dirname(__FILE__))) ?> must create .htaccess with content:
     <code>
-RewriteEngine On
+RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?page=$1
+RewriteRule . index.php [L]
 
     </code>
     

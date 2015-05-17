@@ -95,6 +95,6 @@ if ($validate == true) {
 } 
 else if ($validate == false) {
     
-    header("Location: " . site_proto() . $_SERVER['HTTP_HOST'] . get_conf_param('hostname') . "auth");
+    header("Location: " . site_proto() . $_SERVER['HTTP_HOST'] . $CONF['hostname'] . "auth");
 }
 ?>

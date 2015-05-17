@@ -25,6 +25,11 @@ $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 include ($base . '/library/smsc_smpp.php');
 
+require_once $base.'/library/Twig/Autoloader.php';
+Twig_Autoloader::register();
+
+
+
 /*
 кому?
 
@@ -906,6 +911,7 @@ $now_date_time = $date_tz->format('Y-m-d H:i:s');
 $CONF = array(
     'title_header' => get_conf_param('title_header') ,
     'hostname' => 'http://' . get_conf_param('hostname') ,
+    'real_hostname' => 'http://' . get_conf_param('hostname')."/" ,
     'mail' => get_conf_param('mail') ,
     'days2arch' => get_conf_param('days2arch') ,
     'name_of_firm' => get_conf_param('name_of_firm') ,
@@ -1321,6 +1327,59 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_new;
         
         //$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
+
+try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('new_ticket.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+
+
+'MAIL_new_ext'=>lang('mail_msg_ticket_new'),
+'MAIL_new'=>$MAIL_new,
+'MAIL_code'=>$MAIL_code,
+'ticket_id'=>$ticket_id,
+'MAIL_2link'=>$MAIL_2link,
+'MAIL_info'=>$MAIL_info,
+'MAIL_created'=>$MAIL_created,
+'uin'=>$uin,
+'MAIL_to'=>$MAIL_to,
+'to_text'=>$to_text,
+'MAIL_prio'=>$MAIL_prio,
+'prio'=>$prio,
+'MAIL_worker'=>$MAIL_worker,
+'nou'=>$nou,
+'MAIL_msg'=>$MAIL_msg,
+'MAIL_subj'=>$MAIL_subj,
+'s'=>$s,
+'MAIL_text'=>$MAIL_text,
+'m'=>$m,
+'h'=>$h,
+
+));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+        /*
         ob_start();
         include ($base . "/inc/mail_tmpl/new_ticket.tpl");
         $message = ob_get_clean();
@@ -1346,7 +1405,7 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{m}", $m, $message);
         
         $message = str_replace("{h}", $h, $message);
-        
+        */
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }
@@ -1420,7 +1479,7 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_refer;
         
-        ob_start();
+        /*ob_start();
         include ($base . "/inc/mail_tmpl/refer_ticket.tpl");
         $message = ob_get_clean();
         
@@ -1452,7 +1511,60 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{m}", $m, $message);
         
         $message = str_replace("{h}", $h, $message, $h);
-        
+        */
+
+
+try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('refer_ticket.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+
+'MAIL_refer'=>$MAIL_refer,
+'MAIL_refer_ext'=>$MAIL_refer_ext,
+'who_init'=>$who_init,
+'MAIL_to_w'=>$MAIL_to_w,
+'MAIL_code'=>$MAIL_code,
+'ticket_id'=>$ticket_id,
+'MAIL_2link'=>$MAIL_2link,
+'MAIL_info'=>$MAIL_info,
+'MAIL_created'=>$MAIL_created,
+'uin'=>$uin,
+'MAIL_to'=>$MAIL_to,
+'to_text'=>$to_text,
+'MAIL_prio'=>$MAIL_prio,
+'prio'=>$prio,
+'MAIL_worker'=>$MAIL_worker,
+'nou'=>$nou,
+'MAIL_msg'=>$MAIL_msg,
+'MAIL_subj'=>$MAIL_subj,
+'s'=>$s,
+'MAIL_text'=>$MAIL_text,
+'m'=>$m,
+'h'=>$h   ));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }
@@ -1509,10 +1621,66 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         }
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_msg_comment;
+
+
+
+//echo $base."/library/Twig/Autoloader.php";
+        try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('comment_ticket.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+'MAIL_msg_comment'=>$MAIL_msg_comment,
+'MAIL_msg_comment_ext'=>$MAIL_msg_comment_ext,
+'who_init'=>$who_init,
+'comment'=>$comment,
+'MAIL_code'=>$MAIL_code,
+'ticket_id'=>$ticket_id,
+'MAIL_2link'=>$MAIL_2link,
+'MAIL_info'=>$MAIL_info,
+'MAIL_created'=>$MAIL_created,
+'uin'=>$uin,
+'MAIL_to'=>$MAIL_to,
+'to_text'=>$to_text,
+'MAIL_prio'=>$MAIL_prio,
+'prio'=>$prio,
+'MAIL_worker'=>$MAIL_worker,
+'nou'=>$nou,
+'MAIL_msg'=>$MAIL_msg,
+'MAIL_subj'=>$MAIL_subj,
+'s'=>$s,
+'MAIL_text'=>$MAIL_text,
+'m'=>$m,
+'h'=>$h
+   
+    ));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+/*
         ob_start();
         include ($base . "/inc/mail_tmpl/comment_ticket.tpl");
         $message = ob_get_clean();
-        
+*/
         $message = str_replace("{MAIL_msg_comment}", $MAIL_msg_comment, $message);
         $message = str_replace("{MAIL_msg_comment_ext}", $MAIL_msg_comment_ext, $message);
         $message = str_replace("{who_init}", $who_init, $message);
@@ -1542,6 +1710,8 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{m}", $m, $message);
         
         $message = str_replace("{h}", $h, $message);
+
+
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }
@@ -1591,7 +1761,7 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_msg_lock;
         
-        ob_start();
+       /* ob_start();
         include ($base . "/inc/mail_tmpl/lock_ticket.tpl");
         $message = ob_get_clean();
         
@@ -1623,6 +1793,65 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{m}", $m, $message);
         
         $message = str_replace("{h}", $h, $message);
+
+*/
+
+
+ try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('lock_ticket.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+'MAIL_msg_lock' =>$MAIL_msg_lock,
+'MAIL_msg_lock_ext' =>$MAIL_msg_lock_ext,
+'who_init' =>$who_init,
+'MAIL_code' =>$MAIL_code,
+'ticket_id' =>$ticket_id,
+'MAIL_2link' =>$MAIL_2link,
+'MAIL_info' =>$MAIL_info,
+'MAIL_created' =>$MAIL_created,
+'uin' =>$uin,
+'MAIL_to' =>$MAIL_to,
+'to_text' =>$to_text,
+'MAIL_prio' =>$MAIL_prio,
+'prio' =>$prio,
+'MAIL_worker' =>$MAIL_worker,
+'nou' =>$nou,
+'MAIL_msg' =>$MAIL_msg,
+'MAIL_subj' =>$MAIL_subj,
+'s' =>$s,
+'MAIL_text' =>$MAIL_text,
+'m' =>$m,
+'h' =>$h
+   
+    ));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
+
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }
@@ -1670,7 +1899,7 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         }
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_msg_unlock;
-        
+        /*
         ob_start();
         include ($base . "/inc/mail_tmpl/unlock_ticket.tpl");
         $message = ob_get_clean();
@@ -1703,7 +1932,64 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{m}", $m, $message);
         
         $message = str_replace("{h}", $h, $message);
-        
+        */
+
+
+try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('unlock_ticket.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+
+
+'MAIL_msg_unlock'=>$MAIL_msg_unlock,
+'MAIL_msg_unlock_ext'=>$MAIL_msg_unlock_ext,
+'who_init'=>$who_init,
+'MAIL_code'=>$MAIL_code,
+'ticket_id'=>$ticket_id,
+'MAIL_2link'=>$MAIL_2link,
+'MAIL_info'=>$MAIL_info,
+'MAIL_created'=>$MAIL_created,
+'uin'=>$uin,
+'MAIL_to'=>$MAIL_to,
+'to_text'=>$to_text,
+'MAIL_prio'=>$MAIL_prio,
+'prio'=>$prio,
+'MAIL_worker'=>$MAIL_worker,
+'nou'=>$nou,
+'MAIL_msg'=>$MAIL_msg,
+'MAIL_subj'=>$MAIL_subj,
+'s'=>$s,
+'MAIL_text'=>$MAIL_text,
+'m'=>$m,
+'h'=>$h
+
+    ));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }
@@ -1752,7 +2038,7 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_msg_ok;
         
-        ob_start();
+        /*ob_start();
         include ($base . "/inc/mail_tmpl/ok_ticket.tpl");
         $message = ob_get_clean();
         
@@ -1784,7 +2070,63 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{m}", $m, $message);
         
         $message = str_replace("{h}", $h, $message, $h);
-        
+        */
+
+
+try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('ok_ticket.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+
+'MAIL_msg_ok'=>$MAIL_msg_ok,
+'MAIL_msg_ok_ext'=>$MAIL_msg_ok_ext,
+'who_init'=>$who_init,
+'MAIL_code'=>$MAIL_code,
+'ticket_id'=>$ticket_id,
+'MAIL_2link'=>$MAIL_2link,
+'MAIL_info'=>$MAIL_info,
+'MAIL_created'=>$MAIL_created,
+'uin'=>$uin,
+'MAIL_to'=>$MAIL_to,
+'to_text'=>$to_text,
+'MAIL_prio'=>$MAIL_prio,
+'prio'=>$prio,
+'MAIL_worker'=>$MAIL_worker,
+'nou'=>$nou,
+'MAIL_msg'=>$MAIL_msg,
+'MAIL_subj'=>$MAIL_subj,
+'s'=>$s,
+'MAIL_text'=>$MAIL_text,
+'m'=>$m,
+'h'=>$h
+    ));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }
@@ -1833,7 +2175,58 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_msg_no_ok;
         
-        ob_start();
+
+try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('refer_ticket.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+'MAIL_msg_no_ok'=>$MAIL_msg_no_ok,
+'MAIL_msg_no_ok_ext'=>$MAIL_msg_no_ok_ext,
+'who_init'=>$who_init,
+'MAIL_code'=>$MAIL_code,
+'ticket_id'=>$ticket_id,
+'MAIL_2link'=>$MAIL_2link,
+'MAIL_info'=>$MAIL_info,
+'MAIL_created'=>$MAIL_created,
+'uin'=>$uin,
+'MAIL_to'=>$MAIL_to,
+'to_text'=>$to_text,
+'MAIL_prio'=>$MAIL_prio,
+'prio'=>$prio,
+'MAIL_worker'=>$MAIL_worker,
+'nou'=>$nou,
+'MAIL_msg'=>$MAIL_msg,
+'MAIL_subj'=>$MAIL_subj,
+'s'=>$s,
+'MAIL_text'=>$MAIL_text,
+'m'=>$m,
+'h'=>$h
+   ));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+        /*ob_start();
         include ($base . "/inc/mail_tmpl/unok_ticket.tpl");
         $message = ob_get_clean();
         
@@ -1865,7 +2258,7 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{m}", $m, $message);
         
         $message = str_replace("{h}", $h, $message);
-        
+        */
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }

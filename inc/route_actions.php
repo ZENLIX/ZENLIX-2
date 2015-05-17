@@ -177,7 +177,7 @@ function indexAction() {
     
     //echo "ok";
     
-    global $dbConnection, $CONF;
+    global $dbConnection, $CONF, $CONF_MAIL;
     $privs = get_privs();
     $portalStatus = get_portal_status();
     
@@ -627,7 +627,7 @@ function sla_repAction() {
 }
 
 function schedulerAction() {
-    global $dbConnection, $CONF;
+    global $dbConnection, $CONF,$CONF_MAIL;
     $privs = get_privs();
     if ($privs == "USER") {
         include 'inc/scheduler.php';

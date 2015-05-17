@@ -2,7 +2,7 @@
 global $lang;
 
 $JS_conf_arr = array(
-    'MyHOSTNAME' => $CONF['hostname'],
+    'MyHOSTNAME' => site_proto().$_SERVER['HTTP_HOST'].$CONF['hostname'],
     'MyLANG' => $lang,
     'NODE_URL' => get_conf_param('node_port') ,
     'VALIDATE' => check_validate()

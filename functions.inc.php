@@ -1927,7 +1927,7 @@ function get_sla_view($level = 0) {
                                             <span class="text" id="val_<?php
         echo $row['id']; ?>" style="  font-weight: 400;">
                                         <a href="#" data-pk="<?php
-        echo $row['id']; ?>" data-url="actions.php" id="edit_item" data-type="text" class="">
+        echo $row['id']; ?>" data-url="action" id="edit_item" data-type="text" class="">
                                                 <?php
         echo $row['name']; ?>
                                             </a> 
@@ -2019,7 +2019,7 @@ function showMenu_sla($level = 0) {
                                             <span class="text" id="val_<?php
         echo $row['id']; ?>">
                                         <a href="#" data-pk="<?php
-        echo $row['id']; ?>" data-url="actions.php" id="edit_item" data-type="text" class="">
+        echo $row['id']; ?>" data-url="action" id="edit_item" data-type="text" class="">
                                                 <?php
         echo $row['name']; ?>
                                             </a> 
@@ -5829,7 +5829,7 @@ function showMenu_helper($level = 0) {
                                             <span class="text" id="val_<?php
         echo $row['id']; ?>">
                                         <a href="#" data-pk="<?php
-        echo $row['id']; ?>" data-url="actions.php" id="edit_item" data-type="text" class="">
+        echo $row['id']; ?>" data-url="action" id="edit_item" data-type="text" class="">
                                                 <?php
         echo $row['name']; ?>
                                             </a> 
@@ -7308,7 +7308,7 @@ function name_of_user_ret($input) {
                 ':input' => $val
             ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-            $res.= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>, ";
+            $res= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>, ";
         }
         $res = substr($res, 0, -2);
     } 
@@ -7318,7 +7318,8 @@ function name_of_user_ret($input) {
             ':input' => $input
         ));
         $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-        $res.= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>";
+
+        $res= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>";
     }
     return ($res);
 }

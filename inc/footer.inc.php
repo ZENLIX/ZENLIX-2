@@ -163,9 +163,9 @@ if (get_current_URL_name('calendar')) {
         'js/daterangepicker.js'
     );
 }
-
+ 
 $JS_conf_arr = array(
-    'MyHOSTNAME' => $CONF['hostname'],
+    'MyHOSTNAME' => site_proto().$_SERVER['HTTP_HOST'].$CONF['hostname'],
     'MyLANG' => $lang,
     'USER_HASH' => get_user_val('uniq_id') ,
     'NODE_URL' => get_conf_param('node_port') ,

@@ -243,8 +243,8 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 <div class="content">
 <table bgcolor="#f9f9f9">
 <tbody><tr>
-<td><?=get_conf_param('name_of_firm');?></td>
-<td align="right"><h6 class="collapse">{MAIL_msg_lock}!</h6></td>
+<td>{{name_of_firm}}</td>
+<td align="right"><h6 class="collapse">{{MAIL_msg_lock}}!</h6></td>
 </tr>
 </tbody></table>
 </div>
@@ -262,7 +262,7 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 <tbody><tr>
 <td>
 
-<p class="lead">{MAIL_msg_lock_ext} <strong>{who_init}</strong></p>
+<p class="lead">{{MAIL_msg_lock_ext}} <strong>{{who_init}}</strong></p>
 
 
  
@@ -270,11 +270,11 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 <table width="100%" cellpadding="3" cellspacing="0">
   <tbody>
     <tr id="tr_">
-      <td width="15%">{MAIL_code}:</td>
+      <td width="15%">{{MAIL_code}}:</td>
       <td width="36%" align="center" valign="middle"><b style="
     font-size: 22px;
-">#{ticket_id}</b></td>
-      <td width="49%" valign="middle" ><p > <a style=" font-size:11px; text-align:center;" href='<?=$CONF['real_hostname'];?>ticket?{h}'>{MAIL_2link}</a>.</p></td>
+">#{{ticket_id}}</b></td>
+      <td width="49%" valign="middle" ><p > <a style=" font-size:11px; text-align:center;" href='{{real_hostname}}ticket?{{h}}'>{{MAIL_2link}}</a>.</p></td>
     </tr>
   </tbody>
 </table>
@@ -292,42 +292,42 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
  <table width="100%" cellspacing="0" cellpadding="3" style="">
   <tr style="">
     <td colspan="2" ><center>
-      <strong>{MAIL_info} </strong>
+      <strong>{{MAIL_info}} </strong>
     </center></td>
 
 
   </tr>
   <tr>
-    <td style="">{MAIL_created}:</td>
-    <td style="">{uin}</td>
+    <td style="">{{MAIL_created}}:</td>
+    <td style="">{{uin}}</td>
   </tr>
   <tr>
-    <td  >{MAIL_to}:</td>
-    <td  >{to_text}</td>
+    <td  >{{MAIL_to}}:</td>
+    <td  >{{to_text}}</td>
   </tr>
     <tr>
-    <td >{MAIL_prio}:</td>
-    <td >{prio}</td>
+    <td >{{MAIL_prio}}:</td>
+    <td >{{prio}}</td>
   </tr>
   <tr>
-    <td >{MAIL_worker}:</td>
-    <td >{nou}</td>
+    <td >{{MAIL_worker}}:</td>
+    <td >{{nou}}</td>
   </tr>
   <tr>
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr>
     <td colspan="2"  ><center>
-      <strong>{MAIL_msg}</strong>
+      <strong>{{MAIL_msg}}</strong>
     </center></td>
   </tr>
   <tr>
-    <td   >{MAIL_subj}:</td>
-    <td   >{s}</td>
+    <td   >{{MAIL_subj}}:</td>
+    <td   >{{s}}</td>
   </tr>
     <tr>
-    <td   >{MAIL_text}:</td>
-    <td   >{m}</td>
+    <td   >{{MAIL_text}}:</td>
+    <td   >{{m}}</td>
   </tr>
     <tr>
     <td colspan="5">&nbsp;</td>

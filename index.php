@@ -81,8 +81,13 @@ $router->map('GET', '/thread', 'postAction');
 $router->map('POST', '/auth', 'auth');
 
 $router->map('POST', '/action', function () {
-    global $dbConnection, $CONF;
+    global $dbConnection, $CONF,$CONF_MAIL;
     require 'actions.php';
+});
+
+$router->map('POST', '/portal_action', function () {
+    global $dbConnection, $CONF, $CONF_MAIL;
+    require 'inc/main_portal/actions.php';
 });
 
 $router->map('POST', '/api', function () {

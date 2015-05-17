@@ -758,6 +758,27 @@ deadline_time_high_prio=:deadline_time_high_prio
                     echo "<a href=\"update.php\" class=\"btn btn-success btn-block btn-sm\">update now</a>";
                 }
             }
+
+            if ($mode == "summernote_file_add") {
+if ($_FILES['file']['name']) {
+            if (!$_FILES['file']['error']) {
+                $name = md5(time());
+                $ext = explode('.', $_FILES['file']['name']);
+                $filename = $name . '.' . $ext[1];
+                $destination = realpath(dirname((__FILE__)))."/upload_files/user_content/" . $filename; //change this directory
+                $location = $_FILES["file"]["tmp_name"];
+                move_uploaded_file($location, $destination);
+                echo 'upload_files/user_content/' . $filename;//change this URL
+            }
+            else
+            {
+              echo  $message = 'Ooops!  Your upload triggered the following error:  '.$_FILES['file']['error'];
+            }
+        }
+            }
+
+
+
             if ($mode == "make_ldap_import") {
                 include_once "library/ldap_import.class.php";
                 echo "<br>";
@@ -1771,7 +1792,7 @@ values
 
                         
                         <td><small><a href="#" data-pk="<?php
-                    echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php
+                    echo $row['id'] ?>" data-url="action" id="edit_deps" data-type="text"><?php
                     echo $row['name']; ?></a></small></td>
                         <td><small><center>
                         <button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php
@@ -1865,7 +1886,7 @@ values
 
                         
                         <td><small><a href="#" data-pk="<?php
-                    echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php
+                    echo $row['id'] ?>" data-url="actions" id="edit_deps" data-type="text"><?php
                     echo $row['name']; ?></a></small></td>
                         <td><small><center><button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php
                     echo $row['id']; ?>">del</button> <button id="<?php
@@ -5819,7 +5840,7 @@ a, a:visited {
                         if ($priv_h == "yes") {
                             echo " 
             <div class=\"btn-group\">
-            <a href=\"" . $CONF['hostname'] . "/helper?h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+            <a href=\"" . $CONF['hostname'] . "helper?h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -5976,7 +5997,7 @@ a, a:visited {
                             if ($priv_h == "yes") {
                                 echo " 
             <div class=\"btn-group\">
-<a href=\"" . $CONF['hostname'] . "/helper?h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
+<a href=\"" . $CONF['hostname'] . "helper?h=" . $row['hashname'] . "&edit\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-pencil\"></i></a>
             <button id=\"del_helper\" value=\"" . $row['hashname'] . "\"type=\"button\" class=\"btn btn-default btn-xs\"><i class=\"fa fa-trash-o\"></i></button>
             </div>
             ";
@@ -7070,7 +7091,7 @@ a, a:visited {
                     
                 }
             }
-            header("Location: " . site_proto() . $_SERVER['HTTP_HOST'] . get_conf_param('hostname') . "/config");
+            header("Location: " . site_proto() . $_SERVER['HTTP_HOST'] . $CONF['hostname'] . "config");
         }
         
         if ($mode == "set_user_avatar") {
@@ -7142,7 +7163,7 @@ a, a:visited {
                     
                 }
             }
-            header("Location: " . site_proto() . $_SERVER['HTTP_HOST'] . get_conf_param('hostname') . "/profile");
+            header("Location: " . site_proto() . $_SERVER['HTTP_HOST'] . $CONF['hostname'] . "profile");
         }
         
         if ($mode == "delete_manual_file") {
@@ -7980,10 +8001,11 @@ values (:unlock, :n, :unow, :tid)');
         <?php
             }
         }
-        
+         
         if ($mode == "update_to") {
             
-            $hs = explode(",", get_ticket_action_priv($tid));
+
+            $hs = explode(",", get_ticket_action_priv($_POST['ticket_id']));
             if (in_array("ref", $hs)) {
                 
                 $tid = ($_POST['ticket_id']);

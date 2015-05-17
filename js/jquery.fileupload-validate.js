@@ -10,7 +10,7 @@
  */
 
 /* global define, window */
-var ACTIONPATH=MyHOSTNAME+"actions.php";
+//var ACTIONPATH=MyHOSTNAME+"actions.php";
 
 
     function get_lang_param(par) {

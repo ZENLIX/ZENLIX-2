@@ -355,7 +355,13 @@ function send_notification($type, $ticket_id) {
             if (($key = array_search($user_init_id, $nr)) !== false) {
                 unset($nr[$key]);
             }
-            
+            $stmt_log = $dbConnection->prepare('SELECT init_user_id FROM ticket_log where ticket_id=:tid and msg=:msg order by ID desc limit 1');
+            $stmt_log->execute(array(
+                ':tid' => $ticket_id,
+                ':msg' => 'refer'
+            ));
+            $ticket_log_res = $stmt_log->fetch(PDO::FETCH_ASSOC);
+            $who_init = $ticket_log_res['init_user_id'];
             $init_user_h = get_user_hash_by_id($who_init);
             
             foreach ($del_nodes as $uniq_id_row) {

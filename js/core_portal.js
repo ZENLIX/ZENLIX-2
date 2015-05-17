@@ -158,7 +158,7 @@
                moment.lang(MyLANG);
                makemytime(true);
                var ACTIONPATH = MyHOSTNAME + "action";
-               var ACTIONPATH_PORTAL = MyHOSTNAME + "inc/main_portal/actions.php";
+               var ACTIONPATH_PORTAL = MyHOSTNAME + "portal_action";
 
                function ispath(p1) {
                    var url = window.location.href;
@@ -178,10 +178,11 @@ console.log(result);
                function sendFile(file, editor, welEditable) {
                    data = new FormData();
                    data.append("file", file);
+                   data.append("mode", 'summernote_file_add');
                    $.ajax({
                        data: data,
                        type: "POST",
-                       url: MyHOSTNAME + "sys/up_summernote.php",
+                       url: ACTIONPATH,
                        cache: false,
                        contentType: false,
                        processData: false,
@@ -521,7 +522,7 @@ console.log(result);
                        height: 300,
                        focus: true,
                        //lang: get_lang_param('summernote_lang'),
-                       disableDragAndDrop: true,
+                      // disableDragAndDrop: true,
                        toolbar: [
                            //['style', ['style']], // no style button
                            ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -685,7 +686,7 @@ $.ajax({
                        height: 300,
                        focus: true,
                        //lang: get_lang_param('summernote_lang'),
-                       disableDragAndDrop: false,
+                      // disableDragAndDrop: false,
                        toolbar: [
                            //['style', ['style']], // no style button
                            ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -708,7 +709,7 @@ $.ajax({
                        height: 300,
                        focus: true,
                        // lang: get_lang_param('summernote_lang'),
-                       disableDragAndDrop: true,
+                      // disableDragAndDrop: true,
                        toolbar: [
                            //['style', ['style']], // no style button
                            ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -832,7 +833,7 @@ $.ajax({
                        height: 300,
                        focus: true,
                        //lang: get_lang_param('summernote_lang'),
-                       //disableDragAndDrop: false,
+                      // disableDragAndDrop: true,
                        toolbar: [
                            //['style', ['style']], // no style button
                            ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -1026,7 +1027,7 @@ $.ajax({
                        height: 300,
                        focus: true,
                        //lang: get_lang_param('summernote_lang'),
-                       disableDragAndDrop: true,
+                       //disableDragAndDrop: true,
                        toolbar: [
                            //['style', ['style']], // no style button
                            ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -1038,6 +1039,9 @@ $.ajax({
                            ['link', ['link']],
                            ['codeview', ['codeview']]
                        ],
+                       onImageUpload: function(files, editor, welEditable) {
+                           sendFile(files[0], editor, welEditable);
+                       },
                        oninit: function() {}
                    });
                }
@@ -1251,7 +1255,7 @@ $.ajax({
                        height: 300,
                        focus: true,
                        //lang: get_lang_param('summernote_lang'),
-                       disableDragAndDrop: true,
+                      // disableDragAndDrop: true,
                        toolbar: [
                            //['style', ['style']], // no style button
                            ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -1263,6 +1267,9 @@ $.ajax({
                            ['link', ['link']],
                            ['codeview', ['codeview']]
                        ],
+                       onImageUpload: function(files, editor, welEditable) {
+                           sendFile(files[0], editor, welEditable);
+                       },
                        oninit: function() {}
                    });
                }
@@ -1661,7 +1668,8 @@ $.ajax({
                            params: {
                                mode: 'upload_post_file',
                                post_hash: ph,
-                               type: '1'
+                               type: '1',
+                               is_tmp: '1'
                            },
                            removedfile: function(file) {
                                //console.log('d:'+file);

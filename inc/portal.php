@@ -117,6 +117,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         </div>
   </div>
 <?php
+$mp=array();
         if (get_conf_param('portal_msg_type') == "info") {
             $mp['info'] = "checked";
         } 
@@ -126,6 +127,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         else if (get_conf_param('portal_msg_type') == "danger") {
             $mp['danger'] = "checked";
         }
+        //echo $mp['info'];
 ?>
 
    <div class="form-group">

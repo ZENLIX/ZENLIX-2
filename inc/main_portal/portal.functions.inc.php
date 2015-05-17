@@ -683,7 +683,7 @@ function showMenu_todo($level = 0) {
                                             
                                             <!-- todo text -->
                                             <span class="text" id="val_<?php echo $row['id']; ?>">
-                                        <a href="#" data-pk="<?php echo $row['id']; ?>" data-url="inc/main_portal/actions.php" id="edit_item_todo" data-type="text" style="width:400px;">
+                                        <a href="#" data-pk="<?php echo $row['id']; ?>" data-url="portal_action" id="edit_item_todo" data-type="text" style="width:400px;">
                                                 <?php echo $row['name']; ?>
                                             </a> 
                                             </span>
@@ -759,7 +759,7 @@ function showMenu_qa($level = 0) {
                                             
                                             <!-- todo text -->
                                             <span class="text" id="val_<?php echo $row['id']; ?>">
-                                        <a href="#" data-pk="<?php echo $row['id']; ?>" data-url="inc/main_portal/actions.php" id="edit_item_qa" data-type="text" class="">
+                                        <a href="#" data-pk="<?php echo $row['id']; ?>" data-url="portal_action" id="edit_item_qa" data-type="text" class="">
                                                 <?php echo $row['question']; ?>
                                             </a> 
                                             </span>
@@ -891,7 +891,7 @@ function showMenu_manual($level = 0) {
                                             
                                             <!-- todo text -->
                                             <span class="text" id="val_<?php echo $row['id']; ?>">
-                                        <a href="#" data-pk="<?php echo $row['id']; ?>" data-url="inc/main_portal/actions.php" id="edit_item" data-type="text" class="">
+                                        <a href="#" data-pk="<?php echo $row['id']; ?>" data-url="portal_action" id="edit_item" data-type="text" class="">
                                                 <?php echo $row['name']; ?>
                                             </a> 
                                             </span>

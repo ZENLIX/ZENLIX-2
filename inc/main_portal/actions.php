@@ -1,6 +1,6 @@
 <?php
-session_start();
-include ("../../functions.inc.php");
+//session_start();
+//include ("../../functions.inc.php");
 if (isset($_POST['mode'])) {
     $validate = false;
     if ((validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) || (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code']))) {
@@ -1148,9 +1148,15 @@ if (isset($_POST['mode'])) {
             print json_encode($results);
         }
         
+
+
+
+
         if ($mode == "upload_post_file") {
-            
-            $output_dir = "../../upload_files/";
+            //echo "ok";
+            $base = dirname(dirname(dirname(__FILE__)));
+            $output_dir = $base."/upload_files/";
+            //echo  $output_dir;
             $hn = $_POST['post_hash'];
             $maxsize = get_conf_param('file_size');
             

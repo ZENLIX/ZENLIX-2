@@ -181,13 +181,13 @@ try {
     
     // подгружаем шаблон
     $template = $twig->loadTemplate('cat.view.tmpl');
-    
+    //echo get_total_pages_posts_status($hn, $_GET['status']);
     // передаём в шаблон переменные и значения
     // выводим сформированное содержание
     echo $template->render(array(
         'hostname' => $CONF['hostname'],
         't' => $t,
-        'get_cat_icon' => get_cat_icon($hn) ,
+        'get_cat_icon' => get_cat_icon($hn),
         'sel_status' => $sel_status,
         'sel_arr' => $sel_arr,
         'get_total_pages_posts_status' => get_total_pages_posts_status($hn, $_GET['status']) ,
@@ -196,6 +196,8 @@ try {
         'MSG_no_records' => lang('MSG_no_records') ,
         'hn' => $hn,
         'p' => $p,
+        's'=>$s,
+        'status_sel'=>$status_sel,
         'status_label_def' => $status_label['def'],
         'status_label_0' => $status_label['0'],
         'get_count_post_1_0' => get_count_post('1', '0') ,
