@@ -1,548 +1,364 @@
 <div class="content-wrapper">
-<section class="content">
-
-
-
-
-
-
-
-<section class="invoice">
-          <!-- title row -->
-          <div class="row">
-
-
-
-<div class="col-md-9">
-
-{% if hnset == true %}
-
-{% if hnparam == "new_feed" %}
-    {% if validate_user == true %}
-<div class="box box-default">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{PORTAL_new_msg}}</h3>
-<div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                <div class="">
-
-
- <form class="form-horizontal">
-  <div class="form-group">
-    
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_subj}}" value="">
-    </div>
-        <div class="col-sm-3">
-      
-    </div>
-        <div class="col-sm-12"><br>
-      <input type="text" class="form-control" id="title" placeholder="{{PORTAL_t}}" value="">
-    </div>
-  </div>
-
-    <div class="form-group">
-    
-<div class="col-sm-12">
-<div id="note"></div>
-</div>
-<div class="col-sm-12" >
-
-
-</div>
-
-<div class="col-sm-12" id="post_res">
-
-
-
-</div>
-
-
-
-<div class="col-sm-6 col-sm-offset-3">
-<br>
-<button class="btn btn-block btn-info" id="make_new_version" >{{PORTAL_news_create}}</button>
-<input type="hidden" value="{{time}}" id="news_hash">
-</div>
-
-  </div>
-
-
-  </form>
-
-
-
-                </div><!-- /.footer -->
-                </div>
-                </div>
-
-{% endif %}
-{% endif %}
-{% if hnparam == "no_new_feed" %}
-    {% if hnget == "edit_feed" %}
-
-
-  {% if validate_user == true %}
-<div class="box box-default">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{PORTAL_new_msg}}</h3>
-<div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                <div class="">
-
-
- <form class="form-horizontal">
-  <div class="form-group">
-    
-    <div class="col-sm-9">
-      <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_subj}}" value="{{subj}}">
-    </div>
-        <div class="col-sm-3">
-      
-    </div>
-        <div class="col-sm-12"><br>
-      <input type="text" class="form-control" id="title" placeholder="{{PORTAL_t}}" value="{{title}}">
-    </div>
-  </div>
-
-    <div class="form-group">
-    
-<div class="col-sm-12">
-<div id="note">{{msg | raw}}</div>
-</div>
-<div class="col-sm-12" >
-
-
-</div>
-
-<div class="col-sm-12" id="post_res">
-
-
-
-</div>
-
-
-
-<div class="col-sm-6 col-sm-offset-3">
-<br>
-<button class="btn btn-block btn-info" id="make_edit_version" >{{PORTAL_news_save}}</button>
-<input type="hidden" value="{{uniq_id}}" id="news_hash">
-</div>
-
-  </div>
-
-
-  </form>
-
-
-
-                </div><!-- /.footer -->
-                </div>
-                </div>
-{% endif %}
-
-
-{% endif %}
-{% if hnget == "no_edit_feed" %}
-<div class="box box-default">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{subj}}</h3>
-<div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-<p class="text-muted">{{title}}</p>
-
-                {{msg | raw}}
-                </div>
-                <div class="box-footer">
-
-
-
-<a style="width:25px;" class="btn btn-xs btn-twitter" href="http://twitter.com/share?text={{title}}&url={{REQUEST_URI}}" title="Share on Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
-
-<a style="width:25px;" class="btn btn-xs btn-facebook" 
-href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{REQUEST_URI}}&p[title]={{title}}&p[summary]={{title}}&p[images][0]={{logo_img}}"
-
-
-><i class="fa fa-facebook"></i></a>
-<a style="width:25px;" class="btn btn-xs btn-google-plus" href="https://plus.google.com/share?url={{REQUEST_URI}}"><i class="fa fa-google-plus"></i></a>
-
-<a style="width:25px;" class="btn btn-xs btn-github" href="mailto:?subject=&body={{title}} - {{REQUEST_URI}}"><i class="fa fa-envelope"></i></a>
-
-                <br>
-                <small class="text-muted">
-                <time id="c" datetime="{{dt}}"></time>
-                </small>
-                <small class="text-muted pull-right">
-                {{nameshort}}
-
-{% if validate_user == true %} 
-                <div class="btn-group ">
-<button class="btn btn-xs bg-maroon" id="delete_version" value="{{uniq_id}}">{{PORTAL_act_del}}</button> 
-<a class="btn btn-xs bg-orange btn-flat" href="version?{{uniq_id}}&edit_feed">{{PORTAL_act_edit}}</a>
- </div>
-{% endif %}
-
-                </small>
-                </div>
-                </div>
-
-
-
-
-
-
-
-
-
-
-{% endif %}
-
-{% endif %}
-
-{% endif %}
-{% if hnset == false %}
-
-
-    {% if validate_user == true %}
-
-
-<div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{PORTAL_version_box_title}}</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                
-      <form class="form-horizontal" role="form">
-    <div class="form-group">
-    <label for="file_size" class="col-sm-4 control-label"><small>{{PORTAL_t}}</small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="portal_box_version_n" placeholder="{{PORTAL_t}}" value="{{portal_box_version_n}}">
-    </div>
-  </div>
-      <div class="form-group">
-    <label for="file_size" class="col-sm-4 control-label"><small>{{FIELD_type_text}}</small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="portal_box_version_text" placeholder="{{FIELD_type_text}}" value="{{portal_box_version_text}}">
-    </div>
-  </div>
-    <div class="form-group">
-    <label for="file_size" class="col-sm-4 control-label"><small>{{PORTAL_icon}}</small></label>
-    <div class="col-sm-8">
-      <input type="text" class="form-control input-sm" id="portal_box_version_icon" placeholder="{{PORTAL_icon}}" value="{{portal_box_version_icon}}">
-    </div>
-  </div>
-  <center>
-    <button type="submit" id="conf_edit_version_banner" class="btn btn-success"><i class="fa fa-pencil"></i> {{JS_save}}</button>
-    
-</center>
-      </form>
-
-
-                </div>
-                <div id="conf_edit_version_banner_res"></div>
-                </div>
-
-
-<div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{PORTAL_todo_1}}</h3>
-
-                </div><!-- /.box-header -->
-                <div class="box-body">
-
-                  
-<style type="text/css">
-
-
-
-        
-
-        pre, code {
-            font-size: 12px;
-        }
-
-        pre {
-            width: 100%;
-            overflow: auto;
-        }
-
-        small {
-            font-size: 90%;
-        }
-
-        small code {
-            font-size: 11px;
-        }
-
-        .placeholder {
-            outline: 1px dashed #4183C4;
-            /*-webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            margin: -1px;*/
-            height: 20px;
-        }
-
-        .mjs-nestedSortable-error {
-            background: #fbe3e4;
-            border-color: transparent;
-        }
-
-        ul {
-            margin: 0;
-            padding: 0;
-            padding-left: 30px;
-        }
-
-        ul.sortable, ul.sortable ul {
-            margin: 0 0 0 25px;
-            padding: 0;
-            list-style-type: none;
-        }
-
-        ul.sortable {
-            margin: 4em 0;
-        }
-
-        .sortable li {
-            margin: 5px 0 0 0;
-            padding: 0;
-        }
-
-        .sortable li div  {
-            /*
-            border: 1px solid #d4d4d4;
-            -webkit-border-radius: 3px;
-            -moz-border-radius: 3px;
-            border-radius: 3px;
-            border-color: #D4D4D4 #D4D4D4 #BCBCBC;
-            padding: 6px;
-            margin: 0;
-            cursor: move;
-            background: #f6f6f6;
-            background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
-            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-            background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-            background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-            background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
-            */
-        }
-
-        .sortable li.mjs-nestedSortable-branch div {
-           /* background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
-            background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
-            */
-            list-style-type: none;
-
-        }
-
-        .sortable li.mjs-nestedSortable-leaf div {
-
-
-        }
-
-        li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
-            border-color: #999;
-            background: #fafafa;
-        }
-
-        .disclose {
-            cursor: pointer;
-            width: 10px;
-            display: none;
-        }
-
-        .sortable li.mjs-nestedSortable-collapsed > ul {
-            display: none;
-        }
-
-        .sortable li.mjs-nestedSortable-branch > div > .disclose {
-            display: inline-block;
-        }
-
-        .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
-            content: '+ ';
-        }
-
-        .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
-            content: '- ';
-        }
-
-        
-
-        p, ol, ul, pre, form {
-            margin-top: 0;
-            margin-bottom: 1em;
-        }
-
-        dl {
-            margin: 0;
-        }
-
-        dd {
-            margin: 0;
-            padding: 0 0 0 1.5em;
-        }
-
-        code {
-            background: #e5e5e5;
-        }
-
-        input {
-            vertical-align: text-bottom;
-        }
-
-        .notice {
-            color: #c33;
-        }
-
-    </style>
-
-
-
-<div id="content_items"> 
-
-
-{{showMenu_todo | raw}}
-
-
-</div>
-
-
-
-                </div>
-                <div class="box-footer clearfix no-border">
-                                    <button id="add_todo_item" class="btn btn-default pull-right"><i class="fa fa-plus"></i> {{NOTES_create}}</button>
-                         
-
- 
-</div>
-</div>
-
-
-{% endif %}
-
-<div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{PORTAL_todo_2}}</h3>
-
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                <div class="">
-                {{get_main_todo | raw }}
-                </div>
-                </div>
-                </div>
-
-
-<div class="box box-default">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{PORTAL_versions}}</h3>
-<div class="box-tools pull-right">
-                    <h4> <i class="fa fa-leaf"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                <div class="">
-
-
- <ul class="products-list product-list-in-box ">
-
-
-{% for item in getna %}
-
-
-
-                    <li class="item">
-                      
-                      <div class="product-info" style="margin-left:0px;">
-                        <a href="version?{{item.uniq_id}}" class="product-title"><h4>{{item.subj}}</h4> </a>
-                        <span class="product-description">
-                          {{item.title}}
-                        </span>
-                        <small class="text-muted pull-right">
-
-<i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.dt}}"></time>
-                        </small>
-                      </div>
-                    </li><!-- /.item -->
-
-
-{% endfor %}
-
-
-
-
-
-                                        
-                    
-                  </ul>
-
-
-
-                </div><!-- /.footer -->
-                </div>
-                </div>
-
-
-
-{% endif %}
-
-
-
-</div>
-
-
-
-<div class="col-md-3">
-
-{% if validate_user == true %}
-<div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">{{PORTAL_admin_menu}}</h3>
-                </div>
-                <div class="box-body">
-                  <a href="version?new_feed" class="btn btn-default btn-block">{{PORTAL_news_create}}</a>
-                </div>
-              </div>
-{% endif %}
-
-
-{{ view_release_bar | raw}}
-
-
-
-
-
-{{view_stat_cat | raw }}
-
-
-
-
-
-
-
-</div>
-
-
-          </div>
-          <!-- info row -->
-          
-        </section>
-
-
-
-
-</section>
-</div>
+    <section class="content">
+        <section class="invoice">
+            <!-- title row -->
+            <div class="row">
+                <div class="col-md-9">
+                    {% if hnset == true %}
+                    {% if hnparam == "new_feed" %}
+                    {% if validate_user == true %}
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{PORTAL_new_msg}}</h3>
+                            <div class="box-tools pull-right">
+                                <h4> <i class="fa fa-leaf"></i></h4>
+                            </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="">
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_subj}}" value="">
+                                            </div>
+                                            <div class="col-sm-3">
+
+                                            </div>
+                                            <div class="col-sm-12"><br>
+                                                <input type="text" class="form-control" id="title" placeholder="{{PORTAL_t}}" value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <div class="col-sm-12">
+                                                <div id="note"></div>
+                                            </div>
+                                            <div class="col-sm-12" >
+                                            </div>
+                                            <div class="col-sm-12" id="post_res">
+                                            </div>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <br>
+                                                <button class="btn btn-block btn-info" id="make_new_version" >{{PORTAL_news_create}}</button>
+                                                <input type="hidden" value="{{time}}" id="news_hash">
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </div><!-- /.footer -->
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                            {% if hnparam == "no_new_feed" %}
+                            {% if hnget == "edit_feed" %}
+                            {% if validate_user == true %}
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">{{PORTAL_new_msg}}</h3>
+                                    <div class="box-tools pull-right">
+                                        <h4> <i class="fa fa-leaf"></i></h4>
+                                    </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div class="">
+                                            <form class="form-horizontal">
+                                                <div class="form-group">
+
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_subj}}" value="{{subj}}">
+                                                    </div>
+                                                    <div class="col-sm-3">
+
+                                                    </div>
+                                                    <div class="col-sm-12"><br>
+                                                        <input type="text" class="form-control" id="title" placeholder="{{PORTAL_t}}" value="{{title}}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+
+                                                    <div class="col-sm-12">
+                                                        <div id="note">{{msg | raw}}</div>
+                                                    </div>
+                                                    <div class="col-sm-12" >
+                                                    </div>
+                                                    <div class="col-sm-12" id="post_res">
+                                                    </div>
+                                                    <div class="col-sm-6 col-sm-offset-3">
+                                                        <br>
+                                                        <button class="btn btn-block btn-info" id="make_edit_version" >{{PORTAL_news_save}}</button>
+                                                        <input type="hidden" value="{{uniq_id}}" id="news_hash">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            </div><!-- /.footer -->
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% if hnget == "no_edit_feed" %}
+                                    <div class="box box-default">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">{{subj}}</h3>
+                                            <div class="box-tools pull-right">
+                                                <h4> <i class="fa fa-leaf"></i></h4>
+                                            </div>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                <p class="text-muted">{{title}}</p>
+                                                {{msg | raw}}
+                                            </div>
+                                            <div class="box-footer">
+                                                <a style="width:25px;" class="btn btn-xs btn-twitter" href="http://twitter.com/share?text={{title}}&url={{REQUEST_URI}}" title="Share on Twitter" target="_blank"><i class="fa fa-twitter"></i></a>
+                                                <a style="width:25px;" class="btn btn-xs btn-facebook"
+                                                href="http://www.facebook.com/sharer/sharer.php?s=100&p[url]={{REQUEST_URI}}&p[title]={{title}}&p[summary]={{title}}&p[images][0]={{logo_img}}"
+                                                ><i class="fa fa-facebook"></i></a>
+                                                <a style="width:25px;" class="btn btn-xs btn-google-plus" href="https://plus.google.com/share?url={{REQUEST_URI}}"><i class="fa fa-google-plus"></i></a>
+                                                <a style="width:25px;" class="btn btn-xs btn-github" href="mailto:?subject=&body={{title}} - {{REQUEST_URI}}"><i class="fa fa-envelope"></i></a>
+                                                <br>
+                                                <small class="text-muted">
+                                                <time id="c" datetime="{{dt}}"></time>
+                                                </small>
+                                                <small class="text-muted pull-right">
+                                                {{nameshort}}
+                                                {% if validate_user == true %}
+                                                <div class="btn-group ">
+                                                    <button class="btn btn-xs bg-maroon" id="delete_version" value="{{uniq_id}}">{{PORTAL_act_del}}</button>
+                                                    <a class="btn btn-xs bg-orange btn-flat" href="version?{{uniq_id}}&edit_feed">{{PORTAL_act_edit}}</a>
+                                                </div>
+                                                {% endif %}
+                                                </small>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% endif %}
+                                        {% endif %}
+                                        {% if hnset == false %}
+                                        {% if validate_user == true %}
+                                        <div class="box box-primary">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">{{PORTAL_version_box_title}}</h3>
+                                                </div><!-- /.box-header -->
+                                                <div class="box-body">
+
+                                                    <form class="form-horizontal" role="form">
+                                                        <div class="form-group">
+                                                            <label for="file_size" class="col-sm-4 control-label"><small>{{PORTAL_t}}</small></label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control input-sm" id="portal_box_version_n" placeholder="{{PORTAL_t}}" value="{{portal_box_version_n}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="file_size" class="col-sm-4 control-label"><small>{{FIELD_type_text}}</small></label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control input-sm" id="portal_box_version_text" placeholder="{{FIELD_type_text}}" value="{{portal_box_version_text}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="file_size" class="col-sm-4 control-label"><small>{{PORTAL_icon}}</small></label>
+                                                            <div class="col-sm-8">
+                                                                <input type="text" class="form-control input-sm" id="portal_box_version_icon" placeholder="{{PORTAL_icon}}" value="{{portal_box_version_icon}}">
+                                                            </div>
+                                                        </div>
+                                                        <center>
+                                                        <button type="submit" id="conf_edit_version_banner" class="btn btn-success"><i class="fa fa-pencil"></i> {{JS_save}}</button>
+
+                                                        </center>
+                                                    </form>
+                                                </div>
+                                                <div id="conf_edit_version_banner_res"></div>
+                                            </div>
+                                            <div class="box box-primary">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">{{PORTAL_todo_1}}</h3>
+                                                    </div><!-- /.box-header -->
+                                                    <div class="box-body">
+
+                                                        <style type="text/css">
+
+                                                        pre, code {
+                                                        font-size: 12px;
+                                                        }
+                                                        pre {
+                                                        width: 100%;
+                                                        overflow: auto;
+                                                        }
+                                                        small {
+                                                        font-size: 90%;
+                                                        }
+                                                        small code {
+                                                        font-size: 11px;
+                                                        }
+                                                        .placeholder {
+                                                        outline: 1px dashed #4183C4;
+                                                        /*-webkit-border-radius: 3px;
+                                                        -moz-border-radius: 3px;
+                                                        border-radius: 3px;
+                                                        margin: -1px;*/
+                                                        height: 20px;
+                                                        }
+                                                        .mjs-nestedSortable-error {
+                                                        background: #fbe3e4;
+                                                        border-color: transparent;
+                                                        }
+                                                        ul {
+                                                        margin: 0;
+                                                        padding: 0;
+                                                        padding-left: 30px;
+                                                        }
+                                                        ul.sortable, ul.sortable ul {
+                                                        margin: 0 0 0 25px;
+                                                        padding: 0;
+                                                        list-style-type: none;
+                                                        }
+                                                        ul.sortable {
+                                                        margin: 4em 0;
+                                                        }
+                                                        .sortable li {
+                                                        margin: 5px 0 0 0;
+                                                        padding: 0;
+                                                        }
+                                                        .sortable li div  {
+                                                        /*
+                                                        border: 1px solid #d4d4d4;
+                                                        -webkit-border-radius: 3px;
+                                                        -moz-border-radius: 3px;
+                                                        border-radius: 3px;
+                                                        border-color: #D4D4D4 #D4D4D4 #BCBCBC;
+                                                        padding: 6px;
+                                                        margin: 0;
+                                                        cursor: move;
+                                                        background: #f6f6f6;
+                                                        background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%);
+                                                        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed));
+                                                        background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+                                                        background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+                                                        background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+                                                        background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%);
+                                                        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 );
+                                                        */
+                                                        }
+                                                        .sortable li.mjs-nestedSortable-branch div {
+                                                        /* background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #f0ece9 100%);
+                                                        background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#f0ece9 100%);
+                                                        */
+                                                        list-style-type: none;
+                                                        }
+                                                        .sortable li.mjs-nestedSortable-leaf div {
+                                                        }
+                                                        li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+                                                        border-color: #999;
+                                                        background: #fafafa;
+                                                        }
+                                                        .disclose {
+                                                        cursor: pointer;
+                                                        width: 10px;
+                                                        display: none;
+                                                        }
+                                                        .sortable li.mjs-nestedSortable-collapsed > ul {
+                                                        display: none;
+                                                        }
+                                                        .sortable li.mjs-nestedSortable-branch > div > .disclose {
+                                                        display: inline-block;
+                                                        }
+                                                        .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
+                                                        content: '+ ';
+                                                        }
+                                                        .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
+                                                        content: '- ';
+                                                        }
+
+                                                        p, ol, ul, pre, form {
+                                                        margin-top: 0;
+                                                        margin-bottom: 1em;
+                                                        }
+                                                        dl {
+                                                        margin: 0;
+                                                        }
+                                                        dd {
+                                                        margin: 0;
+                                                        padding: 0 0 0 1.5em;
+                                                        }
+                                                        code {
+                                                        background: #e5e5e5;
+                                                        }
+                                                        input {
+                                                        vertical-align: text-bottom;
+                                                        }
+                                                        .notice {
+                                                        color: #c33;
+                                                        }
+                                                        </style>
+                                                        <div id="content_items">
+                                                            {{showMenu_todo | raw}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="box-footer clearfix no-border">
+                                                        <button id="add_todo_item" class="btn btn-default pull-right"><i class="fa fa-plus"></i> {{NOTES_create}}</button>
+
+
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                                <div class="box box-primary">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title">{{PORTAL_todo_2}}</h3>
+                                                        </div><!-- /.box-header -->
+                                                        <div class="box-body">
+                                                            <div class="">
+                                                                {{get_main_todo | raw }}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="box box-default">
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title">{{PORTAL_versions}}</h3>
+                                                            <div class="box-tools pull-right">
+                                                                <h4> <i class="fa fa-leaf"></i></h4>
+                                                            </div>
+                                                            </div><!-- /.box-header -->
+                                                            <div class="box-body">
+                                                                <div class="">
+                                                                    <ul class="products-list product-list-in-box ">
+                                                                        {% for item in getna %}
+                                                                        <li class="item">
+
+                                                                            <div class="product-info" style="margin-left:0px;">
+                                                                                <a href="version?{{item.uniq_id}}" class="product-title"><h4>{{item.subj}}</h4> </a>
+                                                                                <span class="product-description">
+                                                                                {{item.title}}
+                                                                                </span>
+                                                                                <small class="text-muted pull-right">
+                                                                                <i class="fa fa-clock-o"></i> <time id="c" datetime="{{item.dt}}"></time>
+                                                                                </small>
+                                                                            </div>
+                                                                            </li><!-- /.item -->
+                                                                            {% endfor %}
+
+
+                                                                        </ul>
+                                                                        </div><!-- /.footer -->
+                                                                    </div>
+                                                                </div>
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                {% if validate_user == true %}
+                                                                <div class="box">
+                                                                    <div class="box-header">
+                                                                        <h3 class="box-title">{{PORTAL_admin_menu}}</h3>
+                                                                    </div>
+                                                                    <div class="box-body">
+                                                                        <a href="version?new_feed" class="btn btn-default btn-block">{{PORTAL_news_create}}</a>
+                                                                    </div>
+                                                                </div>
+                                                                {% endif %}
+                                                                {{ view_release_bar | raw}}
+                                                                {{view_stat_cat | raw }}
+                                                            </div>
+                                                        </div>
+                                                        <!-- info row -->
+
+                                                    </section>
+                                                </section>
+                                            </div>

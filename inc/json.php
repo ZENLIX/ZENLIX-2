@@ -9,7 +9,10 @@ if (isset($_GET['posada'])) {
     $res1 = $stmt->fetchAll();
     foreach ($res1 as $row) {
         
-        $data[] = array('value' => (int)$row['id'], 'text' => $row['name']);
+        $data[] = array(
+            'value' => (int)$row['id'],
+            'text' => $row['name']
+        );
     }
     
     echo json_encode($data);
@@ -23,7 +26,10 @@ if (isset($_GET['units'])) {
     $res1 = $stmt->fetchAll();
     foreach ($res1 as $row) {
         
-        $data[] = array('value' => (int)$row['id'], 'text' => $row['name']);
+        $data[] = array(
+            'value' => (int)$row['id'],
+            'text' => $row['name']
+        );
     }
     
     echo json_encode($data);
@@ -33,7 +39,9 @@ if (isset($_GET['users_do'])) {
     
     $term = trim(strip_tags(($_GET['term'])));
     $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users WHERE fio LIKE :term and is_client=0 and status!=2 limit 10');
-    $stmt->execute(array(':term' => '%' . $term . '%'));
+    $stmt->execute(array(
+        ':term' => '%' . $term . '%'
+    ));
     $res1 = $stmt->fetchAll();
     foreach ($res1 as $row) {
         
@@ -48,7 +56,9 @@ if (isset($_GET['users_do'])) {
 if (isset($_GET['pod'])) {
     $term = trim(strip_tags(($_GET['term'])));
     $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM units WHERE name LIKE :term limit 10');
-    $stmt->execute(array(':term' => '%' . $term . '%'));
+    $stmt->execute(array(
+        ':term' => '%' . $term . '%'
+    ));
     $res1 = $stmt->fetchAll();
     foreach ($res1 as $row) {
         
@@ -64,7 +74,11 @@ if (isset($_GET['fio'])) {
     $term = trim(strip_tags(($_GET['term'])));
     
     $stmt = $dbConnection->prepare('SELECT fio as label, login as label2, tel as label3, unit_desc as label4, id as value FROM users WHERE ((fio LIKE :term) or (login LIKE :term2) or (tel LIKE :term3)) and id!=1 and status!=2 limit 10');
-    $stmt->execute(array(':term' => '%' . $term . '%', ':term2' => '%' . $term . '%', ':term3' => '%' . $term . '%'));
+    $stmt->execute(array(
+        ':term' => '%' . $term . '%',
+        ':term2' => '%' . $term . '%',
+        ':term3' => '%' . $term . '%'
+    ));
     $res1 = $stmt->fetchAll();
     foreach ($res1 as $row) {
         
@@ -83,7 +97,9 @@ if (isset($_GET['login'])) {
     $term = trim(strip_tags(($_GET['term'])));
     
     $stmt = $dbConnection->prepare('SELECT login as label, fio as label2, tel as label3, unit_desc as label4, id as value FROM users WHERE (login LIKE :term)  and is_client=1 and id!=1 and status!=2 limit 10');
-    $stmt->execute(array(':term' => '%' . $term . '%'));
+    $stmt->execute(array(
+        ':term' => '%' . $term . '%'
+    ));
     $res1 = $stmt->fetchAll();
     foreach ($res1 as $row) {
         

@@ -16,7 +16,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 <?php
-        
         $view_right = false;
         if (get_conf_param('global_msg_status') == "1") {
             
@@ -52,32 +51,29 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         }
         
         ob_start();
-         //Start output buffer
+        
+        //Start output buffer
         get_helper();
         $get_helper = ob_get_contents();
-         //Grab output
-        ob_end_clean();
-         //Discard output buffer
         
-
-
-
-
-
-
+        //Grab output
+        ob_end_clean();
+        
+        //Discard output buffer
+        
         try {
             
             // указывае где хранятся шаблоны
             $loader = new Twig_Loader_Filesystem('inc/views');
             
             // инициализируем Twig
-if (get_conf_param('twig_cache') == "true") {
-$twig = new Twig_Environment($loader,array(
-    'cache' => $basedir.'/inc/cache',
-));
-            }
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $basedir . '/inc/cache',
+                ));
+            } 
             else {
-$twig = new Twig_Environment($loader);
+                $twig = new Twig_Environment($loader);
             }
             
             // подгружаем шаблон

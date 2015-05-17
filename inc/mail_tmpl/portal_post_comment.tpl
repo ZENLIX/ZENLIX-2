@@ -299,7 +299,7 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 <p class="lead">{PORTAL_post_comment_ext} <strong>{who_init}</strong>:
 <pre>{comment}</pre>
 <br>
-<a style=" font-size:11px; text-align:center;" href='<?=$CONF['hostname'];?>thread?{h}'>{MAIL_2link}</a>
+<a style=" font-size:11px; text-align:center;" href='<?=$CONF['real_hostname'];?>thread?{h}'>{MAIL_2link}</a>
 </p>
 
 

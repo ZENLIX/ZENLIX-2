@@ -198,13 +198,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             $loader = new Twig_Loader_Filesystem('inc/views');
             
             // инициализируем Twig
-if (get_conf_param('twig_cache') == "true") {
-$twig = new Twig_Environment($loader,array(
-    'cache' => $basedir.'/inc/cache',
-));
-            }
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $basedir . '/inc/cache',
+                ));
+            } 
             else {
-$twig = new Twig_Environment($loader);
+                $twig = new Twig_Environment($loader);
             }
             
             // подгружаем шаблон
@@ -218,7 +218,7 @@ $twig = new Twig_Environment($loader);
                 'name_of_firm' => $CONF['name_of_firm'],
                 'ok_msg' => $ok_msg,
                 'h' => $h,
-                'NEW_to_unit_desc'=>lang('NEW_to_unit_desc'),
+                'NEW_to_unit_desc' => lang('NEW_to_unit_desc') ,
                 'NEW_ok' => lang('NEW_ok') ,
                 'NEW_ok_1' => lang('NEW_ok_1') ,
                 'NEW_ok_2' => lang('NEW_ok_2') ,
@@ -230,7 +230,7 @@ $twig = new Twig_Environment($loader);
                 'NEW_fio_desc' => lang('NEW_fio_desc') ,
                 'uniq_id' => get_user_val('uniq_id') ,
                 'CREATE_TICKET_ME' => lang('CREATE_TICKET_ME') ,
-                'NEW_to_desc' => lang('NEW_to_desc'),
+                'NEW_to_desc' => lang('NEW_to_desc') ,
                 'def_unit_id' => get_user_val_by_id($_SESSION['helpdesk_user_id'], 'def_unit_id') ,
                 'NEW_to' => lang('NEW_to') ,
                 'NEW_to_unit' => lang('NEW_to_unit') ,

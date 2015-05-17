@@ -1,36 +1,16 @@
-
-      <footer class="main-footer" style=" padding-bottom: 40px; background: #ECF0F5;">
-
-        <p class="text-muted credit pull-right" style="   padding-right: 30px;"><small>Developed by <a href="http://zenlix.com/">ZENLIX</a> (с) {{date}}.</p>
-      </footer>
-    </div><!-- ./wrapper -->
-
-
-
-
-
-
+<footer class="main-footer" style=" padding-bottom: 40px; background: #ECF0F5;">
+	<p class="text-muted credit pull-right" style="   padding-right: 30px;"><small>Developed by <a href="http://zenlix.com/">ZENLIX</a> (с) {{date}}.</p>
+</footer>
+</div><!-- ./wrapper -->
 </div>
 </body>
-
 <script type="text/javascript">
-
 {% for key, item in JS_conf_arr %}
 var {{key}} = "{{item}}";
 {% endfor %}
-    
+
 </script>
-
-
-
-
 {% for item in main_js_start %}
 <script src="{{hostname}}{{item}}?{{version}}"></script>
 {% endfor %}
-
-
-
-
-
-
 </html>

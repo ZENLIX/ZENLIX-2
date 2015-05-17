@@ -14,7 +14,9 @@ if (isset($_GET['h'])) {
     //$res = mysql_query($query) or die(mysql_error());
     
     $stmt = $dbConnection->prepare('select hashname, message from notes where hashname=:h');
-    $stmt->execute(array(':h' => $h));
+    $stmt->execute(array(
+        ':h' => $h
+    ));
     $res1 = $stmt->fetchAll();
     
     if (empty($res1)) {
@@ -22,7 +24,8 @@ if (isset($_GET['h'])) {
         //echo "no";
         
         
-    } else if (!empty($res1)) {
+    } 
+    else if (!empty($res1)) {
         
         //while ($row = mysql_fetch_assoc($res)) {
         foreach ($res1 as $row) {
@@ -31,9 +34,11 @@ if (isset($_GET['h'])) {
     }
 ?>
 <header class="header">
-            <a href="<?php echo $CONF['hostname'] ?>index.php" class="logo">
+            <a href="<?php
+    echo $CONF['hostname'] ?>index.php" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
-                <img src="<?=get_logo_img('small');?>"> <?php echo $CONF['name_of_firm'] ?>
+                <img src="<?php echo get_logo_img('small'); ?>"> <?php
+    echo $CONF['name_of_firm'] ?>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -51,7 +56,8 @@ if (isset($_GET['h'])) {
                         <div class="col-md-8 col-md-offset-2">
                             <div class="box box-solid">
                                 <div class="box-body">
-<?php echo $msg; ?>
+<?php
+    echo $msg; ?>
                                 </div><!-- /.box-body -->
                             </div>
                         </div>

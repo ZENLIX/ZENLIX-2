@@ -1,385 +1,244 @@
 <div class="content-wrapper">
-<section class="content">
+  <section class="content">
+    {% if portal_msg_status == true %}
+    <div class="pad margin no-print">
+      <div class="callout {{ic}}" style="margin-bottom: 0!important;">
+        <h4><i class="fa {{ic1}}"></i> {{portal_msg_title}}</h4>
+        {{portal_msg_text}}
+      </div>
+    </div>
+    {% endif %}
+    <section class="invoice">
+      <!-- title row -->
+      <div class="row">
+        <div class="col-md-9">
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+              <li class="active"><a class="text-success" href="#tab_1" data-toggle="tab" aria-expanded="true"> <i class="fa fa-lightbulb-o"></i> {{PORTAL_idea_one}}</a></li>
+              <li class=""><a class="text-red" href="#tab_2" data-toggle="tab" aria-expanded="false"><i class="fa fa-exclamation-triangle"></i> {{PORTAL_trouble_one}}</a></li>
+              <li class=""><a class="text-primary"  href="#tab_3" data-toggle="tab" aria-expanded="false"><i class="fa fa-question-circle"></i> {{PORTAL_question_one}}</a></li>
+              <li class=""><a class="text-orange" href="#tab_4" data-toggle="tab" aria-expanded="false"><i class="fa fa-heart"></i> {{PORTAL_thank_one}}</a></li>
 
-
-{% if portal_msg_status == true %}
-<div class="pad margin no-print">
-          <div class="callout {{ic}}" style="margin-bottom: 0!important;">                        
-            <h4><i class="fa {{ic1}}"></i> {{portal_msg_title}}</h4>
-            {{portal_msg_text}}
-          </div>
-        </div>
-{% endif %}
-
-
-<section class="invoice">
-          <!-- title row -->
-          <div class="row">
-
-
-
-<div class="col-md-9">
-
-
-
-<div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                  <li class="active"><a class="text-success" href="#tab_1" data-toggle="tab" aria-expanded="true"> <i class="fa fa-lightbulb-o"></i> {{PORTAL_idea_one}}</a></li>
-                  <li class=""><a class="text-red" href="#tab_2" data-toggle="tab" aria-expanded="false"><i class="fa fa-exclamation-triangle"></i> {{PORTAL_trouble_one}}</a></li>
-                  <li class=""><a class="text-primary"  href="#tab_3" data-toggle="tab" aria-expanded="false"><i class="fa fa-question-circle"></i> {{PORTAL_question_one}}</a></li>
-                  <li class=""><a class="text-orange" href="#tab_4" data-toggle="tab" aria-expanded="false"><i class="fa fa-heart"></i> {{PORTAL_thank_one}}</a></li>
-                  
-                </ul>
-                <div class="tab-content">
-                  <div class="tab-pane active" id="tab_1">
-                    <div class="input-group input-group-lg">
-                    <input type="text" class="form-control" id="text_idea" placeholder="{{PORTAL_idea_you}}">
-                    <span class="input-group-btn">
-                      <button id="make_new_post_idea" class="btn btn-info btn-flat" type="button">{{PORTAL_next}}</button>
-                    </span>
-                  </div>
-                  </div><!-- /.tab-pane -->
-                  <div class="tab-pane fade" id="tab_2">
-                    <div class="input-group input-group-lg">
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_1">
+                <div class="input-group input-group-lg">
+                  <input type="text" class="form-control" id="text_idea" placeholder="{{PORTAL_idea_you}}">
+                  <span class="input-group-btn">
+                  <button id="make_new_post_idea" class="btn btn-info btn-flat" type="button">{{PORTAL_next}}</button>
+                  </span>
+                </div>
+                </div><!-- /.tab-pane -->
+                <div class="tab-pane fade" id="tab_2">
+                  <div class="input-group input-group-lg">
                     <input type="text" class="form-control" id="text_problem" placeholder="{{PORTAL_trouble_you}}">
                     <span class="input-group-btn">
-                      <button id="make_new_post_problem" class="btn btn-info btn-flat" type="button">{{PORTAL_next}}</button>
+                    <button id="make_new_post_problem" class="btn btn-info btn-flat" type="button">{{PORTAL_next}}</button>
                     </span>
                   </div>
                   </div><!-- /.tab-pane -->
-                                    <div class="tab-pane fade" id="tab_3">
+                  <div class="tab-pane fade" id="tab_3">
                     <div class="input-group input-group-lg">
-                    <input type="text" class="form-control" id="text_quest" placeholder="{{PORTAL_question_you}}">
-                    <span class="input-group-btn">
+                      <input type="text" class="form-control" id="text_quest" placeholder="{{PORTAL_question_you}}">
+                      <span class="input-group-btn">
                       <button id="make_new_post_quest" class="btn btn-info btn-flat" type="button">{{PORTAL_next}}</button>
-                    </span>
-                  </div>
-                  </div><!-- /.tab-pane -->
-                                    <div class="tab-pane fade" id="tab_4">
-                    <div class="input-group input-group-lg">
-                    <input type="text" class="form-control" id="text_review" placeholder="{{PORTAL_thank_you}}">
-                    <span class="input-group-btn">
-                      <button id="make_new_post_review" class="btn btn-info btn-flat" type="button">{{PORTAL_next}}</button>
-                    </span>
-                  </div>
-                  </div><!-- /.tab-pane -->
-                </div><!-- /.tab-content -->
-                
-              </div>
-
-<div class="box box-default" id="maybe" style="display:none;">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{PORTAL_maybe}}</h3>
-
-                </div><!-- /.box-header -->
-
-<div class="box-body">
-
-<div class="row">
-<div class="col-md-6" id="maybe_res">
-  
-</div>
-<div class="col-md-6"><button class="btn btn-block btn-info btn-lg" id="new_post_page" value="1">{{PORTAL_now_new_post}}</button></div>
-</div>
-
-</div>
-
-                </div>
-
-<div class="box box-info">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{PORTAL_help_center}}</h3>
-                  <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-graduation-cap"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-
-
-                <div class="box-body">
-<div class="row">
-{{get_main_manual | raw}}
-
-</div>
-
-                </div><!-- /.box-body -->
-              </div>
-
-
-<div class="box box-success">
-                <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-success" href="{{hostname}}cat?1">{{PORTAL_idea}}</a></h3>
-                                    <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-lightbulb-o"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  
-
-
-                <div class="box-footer no-padding">
-
-{% if portal_posts_status == true %}
-
-
-                  <ul class="nav nav-pills nav-stacked">
-
-
-
-{% for item in portal_posts_status_arr %}
-<li>
- <a href="{{hostname}}thread?{{item.uniq_id}}">
-                    <strong style="
-    font-size: 16px;
-"><i class="fa fa-lightbulb-o"></i> {{item.subj}} </strong>
-
-                    
-
-{{item.get_post_rate | raw }}
-
-
-<br>
-                    <small class="text-muted">
-                    {{item.get_post_status | raw}}  <!--● Чат поддержки-->  {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small><!--small class="pull-right text-muted">рейтинг</small-->
-                    </a></li>
-
-
-
-
-
-
-                    
-
-{% endfor %}
-
-
-                    <li>
-
-                   
-
-                    <li><small class="text-muted"><a href="{{hostname}}cat?1" class="text-muted">{{PORTAL_idea_all}} ({{get_total_posts_by_type1}})</a></small></li>
-                  </ul>
-{% endif %}
-                  {% if portal_posts_status == false %}
-
-<div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-
-                    <center>{{MSG_no_records}}</center></div>
-
-
-{% endif %}
-                </div><!-- /.footer -->
-
-
-
-                </div><!-- /.box-body -->
-              </div>
-
-<div class="box box-danger">
-                <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-danger" href="{{hostname}}cat?2">{{PORTAL_trouble}}</a></h3>
-                  <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-exclamation-triangle"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                                 <div class="box-footer no-padding">
-
-{% if portal_posts_status2 == true %}
-
-
-                  <ul class="nav nav-pills nav-stacked">
-
-
-
-{% for item in portal_posts_status_arr2 %}
- <li>
- <a href="{{hostname}}thread?{{item.uniq_id}}">
-                    <strong style="
-    font-size: 16px;
-"><i class="fa fa-exclamation-triangle"></i> {{item.subj}} </strong>
-
-                    
-
-{{item.get_post_rate | raw}}
-
-
-<br>
-                    <small class="text-muted">
-                    {{item.get_post_status | raw}}  <!--● Чат поддержки-->  {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small><!--small class="pull-right text-muted">рейтинг</small-->
-                    </a></li>
-{% endfor %}
-
-
-                    <li>
-
-                   
-
-                    <li><small class="text-muted"><a href="{{hostname}}cat?2" class="text-muted">{{PORTAL_trouble_all}} ({{get_total_posts_by_type2}})</a></small></li>
-                  </ul>
-{% endif %}
-{% if portal_posts_status2 == false %}
-                  
-
-<div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-
-                    <center>{{MSG_no_records}}</center></div>
-
-
-{% endif %}
-                </div><!-- /.footer -->
-                </div><!-- /.box-body -->
-              </div>
-
-
-<div class="box box-info">
-                <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-info" href="{{hostname}}cat?3">{{PORTAL_question}}</a></h3>
-                                    <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-question-circle"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                                   <div class="box-footer no-padding">
-
-{% if portal_posts_status3 == true %}
-
-
-                  <ul class="nav nav-pills nav-stacked">
-
-
-
-{% for item in portal_posts_status_arr3 %}
-
-                    <li>
- <a href="{{hostname}}thread?{{item.uniq_id}}">
-                    <strong style="
-    font-size: 16px;
-"><i class="fa fa-question-circle"></i> {{item.subj}} </strong>
-
-                    
-
-{{item.get_post_rate | raw}}
-
-
-<br>
-                    <small class="text-muted">
-                    {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small><!--small class="pull-right text-muted">рейтинг</small-->
-                    </a></li>
-
-{% endfor %}
-
-
-                    <li>
-
-                   
-
-                    <li><small class="text-muted"><a href="{{hostname}}cat?3" class="text-muted">{{PORTAL_question_all}} ({{get_total_posts_by_type3}})</a></small></li>
-                  </ul>
-{% endif %}
-
-{% if portal_posts_status3 == false %}
-                 
-
-<div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-
-                    <center>{{MSG_no_records}}</center></div>
-
-
-{% endif %}
-                </div><!-- /.footer -->
-                </div><!-- /.box-body -->
-              </div>
-
-<div class="box box-warning">
-                <div class="box-header with-border">
-                  <h3 class="box-title"><a class="text-warning" href="{{hostname}}cat?4">{{PORTAL_thank}}</a></h3>
-                   <div class="box-tools pull-right">
-                    <h4> <i class="fa fa-heart"></i></h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                   <div class="box-footer no-padding">
-
-{% if portal_posts_status4 == true %}
-
-
-                  <ul class="nav nav-pills nav-stacked">
-
-
-
-{% for item in portal_posts_status_arr4 %}
-
-                    <li>
- <a href="{{hostname}}thread?{{item.uniq_id}}">
-                    <strong style="
-    font-size: 16px;
-"><i class="fa fa-heart"></i> {{item.subj}} </strong>
-
-                    
-
-{{item.get_post_rate | raw}}
-
-
-<br>
-                    <small class="text-muted">
-                     {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small><!--small class="pull-right text-muted">рейтинг</small-->
-                    </a></li>
-
-{% endfor %}
-
-
-                    <li>
-
-                   
-
-                    <li><small class="text-muted"><a href="{{hostname}}cat?4" class="text-muted">{{PORTAL_thank_all}} ({{get_total_posts_by_type4}})</a></small></li>
-                  </ul>
-{% endif %}
-                  {% if portal_posts_status4 == false %}
-
-
-
-<div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-
-                    <center>{{MSG_no_records}}</center></div>
-
-
-{% endif %}
-                </div><!-- /.footer -->
-
-                </div><!-- /.box-body -->
-              </div>
-
-
-</div>
-
-
-
-<div class="col-md-3">
-
-{{view_release_bar | raw}}
-
-
-
-
-{{view_top_news_bar | raw}}
-
-
-
-
-{{view_stat_cat | raw}}
-
-
-</div>
-
-
-          </div>
-          <!-- info row -->
-          
-        </section>
-
-
-
-
-</section>
-</div>
+                      </span>
+                    </div>
+                    </div><!-- /.tab-pane -->
+                    <div class="tab-pane fade" id="tab_4">
+                      <div class="input-group input-group-lg">
+                        <input type="text" class="form-control" id="text_review" placeholder="{{PORTAL_thank_you}}">
+                        <span class="input-group-btn">
+                        <button id="make_new_post_review" class="btn btn-info btn-flat" type="button">{{PORTAL_next}}</button>
+                        </span>
+                      </div>
+                      </div><!-- /.tab-pane -->
+                      </div><!-- /.tab-content -->
+
+                    </div>
+                    <div class="box box-default" id="maybe" style="display:none;">
+                      <div class="box-header with-border">
+                        <h3 class="box-title">{{PORTAL_maybe}}</h3>
+                        </div><!-- /.box-header -->
+                        <div class="box-body">
+                          <div class="row">
+                            <div class="col-md-6" id="maybe_res">
+
+                            </div>
+                            <div class="col-md-6"><button class="btn btn-block btn-info btn-lg" id="new_post_page" value="1">{{PORTAL_now_new_post}}</button></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="box box-info">
+                        <div class="box-header with-border">
+                          <h3 class="box-title">{{PORTAL_help_center}}</h3>
+                          <div class="box-tools pull-right">
+                            <h4> <i class="fa fa-graduation-cap"></i></h4>
+                          </div>
+                          </div><!-- /.box-header -->
+                          <div class="box-body">
+                            <div class="row">
+                              {{get_main_manual | raw}}
+                            </div>
+                            </div><!-- /.box-body -->
+                          </div>
+                          <div class="box box-success">
+                            <div class="box-header with-border">
+                              <h3 class="box-title"><a class="text-success" href="{{hostname}}cat?1">{{PORTAL_idea}}</a></h3>
+                              <div class="box-tools pull-right">
+                                <h4> <i class="fa fa-lightbulb-o"></i></h4>
+                              </div>
+                              </div><!-- /.box-header -->
+                              <div class="box-body">
+
+                                <div class="box-footer no-padding">
+                                  {% if portal_posts_status == true %}
+                                  <ul class="nav nav-pills nav-stacked">
+                                    {% for item in portal_posts_status_arr %}
+                                    <li>
+                                      <a href="{{hostname}}thread?{{item.uniq_id}}">
+                                      <strong style="
+                                      font-size: 16px;
+                                      "><i class="fa fa-lightbulb-o"></i> {{item.subj}} </strong>
+
+                                      {{item.get_post_rate | raw }}
+                                      <br>
+                                      <small class="text-muted">
+                                      {{item.get_post_status | raw}}  <!--● Чат поддержки-->  {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small><!--small class="pull-right text-muted">рейтинг</small-->
+                                    </a></li>
+
+                                    {% endfor %}
+                                    <li>
+
+                                      <li><small class="text-muted"><a href="{{hostname}}cat?1" class="text-muted">{{PORTAL_idea_all}} ({{get_total_posts_by_type1}})</a></small></li>
+                                    </ul>
+                                    {% endif %}
+                                    {% if portal_posts_status == false %}
+                                    <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                    <center>{{MSG_no_records}}</center></div>
+                                    {% endif %}
+                                    </div><!-- /.footer -->
+                                    </div><!-- /.box-body -->
+                                  </div>
+                                  <div class="box box-danger">
+                                    <div class="box-header with-border">
+                                      <h3 class="box-title"><a class="text-danger" href="{{hostname}}cat?2">{{PORTAL_trouble}}</a></h3>
+                                      <div class="box-tools pull-right">
+                                        <h4> <i class="fa fa-exclamation-triangle"></i></h4>
+                                      </div>
+                                      </div><!-- /.box-header -->
+                                      <div class="box-body">
+                                        <div class="box-footer no-padding">
+                                          {% if portal_posts_status2 == true %}
+                                          <ul class="nav nav-pills nav-stacked">
+                                            {% for item in portal_posts_status_arr2 %}
+                                            <li>
+                                              <a href="{{hostname}}thread?{{item.uniq_id}}">
+                                              <strong style="
+                                              font-size: 16px;
+                                              "><i class="fa fa-exclamation-triangle"></i> {{item.subj}} </strong>
+
+                                              {{item.get_post_rate | raw}}
+                                              <br>
+                                              <small class="text-muted">
+                                              {{item.get_post_status | raw}}  <!--● Чат поддержки-->  {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small><!--small class="pull-right text-muted">рейтинг</small-->
+                                            </a></li>
+                                            {% endfor %}
+                                            <li>
+
+                                              <li><small class="text-muted"><a href="{{hostname}}cat?2" class="text-muted">{{PORTAL_trouble_all}} ({{get_total_posts_by_type2}})</a></small></li>
+                                            </ul>
+                                            {% endif %}
+                                            {% if portal_posts_status2 == false %}
+
+                                            <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                            <center>{{MSG_no_records}}</center></div>
+                                            {% endif %}
+                                            </div><!-- /.footer -->
+                                            </div><!-- /.box-body -->
+                                          </div>
+                                          <div class="box box-info">
+                                            <div class="box-header with-border">
+                                              <h3 class="box-title"><a class="text-info" href="{{hostname}}cat?3">{{PORTAL_question}}</a></h3>
+                                              <div class="box-tools pull-right">
+                                                <h4> <i class="fa fa-question-circle"></i></h4>
+                                              </div>
+                                              </div><!-- /.box-header -->
+                                              <div class="box-body">
+                                                <div class="box-footer no-padding">
+                                                  {% if portal_posts_status3 == true %}
+                                                  <ul class="nav nav-pills nav-stacked">
+                                                    {% for item in portal_posts_status_arr3 %}
+                                                    <li>
+                                                      <a href="{{hostname}}thread?{{item.uniq_id}}">
+                                                      <strong style="
+                                                      font-size: 16px;
+                                                      "><i class="fa fa-question-circle"></i> {{item.subj}} </strong>
+
+                                                      {{item.get_post_rate | raw}}
+                                                      <br>
+                                                      <small class="text-muted">
+                                                      {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small><!--small class="pull-right text-muted">рейтинг</small-->
+                                                    </a></li>
+                                                    {% endfor %}
+                                                    <li>
+
+                                                      <li><small class="text-muted"><a href="{{hostname}}cat?3" class="text-muted">{{PORTAL_question_all}} ({{get_total_posts_by_type3}})</a></small></li>
+                                                    </ul>
+                                                    {% endif %}
+                                                    {% if portal_posts_status3 == false %}
+
+                                                    <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                                    <center>{{MSG_no_records}}</center></div>
+                                                    {% endif %}
+                                                    </div><!-- /.footer -->
+                                                    </div><!-- /.box-body -->
+                                                  </div>
+                                                  <div class="box box-warning">
+                                                    <div class="box-header with-border">
+                                                      <h3 class="box-title"><a class="text-warning" href="{{hostname}}cat?4">{{PORTAL_thank}}</a></h3>
+                                                      <div class="box-tools pull-right">
+                                                        <h4> <i class="fa fa-heart"></i></h4>
+                                                      </div>
+                                                      </div><!-- /.box-header -->
+                                                      <div class="box-body">
+                                                        <div class="box-footer no-padding">
+                                                          {% if portal_posts_status4 == true %}
+                                                          <ul class="nav nav-pills nav-stacked">
+                                                            {% for item in portal_posts_status_arr4 %}
+                                                            <li>
+                                                              <a href="{{hostname}}thread?{{item.uniq_id}}">
+                                                              <strong style="
+                                                              font-size: 16px;
+                                                              "><i class="fa fa-heart"></i> {{item.subj}} </strong>
+
+                                                              {{item.get_post_rate | raw}}
+                                                              <br>
+                                                              <small class="text-muted">
+                                                              {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small><!--small class="pull-right text-muted">рейтинг</small-->
+                                                            </a></li>
+                                                            {% endfor %}
+                                                            <li>
+
+                                                              <li><small class="text-muted"><a href="{{hostname}}cat?4" class="text-muted">{{PORTAL_thank_all}} ({{get_total_posts_by_type4}})</a></small></li>
+                                                            </ul>
+                                                            {% endif %}
+                                                            {% if portal_posts_status4 == false %}
+                                                            <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                                            <center>{{MSG_no_records}}</center></div>
+                                                            {% endif %}
+                                                            </div><!-- /.footer -->
+                                                            </div><!-- /.box-body -->
+                                                          </div>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                          {{view_release_bar | raw}}
+                                                          {{view_top_news_bar | raw}}
+                                                          {{view_stat_cat | raw}}
+                                                        </div>
+                                                      </div>
+                                                      <!-- info row -->
+
+                                                    </section>
+                                                  </section>
+                                                </div>

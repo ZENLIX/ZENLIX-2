@@ -1,14 +1,14 @@
 //var my_errors = {fio: false, login: false, pass: false};
 $(document).ready(function() {
-	$.ajaxSetup ({
-    // Disable caching of AJAX responses
-    cache: false
-});
+    $.ajaxSetup({
+        // Disable caching of AJAX responses
+        cache: false
+    });
     console.log(window.location.href);
-$(".main_i").css("display", "none");
-$(".main_i").fadeIn(800);
-$(".mf").css("display", "none");
-$(".mf").fadeIn(800);
+    $(".main_i").css("display", "none");
+    $(".main_i").fadeIn(800);
+    $(".mf").css("display", "none");
+    $(".mf").fadeIn(800);
     $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
         checkboxClass: 'icheckbox_minimal',
         radioClass: 'iradio_minimal'
@@ -19,206 +19,206 @@ $(".mf").fadeIn(800);
     socket.emit('join', {
         uniq_id: USER_HASH
     });
-
     //push_msg_action2user
     socket.on("new_msg", function(data) {
-
-//console.log(data.type_op);
-
+        //console.log(data.type_op);
         switch (data.type_op) {
             case 'ticket_create':
-
                 if (data.zen_sid != ZENLIX_session_id) {
                     if (data.user_init != USER_HASH) {
-                    active_noty_msg('ticket_create', data.t_id);
-                }
-                update_labels();
-                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
-                   // if ((def_filename == "dashboard")) {
+                        active_noty_msg('ticket_create', data.t_id);
+                    }
+                    update_labels();
+                    //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                    // if ((def_filename == "dashboard")) {
                     if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
-                    update_page_dashboard();
-                    makemytime(true);
-                    update_dashboard_labels();
-                };
-                if (ispath('list')) {
-                    update_list_page_content();
-                    makemytime(true);
-                };
-                if (ispath('news')) {refresh_news();};
-            }
+                        update_page_dashboard();
+                        makemytime(true);
+                        update_dashboard_labels();
+                    };
+                    if (ispath('list')) {
+                        update_list_page_content();
+                        makemytime(true);
+                    };
+                    if (ispath('news')) {
+                        refresh_news();
+                    };
+                }
                 break;
             case 'ticket_refer':
-
-            if (data.zen_sid != ZENLIX_session_id) {
-                if (data.user_init != USER_HASH) {
-                active_noty_msg('ticket_refer', data.t_id);
-            }
-                update_labels();
-                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
-                  //  if ((def_filename == "dashboard")) {
+                if (data.zen_sid != ZENLIX_session_id) {
+                    if (data.user_init != USER_HASH) {
+                        active_noty_msg('ticket_refer', data.t_id);
+                    }
+                    update_labels();
+                    //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                    //  if ((def_filename == "dashboard")) {
                     if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
-                    update_page_dashboard();
-                    makemytime(true);
-                    update_dashboard_labels();
-                };
-                if (ispath('list')) {
-                    update_list_page_content();
-                    makemytime(true);
-                };
-                if (ispath('ticket')) {
-                    update_ticket_page(data.t_id);
-                };
-                if (ispath('news')) {refresh_news();};
-            }
+                        update_page_dashboard();
+                        makemytime(true);
+                        update_dashboard_labels();
+                    };
+                    if (ispath('list')) {
+                        update_list_page_content();
+                        makemytime(true);
+                    };
+                    if (ispath('ticket')) {
+                        update_ticket_page(data.t_id);
+                    };
+                    if (ispath('news')) {
+                        refresh_news();
+                    };
+                }
                 break;
             case 'ticket_ok':
-
-            if (data.zen_sid != ZENLIX_session_id) {
-if (data.user_init != USER_HASH) {
-                active_noty_msg('ticket_ok', data.t_id);
-            }
-                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                if (data.zen_sid != ZENLIX_session_id) {
+                    if (data.user_init != USER_HASH) {
+                        active_noty_msg('ticket_ok', data.t_id);
+                    }
+                    //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
-                        if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
-                    update_page_dashboard();
-                    makemytime(true);
-                    update_labels();
-                    update_dashboard_labels();
-                };
-                if (ispath('list')) {
-                    update_list_page_content();
-                    makemytime(true);
-                    update_labels();
-                };
-                if (ispath('ticket')) {
-                    update_ticket_page(data.t_id);
-                    update_labels();
-                };
-                if (ispath('news')) {refresh_news();};
-            }
+                    if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
+                        update_page_dashboard();
+                        makemytime(true);
+                        update_labels();
+                        update_dashboard_labels();
+                    };
+                    if (ispath('list')) {
+                        update_list_page_content();
+                        makemytime(true);
+                        update_labels();
+                    };
+                    if (ispath('ticket')) {
+                        update_ticket_page(data.t_id);
+                        update_labels();
+                    };
+                    if (ispath('news')) {
+                        refresh_news();
+                    };
+                }
                 break;
             case 'ticket_no_ok':
-
-            if (data.zen_sid != ZENLIX_session_id) {
-if (data.user_init != USER_HASH) {
-                active_noty_msg('ticket_no_ok', data.t_id);
-            }
-                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                if (data.zen_sid != ZENLIX_session_id) {
+                    if (data.user_init != USER_HASH) {
+                        active_noty_msg('ticket_no_ok', data.t_id);
+                    }
+                    //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
-                        if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
-                    update_page_dashboard();
-                    makemytime(true);
-                    update_labels();
-                    update_dashboard_labels();
-                };
-                if (ispath('list')) {
-                    update_list_page_content();
-                    makemytime(true);
-                    update_labels();
-                };
-                if (ispath('ticket')) {
-                    update_ticket_page(data.t_id);
-                    update_labels();
-                };
-                if (ispath('news')) {refresh_news();};
-            }
+                    if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
+                        update_page_dashboard();
+                        makemytime(true);
+                        update_labels();
+                        update_dashboard_labels();
+                    };
+                    if (ispath('list')) {
+                        update_list_page_content();
+                        makemytime(true);
+                        update_labels();
+                    };
+                    if (ispath('ticket')) {
+                        update_ticket_page(data.t_id);
+                        update_labels();
+                    };
+                    if (ispath('news')) {
+                        refresh_news();
+                    };
+                }
                 break;
             case 'ticket_lock':
-
-            //consloe.log(USER_HASH+" == "+data.user_hash);
-
-
-            
-            if (data.zen_sid != ZENLIX_session_id) {
-console.log("data.user_init:"+data.user_init+"| USER_HASH:"+USER_HASH);
-if (data.user_init != USER_HASH) {
-
-                active_noty_msg('ticket_lock', data.t_id);
-            }
-                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                //consloe.log(USER_HASH+" == "+data.user_hash);
+                if (data.zen_sid != ZENLIX_session_id) {
+                    console.log("data.user_init:" + data.user_init + "| USER_HASH:" + USER_HASH);
+                    if (data.user_init != USER_HASH) {
+                        active_noty_msg('ticket_lock', data.t_id);
+                    }
+                    //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
                     //if ((def_filename == "dashboard")) {
-                        if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
-                    update_page_dashboard();
-                    makemytime(true);
-                    update_dashboard_labels();
-                };
-                if (ispath('list')) {
-                    update_list_page_content();
-                    makemytime(true);
-                };
-                if (ispath('ticket')) {
-                    //console.log('locked');
-                    update_ticket_page(data.t_id);
-                };
-                if (ispath('news')) {refresh_news();};
-            }
+                    if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
+                        update_page_dashboard();
+                        makemytime(true);
+                        update_dashboard_labels();
+                    };
+                    if (ispath('list')) {
+                        update_list_page_content();
+                        makemytime(true);
+                    };
+                    if (ispath('ticket')) {
+                        //console.log('locked');
+                        update_ticket_page(data.t_id);
+                    };
+                    if (ispath('news')) {
+                        refresh_news();
+                    };
+                }
                 break;
             case 'ticket_unlock':
-
-            if (data.zen_sid != ZENLIX_session_id) {
-if (data.user_init != USER_HASH) {
-                active_noty_msg('ticket_unlock', data.t_id);
-            }
-                //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
-                   // if ((def_filename == "dashboard")) {
+                if (data.zen_sid != ZENLIX_session_id) {
+                    if (data.user_init != USER_HASH) {
+                        active_noty_msg('ticket_unlock', data.t_id);
+                    }
+                    //if ((def_filename == "index.php") || (window.location == MyHOSTNAME)) {
+                    // if ((def_filename == "dashboard")) {
                     if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
-                    update_page_dashboard();
-                    makemytime(true);
-                    update_dashboard_labels();
-                };
-                if (ispath('list')) {
-                    update_list_page_content();
-                    makemytime(true);
-                };
-                if (ispath('ticket')) {
-                    update_ticket_page(data.t_id);
-                };
-                if (ispath('news')) {refresh_news();};
-            }
+                        update_page_dashboard();
+                        makemytime(true);
+                        update_dashboard_labels();
+                    };
+                    if (ispath('list')) {
+                        update_list_page_content();
+                        makemytime(true);
+                    };
+                    if (ispath('ticket')) {
+                        update_ticket_page(data.t_id);
+                    };
+                    if (ispath('news')) {
+                        refresh_news();
+                    };
+                }
                 break;
             case 'ticket_comment':
-
-if (data.zen_sid != ZENLIX_session_id) {
-if (data.user_init != USER_HASH) {
-    if (!ispath('ticket')) {
-    active_noty_msg('ticket_comment', data.t_id);
-}
-}
-                if (ispath('ticket')) {
-                    if ($('#ticket_id').val() == data.t_id) {
-                        get_comments(data.t_id);
-                        makemytime(true);
+                if (data.zen_sid != ZENLIX_session_id) {
+                    if (data.user_init != USER_HASH) {
+                        if (!ispath('ticket')) {
+                            active_noty_msg('ticket_comment', data.t_id);
+                        }
                     }
+                    if (ispath('ticket')) {
+                        if ($('#ticket_id').val() == data.t_id) {
+                            get_comments(data.t_id);
+                            makemytime(true);
+                        }
+                    }
+                    if (ispath('news')) {
+                        refresh_news();
+                    };
                 }
-                if (ispath('news')) {refresh_news();};
-            }
                 break;
             case 'message_send':
                 //console.log(data.chat_id);
                 if (USER_HASH != data.user_hash) {
                     if (data.zen_sid != ZENLIX_session_id) {
-                if (!ispath('messages')) {
-                    if (data.user_init != USER_HASH) {
-                    noty_message(data.chat_id);
+                        if (!ispath('messages')) {
+                            if (data.user_init != USER_HASH) {
+                                noty_message(data.chat_id);
+                            }
+                        }
+                        if (ispath('messages')) {
+                            messages_update_window(data.t_id);
+                        }
+                        update_labels_msg();
+                        show_bar_unread_msg();
+                        if (ispath('messages')) {
+                            refresh_message_usr_list();
+                        }
+                    }
                 }
-                }
-                if (ispath('messages')) {
-                    messages_update_window(data.t_id);
-                }
-                update_labels_msg();
-                show_bar_unread_msg();
-                if (ispath('messages')) {
-                    refresh_message_usr_list();
-                }
-            }
-            }
                 //console.log('yes');
                 break;
             case 'logout':
                 window.location = MyHOSTNAME + "logout";
                 break;
         };
-            });
+    });
     moment.lang(MyLANG);
     var my_errors = {
         fio: false,
@@ -257,7 +257,6 @@ if (data.user_init != USER_HASH) {
     };
 
     function noty_message(msg_id) {
-
         $.ajax({
             type: "POST",
             url: ACTIONPATH,
@@ -308,7 +307,6 @@ if (data.user_init != USER_HASH) {
     }
 
     function make_popover() {
-
         $('.pops2').popover({
             html: true,
             trigger: 'manual',
@@ -331,8 +329,6 @@ if (data.user_init != USER_HASH) {
                 }
             }, 100);
         });
-
-
         $('.pops').popover({
             html: true,
             trigger: 'manual',
@@ -360,35 +356,31 @@ if (data.user_init != USER_HASH) {
     function makemytime(s) {
         var now = moment().zone("+04:00");
         //.zone("+08:00")
-
-
-String.prototype.toHHMMSS = function () {
-    var sec_num = parseInt(this, 10); // don't forget the second param
-    var hours   = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
-
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    var time    = hours+':'+minutes+':'+seconds;
-    return time;
-}
-
-        
-               $('time#a').each(function(i, e) {
+        String.prototype.toHHMMSS = function() {
+            var sec_num = parseInt(this, 10); // don't forget the second param
+            var hours = Math.floor(sec_num / 3600);
+            var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+            var seconds = sec_num - (hours * 3600) - (minutes * 60);
+            if (hours < 10) {
+                hours = "0" + hours;
+            }
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            var time = hours + ':' + minutes + ':' + seconds;
+            return time;
+        }
+        $('time#a').each(function(i, e) {
             var time = moment($(e).attr('datetime'));
-            
-            
             $(e).html('<span>' + time.from(now) + '</span>');
         });
-        
         $('time#b').each(function(i, e) {
             var time = moment($(e).attr('datetime'));
             $(e).html('<span>' + time.from(now) + '</span>');
         });
-        
-        
         $('time#c').each(function(i, e) {
             var time = moment($(e).attr('datetime'));
             $(e).html('<span>' + time.format("ddd, Do MMM, H:mm:ss") + '</span>');
@@ -397,24 +389,18 @@ String.prototype.toHHMMSS = function () {
             var time = moment($(e).attr('datetime'));
             $(e).html('<span>' + time.format("dddd, Do MMMM") + '</span>');
         });
-
-                $('time#e').each(function(i, e) {
+        $('time#e').each(function(i, e) {
             var time = moment($(e).attr('datetime'));
             $(e).html('<span>' + time.format("H:mm:ss") + '</span>');
         });
-
-                $('time#f').each(function(i, e) {
+        $('time#f').each(function(i, e) {
             var time = $(e).attr('datetime');
-            var duration = moment.duration(time*1000, 'milliseconds');
-
-            $(e).html('<span>' + duration.format("d "+MOMENTJS_DAY+", h "+MOMENTJS_HOUR+", m "+MOMENTJS_MINUTE+", s "+MOMENTJS_SEC+"") + '</span>');
-           //time.from(now)
-            
+            var duration = moment.duration(time * 1000, 'milliseconds');
+            $(e).html('<span>' + duration.format("d " + MOMENTJS_DAY + ", h " + MOMENTJS_HOUR + ", m " + MOMENTJS_MINUTE + ", s " + MOMENTJS_SEC + "") + '</span>');
+            //time.from(now)
             //var time = moment($(e).attr('datetime'));
-           //$(e).html('<span>' + moment.duration(2, "seconds").humanize() + '</span>');
+            //$(e).html('<span>' + moment.duration(2, "seconds").humanize() + '</span>');
         });
-
-
     };
 
     function get_host_conf() {
@@ -490,8 +476,7 @@ String.prototype.toHHMMSS = function () {
                         $('select#' + target_id).append($("<option></option>").attr("value", item.co).attr("data-foo", item.stat).text(item.name));
                     });
                 }
-
-                $('select#'+target_id).trigger('change');
+                $('select#' + target_id).trigger('change');
                 //$('select#'+target_id).trigger('chosen:updated');
             }
         });
@@ -767,14 +752,13 @@ String.prototype.toHHMMSS = function () {
         });
     };
 
-function refresh_news() {
-    window.location = MyHOSTNAME + "news";
-}
-
+    function refresh_news() {
+        window.location = MyHOSTNAME + "news";
+    }
 
     function view_helper_cat() {
-$.fn.editable.defaults.mode = 'inline';
-            $('a#edit_item').each(function(i, e) {
+        $.fn.editable.defaults.mode = 'inline';
+        $('a#edit_item').each(function(i, e) {
             $(e).editable({
                 inputclass: 'input-sm',
                 emptytext: 'пусто',
@@ -783,41 +767,30 @@ $.fn.editable.defaults.mode = 'inline';
                 }
             });
         });
-
-
-
-
-
-                            $('.sortable').nestedSortable({
+        $('.sortable').nestedSortable({
             ForcePlaceholderSize: true,
-                handle: 'div',
-                helper: 'clone',
-                items: 'li',
-                opacity: .6,
-                placeholder: 'placeholder',
-                revert: 250,
-                tabSize: 25,
-                tolerance: 'pointer',
-                toleranceElement: '> div',
-                maxLevels: 4,
-                
-update: function () {
-    list = $(this).nestedSortable('serialize');
-    //console.log(list);
-
-$.post(
-        ACTIONPATH,
-        { mode:"sort_units_helper" ,list: list},
-        function(data){
-            console.log(data);
-        }
-    );
-
-
-}
-
+            handle: 'div',
+            helper: 'clone',
+            items: 'li',
+            opacity: .6,
+            placeholder: 'placeholder',
+            revert: 250,
+            tabSize: 25,
+            tolerance: 'pointer',
+            toleranceElement: '> div',
+            maxLevels: 4,
+            update: function() {
+                list = $(this).nestedSortable('serialize');
+                //console.log(list);
+                $.post(ACTIONPATH, {
+                    mode: "sort_units_helper",
+                    list: list
+                }, function(data) {
+                    console.log(data);
+                });
+            }
         });
-};
+    };
     /*
 ###############################################
  FUNCTIONS end
@@ -846,7 +819,6 @@ $.post(
     });
     var def_p = window.location.pathname.split("/");
     var def_filename = def_p[def_p.length - 1];
-
     //console.log(def_filename);
     $.noty.defaults = {
         layout: USER_noty_layot,
@@ -856,7 +828,6 @@ $.post(
         closeButton: true,
         dismissQueue: true,
         template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"><i class="fa fa-times"></i></div></div>',
-        
         animation: {
             open: {
                 height: 'toggle'
@@ -910,13 +881,8 @@ $.post(
 ###############################################
 */
     //
-    
     if (ispath('scheduler')) {
-	    
-	    
-	    
-	    
-	            $('body').on('click', 'button#cron_delete', function(event) {
+        $('body').on('click', 'button#cron_delete', function(event) {
             event.preventDefault();
             var ids = $(this).attr('value');
             bootbox.confirm(get_lang_param('JS_del'), function(result) {
@@ -927,7 +893,7 @@ $.post(
                         data: "mode=cron_del" + "&id=" + ids,
                         success: function(html) {
                             //$("#content_deps").html(html);
-								window.location = MyHOSTNAME + "scheduler";
+                            window.location = MyHOSTNAME + "scheduler";
                         }
                     });
                 }
@@ -948,120 +914,74 @@ $.post(
         });
         */
         });
-        
-        
-        
-	    
-	    //add_scheduler
-	    $('body').on('click', 'button#add_scheduler', function(event) {
+        //add_scheduler
+        $('body').on('click', 'button#add_scheduler', function(event) {
             event.preventDefault();
-            
-            
-            
             $.ajax({
-                        type: "POST",
-                        url: ACTIONPATH,
-                        dataType: "json",
-                        data: "mode=add_cron"+
-                        "&client_id_param="+$("#client_id_param").val()+
-                        "&to="+$("#to").val()+
-                        "&s2id_users_do="+$("#users_do").val()+
-                        "&prio="+$("#prio").val()+
-                        "&subj="+$("#subj").val()+
-                        "&msg="+$("#msg").val()+
-                        "&period="+$("#period").val()+
-                        "&day_field="+$("#day_field").val()+
-                        "&week_select="+$("#week_select").val()+
-                        "&month_select="+$("#month_select").val()+
-                        "&time_action="+$("#time_action").val()+
-                        "&action_start="+$("#action_start").val()+
-                        "&action_stop="+$("#action_stop").val()+
-                        "&status_action="+$("#status_action").val()
-                        
-                        ,
-                        success: function(html) {
-                            //console.log(html);
-                            $.each(html, function(i, item) {
-                            if (item.check_error == true) {
-	                            window.location = MyHOSTNAME + "scheduler";
-	                           }
-	                        else if (item.check_error == false) {
-		                        $("#error_content").html(item.msg);
-	                           }   
-	                           });
-	                            
-                            
+                type: "POST",
+                url: ACTIONPATH,
+                dataType: "json",
+                data: "mode=add_cron" + "&client_id_param=" + $("#client_id_param").val() + "&to=" + $("#to").val() + "&s2id_users_do=" + $("#users_do").val() + "&prio=" + $("#prio").val() + "&subj=" + $("#subj").val() + "&msg=" + $("#msg").val() + "&period=" + $("#period").val() + "&day_field=" + $("#day_field").val() + "&week_select=" + $("#week_select").val() + "&month_select=" + $("#month_select").val() + "&time_action=" + $("#time_action").val() + "&action_start=" + $("#action_start").val() + "&action_stop=" + $("#action_stop").val() + "&status_action=" + $("#status_action").val(),
+                success: function(html) {
+                    //console.log(html);
+                    $.each(html, function(i, item) {
+                        if (item.check_error == true) {
+                            window.location = MyHOSTNAME + "scheduler";
+                        } else if (item.check_error == false) {
+                            $("#error_content").html(item.msg);
                         }
                     });
-            
-            
+                }
             });
-	    
-	    
-	    $('.timepicker').timepicker({
-                    showInputs: false,
-                    minuteStep: 1,
-                showSeconds: true,
-                showMeridian: false
-                });
-	    
-	    
-	        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
-            $("#action_start").val( picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
+        });
+        $('.timepicker').timepicker({
+            showInputs: false,
+            minuteStep: 1,
+            showSeconds: true,
+            showMeridian: false
+        });
+        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+            $("#action_start").val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
             $("#action_stop").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
-            
-            
         });
         $('#reservation').daterangepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',timePicker: true,timePicker12Hour: false
+            format: 'YYYY-MM-DD HH:mm:ss',
+            timePicker: true,
+            timePicker12Hour: false
         });
-	   
-	    //$('button#btn_period_day').addClass('active');
-	            $("#period_week").hide();
-            	$("#period_month").hide();
-            	
-            	
-	    $('body').on('click', 'button#btn_period_day', function(event) {
+        //$('button#btn_period_day').addClass('active');
+        $("#period_week").hide();
+        $("#period_month").hide();
+        $('body').on('click', 'button#btn_period_day', function(event) {
             event.preventDefault();
             $('button#btn_period_day').addClass('active');
             $('button#btn_period_week').removeClass('active');
             $('button#btn_period_month').removeClass('active');
-            	$("#period_day").show();
-            	$("#period_week").hide();
-            	$("#period_month").hide();
-            	
-            	$("#period").val('day');
-            });
-            
-            	    $('body').on('click', 'button#btn_period_week', function(event) {
+            $("#period_day").show();
+            $("#period_week").hide();
+            $("#period_month").hide();
+            $("#period").val('day');
+        });
+        $('body').on('click', 'button#btn_period_week', function(event) {
             event.preventDefault();
             $('button#btn_period_day').removeClass('active');
             $('button#btn_period_week').addClass('active');
             $('button#btn_period_month').removeClass('active');
-            	$("#period_day").hide();
-            	$("#period_week").show();
-            	$("#period_month").hide();
-            	$("#period").val('week');
-            });
-            
-            	    $('body').on('click', 'button#btn_period_month', function(event) {
+            $("#period_day").hide();
+            $("#period_week").show();
+            $("#period_month").hide();
+            $("#period").val('week');
+        });
+        $('body').on('click', 'button#btn_period_month', function(event) {
             event.preventDefault();
             $('button#btn_period_day').removeClass('active');
             $('button#btn_period_week').removeClass('active');
             $('button#btn_period_month').addClass('active');
-            	$("#period_day").hide();
-            	$("#period_week").hide();
-            	$("#period_month").show();
-            	$("#period").val('month');
-            });
-            
-            
-            
-            
-            
-            
-            
-	    
+            $("#period_day").hide();
+            $("#period_week").hide();
+            $("#period_month").show();
+            $("#period").val('month');
+        });
         $("select#users_do").change(function() {
             var p = $('select#users_do').val();
             var t = $('select#to').val();
@@ -1145,7 +1065,6 @@ $.post(
                 }
             });
         });
-
         $('body').on('click', 'button#prio_low', function(event) {
             event.preventDefault();
             $('button#prio_low').addClass('active');
@@ -1180,8 +1099,7 @@ $.post(
             event.preventDefault();
             window.location = MyHOSTNAME + "scheduler?plus";
         });
-        
-$("#user_info").hide();
+        $("#user_info").hide();
         $("#alert_add").hide();
         $("#users_do").select2({
             formatResult: format,
@@ -1197,8 +1115,7 @@ $("#user_info").hide();
         $('textarea').autosize({
             append: "\n"
         });
-
-	   $("#fio").autocomplete({
+        $("#fio").autocomplete({
             max: 10,
             minLength: 2,
             source: MyHOSTNAME + "/inc/json.php?fio",
@@ -1418,122 +1335,67 @@ php:
                 }
             }
         });
-	    
-	     };
-    
-
-
-
+    };
     if (ispath('sla_rep')) {
-
-
         $("#unitstat_id").select2({
             allowClear: true,
             maximumSelectionSize: 15,
             formatNoMatches: get_lang_param('JS_not_found')
         });
-
-
-
-
-
-
         $('#reservation').on('apply.daterangepicker', function(ev, picker) {
-
-           
-
             $("#start_time").val(picker.startDate.format('YYYY-MM-DD'));
             $("#stop_time").val(picker.endDate.format('YYYY-MM-DD'));
-
-
         });
         $('#reservation').daterangepicker({
             format: 'YYYY-MM-DD'
         });
-
-
-
-
-$('body').on('click', 'button#sla_stat_make', function(event) {
+        $('body').on('click', 'button#sla_stat_make', function(event) {
             event.preventDefault();
-             var p = $('#unitstat_id').val();
-             var start_time=$("#start_time").val();
-             var stop_time=$("#stop_time").val();
-
+            var p = $('#unitstat_id').val();
+            var start_time = $("#start_time").val();
+            var stop_time = $("#stop_time").val();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=get_sla_period_stat"+
-                "&start=" + start_time + "&end=" + stop_time+ "&unit="+p,
+                data: "mode=get_sla_period_stat" + "&start=" + start_time + "&end=" + stop_time + "&unit=" + p,
                 success: function(html) {
                     $('#ts_res').html(html);
                     $(".knob").knob();
                     makemytime();
                 }
             });
-
-
         });
-
-
-
     }
-
-
-
-
-
-
     if (ispath('main_stats')) {
-
-
         $("#unitstat_id").select2({
             allowClear: true,
             maximumSelectionSize: 15,
             formatNoMatches: get_lang_param('JS_not_found')
         });
-
-
-
-$('body').on('click', 'button#main_stat_make', function(event) {
+        $('body').on('click', 'button#main_stat_make', function(event) {
             event.preventDefault();
-             var p = $('#unitstat_id').val();
-             var start_time=$("#start_time").val();
-             var stop_time=$("#stop_time").val();
-
+            var p = $('#unitstat_id').val();
+            var start_time = $("#start_time").val();
+            var stop_time = $("#stop_time").val();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=get_total_period_stat"+
-                "&start=" + start_time + "&end=" + stop_time+ "&unit="+p,
+                data: "mode=get_total_period_stat" + "&start=" + start_time + "&end=" + stop_time + "&unit=" + p,
                 success: function(html) {
                     $('#ts_res').html(html);
                     $(".knob").knob();
                     makemytime();
                 }
             });
-
-
         });
-
-
-
         $('#reservation').on('apply.daterangepicker', function(ev, picker) {
-
-           
-
             $("#start_time").val(picker.startDate.format('YYYY-MM-DD'));
             $("#stop_time").val(picker.endDate.format('YYYY-MM-DD'));
-
-
         });
         $('#reservation').daterangepicker({
             format: 'YYYY-MM-DD'
         });
-
     }
-
-
     if (ispath('user_stats')) {
         $("#user_list").select2({
             formatResult: format,
@@ -1546,16 +1408,11 @@ $('body').on('click', 'button#main_stat_make', function(event) {
                 return m;
             }
         });
-
-
-
-
-$('body').on('click', 'button#user_stat_make', function(event) {
+        $('body').on('click', 'button#user_stat_make', function(event) {
             event.preventDefault();
-             var p = $('#user_list').val();
-             var start_time=$("#start_time").val();
-             var stop_time=$("#stop_time").val();
-
+            var p = $('#user_list').val();
+            var start_time = $("#start_time").val();
+            var stop_time = $("#stop_time").val();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
@@ -1566,17 +1423,11 @@ $('body').on('click', 'button#user_stat_make', function(event) {
                     makemytime();
                 }
             });
-
         });
-
-
-
-
         $('#reservation').on('apply.daterangepicker', function(ev, picker) {
             var p = $('#user_list').val();
             $("#start_time").val(picker.startDate.format('YYYY-MM-DD'));
             $("#stop_time").val(picker.endDate.format('YYYY-MM-DD'));
-
         });
         $('#reservation').daterangepicker({
             format: 'YYYY-MM-DD'
@@ -1695,11 +1546,6 @@ $('body').on('click', 'button#user_stat_make', function(event) {
                 }
             });
         });
-
-
-
-
-
         $('body').on('click', 'button#do_comment', function(event) {
             event.preventDefault();
             var tid = $("#target_user").val();
@@ -1756,96 +1602,63 @@ $('body').on('click', 'button#user_stat_make', function(event) {
         $('#do_comment_file').change(function() {
             upl();
         });
-
-
-//tab_2
+        //tab_2
         $('body').on('click', 'a#get_new_log', function(event) {
             event.preventDefault();
-           var t_id = $('#ticket_hash').val();
-        $.ajax({
-            type: "POST",
-            url: ACTIONPATH,
-            data: "mode=get_new_ticket_log"+
-            "&ticket_hash="+t_id,
-            success: function(html) {
-                $('#tab_2').html(html);
-                makemytime(true);
+            var t_id = $('#ticket_hash').val();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=get_new_ticket_log" + "&ticket_hash=" + t_id,
+                success: function(html) {
+                    $('#tab_2').html(html);
+                    makemytime(true);
+                }
+            });
+        });
+        var intr = null;
+        //setInterval(plus_sec(), 1000);
+        function gotimer_worker() {
+            //setInterval(function() {
+            if ($('#work_timer').attr('value') == 'true') {
+                var t = $('#work_timer > #f').attr('datetime');
+                t++;
+                $('#work_timer > #f').attr('datetime', t);
+                var el = $('#work_timer > time#f').attr('datetime');
+                var duration = moment.duration(el * 1000, 'milliseconds');
+                $('#work_timer > time#f').html('<span>' + duration.format("d " + MOMENTJS_DAY + ", h " + MOMENTJS_HOUR + ", m " + MOMENTJS_MINUTE + ", s " + MOMENTJS_SEC + "") + '</span>');
             }
+            //  }, 1000);
+            //$('#work_timer').attr('value', 'false');
+        }
+
+        function gotimer_deadline() {
+            //setInterval(function() {
+            if ($('#deadline_timer').attr('value') == 'true') {
+                var t = $('#deadline_timer > #f').attr('datetime');
+                t--;
+                $('#deadline_timer > #f').attr('datetime', t);
+                var el = $('#deadline_timer > time#f').attr('datetime');
+                var duration = moment.duration(el * 1000, 'milliseconds');
+                $('#deadline_timer > time#f').html('<span>' + duration.format("d " + MOMENTJS_DAY + ", h " + MOMENTJS_HOUR + ", m " + MOMENTJS_MINUTE + ", s " + MOMENTJS_SEC + "") + '</span>');
+            }
+            //  }, 1000);
+            //$('#work_timer').attr('value', 'false');
+        }
+        if ($('#deadline_timer').attr('value') == 'true') {
+            //gotimer_worker();
+            intr = setInterval(gotimer_deadline, 1000);
+            //clearInterval(intr);
+        }
+        if ($('#work_timer').attr('value') == 'true') {
+            //gotimer_worker();
+            intr = setInterval(gotimer_worker, 1000);
+            //clearInterval(intr);
+        }
+        $('.fancybox').fancybox({
+            openEffect: 'elastic',
+            closeEffect: 'elastic'
         });
-
-        });
-
-
-
-var intr = null;
-//setInterval(plus_sec(), 1000);
-
-
-function gotimer_worker() {
-
-        //setInterval(function() {
-
-
-if ($('#work_timer').attr('value') == 'true') {
-
-
-var t=$('#work_timer > #f').attr('datetime');
-t++;
-$('#work_timer > #f').attr('datetime', t);
-
-var el=$('#work_timer > time#f').attr('datetime');
-var duration = moment.duration(el*1000, 'milliseconds');
-$('#work_timer > time#f').html('<span>' + duration.format("d "+MOMENTJS_DAY+", h "+MOMENTJS_HOUR+", m "+MOMENTJS_MINUTE+", s "+MOMENTJS_SEC+"") + '</span>');
-}
-      //  }, 1000);
-
-//$('#work_timer').attr('value', 'false');
-}
-
-
-function gotimer_deadline() {
-
-        //setInterval(function() {
-
-
-if ($('#deadline_timer').attr('value') == 'true') {
-
-
-var t=$('#deadline_timer > #f').attr('datetime');
-t--;
-$('#deadline_timer > #f').attr('datetime', t);
-
-var el=$('#deadline_timer > time#f').attr('datetime');
-var duration = moment.duration(el*1000, 'milliseconds');
-$('#deadline_timer > time#f').html('<span>' + duration.format("d "+MOMENTJS_DAY+", h "+MOMENTJS_HOUR+", m "+MOMENTJS_MINUTE+", s "+MOMENTJS_SEC+"") + '</span>');
-}
-      //  }, 1000);
-
-//$('#work_timer').attr('value', 'false');
-}
-
-if ($('#deadline_timer').attr('value') == 'true') {
-    //gotimer_worker();
-    intr= setInterval(gotimer_deadline,1000);
-//clearInterval(intr);
-}
-
-
-if ($('#work_timer').attr('value') == 'true') {
-    //gotimer_worker();
-    intr= setInterval(gotimer_worker,1000);
-//clearInterval(intr);
-}
-
-
-
-
-$('.fancybox').fancybox(
-    {
-        openEffect  : 'elastic',
-        closeEffect : 'elastic'
-    });
-
 
         function upl() {
             var file_data = $('#do_comment_file').prop('files')[0];
@@ -1903,7 +1716,7 @@ $('.fancybox').fancybox(
   
   //get_comments(ticket_id)
     if (comments) do ajax fetch new comments
-    
+
   */
         });
         $('body').on('click', 'button#prio_low', function(event) {
@@ -1946,8 +1759,6 @@ $('.fancybox').fancybox(
             }
         });
         $('textarea#msg').bind('keydown', function(e) {
-
-
             if (e.ctrlKey && e.keyCode == 13) {
                 $("button#do_comment").click();
             }
@@ -2017,7 +1828,7 @@ $('.fancybox').fancybox(
         $('body').on('click', 'button#save_edit_ticket', function(event) {
             event.preventDefault();
             var //s = $('#subj').val(),
-                m = $('#msg_up').val(),
+            m = $('#msg_up').val(),
                 p = $('#prio').val(),
                 t_hash = $('#ticket_hash').val();
             $.ajax({
@@ -2032,48 +1843,33 @@ $('.fancybox').fancybox(
                 }
             });
         });
-
-
-
         $('body').on('click', 'button#del_ticket', function(event) {
             event.preventDefault();
-
             var t_hash = $('#ticket_hash').val();
             var lang_del = get_lang_param('JS_del');
-
-
             bootbox.confirm(lang_del, function(result) {
                 if (result == true) {
-            $.ajax({
-                type: "POST",
-                url: ACTIONPATH,
-                data: "mode=del_ticket" + "&t_hash=" + t_hash,
-                success: function(html) {
-                    //console.log(html);
-                    //$('#myModal').modal('hide');
-                    //$(elem).removeClass().addClass('success', 1000);
-                    window.location = MyHOSTNAME + "list";
-                }
-            });
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=del_ticket" + "&t_hash=" + t_hash,
+                        success: function(html) {
+                            //console.log(html);
+                            //$('#myModal').modal('hide');
+                            //$(elem).removeClass().addClass('success', 1000);
+                            window.location = MyHOSTNAME + "list";
+                        }
+                    });
                 } else if (result == false) {}
             });
-
-
-
-
-
-
-});
-
-
+        });
         $('body').on('click', 'button#action_ok', function(event) {
             event.preventDefault();
             var status_lock = $("button#action_ok").attr('status');
             var ok_val = $("button#action_ok").attr("value");
             var ok_val_tid = $("button#action_ok").attr("tid");
             var lang_ok = get_lang_param('JS_ok');
-                        var st = $("#action_refer_to").attr('value');
-
+            var st = $("#action_refer_to").attr('value');
             if (st == '1') {
                 $("#refer_to").fadeOut(500);
                 $("#action_refer_to").removeClass('active').attr('value', '0');
@@ -2087,11 +1883,8 @@ $('.fancybox').fancybox(
                     url: ACTIONPATH,
                     data: "mode=status_ok" + "&tid=" + ok_val_tid + "&user=" + encodeURIComponent(ok_val),
                     success: function(html) {
-
-intr= setInterval(gotimer_worker,1000);
-//clearInterval(intr);
-
-
+                        intr = setInterval(gotimer_worker, 1000);
+                        //clearInterval(intr);
                         $("#msg").hide().html(html).fadeIn(500);
                         setTimeout(function() {
                             $('#msg').children('.alert').fadeOut(500);
@@ -2109,9 +1902,8 @@ intr= setInterval(gotimer_worker,1000);
                     url: ACTIONPATH,
                     data: "mode=status_no_ok" + "&tid=" + ok_val_tid + "&user=" + encodeURIComponent(ok_val),
                     success: function(html) {
-//intr= setInterval(gotimer_worker,1000);
-clearInterval(intr);
-
+                        //intr= setInterval(gotimer_worker,1000);
+                        clearInterval(intr);
                         $("#msg").hide().html(html).fadeIn(500);
                         setTimeout(function() {
                             $('#msg').children('.alert').fadeOut(500);
@@ -2126,16 +1918,11 @@ clearInterval(intr);
             var lock_val_tid = $("button#action_lock").attr("tid");
             var status_lock = $("button#action_lock").attr('status');
             var lang_unlock = get_lang_param('JS_unlock');
-
-
             var st = $("#action_refer_to").attr('value');
-
             if (st == '1') {
                 $("#refer_to").fadeOut(500);
                 $("#action_refer_to").removeClass('active').attr('value', '0');
             }
-
-
             if (status_lock == 'lock') {
                 $("button#action_lock").attr('status', "unlock").html("<i class='fa fa-unlock'></i> " + lang_unlock);
                 $("#msg_e").hide();
@@ -2145,10 +1932,9 @@ clearInterval(intr);
                     data: "mode=lock" + "&tid=" + lock_val_tid + "&user=" + encodeURIComponent(lock_val),
                     success: function(html) {
                         $("#msg").hide().html(html).fadeIn(500);
-$('#work_timer').attr('value', 'true');
-    intr= setInterval(gotimer_worker,1000);
-//clearInterval(intr);
-
+                        $('#work_timer').attr('value', 'true');
+                        intr = setInterval(gotimer_worker, 1000);
+                        //clearInterval(intr);
                         //$("#action_ok").attr('disabled', "disabled");
                         $("#action_ok").removeAttr('disabled');
                         setTimeout(function() {
@@ -2169,9 +1955,8 @@ $('#work_timer').attr('value', 'true');
                         $("#msg").hide().html(html).fadeIn(500);
                         $("#action_ok").attr('disabled', "disabled");
                         $('#work_timer').attr('value', 'false');
-//intr= setInterval(gotimer_worker,1000);
-clearInterval(intr);
-
+                        //intr= setInterval(gotimer_worker,1000);
+                        clearInterval(intr);
                         setTimeout(function() {
                             $('#msg').children('.alert').fadeOut(500);
                         }, 3000);
@@ -2323,9 +2108,6 @@ console.log(height);
         $(".knob").knob();
     };
     if (ispath('profile')) {
-
-
-
         $('body').on('click', 'button#gen_new_api', function(event) {
             event.preventDefault();
             $.ajax({
@@ -2335,22 +2117,16 @@ console.log(height);
                 success: function(html) {
                     //window.location = MyHOSTNAME + "profile";
                     $("#api_code").html(html);
-                    
                 }
             });
         });
-
-
-//edit_nf
+        //edit_nf
         $('body').on('click', 'button#edit_nf', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=profile_edit_nf"+
-                "&mail="+$("#mail_nf").val()+
-                "&sms="+$("#sms_nf").val()+
-                "&mob="+$("#mob").val(),
+                data: "mode=profile_edit_nf" + "&mail=" + $("#mail_nf").val() + "&sms=" + $("#sms_nf").val() + "&mob=" + $("#mob").val(),
                 success: function(html) {
                     //window.location = MyHOSTNAME + "profile";
                     $("#nf_info").hide().html(html).fadeIn(500);
@@ -2360,15 +2136,12 @@ console.log(height);
                 }
             });
         });
-
-
         $(".multi_field").select2({
             allowClear: true,
             maximumSelectionSize: 15,
             width: '100%',
             formatNoMatches: get_lang_param('JS_not_found')
         });
-
         $("input#login_user").keyup(function() {
             var exparam = $(this).attr('exclude-param');
             if ($(this).val().length > 3) {
@@ -2420,8 +2193,7 @@ console.log(height);
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=edit_profile_main_client" + "&fio=" + encodeURIComponent($("#fio").val()) + "&mail=" + encodeURIComponent($("#mail").val()) + "&lang=" + encodeURIComponent($("select#lang").val()) + "&skype=" + encodeURIComponent($("#skype").val()) + "&tel=" + encodeURIComponent($("#tel").val()) + "&adr=" + encodeURIComponent($("#adr").val()) + "&id=" + encodeURIComponent($("#edit_profile_main").attr('value'))+
-                "&pb="+$("#pb").val(),
+                data: "mode=edit_profile_main_client" + "&fio=" + encodeURIComponent($("#fio").val()) + "&mail=" + encodeURIComponent($("#mail").val()) + "&lang=" + encodeURIComponent($("select#lang").val()) + "&skype=" + encodeURIComponent($("#skype").val()) + "&tel=" + encodeURIComponent($("#tel").val()) + "&adr=" + encodeURIComponent($("#adr").val()) + "&id=" + encodeURIComponent($("#edit_profile_main").attr('value')) + "&pb=" + $("#pb").val(),
                 success: function(html) {
                     $("#m_info").hide().html(html).fadeIn(500);
                     setTimeout(function() {
@@ -2430,34 +2202,25 @@ console.log(height);
                 }
             });
         });
-
-
-
-$("#noty").on("change", function(){
-        //alert( this.value );
-        var p=this.value;
-                       // var t = 'test';
-                    noty({
-                                text: 'test',
-                                layout: p,
-                                type: 'information',
-                                timeout: 2000
-                            });
-
-/*
+        $("#noty").on("change", function() {
+            //alert( this.value );
+            var p = this.value;
+            // var t = 'test';
+            noty({
+                text: 'test',
+                layout: p,
+                type: 'information',
+                timeout: 2000
+            });
+            /*
                         noty({
                             text: "test",
                             layout: this.value,
                             timeout: false
                         });
 */
-                        $.ionSound.play("button_tiny");
-
-
-    });
-
-
-
+            $.ionSound.play("button_tiny");
+        });
         $('body').on('click', 'button#edit_profile_main', function(event) {
             event.preventDefault();
             if ($("#fio").val().length < 3) {
@@ -2471,9 +2234,7 @@ $("#noty").on("change", function(){
                 $.ajax({
                     type: "POST",
                     url: ACTIONPATH,
-                    data: "mode=edit_profile_main" + "&mail=" + encodeURIComponent($("#mail").val()) + "&fio=" + encodeURIComponent($("#fio").val()) + "&lang=" + encodeURIComponent($("select#lang").val()) + "&skype=" + encodeURIComponent($("#skype").val()) + "&tel=" + encodeURIComponent($("#tel").val()) + "&adr=" + encodeURIComponent($("#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&unit=" + encodeURIComponent($("#pidrozdil").val()) + "&id=" + encodeURIComponent($("#edit_profile_main").attr('value'))+
-                    "&user_layot="+encodeURIComponent($("#noty").val())+
-                    "&pb="+$("#pb").val(),
+                    data: "mode=edit_profile_main" + "&mail=" + encodeURIComponent($("#mail").val()) + "&fio=" + encodeURIComponent($("#fio").val()) + "&lang=" + encodeURIComponent($("select#lang").val()) + "&skype=" + encodeURIComponent($("#skype").val()) + "&tel=" + encodeURIComponent($("#tel").val()) + "&adr=" + encodeURIComponent($("#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&unit=" + encodeURIComponent($("#pidrozdil").val()) + "&id=" + encodeURIComponent($("#edit_profile_main").attr('value')) + "&user_layot=" + encodeURIComponent($("#noty").val()) + "&pb=" + $("#pb").val(),
                     success: function(html) {
                         $("#m_info").hide().html(html).fadeIn(500);
                         setTimeout(function() {
@@ -2501,12 +2262,9 @@ $("#noty").on("change", function(){
                 }
             });
         });
-
-
-
-                $('body').on('click', 'button#edit_profile_ad_f', function(event) {
+        $('body').on('click', 'button#edit_profile_ad_f', function(event) {
             event.preventDefault();
-            var add_from=$('#add_field_form').serialize();
+            var add_from = $('#add_field_form').serialize();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
@@ -2519,9 +2277,6 @@ $("#noty").on("change", function(){
                 }
             });
         });
-
-
-
         //if (def_filename == "profile.php") {
         /*  setInterval(function(){
             check_update();
@@ -2529,37 +2284,26 @@ $("#noty").on("change", function(){
     }
     if (ispath('create')) {
         $.fn.editable.defaults.mode = 'inline';
-
-
         $(".multi_field").select2({
             allowClear: true,
             maximumSelectionSize: 15,
             width: '100%',
             formatNoMatches: get_lang_param('JS_not_found')
         });
-
-
-
-
-
         $('#d_finish').daterangepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',timePicker: true,timePicker12Hour: false,singleDatePicker:true,
+            format: 'YYYY-MM-DD HH:mm:ss',
+            timePicker: true,
+            timePicker12Hour: false,
+            singleDatePicker: true,
             minDate: new Date()
         });
-
-$("#d_finish").change(function() {
-
-$('#d_finish_val').val($(this).val());
-
- });
-$('#d_finish').on('apply.daterangepicker', function(ev, picker) {
+        $("#d_finish").change(function() {
+            $('#d_finish_val').val($(this).val());
+        });
+        $('#d_finish').on('apply.daterangepicker', function(ev, picker) {
             //$("#action_start").val( picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
             $('#d_finish_val').val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
-            
-            
         });
-
-
         $("select#users_do").change(function() {
             var p = $('select#users_do').val();
             var t = $('select#to').val();
@@ -2682,13 +2426,10 @@ $('#d_finish').on('apply.daterangepicker', function(ev, picker) {
         });
         $('body').on('click', 'button#enter_ticket', function(event) {
             event.preventDefault();
-
-//console.log($('#add_field_form').serialize());
-
+            //console.log($('#add_field_form').serialize());
             if (check_form_ticket() == 0) {
                 enter_ticket();
             }
-            
             //console.log($("#users_do").val());
             //alert(u_do);
         });
@@ -3102,57 +2843,44 @@ php:
         },5000);*/
     }
     if (ispath('helper')) {
-
-$('.fancybox').fancybox(
-    {
-        openEffect  : 'elastic',
-        closeEffect : 'elastic'
-    });
-
-
-
-//delete_edited_manual_file
+        $('.fancybox').fancybox({
+            openEffect: 'elastic',
+            closeEffect: 'elastic'
+        });
+        //delete_edited_manual_file
         $('body').on('click', 'button#delete_edited_manual_file', function(event) {
             event.preventDefault();
-$.ajax({
-        type: 'POST',
-        url: ACTIONPATH,
-        data: "mode=delete_manual_file"+
-        "&uniq_code="+$(this).val(),
-        dataType: 'html',
-                                success: function(html) {
-                            //$('#table_list').html(html);
-                            console.log("ok");
-                            window.location = MyHOSTNAME + "helper?h="+$("#do_save_help").val()+"&edit";
-                        }
-
-    });
-});
-
-
-if($('#myid').length) {
-
-
-var previewNode = document.querySelector("#template");
-previewNode.id = "";
-var previewTemplate = previewNode.parentNode.innerHTML;
-previewNode.parentNode.removeChild(previewNode);
-var ph=$("#manual_hash").val();
-
-$('#myid').dropzone({ 
-    url: ACTIONPATH,
-    maxFilesize: 100,
-    paramName: "myfile",
-    params: {
-      mode: 'upload_manual_file',
-      post_hash: ph,
-      type: '1'
-    },
-  removedfile: function(file) {
-
-//console.log('d:'+file);
-//var name = file.name;
-/*
+            $.ajax({
+                type: 'POST',
+                url: ACTIONPATH,
+                data: "mode=delete_manual_file" + "&uniq_code=" + $(this).val(),
+                dataType: 'html',
+                success: function(html) {
+                    //$('#table_list').html(html);
+                    console.log("ok");
+                    window.location = MyHOSTNAME + "helper?h=" + $("#do_save_help").val() + "&edit";
+                }
+            });
+        });
+        if ($('#myid').length) {
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+            var ph = $("#manual_hash").val();
+            $('#myid').dropzone({
+                url: ACTIONPATH,
+                maxFilesize: 100,
+                paramName: "myfile",
+                params: {
+                    mode: 'upload_manual_file',
+                    post_hash: ph,
+                    type: '1'
+                },
+                removedfile: function(file) {
+                    //console.log('d:'+file);
+                    //var name = file.name;
+                    /*
 $.ajax({
         type: 'POST',
         url: 'delete.php',
@@ -3160,95 +2888,61 @@ $.ajax({
         dataType: 'html'
     });
 */
-    var _ref;
-    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-  },
-    maxThumbnailFilesize: 5,
-    previewTemplate: previewTemplate,
-    previewsContainer: "#previews",
-    autoQueue: true,
-    maxFiles: 50,
-    init: function() {
-      
-      this.on('success', function(file, response) {
-         //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
-         
-
- //$.each(json, function(i, item) {
-//var obj = jQuery.parseJSON(json);
-var obj = jQuery.parseJSON(response);
-
-//console.log(obj);
-
-$.each(obj, function(i, item) {
-
-    if (item.status == "ok") {
-
-
-$(file.previewTemplate).append('<input type="hidden" class="server_file" value="'+item.uniq_code+'">');
-}
-else if (item.status == "error") {
-//$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
-
-    $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+item.msg+'</div>').fadeOut(3000);
-
-}
-
-})
-
-
-        
- //});
-
-
-      });
-      this.on("removedfile", function(file) {
-var server_file = $(file.previewTemplate).children('.server_file').val();
-            //console.log(server_file);
-
-
-$.ajax({
-        type: 'POST',
-        url: ACTIONPATH,
-        data: "mode=delete_manual_file"+
-        "&uniq_code="+server_file,
-        dataType: 'html',
-    });
-
-      });
-      
-     this.on("addedfile", function(file) {
-console.log(file);
-      });
-      
-      this.on('drop', function(file) {
-        //alert('file');
-      }); 
-    }
-  });
-
-}
-
-
-
-
-
-                if ($('#summernote_help').length != 0) {
-                $('#summernote_help').summernote({
-                        height: 300,
-                        focus: true,
-                       // lang: get_lang_param('summernote_lang'),
-                        onImageUpload: function(files, editor, welEditable) {
-                            sendFile(files[0], editor, welEditable);
-                        }
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                maxThumbnailFilesize: 5,
+                previewTemplate: previewTemplate,
+                previewsContainer: "#previews",
+                autoQueue: true,
+                maxFiles: 50,
+                init: function() {
+                    this.on('success', function(file, response) {
+                        //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
+                        //$.each(json, function(i, item) {
+                        //var obj = jQuery.parseJSON(json);
+                        var obj = jQuery.parseJSON(response);
+                        //console.log(obj);
+                        $.each(obj, function(i, item) {
+                            if (item.status == "ok") {
+                                $(file.previewTemplate).append('<input type="hidden" class="server_file" value="' + item.uniq_code + '">');
+                            } else if (item.status == "error") {
+                                //$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
+                                $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' + item.msg + '</div>').fadeOut(3000);
+                            }
+                        })
+                        //});
                     });
-}
-
-
-//del_item_no
-
-
-
+                    this.on("removedfile", function(file) {
+                        var server_file = $(file.previewTemplate).children('.server_file').val();
+                        //console.log(server_file);
+                        $.ajax({
+                            type: 'POST',
+                            url: ACTIONPATH,
+                            data: "mode=delete_manual_file" + "&uniq_code=" + server_file,
+                            dataType: 'html',
+                        });
+                    });
+                    this.on("addedfile", function(file) {
+                        console.log(file);
+                    });
+                    this.on('drop', function(file) {
+                        //alert('file');
+                    });
+                }
+            });
+        }
+        if ($('#summernote_help').length != 0) {
+            $('#summernote_help').summernote({
+                height: 300,
+                focus: true,
+                // lang: get_lang_param('summernote_lang'),
+                onImageUpload: function(files, editor, welEditable) {
+                    sendFile(files[0], editor, welEditable);
+                }
+            });
+        }
+        //del_item_no
         $('body').on('click', 'button#del_helper', function(event) {
             event.preventDefault();
             var hn = $(this).val();
@@ -3276,68 +2970,51 @@ console.log(file);
         $("input#find_helper").keyup(function() {
             var t = $(this).val();
             if ($(this).val().length > 1) {
-
-
-            $.ajax({
-                type: "POST",
-                url: ACTIONPATH,
-                data: "mode=find_help" + "&t=" + t,
-                success: function(html) {
-                    $("#help_content").html(html);
-                }
-            });
-        }
-        else if ($(this).val().length < 2) {
-
-            $.ajax({
-            type: "POST",
-            url: ACTIONPATH,
-            data: "mode=view_cats",
-            success: function(html) {
-                $("#help_content").html(html);
-
-
+                $.ajax({
+                    type: "POST",
+                    url: ACTIONPATH,
+                    data: "mode=find_help" + "&t=" + t,
+                    success: function(html) {
+                        $("#help_content").html(html);
+                    }
+                });
+            } else if ($(this).val().length < 2) {
+                $.ajax({
+                    type: "POST",
+                    url: ACTIONPATH,
+                    data: "mode=view_cats",
+                    success: function(html) {
+                        $("#help_content").html(html);
+                    }
+                });
             }
         });
-
-        }
-        });
-
-//units_help
-
-view_helper_cat();
+        //units_help
+        view_helper_cat();
         $('body').on('click', 'button#add_helper_item', function(event) {
             event.preventDefault();
-
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=items_view",
                 success: function(html) {
-
                     $('#content_items').html(html);
                     view_helper_cat();
-
-   
                 }
             });
-
         });
-
         $('body').on('click', 'i#del_item_no', function(event) {
             event.preventDefault();
             //console.log('v');
             var lang_helper_error = get_lang_param('JS_HELPER_error_to_del');
             noty({
-                    text: lang_helper_error,
-                    layout: 'center',
-                    type: 'information',
-                    timeout: 3000
-                });
-            
+                text: lang_helper_error,
+                layout: 'center',
+                type: 'information',
+                timeout: 3000
+            });
         });
-
-                $('body').on('click', 'i#del_item', function(event) {
+        $('body').on('click', 'i#del_item', function(event) {
             event.preventDefault();
             var ids = $(this).attr('value');
             bootbox.confirm(get_lang_param('JS_del'), function(result) {
@@ -3349,7 +3026,6 @@ view_helper_cat();
                         success: function(html) {
                             $("#content_items").html(html);
                             view_helper_cat();
-
                         }
                     });
                 }
@@ -3358,8 +3034,7 @@ view_helper_cat();
                 }
             });
         });
-
-/*
+        /*
         $('body').on('click', 'button#units_help', function(event) {
             event.preventDefault();
             $.ajax({
@@ -3390,7 +3065,7 @@ view_helper_cat();
             });
         });
 */
-/*
+        /*
         $('body').on('click', 'button#create_new_help', function(event) {
             event.preventDefault();
             $.ajax({
@@ -3428,7 +3103,7 @@ view_helper_cat();
             var lang_unit = get_lang_param('JS_unit');
             var lang_probl = get_lang_param('JS_probl');
             var t = $("#t").val();
-            var cat_id=$("#cat").val();
+            var cat_id = $("#cat").val();
             var data = {
                 'mode': 'do_save_help',
                 'u': u,
@@ -3436,7 +3111,7 @@ view_helper_cat();
                 'msg': sHTML,
                 'hn': hn,
                 'is_client': is_client,
-                'cat_id':cat_id
+                'cat_id': cat_id
             };
             var error_code = 0;
             if (u == null) {
@@ -3484,7 +3159,7 @@ view_helper_cat();
                 'mh': $("#manual_hash").val(),
                 'msg': sHTML,
                 'is_client': is_client,
-                'cat':cat
+                'cat': cat
             };
             var error_code = 0;
             //alert (u);
@@ -3517,7 +3192,7 @@ view_helper_cat();
                 });
             }
         });
-/*
+        /*
         $('body').on('click', 'button#edit_helper', function(event) {
             event.preventDefault();
             var hn = $(this).val();
@@ -3557,8 +3232,6 @@ view_helper_cat();
             data: "mode=view_cats",
             success: function(html) {
                 $("#help_content").html(html);
-
-
             }
         });
     };
@@ -3569,31 +3242,25 @@ view_helper_cat();
         },5000);*/
     }
     if (ispath('create')) {
-
-
-if($('#myid').length) {
-
-
-var previewNode = document.querySelector("#template");
-previewNode.id = "";
-var previewTemplate = previewNode.parentNode.innerHTML;
-previewNode.parentNode.removeChild(previewNode);
-var ph=$("#hashname").val();
-
-$('#myid').dropzone({ 
-    url: ACTIONPATH,
-    maxFilesize: 100,
-    paramName: "myfile",
-    params: {
-      mode: 'upload_post_file',
-      post_hash: ph,
-      type: '1'
-    },
-  removedfile: function(file) {
-
-//console.log('d:'+file);
-//var name = file.name;
-/*
+        if ($('#myid').length) {
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+            var ph = $("#hashname").val();
+            $('#myid').dropzone({
+                url: ACTIONPATH,
+                maxFilesize: 100,
+                paramName: "myfile",
+                params: {
+                    mode: 'upload_post_file',
+                    post_hash: ph,
+                    type: '1'
+                },
+                removedfile: function(file) {
+                    //console.log('d:'+file);
+                    //var name = file.name;
+                    /*
 $.ajax({
         type: 'POST',
         url: 'delete.php',
@@ -3601,76 +3268,50 @@ $.ajax({
         dataType: 'html'
     });
 */
-    var _ref;
-    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-  },
-    maxThumbnailFilesize: 5,
-    previewTemplate: previewTemplate,
-    previewsContainer: "#previews",
-    autoQueue: true,
-    maxFiles: 50,
-    init: function() {
-      
-      this.on('success', function(file, response) {
-         //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
-         
-
- //$.each(json, function(i, item) {
-//var obj = jQuery.parseJSON(json);
-var obj = jQuery.parseJSON(response);
-
-//console.log(obj);
-
-$.each(obj, function(i, item) {
-
-    if (item.status == "ok") {
-
-
-$(file.previewTemplate).append('<input type="hidden" class="server_file" value="'+item.uniq_code+'">');
-}
-else if (item.status == "error") {
-//$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
-
-    $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'+item.msg+'</div>').fadeOut(3000);
-
-}
-
-})
-
-
-        
- //});
-
-
-      });
-      this.on("removedfile", function(file) {
-var server_file = $(file.previewTemplate).children('.server_file').val();
-            //console.log(server_file);
-
-
-$.ajax({
-        type: 'POST',
-        url: ACTIONPATH,
-        data: "mode=delete_post_file"+
-        "&uniq_code="+server_file,
-        dataType: 'html',
-    });
-
-      });
-      
-     this.on("addedfile", function(file) {
-console.log(file);
-      });
-      
-      this.on('drop', function(file) {
-        //alert('file');
-      }); 
-    }
-  });
-
-}
-
-
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                maxThumbnailFilesize: 5,
+                previewTemplate: previewTemplate,
+                previewsContainer: "#previews",
+                autoQueue: true,
+                maxFiles: 50,
+                init: function() {
+                    this.on('success', function(file, response) {
+                        //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
+                        //$.each(json, function(i, item) {
+                        //var obj = jQuery.parseJSON(json);
+                        var obj = jQuery.parseJSON(response);
+                        //console.log(obj);
+                        $.each(obj, function(i, item) {
+                            if (item.status == "ok") {
+                                $(file.previewTemplate).append('<input type="hidden" class="server_file" value="' + item.uniq_code + '">');
+                            } else if (item.status == "error") {
+                                //$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
+                                $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' + item.msg + '</div>').fadeOut(3000);
+                            }
+                        })
+                        //});
+                    });
+                    this.on("removedfile", function(file) {
+                        var server_file = $(file.previewTemplate).children('.server_file').val();
+                        //console.log(server_file);
+                        $.ajax({
+                            type: 'POST',
+                            url: ACTIONPATH,
+                            data: "mode=delete_post_file" + "&uniq_code=" + server_file,
+                            dataType: 'html',
+                        });
+                    });
+                    this.on("addedfile", function(file) {
+                        console.log(file);
+                    });
+                    this.on('drop', function(file) {
+                        //alert('file');
+                    });
+                }
+            });
+        }
         $("textarea#msg").keyup(function() {
             if ($(this).val().length > 1) {
                 $("textarea#msg").popover('hide');
@@ -3730,10 +3371,7 @@ console.log(file);
         });
 
         function check_form_ticket() {
-
-
-//console.log('da');
-
+            //console.log('da');
             var z = $("#username").text();
             var s = $("#subj").val();
             var to = $("select#to").val();
@@ -3823,8 +3461,8 @@ console.log(file);
         function enter_ticket_client() {
             //console.log($("#users_do").val());
             var u_do;
-            var deadline_time=$("#d_finish_val").val();
-            var add_from=$('#add_field_form').serialize();
+            var deadline_time = $("#d_finish_val").val();
+            var add_from = $('#add_field_form').serialize();
             if ($("#users_do").val() == null) {
                 u_do = '0';
             } else if ($("#users_do").val() != null) {
@@ -3836,27 +3474,21 @@ console.log(file);
                 type: "POST",
                 //async: false,
                 url: ACTIONPATH,
-                data: "mode=add_ticket" + "&type_add=client" + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val())+
-                    "&deadline_time="+deadline_time+"&"+add_from,
+                data: "mode=add_ticket" + "&type_add=client" + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val()) + "&deadline_time=" + deadline_time + "&" + add_from,
                 success: function(html) {
                     //console.log(html);
-
                     window.location = MyHOSTNAME + "create?ok&h=" + html;
                 }
             });
         }
 
         function enter_ticket() {
-             //console.log($("#users_do").val());
-
-
-             //console.log('da');
+            //console.log($("#users_do").val());
+            //console.log('da');
             var status_action = $("#status_action").val();
             var u_do;
-            var deadline_time=$("#d_finish_val").val();
-
-            var add_from=$('#add_field_form').serialize();
-
+            var deadline_time = $("#d_finish_val").val();
+            var add_from = $('#add_field_form').serialize();
             if (status_action == 'add') {
                 //uploadObj.startUpload();
                 $('#enter_ticket').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
@@ -3870,12 +3502,11 @@ console.log(file);
                     type: "POST",
                     //async: false,
                     url: ACTIONPATH,
-                    data: "mode=add_ticket" + "&type_add=add" + "&fio=" + encodeURIComponent($("#username").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&login=" + encodeURIComponent($("#new_login").text()) + "&pod=" + encodeURIComponent($("#new_unit").text()) + "&adr=" + encodeURIComponent($("#new_adr").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&mail=" + encodeURIComponent($("#new_mail").text()) + "&posada=" + encodeURIComponent($("#new_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val())+
-                    "&deadline_time="+deadline_time+"&"+add_from,
+                    data: "mode=add_ticket" + "&type_add=add" + "&fio=" + encodeURIComponent($("#username").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&login=" + encodeURIComponent($("#new_login").text()) + "&pod=" + encodeURIComponent($("#new_unit").text()) + "&adr=" + encodeURIComponent($("#new_adr").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&mail=" + encodeURIComponent($("#new_mail").text()) + "&posada=" + encodeURIComponent($("#new_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val()) + "&deadline_time=" + deadline_time + "&" + add_from,
                     success: function(html) {
                         //window.location = "new.php?ok&h="+html;
                         window.location = MyHOSTNAME + "create?ok&h=" + html;
-                       // console.log(html);
+                        // console.log(html);
                     }
                 });
             }
@@ -3892,8 +3523,7 @@ console.log(file);
                     type: "POST",
                     //async: false,
                     url: ACTIONPATH,
-                    data: "mode=add_ticket" + "&type_add=edit" + "&client_id_param=" + encodeURIComponent($("#client_id_param").val()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&login=" + encodeURIComponent($("#edit_login").text()) + "&pod=" + encodeURIComponent($("#edit_unit").text()) + "&adr=" + encodeURIComponent($("#edit_adr").text()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&mail=" + encodeURIComponent($("#edit_mail").text()) + "&posada=" + encodeURIComponent($("#edit_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val())+
-                    "&deadline_time="+deadline_time+"&"+add_from,
+                    data: "mode=add_ticket" + "&type_add=edit" + "&client_id_param=" + encodeURIComponent($("#client_id_param").val()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&login=" + encodeURIComponent($("#edit_login").text()) + "&pod=" + encodeURIComponent($("#edit_unit").text()) + "&adr=" + encodeURIComponent($("#edit_adr").text()) + "&tel=" + encodeURIComponent($("#edit_tel").text()) + "&mail=" + encodeURIComponent($("#edit_mail").text()) + "&posada=" + encodeURIComponent($("#edit_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val()) + "&deadline_time=" + deadline_time + "&" + add_from,
                     success: function(html) {
                         //console.log(html);
                         window.location = MyHOSTNAME + "create?ok&h=" + html;
@@ -3925,62 +3555,54 @@ console.log(file);
     */
         var p = new RegExp('(\.|\/)' + $('input#file_types').val());
         // Initialize the jQuery File Upload widget:
-
-if(jQuery().fileupload) { 
-
-
-
-        $('#fileupload').fileupload({
-            // Uncomment the following to send cross-domain cookies:
-            //xhrFields: {withCredentials: true},
-            url: MyHOSTNAME + 'sys/index.php',
-            autoUpload: true,
-            disableValidation: false,
-            acceptFileTypes: p,
-            maxFileSize: $('input#file_size').val(),
-            formData: {
-                hashname: $('input#hashname').val()
-            }
-        }).on('fileuploadprocessalways', function(e, data) {
-            $(this).removeClass('fileupload-processing');
-        }).on('fileuploaddone', function(e, data) {
-            $.each(data.result.files, function(index, file) {
-                if (file.url) {
-                    var link = $('<a>').attr('target', '_blank').prop('href', file.url);
-                    $(data.context.children()[index]).wrap(link);
-                } else if (file.error) {
-                    var error = $('<span class="text-danger"/>').text(file.error);
-                    $(data.context.children()[index]).append('<br>').append(error);
+        if (jQuery().fileupload) {
+            $('#fileupload').fileupload({
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+                url: MyHOSTNAME + 'sys/index.php',
+                autoUpload: true,
+                disableValidation: false,
+                acceptFileTypes: p,
+                maxFileSize: $('input#file_size').val(),
+                formData: {
+                    hashname: $('input#hashname').val()
                 }
-            });
-        }).on('fileuploadstop', function(e, data) {
-            /*if (check_form_ticket() == 0 ) {
+            }).on('fileuploadprocessalways', function(e, data) {
+                $(this).removeClass('fileupload-processing');
+            }).on('fileuploaddone', function(e, data) {
+                $.each(data.result.files, function(index, file) {
+                    if (file.url) {
+                        var link = $('<a>').attr('target', '_blank').prop('href', file.url);
+                        $(data.context.children()[index]).wrap(link);
+                    } else if (file.error) {
+                        var error = $('<span class="text-danger"/>').text(file.error);
+                        $(data.context.children()[index]).append('<br>').append(error);
+                    }
+                });
+            }).on('fileuploadstop', function(e, data) {
+                /*if (check_form_ticket() == 0 ) {
      enter_ticket();
      }
      
      */
-            //enter_ticket();
-        }).on('fileuploadadd', function(e, data) {
-            /* ... 
+                //enter_ticket();
+            }).on('fileuploadadd', function(e, data) {
+                /* ... 
     $("#uploadBtn").on('click',function () {
                 data.submit();
                 console.log('hello');
             });
             */
-        }).on('fileuploadsubmit', function(e, data) {
-            console.log(data);
-        });
-    }
+            }).on('fileuploadsubmit', function(e, data) {
+                console.log(data);
+            });
+        }
     }
     if (ispath('list')) {
-
-
         $('body').on('click', 'a#make_sort', function(event) {
             event.preventDefault();
             var tr_id = $(this).attr('value');
-
             var pt = $("#page_type").attr('value');
-          
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
@@ -3989,16 +3611,11 @@ if(jQuery().fileupload) {
                     window.location = MyHOSTNAME + "list?" + pt;
                 }
             });
-
-});
-
-
+        });
         $('body').on('click', 'a#reset_sort', function(event) {
             event.preventDefault();
             //var tr_id = $(this).attr('value');
-
             var pt = $("#page_type").attr('value');
-          
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
@@ -4007,22 +3624,17 @@ if(jQuery().fileupload) {
                     window.location = MyHOSTNAME + "list?" + pt;
                 }
             });
-
-});
-
-
-
-
+        });
         $('body').on('click', 'button#action_list_ok', function(event) {
             event.preventDefault();
             var status_ll = $(this).attr('status');
             var tr_id = $(this).attr('value');
             var elem = '#tr_' + tr_id;
-            var elb='.ela_'+tr_id;
+            var elb = '.ela_' + tr_id;
             var us = $(this).attr('user');
             if (status_ll == "ok") {
-                                        $(elb).attr('disabled', "disabled");
-                        //$("#action_list_lock").removeAttr('disabled');
+                $(elb).attr('disabled', "disabled");
+                //$("#action_list_lock").removeAttr('disabled');
                 $(this).attr("status", "unok");
                 $(this).html('<i class=\"fa fa-check-circle-o\"></i>');
                 $.ajax({
@@ -4035,8 +3647,8 @@ if(jQuery().fileupload) {
                 });
             }
             if (status_ll == "unok") {
-                                        //$("#action_list_lock").attr('disabled', "disabled");
-                        $(elb).removeAttr('disabled');
+                //$("#action_list_lock").attr('disabled', "disabled");
+                $(elb).removeAttr('disabled');
                 $(this).attr("status", "ok");
                 $(this).html('<i class=\"fa fa-circle-o\"></i>');
                 $.ajax({
@@ -4067,7 +3679,7 @@ if(jQuery().fileupload) {
             var status_ll = $(this).attr('status');
             var tr_id = $(this).attr('value');
             var elem = '#tr_' + tr_id;
-            var elb='.elb_'+tr_id;
+            var elb = '.elb_' + tr_id;
             var us = $(this).attr('user');
             if (status_ll == "lock") {
                 $(this).attr("status", "unlock");
@@ -4077,10 +3689,8 @@ if(jQuery().fileupload) {
                     url: ACTIONPATH,
                     data: "mode=lock" + "&tid=" + tr_id + "&user=" + encodeURIComponent(us),
                     success: function() {
-
                         //$("#action_list_ok").attr('disabled', "disabled");
                         $(elb).removeAttr('disabled');
-
                         $(elem).removeClass().addClass('warning', 1000);
                         $(elem).addClass('pops');
                     }
@@ -4096,7 +3706,6 @@ if(jQuery().fileupload) {
                     success: function() {
                         $(elb).attr('disabled', "disabled");
                         //$("#action_list_ok").removeAttr('disabled');
-
                         $(elem).removeClass('warning', 1000);
                     }
                 });
@@ -4296,9 +3905,8 @@ if(jQuery().fileupload) {
         $('#example_arch').bootstrapPaginator(options_arch);
         $('#client_example_out').bootstrapPaginator(options_client_out);
     }
-
-if (ispath('portal')) {
-//conf_edit_global_message
+    if (ispath('portal')) {
+        //conf_edit_global_message
         $("#users_do").select2({
             formatResult: format,
             formatSelection: format,
@@ -4310,25 +3918,13 @@ if (ispath('portal')) {
                 return m;
             }
         });
-
-
-$('body').on('click', 'button#conf_edit_portal', function(event) {
+        $('body').on('click', 'button#conf_edit_portal', function(event) {
             event.preventDefault();
-
-
-//console.log($('#to_msg').val());
-
+            //console.log($('#to_msg').val());
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_portal" + 
-                "&status=" + encodeURIComponent($("#portal_status").val())+
-                "&msg_type="+ encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
-                "&msg_title="+ encodeURIComponent($("#msg_title").val())+
-                "&msg_text="+ encodeURIComponent($("#mess").val())+
-                "&portal_msg_status=" + encodeURIComponent($("#portal_msg_status").val())+
-                "&ntu="+$("#users_do").val()
-                ,
+                data: "mode=conf_edit_portal" + "&status=" + encodeURIComponent($("#portal_status").val()) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&msg_title=" + encodeURIComponent($("#msg_title").val()) + "&msg_text=" + encodeURIComponent($("#mess").val()) + "&portal_msg_status=" + encodeURIComponent($("#portal_msg_status").val()) + "&ntu=" + $("#users_do").val(),
                 success: function(html) {
                     $("#conf_edit_portal_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {
@@ -4336,69 +3932,49 @@ $('body').on('click', 'button#conf_edit_portal', function(event) {
                     }, 3000);
                 }
             });
-
-
-
         });
-}
-
+    }
     if (ispath('mailers')) {
-
-$('body').on('click', 'button#check_mailers', function(event) {
+        $('body').on('click', 'button#check_mailers', function(event) {
             event.preventDefault();
             var sHTML = $('#mailers_msg').code();
-
-var data = {
+            var data = {
                 'mode': 'mailers_send',
                 'subj_mailers': encodeURIComponent($('#subj_mailers').val()),
                 'msg': sHTML,
-                'type_to_mail':encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()),
-                'users_priv':$("#users_priv").val(),
-                'users_units':$("#users_units").val(),
-                'users_list':$("#users_list").val()
+                'type_to_mail': encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()),
+                'users_priv': $("#users_priv").val(),
+                'users_units': $("#users_units").val(),
+                'users_list': $("#users_list").val()
             };
-
-//console.log($('#to_msg').val());
-
+            //console.log($('#to_msg').val());
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: data
-                ,
+                data: data,
                 success: function(html) {
                     $("#mailers_check_res").html(html);
-                
                 }
             });
-
-
-
         });
-
-
-
-$('body').on('click', 'button#send_mail', function(event) {
+        $('body').on('click', 'button#send_mail', function(event) {
             event.preventDefault();
             var sHTML = $('#mailers_msg').code();
-
-var data = {
+            var data = {
                 'mode': 'mailers_send',
                 'subj_mailers': $('#subj_mailers').val(),
                 'msg': sHTML,
-                'type_to_mail':encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()),
-                'users_priv':$("#users_priv").val(),
-                'users_units':$("#users_units").val(),
-                'users_list':$("#users_list").val(),
-                'check':'true'
+                'type_to_mail': encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()),
+                'users_priv': $("#users_priv").val(),
+                'users_units': $("#users_units").val(),
+                'users_list': $("#users_list").val(),
+                'check': 'true'
             };
-
-//console.log($('#to_msg').val());
-
+            //console.log($('#to_msg').val());
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: data
-                ,
+                data: data,
                 success: function(html) {
                     $("#conf_edit_portal_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {
@@ -4406,15 +3982,8 @@ var data = {
                     }, 3000);
                 }
             });
-
-
-
         });
-
-
-
-$('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
-        
+        $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event) {
             //console.log(this.value);
             if (this.value == '1') {
                 $('#users_priv').prop('disabled', true);
@@ -4424,65 +3993,48 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
                 $('#users_priv').prop('disabled', false);
                 $('#users_units').prop('disabled', false);
                 $('#users_list').prop('disabled', true);
-            } 
+            }
         });
-
-
-
-
         $(".msel").select2({
             allowClear: true,
             maximumSelectionSize: 15,
             width: '100%',
             formatNoMatches: get_lang_param('JS_not_found')
         });
-
-
         $('#mailers_msg').summernote({
-                        height: 300,
-                        focus: true,
-                        //lang: get_lang_param('summernote_lang'),
-                        disableDragAndDrop: false,
-                        toolbar: [
-    //['style', ['style']], // no style button
-    ['style', ['bold', 'italic', 'underline', 'clear']],
-    ['fontsize', ['fontsize']],
-    ['color', ['color']],
-    ['para', ['ul', 'ol', 'paragraph']],
-    ['height', ['height']],
-    ['table', ['table']],
-    ['link', ['link']],
-    ['codeview', ['codeview']]],
-                        oninit: function() {
-                        }
-                    });
-
-    }
-
-
-if (ispath('slaplans')) {
-
-
-
-   function view_slaplans() {
-$.fn.editable.defaults.mode = 'inline';
-            $('a#edit_item').each(function(i, e) {
-            $(e).editable({
-                inputclass: 'form-control input-sm input-longtext',
-                emptytext: 'пусто',
-                params: {
-                    mode: 'save_sla_item'
-                },
-                tpl: "<input type='text' style='width: 400px'>"
-            });
+            height: 300,
+            focus: true,
+            //lang: get_lang_param('summernote_lang'),
+            disableDragAndDrop: false,
+            toolbar: [
+                //['style', ['style']], // no style button
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['table', ['table']],
+                ['link', ['link']],
+                ['codeview', ['codeview']]
+            ],
+            oninit: function() {}
         });
-
-
-
-
-
-                            $('.sortable').nestedSortable({
-            ForcePlaceholderSize: true,
+    }
+    if (ispath('slaplans')) {
+        function view_slaplans() {
+            $.fn.editable.defaults.mode = 'inline';
+            $('a#edit_item').each(function(i, e) {
+                $(e).editable({
+                    inputclass: 'form-control input-sm input-longtext',
+                    emptytext: 'пусто',
+                    params: {
+                        mode: 'save_sla_item'
+                    },
+                    tpl: "<input type='text' style='width: 400px'>"
+                });
+            });
+            $('.sortable').nestedSortable({
+                ForcePlaceholderSize: true,
                 handle: 'div',
                 helper: 'clone',
                 items: 'li',
@@ -4493,140 +4045,97 @@ $.fn.editable.defaults.mode = 'inline';
                 tolerance: 'pointer',
                 toleranceElement: '> div',
                 maxLevels: 1,
-                
-update: function () {
-    list = $(this).nestedSortable('serialize');
-    //console.log(list);
-
-$.post(
-        ACTIONPATH,
-        { mode:"sort_sla_plans" ,list: list},
-        function(data){
-            console.log(data);
-        }
-    );
-
-
-}
-
+                update: function() {
+                    list = $(this).nestedSortable('serialize');
+                    //console.log(list);
+                    $.post(ACTIONPATH, {
+                        mode: "sort_sla_plans",
+                        list: list
+                    }, function(data) {
+                        console.log(data);
+                    });
+                }
+            });
+            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+                checkboxClass: 'icheckbox_minimal',
+                radioClass: 'iradio_minimal'
+            });
+        };
+        view_slaplans();
+        $(document).on('ifChanged', '#make_sla_active', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            //var hash=$(this).attr('value');
+            var name = $(this).prop('checked');
+            $.post(ACTIONPATH, {
+                mode: "make_sla_active",
+                name: name
+            });
         });
-
-                            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal'
-    });
-
-
-};
-
-view_slaplans();
-
-$(document).on('ifChanged', '#make_sla_active', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-//var hash=$(this).attr('value');
-var name=$(this).prop('checked');
-
-$.post( ACTIONPATH, { mode: "make_sla_active", name: name } );
-
-
-
-    });
-
-$('body').on('click', 'button#save_sla_plan', function(event) {
+        $('body').on('click', 'button#save_sla_plan', function(event) {
             event.preventDefault();
-var ids=$(this).val();
-var data= {
-    'mode': 'save_sla',
-    'uniq_id': ids,
-    'react_low_1':$('#react_low_1').val(),
-    'react_low_2':$('#react_low_2').val(),
-    'react_low_3':$('#react_low_3').val(),
-    'react_low_4':$('#react_low_4').val(),
-
-    'react_def_1':$('#react_def_1').val(),
-    'react_def_2':$('#react_def_2').val(),
-    'react_def_3':$('#react_def_3').val(),
-    'react_def_4':$('#react_def_4').val(),
-
-    'react_high_1':$('#react_high_1').val(),
-    'react_high_2':$('#react_high_2').val(),
-    'react_high_3':$('#react_high_3').val(),
-    'react_high_4':$('#react_high_4').val(),
-
-    'work_low_1':$('#work_low_1').val(),
-    'work_low_2':$('#work_low_2').val(),
-    'work_low_3':$('#work_low_3').val(),
-    'work_low_4':$('#work_low_4').val(),
-
-    'work_def_1':$('#work_def_1').val(),
-    'work_def_2':$('#work_def_2').val(),
-    'work_def_3':$('#work_def_3').val(),
-    'work_def_4':$('#work_def_4').val(),
-
-    'work_high_1':$('#work_high_1').val(),
-    'work_high_2':$('#work_high_2').val(),
-    'work_high_3':$('#work_high_3').val(),
-    'work_high_4':$('#work_high_4').val(),
-
-
-
-    'deadline_low_1':$('#deadline_low_1').val(),
-    'deadline_low_2':$('#deadline_low_2').val(),
-    'deadline_low_3':$('#deadline_low_3').val(),
-    'deadline_low_4':$('#deadline_low_4').val(),
-
-    'deadline_def_1':$('#deadline_def_1').val(),
-    'deadline_def_2':$('#deadline_def_2').val(),
-    'deadline_def_3':$('#deadline_def_3').val(),
-    'deadline_def_4':$('#deadline_def_4').val(),
-
-    'deadline_high_1':$('#deadline_high_1').val(),
-    'deadline_high_2':$('#deadline_high_2').val(),
-    'deadline_high_3':$('#deadline_high_3').val(),
-    'deadline_high_4':$('#deadline_high_4').val()
-
-};
-                    $.ajax({
-                        type: "POST",
-                        url: ACTIONPATH,
-                        data: data,
-                        success: function(html) {
-                            //$("#plan_res").html(html);
-
-
-                                                $("#plan_res").hide().html(html).fadeIn(500);
+            var ids = $(this).val();
+            var data = {
+                'mode': 'save_sla',
+                'uniq_id': ids,
+                'react_low_1': $('#react_low_1').val(),
+                'react_low_2': $('#react_low_2').val(),
+                'react_low_3': $('#react_low_3').val(),
+                'react_low_4': $('#react_low_4').val(),
+                'react_def_1': $('#react_def_1').val(),
+                'react_def_2': $('#react_def_2').val(),
+                'react_def_3': $('#react_def_3').val(),
+                'react_def_4': $('#react_def_4').val(),
+                'react_high_1': $('#react_high_1').val(),
+                'react_high_2': $('#react_high_2').val(),
+                'react_high_3': $('#react_high_3').val(),
+                'react_high_4': $('#react_high_4').val(),
+                'work_low_1': $('#work_low_1').val(),
+                'work_low_2': $('#work_low_2').val(),
+                'work_low_3': $('#work_low_3').val(),
+                'work_low_4': $('#work_low_4').val(),
+                'work_def_1': $('#work_def_1').val(),
+                'work_def_2': $('#work_def_2').val(),
+                'work_def_3': $('#work_def_3').val(),
+                'work_def_4': $('#work_def_4').val(),
+                'work_high_1': $('#work_high_1').val(),
+                'work_high_2': $('#work_high_2').val(),
+                'work_high_3': $('#work_high_3').val(),
+                'work_high_4': $('#work_high_4').val(),
+                'deadline_low_1': $('#deadline_low_1').val(),
+                'deadline_low_2': $('#deadline_low_2').val(),
+                'deadline_low_3': $('#deadline_low_3').val(),
+                'deadline_low_4': $('#deadline_low_4').val(),
+                'deadline_def_1': $('#deadline_def_1').val(),
+                'deadline_def_2': $('#deadline_def_2').val(),
+                'deadline_def_3': $('#deadline_def_3').val(),
+                'deadline_def_4': $('#deadline_def_4').val(),
+                'deadline_high_1': $('#deadline_high_1').val(),
+                'deadline_high_2': $('#deadline_high_2').val(),
+                'deadline_high_3': $('#deadline_high_3').val(),
+                'deadline_high_4': $('#deadline_high_4').val()
+            };
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: data,
+                success: function(html) {
+                    //$("#plan_res").html(html);
+                    $("#plan_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {
                         $('#plan_res').children('.alert').fadeOut(500);
                     }, 3000);
-
-
-//view_slaplans();
-                        }
-                    });
-
+                    //view_slaplans();
+                }
+            });
         });
-
-
-
-
-
-
-//add_slaplan_item
-
-//edit_sla_plan
-$('body').on('click', 'i#edit_sla_plan', function(event) {
+        //add_slaplan_item
+        //edit_sla_plan
+        $('body').on('click', 'i#edit_sla_plan', function(event) {
             event.preventDefault();
-window.location = MyHOSTNAME + "config?slaplans&item="+$(this).attr('value');
+            window.location = MyHOSTNAME + "config?slaplans&item=" + $(this).attr('value');
         });
-
-
-
-
-
-                $('body').on('click', 'i#del_item_sla', function(event) {
+        $('body').on('click', 'i#del_item_sla', function(event) {
             event.preventDefault();
             var ids = $(this).attr('value');
             bootbox.confirm(get_lang_param('JS_del'), function(result) {
@@ -4637,7 +4146,7 @@ window.location = MyHOSTNAME + "config?slaplans&item="+$(this).attr('value');
                         data: "mode=sla_del" + "&id=" + ids,
                         success: function(html) {
                             $("#content_sla_plans").html(html);
-view_slaplans();
+                            view_slaplans();
                         }
                     });
                 }
@@ -4646,12 +4155,6 @@ view_slaplans();
                 }
             });
         });
-
-
-
-
-
-
         $('body').on('click', 'button#add_slaplan_item', function(event) {
             event.preventDefault();
             $.ajax({
@@ -4661,39 +4164,22 @@ view_slaplans();
                 success: function(html) {
                     $("#content_sla_plans").html(html);
                     //$("#subj_text").val('');
-                   view_slaplans();
+                    view_slaplans();
                 }
             });
         });
-
-
-
-
-
-}
-
-
-
-
-if (ispath('calendar')) {
-
-
-       
-
+    }
+    if (ispath('calendar')) {
         $('#reservation').daterangepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',timePicker: true,timePicker12Hour: false
+            format: 'YYYY-MM-DD HH:mm:ss',
+            timePicker: true,
+            timePicker12Hour: false
         });
-
-
-$('#reservation').on('apply.daterangepicker', function(ev, picker) {
-            $("#current_start").val( picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
+        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+            $("#current_start").val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
             $("#current_end").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
-            
-            
         });
-
-
-loadCal($("#filter_events").val());
+        loadCal($("#filter_events").val());
         $('#all_day').on('ifChanged', function(event) {
             if ($(this).is(":checked")) {
                 $('#reservation').prop("disabled", true);
@@ -4701,503 +4187,361 @@ loadCal($("#filter_events").val());
                 $('#reservation').prop("disabled", false);
             }
         });
-
-
         $('.make_event_filter').on('ifChanged', function(event) {
-
-
-console.log($('.make_event_filter:checked').map(function() {return this.value;}).get().join(','));
-
-$("#filter_events").val($('.make_event_filter:checked').map(function() {return this.value;}).get().join(','));
-
-//$('#calendar').fullCalendar("refetchEvents");
- //$('#calendar').fullCalendar( 'destroy' );
-loadCal($('.make_event_filter:checked').map(function() {return this.value;}).get().join(','));
-
- 
-//$('#calendar').fullCalendar('render');
-//$('#calendar').fullCalendar("refetchEvents");
+            console.log($('.make_event_filter:checked').map(function() {
+                return this.value;
+            }).get().join(','));
+            $("#filter_events").val($('.make_event_filter:checked').map(function() {
+                return this.value;
+            }).get().join(','));
+            //$('#calendar').fullCalendar("refetchEvents");
+            //$('#calendar').fullCalendar( 'destroy' );
+            loadCal($('.make_event_filter:checked').map(function() {
+                return this.value;
+            }).get().join(','));
+            //$('#calendar').fullCalendar('render');
+            //$('#calendar').fullCalendar("refetchEvents");
         });
-
-
-
         /* initialize the external events
          -----------------------------------------------------------------*/
         function ini_events(ele) {
-          ele.each(function () {
-
-            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
-            // it doesn't need to have a start or end
-            var eventObject = {
-              title: $.trim($(this).text()) // use the element's text as the event title
-            };
-
-            // store the Event Object in the DOM element so we can get to it later
-            $(this).data('eventObject', eventObject);
-
-            // make the event draggable using jQuery UI
-            $(this).draggable({
-              zIndex: 1070,
-              revert: true, // will cause the event to go back to its
-              revertDuration: 0  //  original position after the drag
+            ele.each(function() {
+                // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+                // it doesn't need to have a start or end
+                var eventObject = {
+                    title: $.trim($(this).text()) // use the element's text as the event title
+                };
+                // store the Event Object in the DOM element so we can get to it later
+                $(this).data('eventObject', eventObject);
+                // make the event draggable using jQuery UI
+                $(this).draggable({
+                    zIndex: 1070,
+                    revert: true, // will cause the event to go back to its
+                    revertDuration: 0 //  original position after the drag
+                });
             });
-
-          });
         }
         ini_events($('#external-events div.external-event'));
-
         /* initialize the calendar
          -----------------------------------------------------------------*/
         //Date for the calendar events (dummy data)
         var date = new Date();
         var d = date.getDate(),
-                m = date.getMonth(),
-                y = date.getFullYear();
-
-
-
-
-
-                function loadCal(uidArray) {
-                    $('#calendar').fullCalendar( 'destroy' );
-        $('#calendar').fullCalendar({
-          header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
-          },
-          firstDay:1,
-          lang: 'MyLANG',
-          timeFormat: 'H(:mm)',
-          buttonText: {
-            today: CAL_today,
-            month: CAL_month,
-            week: CAL_week,
-            day: CAL_day
-          },
-          //Random default events
-          //events: "inc/json_calendar.php",
-          eventSources: [
-
-        // your event source
-        {
-            url: ACTIONPATH,
-            type: 'POST',
-            data: {
-                mode: 'get_cal_events',
-                filter: uidArray
-            },
-            error: function() {
-                alert('there was an error while fetching events!');
-            }
-        }
-
-        // any other sources...
-
-    ],
-
-          
-          editable: true,
-          droppable: true, // this allows things to be dropped onto the calendar !!!
-          
-eventClick: function(calEvent, jsEvent, view) {
-
-
-//get_cal_event
-
-if (calEvent.editable == false) {
-
-
-
-
-   $.ajax({
-   url: ACTIONPATH,
-   data: {
-                mode: 'get_cal_event',
-                uniq_code: calEvent.id
-
-            },
-   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
-   type: "POST",
-   dataType: "json",
-   success: function(json) {
-    //alert("insert Successfully");
-    $.each(json, function(i, item) {
-$("#ei_name").text(item.title);
-$("#ei_desc").text(item.description);
-$("#ei_period").text(item.period);
-$("#ei_author").html(item.author);
-    })
-    $('#event_modal_info').modal('show');
-}
-});
-
-
-
-
-
-
-
-
-
-
-
-}
-
-else if (calEvent.editable == true) {
-
-
-   $.ajax({
-   url: ACTIONPATH,
-   data: {
-                mode: 'get_cal_event',
-                uniq_code: calEvent.id
-
-            },
-   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
-   type: "POST",
-   dataType: "json",
-   success: function(json) {
-    //alert("insert Successfully");
-    $.each(json, function(i, item) {
-
-$("#event_name").val(item.title);
-$("#event_desc").val(item.description);
-//$("#visibility").val();
-
-$("#visibility").val(item.visibility);
-
-$("#current_backgroundColor").val(item.backgroundColor);
-$("#current_borderColor").val(item.borderColor);
-
-$("#cur_color_event").css({"background-color": item.backgroundColor, "border-color": item.borderColor});
-
-//console.log(item.allDay);
-$("#reservation").val(item.start+" - "+item.end);
-
-$("#current_start").val(item.start);
-$("#current_end").val(item.end);
-
-
-if (item.allDay == true) {
-$("input#all_day").iCheck('check');
-$("#reservation").prop('disabled', true);
-}
-else if (item.allDay == false){
-$("input#all_day").iCheck('uncheck');
-$("#reservation").prop('disabled', false);
-}
-
-
-
-    });
-   }
-   });
-
-
-
-
-
-
-$("#current_event_hash").val(calEvent.id);
-
-$('#event_modal').modal('show');
-
-
-}
-    //alert('Event id: ' + calEvent.id);
-},
-
-
-
-drop: function (date, allDay) { // this function is called when something is dropped
-
-            // retrieve the dropped element's stored Event Object
-            var originalEventObject = $(this).data('eventObject');
-
-            // we need to copy it, so that multiple events don't have a reference to the same object
-            var copiedEventObject = $.extend({}, originalEventObject);
-
-            // assign it the date that was reported
-            copiedEventObject.start = date;
-            copiedEventObject.allDay = allDay;
-            copiedEventObject.backgroundColor = $(this).css("background-color");
-            copiedEventObject.borderColor = $(this).css("border-color");
-
-//console.log(copiedEventObject.title);
-
-
-   $.ajax({
-   url: ACTIONPATH,
-   data: {
-                mode: 'cal_insert_events',
-                title: copiedEventObject.title,
-                start: date.format(),
-                end: date.format(),
-                backgroundColor:$(this).css("background-color"),
-                borderColor:$(this).css("border-color")
-
-            },
-   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
-   type: "POST",
-   success: function(json) {
-    //alert("insert Successfully");
-   }
-   });
-
-
-            // render the event on the calendar
-            // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-            //$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-            //$('#calendar').fullCalendar("refetchEvents");
-
-
-
-            loadCal("0,1,2");
-
-$(".make_event_filter").iCheck('check');
-
-            //$('#calendar').fullCalendar('refresh' );
-            // is the "remove after drop" checkbox checked?
-            if ($('#drop-remove').is(':checked')) {
-              // if so, remove the element from the "Draggable Events" list
-              $(this).remove();
-            }
-
-          },
-
-eventDrop: function(event, delta) {
-   //var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
-   //var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
-var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
-//var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
-var end = (event.end == null) ? start : event.end.format();
-
-
-
-//console.log(event.end.format());
-
-
-   
-   $.ajax({
-   url: ACTIONPATH,
-   data: {
-                mode: 'cal_drop_events',
-                title: event.title,
-                start: start,
-                end: end,
-                id: event.id,
-                allday: event.allDay
-
-            },
-   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
-   type: "POST",
-   success: function(json) {
-   // alert("Updated Successfully");
-   }
-   });
-
-
-//console.log("a: "+event.id);
-   },
-
-
-   eventResize: function(event) {
-
-var start=moment(event.start).format("YYYY-MM-DD HH:mm:ss");
-var end=moment(event.end).format("YYYY-MM-DD HH:mm:ss");
-
-//console.log(cr);
-   $.ajax({
-   url: ACTIONPATH,
-   data: {
-                mode: 'cal_resize_events',
-                title: event.title,
-                start: start,
-                end: end,
-                id: event.id,
-                allday: event.allDay
-
-            },
-   //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
-   type: "POST",
-   success: function(json) {
-   // alert("Updated Successfully");
-   }
-   });
-
-},
-
-eventRender: function(event, element) {
-
-            element.popover({
-            title: event.name,
-            html: true,
-            trigger: 'manual',
-            placement: 'top',
-            title: event.title,
-            content: "<small>"+ event.description+ "</small>",
-        }).on("mouseenter", function() {
-            var _this = this;
-            $(this).popover("show");
-            $(this).siblings(".popover").on("mouseleave", function() {
-                $(_this).popover('hide');
-            });
-        }).on("mouseleave", function() {
-            var _this = this;
-            setTimeout(function() {
-                if (!$(".popover:hover").length) {
-                    $(_this).popover("hide")
+            m = date.getMonth(),
+            y = date.getFullYear();
+
+        function loadCal(uidArray) {
+            $('#calendar').fullCalendar('destroy');
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                firstDay: 1,
+                lang: 'MyLANG',
+                timeFormat: 'H(:mm)',
+                buttonText: {
+                    today: CAL_today,
+                    month: CAL_month,
+                    week: CAL_week,
+                    day: CAL_day
+                },
+                //Random default events
+                //events: "inc/json_calendar.php",
+                eventSources: [
+                    // your event source
+                    {
+                        url: ACTIONPATH,
+                        type: 'POST',
+                        data: {
+                            mode: 'get_cal_events',
+                            filter: uidArray
+                        },
+                        error: function() {
+                            alert('there was an error while fetching events!');
+                        }
+                    }
+                    // any other sources...
+                ],
+                editable: true,
+                droppable: true, // this allows things to be dropped onto the calendar !!!
+                eventClick: function(calEvent, jsEvent, view) {
+                    //get_cal_event
+                    if (calEvent.editable == false) {
+                        $.ajax({
+                            url: ACTIONPATH,
+                            data: {
+                                mode: 'get_cal_event',
+                                uniq_code: calEvent.id
+                            },
+                            //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+                            type: "POST",
+                            dataType: "json",
+                            success: function(json) {
+                                //alert("insert Successfully");
+                                $.each(json, function(i, item) {
+                                    $("#ei_name").text(item.title);
+                                    $("#ei_desc").text(item.description);
+                                    $("#ei_period").text(item.period);
+                                    $("#ei_author").html(item.author);
+                                })
+                                $('#event_modal_info').modal('show');
+                            }
+                        });
+                    } else if (calEvent.editable == true) {
+                        $.ajax({
+                            url: ACTIONPATH,
+                            data: {
+                                mode: 'get_cal_event',
+                                uniq_code: calEvent.id
+                            },
+                            //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+                            type: "POST",
+                            dataType: "json",
+                            success: function(json) {
+                                //alert("insert Successfully");
+                                $.each(json, function(i, item) {
+                                    $("#event_name").val(item.title);
+                                    $("#event_desc").val(item.description);
+                                    //$("#visibility").val();
+                                    $("#visibility").val(item.visibility);
+                                    $("#current_backgroundColor").val(item.backgroundColor);
+                                    $("#current_borderColor").val(item.borderColor);
+                                    $("#cur_color_event").css({
+                                        "background-color": item.backgroundColor,
+                                        "border-color": item.borderColor
+                                    });
+                                    //console.log(item.allDay);
+                                    $("#reservation").val(item.start + " - " + item.end);
+                                    $("#current_start").val(item.start);
+                                    $("#current_end").val(item.end);
+                                    if (item.allDay == true) {
+                                        $("input#all_day").iCheck('check');
+                                        $("#reservation").prop('disabled', true);
+                                    } else if (item.allDay == false) {
+                                        $("input#all_day").iCheck('uncheck');
+                                        $("#reservation").prop('disabled', false);
+                                    }
+                                });
+                            }
+                        });
+                        $("#current_event_hash").val(calEvent.id);
+                        $('#event_modal').modal('show');
+                    }
+                    //alert('Event id: ' + calEvent.id);
+                },
+                drop: function(date, allDay) { // this function is called when something is dropped
+                    // retrieve the dropped element's stored Event Object
+                    var originalEventObject = $(this).data('eventObject');
+                    // we need to copy it, so that multiple events don't have a reference to the same object
+                    var copiedEventObject = $.extend({}, originalEventObject);
+                    // assign it the date that was reported
+                    copiedEventObject.start = date;
+                    copiedEventObject.allDay = allDay;
+                    copiedEventObject.backgroundColor = $(this).css("background-color");
+                    copiedEventObject.borderColor = $(this).css("border-color");
+                    //console.log(copiedEventObject.title);
+                    $.ajax({
+                        url: ACTIONPATH,
+                        data: {
+                            mode: 'cal_insert_events',
+                            title: copiedEventObject.title,
+                            start: date.format(),
+                            end: date.format(),
+                            backgroundColor: $(this).css("background-color"),
+                            borderColor: $(this).css("border-color")
+                        },
+                        //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+                        type: "POST",
+                        success: function(json) {
+                            //alert("insert Successfully");
+                        }
+                    });
+                    // render the event on the calendar
+                    // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+                    //$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+                    //$('#calendar').fullCalendar("refetchEvents");
+                    loadCal("0,1,2");
+                    $(".make_event_filter").iCheck('check');
+                    //$('#calendar').fullCalendar('refresh' );
+                    // is the "remove after drop" checkbox checked?
+                    if ($('#drop-remove').is(':checked')) {
+                        // if so, remove the element from the "Draggable Events" list
+                        $(this).remove();
+                    }
+                },
+                eventDrop: function(event, delta) {
+                    //var start = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
+                    //var end = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+                    var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
+                    //var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
+                    var end = (event.end == null) ? start : event.end.format();
+                    //console.log(event.end.format());
+                    $.ajax({
+                        url: ACTIONPATH,
+                        data: {
+                            mode: 'cal_drop_events',
+                            title: event.title,
+                            start: start,
+                            end: end,
+                            id: event.id,
+                            allday: event.allDay
+                        },
+                        //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+                        type: "POST",
+                        success: function(json) {
+                            // alert("Updated Successfully");
+                        }
+                    });
+                    //console.log("a: "+event.id);
+                },
+                eventResize: function(event) {
+                    var start = moment(event.start).format("YYYY-MM-DD HH:mm:ss");
+                    var end = moment(event.end).format("YYYY-MM-DD HH:mm:ss");
+                    //console.log(cr);
+                    $.ajax({
+                        url: ACTIONPATH,
+                        data: {
+                            mode: 'cal_resize_events',
+                            title: event.title,
+                            start: start,
+                            end: end,
+                            id: event.id,
+                            allday: event.allDay
+                        },
+                        //data: 'title='+ event.title+'&start='+ start +'&end='+ end,
+                        type: "POST",
+                        success: function(json) {
+                            // alert("Updated Successfully");
+                        }
+                    });
+                },
+                eventRender: function(event, element) {
+                    element.popover({
+                        title: event.name,
+                        html: true,
+                        trigger: 'manual',
+                        placement: 'top',
+                        title: event.title,
+                        content: "<small>" + event.description + "</small>",
+                    }).on("mouseenter", function() {
+                        var _this = this;
+                        $(this).popover("show");
+                        $(this).siblings(".popover").on("mouseleave", function() {
+                            $(_this).popover('hide');
+                        });
+                    }).on("mouseleave", function() {
+                        var _this = this;
+                        setTimeout(function() {
+                            if (!$(".popover:hover").length) {
+                                $(_this).popover("hide")
+                            }
+                        }, 100)
+                    });
                 }
-            }, 100)});
-
-            
-}
-
-
-
-
-
-
-
-        });
-}
-
+            });
+        }
         /* ADDING EVENTS */
         var currColor = "#3c8dbc"; //Red by default
         //Color chooser button
         var colorChooser = $("#color-chooser-btn");
-
-        $("#color-chooser > li > a").click(function (e) {
-          e.preventDefault();
-          //Save color
-          currColor = $(this).css("color");
-          //Add color effect to button
-          $('#add-new-event').css({"background-color": currColor, "border-color": currColor});
+        $("#color-chooser > li > a").click(function(e) {
+            e.preventDefault();
+            //Save color
+            currColor = $(this).css("color");
+            //Add color effect to button
+            $('#add-new-event').css({
+                "background-color": currColor,
+                "border-color": currColor
+            });
         });
-        $("#add-new-event").click(function (e) {
-          e.preventDefault();
-          //Get value and make sure it is not null
-          var val = $("#new-event").val();
-          if (val.length == 0) {
-            return;
-          }
-
-          //Create events
-          var event = $("<div />");
-          event.css({"background-color": currColor, "border-color": currColor, "color": "#fff"}).addClass("external-event");
-          event.html(val);
-          $('#external-events').prepend(event);
-
-          //Add draggable funtionality
-          ini_events(event);
-
-          //Remove event from text input
-          $("#new-event").val("");
+        $("#add-new-event").click(function(e) {
+            e.preventDefault();
+            //Get value and make sure it is not null
+            var val = $("#new-event").val();
+            if (val.length == 0) {
+                return;
+            }
+            //Create events
+            var event = $("<div />");
+            event.css({
+                "background-color": currColor,
+                "border-color": currColor,
+                "color": "#fff"
+            }).addClass("external-event");
+            event.html(val);
+            $('#external-events').prepend(event);
+            //Add draggable funtionality
+            ini_events(event);
+            //Remove event from text input
+            $("#new-event").val("");
         });
-
-
-
-
-        $("#color-chooser_event > li > a").click(function (e) {
-          e.preventDefault();
-          //Save color
-          currColor = $(this).css("color");
-          //Add color effect to button
-          $('#cur_color_event').css({"background-color": currColor, "border-color": currColor});
-
-$("#current_backgroundColor").val(currColor);
-$("#current_borderColor").val(currColor);
-
-
+        $("#color-chooser_event > li > a").click(function(e) {
+            e.preventDefault();
+            //Save color
+            currColor = $(this).css("color");
+            //Add color effect to button
+            $('#cur_color_event').css({
+                "background-color": currColor,
+                "border-color": currColor
+            });
+            $("#current_backgroundColor").val(currColor);
+            $("#current_borderColor").val(currColor);
         });
-
-
-
-//cal_delete_current
-//.fullCalendar( 'removeEvent', id )
-
-
+        //cal_delete_current
+        //.fullCalendar( 'removeEvent', id )
         $('body').on('click', 'button#cal_delete_current', function(event) {
             event.preventDefault();
-var cih=$("#current_event_hash").val();
-
-
-            
+            var cih = $("#current_event_hash").val();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=cal_del_event"+
-                "&uniq_code="+cih,
+                data: "mode=cal_del_event" + "&uniq_code=" + cih,
                 success: function() {
                     //window.location = MyHOSTNAME + "config";
-                                $('#calendar').fullCalendar( 'removeEvents', cih );
-                                $('#event_modal').modal('hide');
+                    $('#calendar').fullCalendar('removeEvents', cih);
+                    $('#event_modal').modal('hide');
                 }
             });
-        
         });
-
-
-//make_event_filter
-
-
-
-
-
-//event_save_action
+        //make_event_filter
+        //event_save_action
         $('body').on('click', 'button#event_save_action', function(event) {
             event.preventDefault();
-var cih=$("#current_event_hash").val();
-var eventname=$("#event_name").val();
-var eventdesc=$("#event_desc").val();
-var eventpriv=$("#visibility").val();
-var bc=$("#current_backgroundColor").val();
-var bbc=$("#current_borderColor").val();
-
-var alldayp=$("#all_day").prop('checked');
-
-var cs=$("#current_start").val();
-var ce=$("#current_end").val();
-            
+            var cih = $("#current_event_hash").val();
+            var eventname = $("#event_name").val();
+            var eventdesc = $("#event_desc").val();
+            var eventpriv = $("#visibility").val();
+            var bc = $("#current_backgroundColor").val();
+            var bbc = $("#current_borderColor").val();
+            var alldayp = $("#all_day").prop('checked');
+            var cs = $("#current_start").val();
+            var ce = $("#current_end").val();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
                 data: {
-                mode: 'cal_edit_event',
-                uniq_code: cih,
-                name: eventname,
-                desc: eventdesc,
-                priv: eventpriv,
-                color: bc,
-                color_b: bbc,
-                allday: alldayp,
-                start: cs,
-                end: ce
-            },
-                
+                    mode: 'cal_edit_event',
+                    uniq_code: cih,
+                    name: eventname,
+                    desc: eventdesc,
+                    priv: eventpriv,
+                    color: bc,
+                    color_b: bbc,
+                    allday: alldayp,
+                    start: cs,
+                    end: ce
+                },
                 success: function() {
                     //window.location = MyHOSTNAME + "config";
-                                $('#calendar').fullCalendar("refetchEvents");
-                                $('#event_modal').modal('hide');
+                    $('#calendar').fullCalendar("refetchEvents");
+                    $('#event_modal').modal('hide');
                 }
             });
         });
-
-
-
-
-
-}
-
-
-
-
-
+    }
     if (ispath('config')) {
-
-
-
         $("select#to").on('change', function() {
             if ($('select#to').val() != 0) {
                 $('#for_to').popover('hide');
@@ -5229,9 +4573,6 @@ var ce=$("#current_end").val();
                 }, 2000);
             }
         });
-
-
-
         $("#users_do").select2({
             formatResult: format,
             formatSelection: format,
@@ -5243,8 +4584,6 @@ var ce=$("#current_end").val();
                 return m;
             }
         });
-
-        
         $("select#users_do").change(function() {
             var p = $('select#users_do').val();
             var t = $('select#to').val();
@@ -5271,36 +4610,25 @@ var ce=$("#current_end").val();
                 }
             }
         });
-
-$('input[type=radio][name=optionsRadios1]').on('ifChanged', function(event){
-        
+        $('input[type=radio][name=optionsRadios1]').on('ifChanged', function(event) {
             console.log(this.value);
             if (this.value == '0') {
                 $('#to_msg').prop('disabled', false).trigger("chosen:updated");
             } else if (this.value == '1') {
                 $('#to_msg').prop('disabled', true).trigger("chosen:updated");
-            } 
+            }
         });
-
-
-$('#to_msg').chosen({ max_selected_options: 50 });
-//conf_edit_global_message
-$('body').on('click', 'button#conf_edit_global_message', function(event) {
+        $('#to_msg').chosen({
+            max_selected_options: 50
+        });
+        //conf_edit_global_message
+        $('body').on('click', 'button#conf_edit_global_message', function(event) {
             event.preventDefault();
-
-
-//console.log($('#to_msg').val());
-
+            //console.log($('#to_msg').val());
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_gm" + 
-                "&status=" + encodeURIComponent($("#gm_active").val())+
-                "&to_msg="+ encodeURIComponent($("input[type=radio][name=optionsRadios1]:checked").val())+
-                "&usr_list="+ encodeURIComponent($("#to_msg").val())+
-                "&msg_type="+ encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
-                "&gm_text="+ encodeURIComponent($("#gm_text").val())
-                ,
+                data: "mode=conf_edit_gm" + "&status=" + encodeURIComponent($("#gm_active").val()) + "&to_msg=" + encodeURIComponent($("input[type=radio][name=optionsRadios1]:checked").val()) + "&usr_list=" + encodeURIComponent($("#to_msg").val()) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&gm_text=" + encodeURIComponent($("#gm_text").val()),
                 success: function(html) {
                     $("#conf_edit_gm_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {
@@ -5308,17 +4636,10 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
                     }, 3000);
                 }
             });
-
-
-
         });
-
-
-
-                $('#file_logo').change(function() {
+        $('#file_logo').change(function() {
             $('#form_logo').submit();
         });
-
         $('body').on('click', 'button#del_logo_img', function(event) {
             event.preventDefault();
             $.ajax({
@@ -5330,7 +4651,6 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
                 }
             });
         });
-
         $('body').on('click', 'button#check_update', function(event) {
             event.preventDefault();
             $.ajax({
@@ -5357,8 +4677,7 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_pb" + "&api=" + encodeURIComponent($("input#pb_api").val())+
-                "&pb_active=" + encodeURIComponent($("select#pb_active").val()),
+                data: "mode=conf_edit_pb" + "&api=" + encodeURIComponent($("input#pb_api").val()) + "&pb_active=" + encodeURIComponent($("select#pb_active").val()),
                 success: function(html) {
                     $("#conf_edit_pb_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {
@@ -5367,20 +4686,12 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
                 }
             });
         });
-
-
-
         $('body').on('click', 'button#conf_edit_sms', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_sms" + 
-                "&smsc_active=" + encodeURIComponent($("#smsc_active").val())+
-                "&smsc_login=" + encodeURIComponent($("#smsc_login").val())+
-                "&smsc_pass=" + encodeURIComponent($("#smsc_pass").val())+
-                "&sms_nf=" + encodeURIComponent($("#sms_nf").val())
-                ,
+                data: "mode=conf_edit_sms" + "&smsc_active=" + encodeURIComponent($("#smsc_active").val()) + "&smsc_login=" + encodeURIComponent($("#smsc_login").val()) + "&smsc_pass=" + encodeURIComponent($("#smsc_pass").val()) + "&sms_nf=" + encodeURIComponent($("#sms_nf").val()),
                 success: function(html) {
                     $("#conf_edit_sms_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {
@@ -5389,72 +4700,49 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
                 }
             });
         });
-
-
         $('body').on('click', 'button#conf_edit_ticket', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_ticket" + 
-"&days2arch=" + encodeURIComponent($("input#days2arch").val())+ 
-"&fix_subj=" + encodeURIComponent($("#fix_subj").val()) + 
-"&file_uploads=" + encodeURIComponent($("#file_uploads").val()) + 
-"&file_types=" + encodeURIComponent($("#file_types").val())+ 
-"&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024)+
-"&ticket_last_time="+ encodeURIComponent($("#ticket_last_time").val()),
+                data: "mode=conf_edit_ticket" + "&days2arch=" + encodeURIComponent($("input#days2arch").val()) + "&fix_subj=" + encodeURIComponent($("#fix_subj").val()) + "&file_uploads=" + encodeURIComponent($("#file_uploads").val()) + "&file_types=" + encodeURIComponent($("#file_types").val()) + "&file_size=" + encodeURIComponent($("#file_size").val() * 1024 * 1024) + "&ticket_last_time=" + encodeURIComponent($("#ticket_last_time").val()),
                 dataType: "json",
                 success: function(html) {
-
- $.each(html, function(i, item) {
-                        
-                        if (item.res == true) { $("#conf_edit_ticket_res").hide().html(item.msg).fadeIn(500);
-                    setTimeout(function() {
-                        $('#conf_edit_ticket_res').children('.alert').fadeOut(500);
-                    }, 3000); }
-                        else if (item.res == false) { 
+                    $.each(html, function(i, item) {
+                        if (item.res == true) {
+                            $("#conf_edit_ticket_res").hide().html(item.msg).fadeIn(500);
+                            setTimeout(function() {
+                                $('#conf_edit_ticket_res').children('.alert').fadeOut(500);
+                            }, 3000);
+                        } else if (item.res == false) {
                             //$('#res').html(item.msg); 
                             $("#conf_edit_ticket_res").hide().html(item.msg).fadeIn(500);
-                           
-                            }
-                            //console.log(item.msg);
-                        
+                        }
+                        //console.log(item.msg);
                     });
-
-
-                    
                 }
             });
         });
-
-
         $('body').on('click', 'button#conf_edit_main', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) +"&allow_register=" + encodeURIComponent($("#allow_register").val())+"&lang="+encodeURIComponent($("#lang").val())+"&allow_forgot=" + encodeURIComponent($("#allow_forgot").val())+
-                "&api_status="+$("#api_status").val()+"&twig_cache="+$("#twig_cache").val(),
+                data: "mode=conf_edit_main" + "&name_of_firm=" + encodeURIComponent($("input#name_of_firm").val()) + "&title_header=" + encodeURIComponent($("input#title_header").val()) + "&ldap=" + encodeURIComponent($("input#ldap_ip").val()) + "&ldapd=" + encodeURIComponent($("input#ldap_domain").val()) + "&hostname=" + encodeURIComponent($("input#hostname").val()) + "&mail=" + encodeURIComponent($("input#mail").val()) + "&first_login=" + encodeURIComponent($("#first_login").val()) + "&node_port=" + encodeURIComponent($("#node_port").val()) + "&time_zone=" + encodeURIComponent($("#time_zone").val()) + "&allow_register=" + encodeURIComponent($("#allow_register").val()) + "&lang=" + encodeURIComponent($("#lang").val()) + "&allow_forgot=" + encodeURIComponent($("#allow_forgot").val()) + "&api_status=" + $("#api_status").val() + "&twig_cache=" + $("#twig_cache").val(),
                 dataType: "json",
                 success: function(html) {
-
- $.each(html, function(i, item) {
-                        
-                        if (item.res == true) { $("#conf_edit_main_res").hide().html(item.msg).fadeIn(500);
-                    setTimeout(function() {
-                        $('#conf_edit_main_res').children('.alert').fadeOut(500);
-                    }, 3000); }
-                        else if (item.res == false) { 
+                    $.each(html, function(i, item) {
+                        if (item.res == true) {
+                            $("#conf_edit_main_res").hide().html(item.msg).fadeIn(500);
+                            setTimeout(function() {
+                                $('#conf_edit_main_res').children('.alert').fadeOut(500);
+                            }, 3000);
+                        } else if (item.res == false) {
                             //$('#res').html(item.msg); 
                             $("#conf_edit_main_res").hide().html(item.msg).fadeIn(500);
-                           
-                            }
-                            //console.log(item.msg);
-                        
+                        }
+                        //console.log(item.msg);
                     });
-
-
-                    
                 }
             });
         });
@@ -5494,193 +4782,130 @@ $('body').on('click', 'button#conf_edit_global_message', function(event) {
                 }
             });
         });
-
-
         $('body').on('click', 'button#conf_edit_email_gate', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=conf_edit_email_gate" + 
-                "&email_gate_status="+$("#email_gate_status").val()+
-                "&email_gate_all="+$("#email_gate_all").val()+
-                "&to="+$("#to").val()+
-                "&users_do="+$("#users_do").val()+
-                "&email_gate_mailbox="+$("#email_gate_mailbox").val()+
-                "&email_gate_filter="+encodeURIComponent($("#email_gate_filter").val())+
-                "&email_gate_host="+$("#email_gate_host").val()+
-                "&email_gate_cat="+$("#email_gate_cat").val()+
-                "&email_gate_port="+$("#email_gate_port").val()+
-                "&email_gate_login="+$("#email_gate_login").val()+
-                "&email_gate_pass="+$("#email_gate_pass").val()+
-                "&email_gate_cp="+$("#email_gate_connect_param").val(),
+                data: "mode=conf_edit_email_gate" + "&email_gate_status=" + $("#email_gate_status").val() + "&email_gate_all=" + $("#email_gate_all").val() + "&to=" + $("#to").val() + "&users_do=" + $("#users_do").val() + "&email_gate_mailbox=" + $("#email_gate_mailbox").val() + "&email_gate_filter=" + encodeURIComponent($("#email_gate_filter").val()) + "&email_gate_host=" + $("#email_gate_host").val() + "&email_gate_cat=" + $("#email_gate_cat").val() + "&email_gate_port=" + $("#email_gate_port").val() + "&email_gate_login=" + $("#email_gate_login").val() + "&email_gate_pass=" + $("#email_gate_pass").val() + "&email_gate_cp=" + $("#email_gate_connect_param").val(),
                 success: function(html) {
                     $("#conf_edit_email_gate_res").hide().html(html).fadeIn(500);
                     setTimeout(function() {
-                    $('#conf_edit_email_gate_res').children('.alert').fadeOut(500);
+                        $('#conf_edit_email_gate_res').children('.alert').fadeOut(500);
                     }, 3000);
                 }
             });
         });
-
-
-
-
-
-
         if ($('select#mail_type').val() == "sendmail") {
             $('#smtp_div').hide();
         } else if ($('select#mail_type').val() == "SMTP") {
             $('#smtp_div').show();
         }
-
-
-$(document).on('ifChanged', '#field_perf_client', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).prop('checked');
-
-$.post( ACTIONPATH, { mode: "change_field_client", hash: hash, name: name } );
-
-
-
-
-    });
-
-
-$(document).on('ifChanged', '#field_perf_check', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).prop('checked');
-
-$.post( ACTIONPATH, { mode: "change_field_check", hash: hash, name: name } );
-
-
-
-
-    });
-
-$(document).on('change', 'select#field_perf_select', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).val();
-
-$.post( ACTIONPATH, { mode: "change_field_select", hash: hash, name: name } );
-
-
-
-
-    });
-
-
-$(document).on('change', 'input#field_perf_value', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).val();
-
-$.post( ACTIONPATH, { mode: "change_field_value", hash: hash, name: name } );
-
-
-
-
-    });
-
-//field_perf_name
-$(document).on('change', 'input#field_perf_name', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).val();
-
-$.post( ACTIONPATH, { mode: "change_field_name", hash: hash, name: name } );
-
-
-
-
-    });
-$(document).on('change', 'input#field_perf_placeholder', function() {
-//$("input#field_perf_placeholder").on('change', function() {
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).val();
-
-$.post( ACTIONPATH, { mode: "change_field_placeholder", hash: hash, name: name } );
-
-
-    });
-
-
-
-//del_field_item
+        $(document).on('ifChanged', '#field_perf_client', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).prop('checked');
+            $.post(ACTIONPATH, {
+                mode: "change_field_client",
+                hash: hash,
+                name: name
+            });
+        });
+        $(document).on('ifChanged', '#field_perf_check', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).prop('checked');
+            $.post(ACTIONPATH, {
+                mode: "change_field_check",
+                hash: hash,
+                name: name
+            });
+        });
+        $(document).on('change', 'select#field_perf_select', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+                mode: "change_field_select",
+                hash: hash,
+                name: name
+            });
+        });
+        $(document).on('change', 'input#field_perf_value', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+                mode: "change_field_value",
+                hash: hash,
+                name: name
+            });
+        });
+        //field_perf_name
+        $(document).on('change', 'input#field_perf_name', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+                mode: "change_field_name",
+                hash: hash,
+                name: name
+            });
+        });
+        $(document).on('change', 'input#field_perf_placeholder', function() {
+            //$("input#field_perf_placeholder").on('change', function() {
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+                mode: "change_field_placeholder",
+                hash: hash,
+                name: name
+            });
+        });
+        //del_field_item
         $('body').on('click', 'button#del_field_item', function(event) {
             event.preventDefault();
             //console.log($(this).closest('tr').attr('id'));
-
-            var hash=$(this).closest('tr').attr('id');
-
+            var hash = $(this).closest('tr').attr('id');
             bootbox.confirm(get_lang_param('JS_del'), function(result) {
                 if (result == true) {
-
-
-                        $.ajax({
-                type: "POST",
-                url: ACTIONPATH,
-                data: "mode=del_field_item"+
-                "&hash="+hash,
-                success: function(html) {
-                    $("#ticket_fields_res").html(html);
-                        $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal'
-    });
+                    $.ajax({
+                        type: "POST",
+                        url: ACTIONPATH,
+                        data: "mode=del_field_item" + "&hash=" + hash,
+                        success: function(html) {
+                            $("#ticket_fields_res").html(html);
+                            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+                                checkboxClass: 'icheckbox_minimal',
+                                radioClass: 'iradio_minimal'
+                            });
+                        }
+                    });
                 }
             });
-}
-});
-
         });
-
-
-//
-
-
-
-
-//conf_edit_ticket_res
+        //
+        //conf_edit_ticket_res
         $('body').on('click', 'button#ticket_field_plus', function(event) {
             event.preventDefault();
-
-
-                        $.ajax({
+            $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=add_additional_tickets_perf",
                 success: function(html) {
                     $("#ticket_fields_res").html(html);
-                        $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal'
-    });
+                    $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+                        checkboxClass: 'icheckbox_minimal',
+                        radioClass: 'iradio_minimal'
+                    });
                 }
             });
-
-});
-
-
+        });
     }
     if (ispath('deps')) {
         $.fn.editable.defaults.mode = 'inline';
@@ -5828,228 +5053,167 @@ $.post( ACTIONPATH, { mode: "change_field_placeholder", hash: hash, name: name }
         });
     }
     if (ispath('users')) {
-
-if (!ispath('create')) {
-        $(".multi_field").select2({
-            allowClear: true,
-            maximumSelectionSize: 15,
-            width: '100%',
-            formatNoMatches: get_lang_param('JS_not_found')
-        });
-    }
+        if (!ispath('create')) {
+            $(".multi_field").select2({
+                allowClear: true,
+                maximumSelectionSize: 15,
+                width: '100%',
+                formatNoMatches: get_lang_param('JS_not_found')
+            });
+        }
         $('body').on('click', 'button#user_field_plus', function(event) {
             event.preventDefault();
-
-
-                        $.ajax({
+            $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
                 data: "mode=add_additional_user_perf",
                 success: function(html) {
                     $("#user_fields_res").html(html);
-                        $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal'
-    });
+                    $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+                        checkboxClass: 'icheckbox_minimal',
+                        radioClass: 'iradio_minimal'
+                    });
                 }
             });
-
-});
-
-
-
-
-
-
-
-$(document).on('ifChanged', '#field_perf_client', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).prop('checked');
-
-$.post( ACTIONPATH, { mode: "change_userfield_client", hash: hash, name: name } );
-
-
-
-
-    });
-
-
-$(document).on('ifChanged', '#field_perf_check', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).prop('checked');
-
-$.post( ACTIONPATH, { mode: "change_userfield_check", hash: hash, name: name } );
-
-
-
-
-    });
-
-$(document).on('change', 'select#field_perf_select', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).val();
-
-$.post( ACTIONPATH, { mode: "change_userfield_select", hash: hash, name: name } );
-
-
-
-
-    });
-
-
-$(document).on('change', 'input#field_perf_value', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).val();
-
-$.post( ACTIONPATH, { mode: "change_userfield_value", hash: hash, name: name } );
-
-
-
-
-    });
-
-//field_perf_name
-$(document).on('change', 'input#field_perf_name', function() {
-//$("input#field_perf_name").on('change', function() {
-
-//console.log($(this).closest('tr').attr('id'));
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).val();
-
-$.post( ACTIONPATH, { mode: "change_userfield_name", hash: hash, name: name } );
-
-
-
-
-    });
-$(document).on('change', 'input#field_perf_placeholder', function() {
-//$("input#field_perf_placeholder").on('change', function() {
-
-var hash=$(this).closest('tr').attr('id');
-var name=$(this).val();
-
-$.post( ACTIONPATH, { mode: "change_userfield_placeholder", hash: hash, name: name } );
-
-
-    });
-
-
-
-//del_field_item
+        });
+        $(document).on('ifChanged', '#field_perf_client', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).prop('checked');
+            $.post(ACTIONPATH, {
+                mode: "change_userfield_client",
+                hash: hash,
+                name: name
+            });
+        });
+        $(document).on('ifChanged', '#field_perf_check', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).prop('checked');
+            $.post(ACTIONPATH, {
+                mode: "change_userfield_check",
+                hash: hash,
+                name: name
+            });
+        });
+        $(document).on('change', 'select#field_perf_select', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+                mode: "change_userfield_select",
+                hash: hash,
+                name: name
+            });
+        });
+        $(document).on('change', 'input#field_perf_value', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+                mode: "change_userfield_value",
+                hash: hash,
+                name: name
+            });
+        });
+        //field_perf_name
+        $(document).on('change', 'input#field_perf_name', function() {
+            //$("input#field_perf_name").on('change', function() {
+            //console.log($(this).closest('tr').attr('id'));
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+                mode: "change_userfield_name",
+                hash: hash,
+                name: name
+            });
+        });
+        $(document).on('change', 'input#field_perf_placeholder', function() {
+            //$("input#field_perf_placeholder").on('change', function() {
+            var hash = $(this).closest('tr').attr('id');
+            var name = $(this).val();
+            $.post(ACTIONPATH, {
+                mode: "change_userfield_placeholder",
+                hash: hash,
+                name: name
+            });
+        });
+        //del_field_item
         $('body').on('click', 'button#del_userfield_item', function(event) {
             event.preventDefault();
             //console.log($(this).closest('tr').attr('id'));
-
-            var hash=$(this).closest('tr').attr('id');
-
+            var hash = $(this).closest('tr').attr('id');
             bootbox.confirm(get_lang_param('JS_del'), function(result) {
                 if (result == true) {
-
-
-                        $.ajax({
-                type: "POST",
-                url: ACTIONPATH,
-                data: "mode=del_userfield_item"+
-                "&hash="+hash,
-                success: function(html) {
-                    $("#user_fields_res").html(html);
-                        $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal'
-    });
-                }
-            });
-}
-});
-
-        });
-
-
-
-
-
-
-
-
-
-
-
-//ldap_step3_obj
-//$('#exampleInputPassword1').prop("disabled", true);
-        $("select#ldap_step3_obj").change(function() {
-
-            if ($(this).val() == "all") { 
-                $('#users_do').prop("disabled", true);
-            }
-            if ($(this).val() == "selected") { 
-                $('#users_do').prop("disabled", false);}
-
-        });
-
-
-
-
-//re_user
- $('body').on('click', 'button#re_user', function(event) {
-            event.preventDefault();
-            var exparam = $("#login_user2").attr('exclude-param');
-            var ids=$(this).val();
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: ACTIONPATH,
-                    data: "mode=check_login" + "&login=" + $("#login_user2").val() + "&exclude=" + exparam,
-                    success: function(html) {
-                        $.each(html, function(i, item) {
-                            if (item.check_login_status == true) {
-                                $("#login_user_grp").removeClass('has-error').addClass('has-success');
-                                //$("#errors").val('false');
-
-                                                        $.ajax({
+                    $.ajax({
                         type: "POST",
                         url: ACTIONPATH,
-                        data: "mode=re_user" + "&id=" + ids,
+                        data: "mode=del_userfield_item" + "&hash=" + hash,
                         success: function(html) {
-                            //$("#content_subj").html(html);
-                            window.location = MyHOSTNAME + "users?edit="+ids;
+                            $("#user_fields_res").html(html);
+                            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+                                checkboxClass: 'icheckbox_minimal',
+                                radioClass: 'iradio_minimal'
+                            });
                         }
                     });
-
-                                my_errors.login = false;
-                            } else if (item.check_login_status == false) {
-                                $("#login_user_grp").addClass('has-error');
-                                //$("#errors").val('true');
-                                my_errors.login = true;
-                            }
-                        });
-                        //console.log(html);
-                    }
-                });
-});
-//Если при восстановлении два логина в системе?
-
-
-//del_user
- $('body').on('click', 'button#del_user', function(event) {
+                }
+            });
+        });
+        //ldap_step3_obj
+        //$('#exampleInputPassword1').prop("disabled", true);
+        $("select#ldap_step3_obj").change(function() {
+            if ($(this).val() == "all") {
+                $('#users_do').prop("disabled", true);
+            }
+            if ($(this).val() == "selected") {
+                $('#users_do').prop("disabled", false);
+            }
+        });
+        //re_user
+        $('body').on('click', 'button#re_user', function(event) {
             event.preventDefault();
-            var ids=$(this).val();
+            var exparam = $("#login_user2").attr('exclude-param');
+            var ids = $(this).val();
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: ACTIONPATH,
+                data: "mode=check_login" + "&login=" + $("#login_user2").val() + "&exclude=" + exparam,
+                success: function(html) {
+                    $.each(html, function(i, item) {
+                        if (item.check_login_status == true) {
+                            $("#login_user_grp").removeClass('has-error').addClass('has-success');
+                            //$("#errors").val('false');
+                            $.ajax({
+                                type: "POST",
+                                url: ACTIONPATH,
+                                data: "mode=re_user" + "&id=" + ids,
+                                success: function(html) {
+                                    //$("#content_subj").html(html);
+                                    window.location = MyHOSTNAME + "users?edit=" + ids;
+                                }
+                            });
+                            my_errors.login = false;
+                        } else if (item.check_login_status == false) {
+                            $("#login_user_grp").addClass('has-error');
+                            //$("#errors").val('true');
+                            my_errors.login = true;
+                        }
+                    });
+                    //console.log(html);
+                }
+            });
+        });
+        //Если при восстановлении два логина в системе?
+        //del_user
+        $('body').on('click', 'button#del_user', function(event) {
+            event.preventDefault();
+            var ids = $(this).val();
             bootbox.confirm(get_lang_param('JS_del'), function(result) {
                 if (result == true) {
                     $.ajax({
@@ -6058,133 +5222,67 @@ $.post( ACTIONPATH, { mode: "change_userfield_placeholder", hash: hash, name: na
                         data: "mode=del_user" + "&id=" + ids,
                         success: function(html) {
                             //$("#content_subj").html(html);
-                            window.location = MyHOSTNAME + "users?edit="+ids;
+                            window.location = MyHOSTNAME + "users?edit=" + ids;
                         }
                     });
                 }
             });
-});
-
-//ldap_make_import
- $('body').on('click', 'button#ldap_make_import', function(event) {
+        });
+        //ldap_make_import
+        $('body').on('click', 'button#ldap_make_import', function(event) {
             event.preventDefault();
-
-
-$.ajax({
+            $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=make_ldap_import" + 
-                "&users_do=" + encodeURIComponent($('select#users_do').val()) + 
-                "&ldap_step3_obj="+encodeURIComponent($('select#ldap_step3_obj').val()),
+                data: "mode=make_ldap_import" + "&users_do=" + encodeURIComponent($('select#users_do').val()) + "&ldap_step3_obj=" + encodeURIComponent($('select#ldap_step3_obj').val()),
                 success: function(html) {
                     $("#ldap_res").html(html);
                     //$("#units_text").val('');
-
                     //window.location = MyHOSTNAME + "users?import_step_3";
-
-
                 }
             });
-
-
         });
-
-
-
-
-//ldap_import_next_2
- $('body').on('click', 'button#ldap_import_next_2', function(event) {
+        //ldap_import_next_2
+        $('body').on('click', 'button#ldap_import_next_2', function(event) {
             event.preventDefault();
-
-
-$.ajax({
+            $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=ldap_import_next_2" + 
-                "&lang=" + encodeURIComponent($('select#lang').val()) + 
-                "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + 
-                "&unit=" + encodeURIComponent($("#my-select").val()) + 
-                "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + 
-                "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) +
-                "&mess=" + encodeURIComponent($("textarea#mess").val()) + 
-                "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + 
-                "&msg_type="+encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
-                "&status=" + encodeURIComponent($("#lock").val()),
+                data: "mode=ldap_import_next_2" + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&status=" + encodeURIComponent($("#lock").val()),
                 success: function(html) {
                     //$("#ldap_res").html(html);
                     //$("#units_text").val('');
-
                     window.location = MyHOSTNAME + "users?import_step_3";
-
-
                 }
             });
-
-//window.location = MyHOSTNAME + "users?import_step_3";
-
+            //window.location = MyHOSTNAME + "users?import_step_3";
         });
-
-
-
- $('body').on('click', 'button#ldap_import_next', function(event) {
+        $('body').on('click', 'button#ldap_import_next', function(event) {
             event.preventDefault();
-
-
-$.ajax({
+            $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=ldap_import_next" + 
-                "&ldap_admin_user=" + encodeURIComponent($("#ldap_admin_user").val())+
-                "&ldap_admin_pass=" + encodeURIComponent($("#ldap_admin_pass").val())+
-                "&ldap_ip=" + encodeURIComponent($("#ldap_ip").val())+
-                "&ldap_domain=" + encodeURIComponent($("#ldap_domain").val())+
-                "&users_fio="+ encodeURIComponent($("#users_fio").val())+
-                "&users_login="+ encodeURIComponent($("#users_login").val())+
-                "&users_mail="+ encodeURIComponent($("#users_mail").val())+
-                "&users_tel="+ encodeURIComponent($("#users_tel").val())+
-                "&users_adr="+ encodeURIComponent($("#users_adr").val())+
-                "&users_skype="+ encodeURIComponent($("#users_skype").val())+
-                "&users_unit="+ encodeURIComponent($("#users_unit").val())
-                ,
+                data: "mode=ldap_import_next" + "&ldap_admin_user=" + encodeURIComponent($("#ldap_admin_user").val()) + "&ldap_admin_pass=" + encodeURIComponent($("#ldap_admin_pass").val()) + "&ldap_ip=" + encodeURIComponent($("#ldap_ip").val()) + "&ldap_domain=" + encodeURIComponent($("#ldap_domain").val()) + "&users_fio=" + encodeURIComponent($("#users_fio").val()) + "&users_login=" + encodeURIComponent($("#users_login").val()) + "&users_mail=" + encodeURIComponent($("#users_mail").val()) + "&users_tel=" + encodeURIComponent($("#users_tel").val()) + "&users_adr=" + encodeURIComponent($("#users_adr").val()) + "&users_skype=" + encodeURIComponent($("#users_skype").val()) + "&users_unit=" + encodeURIComponent($("#users_unit").val()),
                 success: function(html) {
                     //$("#ldap_res").html(html);
                     //$("#units_text").val('');
-
                     window.location = MyHOSTNAME + "users?import_step_2";
-
-
                 }
             });
-
-
         });
-
- $('body').on('click', 'button#ldap_import_check', function(event) {
+        $('body').on('click', 'button#ldap_import_check', function(event) {
             event.preventDefault();
-
-
-$.ajax({
+            $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=ldap_import_check" + 
-                "&ldap_admin_user=" + encodeURIComponent($("#ldap_admin_user").val())+
-                "&ldap_admin_pass=" + encodeURIComponent($("#ldap_admin_pass").val())+
-                "&ldap_ip=" + encodeURIComponent($("#ldap_ip").val())+
-                "&ldap_domain=" + encodeURIComponent($("#ldap_domain").val()),
+                data: "mode=ldap_import_check" + "&ldap_admin_user=" + encodeURIComponent($("#ldap_admin_user").val()) + "&ldap_admin_pass=" + encodeURIComponent($("#ldap_admin_pass").val()) + "&ldap_ip=" + encodeURIComponent($("#ldap_ip").val()) + "&ldap_domain=" + encodeURIComponent($("#ldap_domain").val()),
                 success: function(html) {
                     $("#ldap_res").html(html);
                     //$("#units_text").val('');
-
                     //window.location = MyHOSTNAME + "users?import_step_2";
-
-
                 }
             });
-
-
         });
-
-        
         $("select#users_do").change(function() {
             var p = $('select#users_do').val();
             var t = $('select#to').val();
@@ -6242,8 +5340,6 @@ $.ajax({
                 }, 2000);
             }
         });
-
-
         $("#users_do").select2({
             formatResult: format,
             formatSelection: format,
@@ -6255,16 +5351,11 @@ $.ajax({
                 return m;
             }
         });
-
-
-
-
         //push_msg_action2user
         $('[data-toggle="tooltip"]').tooltip({
-                                container: 'body',
-                                html: true
-                            });
-        
+            container: 'body',
+            html: true
+        });
         $('body').on('click', 'button#make_logout_user', function(event) {
             event.preventDefault();
             var usid = $(this).attr('value');
@@ -6288,9 +5379,9 @@ $.ajax({
                 success: function(html) {
                     $("#content_users").html(html);
                     $('[data-toggle="tooltip"]').tooltip({
-                                container: 'body',
-                                html: true
-                            });
+                        container: 'body',
+                        html: true
+                    });
                 }
             });
         });
@@ -6346,8 +5437,6 @@ $.ajax({
                 $('#exampleInputPassword1').prop("disabled", false);
             }
         });
-
-
         $('#user_to_def').on('ifChanged', function(event) {
             if ($(this).is(":checked")) {
                 $('#to').prop("disabled", false);
@@ -6357,10 +5446,8 @@ $.ajax({
                 $('#users_do').prop("disabled", true);
             }
         });
-
-
-$('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
-        //$('input[type=radio][name=optionsRadios]').on('change', function(event) {
+        $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event) {
+            //$('input[type=radio][name=optionsRadios]').on('change', function(event) {
             //console.log(this.value);
             if (this.value == '0') {
                 $('#priv_add_client').iCheck('enable');
@@ -6458,10 +5545,7 @@ $('input[type=radio][name=optionsRadios]').on('ifChanged', function(event){
         $('body').on('click', 'button#create_user', function(event) {
             event.preventDefault();
             //console.log($("#my-select").val());
-            
-var add_from=$('#add_field_form').serialize();
-
-
+            var add_from = $('#add_field_form').serialize();
             if ($("#fio_user").val().length < 3) {
                 //$("#errors").val('true');
                 my_errors.fio = true;
@@ -6483,12 +5567,7 @@ var add_from=$('#add_field_form').serialize();
                 $.ajax({
                     type: "POST",
                     url: ACTIONPATH,
-                    data: "mode=add_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val())+
-                    "&msg_type="+encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
-                    "&def_unit_id="+encodeURIComponent($("#to").val())+
-                    "&mail_nf="+encodeURIComponent($("#mail_nf").val())+
-                    "&def_user_id="+encodeURIComponent($("#users_do").val())+
-                    "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked'))+"&"+add_from,
+                    data: "mode=add_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&def_unit_id=" + encodeURIComponent($("#to").val()) + "&mail_nf=" + encodeURIComponent($("#mail_nf").val()) + "&def_user_id=" + encodeURIComponent($("#users_do").val()) + "&user_to_def=" + encodeURIComponent($("#user_to_def").prop('checked')) + "&" + add_from,
                     success: function(html) {
                         window.location = MyHOSTNAME + "users?create&ok";
                     }
@@ -6498,21 +5577,15 @@ var add_from=$('#add_field_form').serialize();
                     scrollTop: 0
                 }, "slow");
             }
-            
         });
         $('body').on('click', 'button#edit_user', function(event) {
             event.preventDefault();
             var usid = $(this).attr('value');
-            var add_from=$('#add_field_form').serialize();
+            var add_from = $('#add_field_form').serialize();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=edit_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user2").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&status=" + encodeURIComponent($("#lock").val()) + "&idu=" + encodeURIComponent(usid)+
-                    "&msg_type="+encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val())+
-                    "&def_unit_id="+encodeURIComponent($("#to").val())+
-                    "&mail_nf="+encodeURIComponent($("#mail_nf").val())+
-                    "&def_user_id="+encodeURIComponent($("#users_do").val())+
-                    "&user_to_def="+encodeURIComponent($("#user_to_def").prop('checked'))+"&"+add_from,
+                data: "mode=edit_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user2").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&status=" + encodeURIComponent($("#lock").val()) + "&idu=" + encodeURIComponent(usid) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&def_unit_id=" + encodeURIComponent($("#to").val()) + "&mail_nf=" + encodeURIComponent($("#mail_nf").val()) + "&def_user_id=" + encodeURIComponent($("#users_do").val()) + "&user_to_def=" + encodeURIComponent($("#user_to_def").prop('checked')) + "&" + add_from,
                 success: function(html) {
                     //alert(html);
                     window.location = MyHOSTNAME + "users?edit=" + usid + "&ok";
@@ -6521,29 +5594,20 @@ var add_from=$('#add_field_form').serialize();
         });
     }
     if (ispath('subj')) {
-
-
-
-
-   function view_sla() {
-$.fn.editable.defaults.mode = 'inline';
+        function view_sla() {
+            $.fn.editable.defaults.mode = 'inline';
             $('a#edit_item').each(function(i, e) {
-            $(e).editable({
-                inputclass: 'form-control input-sm input-longtext',
-                emptytext: 'пусто',
-                params: {
-                    mode: 'save_subj_item'
-                },
-                tpl: "<input type='text' style='width: 450px'>"
+                $(e).editable({
+                    inputclass: 'form-control input-sm input-longtext',
+                    emptytext: 'пусто',
+                    params: {
+                        mode: 'save_subj_item'
+                    },
+                    tpl: "<input type='text' style='width: 450px'>"
+                });
             });
-        });
-
-
-
-
-
-                            $('.sortable').nestedSortable({
-            ForcePlaceholderSize: true,
+            $('.sortable').nestedSortable({
+                ForcePlaceholderSize: true,
                 handle: 'div',
                 helper: 'clone',
                 items: 'li',
@@ -6554,46 +5618,24 @@ $.fn.editable.defaults.mode = 'inline';
                 tolerance: 'pointer',
                 toleranceElement: '> div',
                 maxLevels: 1,
-                
-update: function () {
-    list = $(this).nestedSortable('serialize');
-    //console.log(list);
-
-$.post(
-        ACTIONPATH,
-        { mode:"sort_sla" ,list: list},
-        function(data){
-            console.log(data);
-        }
-    );
-
-
-}
-
-        });
-
-                            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
-        checkboxClass: 'icheckbox_minimal',
-        radioClass: 'iradio_minimal'
-    });
-
-
-};
-
-
-view_sla();
-
-
-
-
-
-
-
-
-
-
-
-                $('body').on('click', 'i#del_item_subj', function(event) {
+                update: function() {
+                    list = $(this).nestedSortable('serialize');
+                    //console.log(list);
+                    $.post(ACTIONPATH, {
+                        mode: "sort_sla",
+                        list: list
+                    }, function(data) {
+                        console.log(data);
+                    });
+                }
+            });
+            $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+                checkboxClass: 'icheckbox_minimal',
+                radioClass: 'iradio_minimal'
+            });
+        };
+        view_sla();
+        $('body').on('click', 'i#del_item_subj', function(event) {
             event.preventDefault();
             var ids = $(this).attr('value');
             bootbox.confirm(get_lang_param('JS_del'), function(result) {
@@ -6604,7 +5646,7 @@ view_sla();
                         data: "mode=subj_del" + "&id=" + ids,
                         success: function(html) {
                             $("#content_subj").html(html);
-view_sla();
+                            view_sla();
                         }
                     });
                 }
@@ -6613,12 +5655,6 @@ view_sla();
                 }
             });
         });
-
-
-
-
-
-
         $('body').on('click', 'button#subj_add', function(event) {
             event.preventDefault();
             $.ajax({
@@ -6646,14 +5682,12 @@ view_sla();
                 success: function(html) {
                     //$("#res").hide().html(html).fadeIn(500);
                     $.each(html, function(i, item) {
-                        
-                        if (item.res == true) { window.location = MyHOSTNAME + "clients?add&ok"; }
-                        else if (item.res == false) { 
-                            $('#res').html(item.msg); 
-                           
-                            }
-                            //console.log(item.msg);
-                        
+                        if (item.res == true) {
+                            window.location = MyHOSTNAME + "clients?add&ok";
+                        } else if (item.res == false) {
+                            $('#res').html(item.msg);
+                        }
+                        //console.log(item.msg);
                     });
                     //window.location = MyHOSTNAME + "clients?add&ok";
                 }
@@ -6669,19 +5703,14 @@ view_sla();
                 dataType: "json",
                 success: function(html) {
                     //$("#res").hide().html(html).fadeIn(500);
-                    
-                                        $.each(html, function(i, item) {
-                        
-                        if (item.res == true) { window.location = MyHOSTNAME + "clients?edit=" + usrid + "&ok"; }
-                        else if (item.res == false) { 
-                            $('#res').html(item.msg); 
-                           
-                            }
-                            //console.log(item.msg);
-                        
+                    $.each(html, function(i, item) {
+                        if (item.res == true) {
+                            window.location = MyHOSTNAME + "clients?edit=" + usrid + "&ok";
+                        } else if (item.res == false) {
+                            $('#res').html(item.msg);
+                        }
+                        //console.log(item.msg);
                     });
-
-
                 }
             });
         });
@@ -6725,12 +5754,6 @@ view_sla();
             }
         }
         $('#example_clients').bootstrapPaginator(options_clients);
-
-
-
-
-
-
         $("select#users_do").change(function() {
             var p = $('select#users_do').val();
             var t = $('select#to').val();
@@ -6788,9 +5811,6 @@ view_sla();
                 }, 2000);
             }
         });
-
-
-
     }
     if (ispath('posada')) {
         $('body').on('click', 'button#posada_add', function(event) {
@@ -6851,8 +5871,8 @@ view_sla();
         });
     }
     if ((def_filename == "dashboard") || (window.location == MyHOSTNAME) || (def_filename == "index.php")) {
-//console.log('true');
-         //if ((def_filename == "dashboard")) {
+        console.log('true');
+        //if ((def_filename == "dashboard")) {
         $('body').on('click', 'button#dashboard_set_ticket', function(event) {
             event.preventDefault();
             var p = $(this).text();

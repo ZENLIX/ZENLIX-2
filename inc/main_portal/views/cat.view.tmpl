@@ -1,213 +1,96 @@
 <div class="content-wrapper">
-<section class="content">
-
-
-
-
-
-<section class="invoice">
-          <!-- title row -->
-          <div class="row">
-
-
-
-<div class="col-md-9">
-
-
-
-
-
-
-
-<div class="box <?=$s;?>">
-                <div class="box-header with-border">
-                  <h3 class="box-title">{{t}}</h3>
-                                    <div class="box-tools pull-right">
-                    <h4> {{get_cat_icon | raw}}</h4>
-                  </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                  
-
-
+  <section class="content">
+    <section class="invoice">
+      <!-- title row -->
+      <div class="row">
+        <div class="col-md-9">
+          <div class="box <?=$s;?>">
+            <div class="box-header with-border">
+              <h3 class="box-title">{{t}}</h3>
+              <div class="box-tools pull-right">
+                <h4> {{get_cat_icon | raw}}</h4>
+              </div>
+              </div><!-- /.box-header -->
+              <div class="box-body">
                 <div class="box-footer no-padding">
-
-
-{% if sel_status == true %}
+                  {% if sel_status == true %}
                   <ul class="nav nav-pills nav-stacked">
-
-
-
-
-
-{% for item in sel_arr %}
-
+                    {% for item in sel_arr %}
                     <li>
- <a href="{{hostname}}thread?{{item.uniq_id}}">
-                    <strong style="
-    font-size: 16px;
-">{{item.type | raw}} {{item.subj}} </strong>
-
-                    
-
-{{item.get_post_rate | raw}}
-
-
-<br>
-                    <small class="text-muted">
-                     {{item.get_post_status | raw}}  {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small>
+                      <a href="{{hostname}}thread?{{item.uniq_id}}">
+                      <strong style="
+                      font-size: 16px;
+                      ">{{item.type | raw}} {{item.subj}} </strong>
+                      {{item.get_post_rate | raw}}
+                      <br>
+                      <small class="text-muted">
+                      {{item.get_post_status | raw}}  {{item.PORTAL_comments}}: {{item.get_count_comments}} ● {{item.get_official_comments | raw}}</small>
                     </a></li>
                     {% endfor %}
-
-
-
-
                     <li>
-
-                   
-<br>
-                    <li class="pull-right">
-
-
-<ul id="cat_post" class="pagination pagination-sm pull-right no-margin "></ul>
-
-
-
+                      <br>
+                      <li class="pull-right">
+                      <ul id="cat_post" class="pagination pagination-sm pull-right no-margin "></ul>
                     </li>
                   </ul>
-
-          
-            <input type="hidden" id="curent_page" value="{{p}}">
-            <input type="hidden" id="cur_page" value="{{p}}">
-            <input type="hidden" id="cat" value="{{hn}}">
-
-
-{% if status_sel == true %}
-
-<input type="hidden" id="total_pages" value="{{get_total_pages_posts_status}}">
-<input type="hidden" id="st_str" value="?status={{status}}">
-
-{% endif %}
-
-
-{% if status_sel == false %}
-<input type="hidden" id="total_pages" value="{{get_total_pages_posts}}">
-        <input type="hidden" id="st_str" value="">
-{% endif %}
-            
-
-
-{% endif %}
-{% if sel_status == false %}
-
-
-<div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-
-                    <center>{{MSG_no_records}}</center></div>
-
-
+                  <input type="hidden" id="curent_page" value="{{p}}">
+                  <input type="hidden" id="cur_page" value="{{p}}">
+                  <input type="hidden" id="cat" value="{{hn}}">
+                  {% if status_sel == true %}
+                  <input type="hidden" id="total_pages" value="{{get_total_pages_posts_status}}">
+                  <input type="hidden" id="st_str" value="?status={{status}}">
                   {% endif %}
-                </div><!-- /.footer -->
-
-
-
-                </div><!-- /.box-body -->
+                  {% if status_sel == false %}
+                  <input type="hidden" id="total_pages" value="{{get_total_pages_posts}}">
+                  <input type="hidden" id="st_str" value="">
+                  {% endif %}
+                  {% endif %}
+                  {% if sel_status == false %}
+                  <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                  <center>{{MSG_no_records}}</center></div>
+                  {% endif %}
+                  </div><!-- /.footer -->
+                  </div><!-- /.box-body -->
+                </div>
               </div>
-
-
-
-
-
-
-
-
-
-</div>
-
-
-
-<div class="col-md-3">
-  <style type="text/css">
-.active-text-cat {
-  color: white;
-}
-
-  </style>
-<?php
-
-
-if ($hn == "1") {
-
-
-
-
-
-
-  ?>
-
-
-{% if hn == "1" %}
-
-<div class="list-group">
-  <a href="cat?1" class="list-group-item {{status_label_def | raw}}">
- 
-    {{PORTAL_idea_all}}
-  </a>
-  <a href="cat?1&status=0" class="list-group-item {{status_label_0}}">{{get_count_post_1_0 | raw}}<span class="">{{PORTAL_status_1}}</span></a>
-
-  <a href="cat?1&status=1" class="list-group-item {{status_label_1}}">{{get_count_post_1_1 | raw}}<span class="text-warning {{status_text_1}}">{{PORTAL_status_2}}</span></a>
-
-
-  <a href="cat?1&status=2" class="list-group-item {{status_label_2}}">{{get_count_post_1_2 | raw}}<span class="text-success {{status_text_2}}">{{PORTAL_status_3}}</span></a>
-  <a href="cat?1&status=3" class="list-group-item {{status_label_3}}">{{get_count_post_1_3 | raw}}<span class="text-danger {{status_text_3}}">{{PORTAL_status_4}}</span></a>
-    <a href="cat?1&status=4" class="list-group-item {{status_label_4}}">{{get_count_post_1_4 | raw}}<span class="text-primary {{status_text_4}}">{{PORTAL_status_5}}</span></a>
-</div>
-{% endif %}
-{% if hn == "2" %}
-<div class="list-group">
-  <a href="cat?2" class="list-group-item {{status_label_def}}">
-  
-    {{PORTAL_trouble_all}}
-  </a>
-  <a href="cat?2&status=0" class="list-group-item {{status_label_0}}">{{get_count_post_2_0 | raw}}<span class="">{{PORTAL_status_1}}</span></a>
-  <a href="cat?2&status=1" class="list-group-item {{status_label_1}}">{{get_count_post_2_1 | raw}}<span class="text-warning {{status_text_1}}">{{PORTAL_status_2}}</span></a>
-  <a href="cat?2&status=2" class="list-group-item {{status_label_2}}">{{get_count_post_2_2 | raw}}<span class="text-success {{status_text_2}}">{{PORTAL_status_6}}</span></a>
-  <a href="cat?2&status=3" class="list-group-item {{status_label_3}}">{{get_count_post_2_3 | raw}}<span class="text-danger {{status_text_3}}">{{PORTAL_status_7}}</span></a>
-    <a href="cat?2&status=4" class="list-group-item {{status_label_4}}">{{get_count_post_2_4 | raw}}<span class="text-primary {{status_text_4}}">{{PORTAL_status_5}}</span></a>
-</div>
-{% endif %}
-
-
-
-
-{{view_top_news_bar | raw }}
-
-
-
-
-{{view_stat_cat | raw }}
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-
-
-          </div>
-          <!-- info row -->
-          
+              <div class="col-md-3">
+                <style type="text/css">
+                .active-text-cat {
+                color: white;
+                }
+                </style>
+                <?php
+                if ($hn == "1") {
+                ?>
+                {% if hn == "1" %}
+                <div class="list-group">
+                  <a href="cat?1" class="list-group-item {{status_label_def | raw}}">
+                  {{PORTAL_idea_all}}
+                  </a>
+                  <a href="cat?1&status=0" class="list-group-item {{status_label_0}}">{{get_count_post_1_0 | raw}}<span class="">{{PORTAL_status_1}}</span></a>
+                  <a href="cat?1&status=1" class="list-group-item {{status_label_1}}">{{get_count_post_1_1 | raw}}<span class="text-warning {{status_text_1}}">{{PORTAL_status_2}}</span></a>
+                  <a href="cat?1&status=2" class="list-group-item {{status_label_2}}">{{get_count_post_1_2 | raw}}<span class="text-success {{status_text_2}}">{{PORTAL_status_3}}</span></a>
+                  <a href="cat?1&status=3" class="list-group-item {{status_label_3}}">{{get_count_post_1_3 | raw}}<span class="text-danger {{status_text_3}}">{{PORTAL_status_4}}</span></a>
+                  <a href="cat?1&status=4" class="list-group-item {{status_label_4}}">{{get_count_post_1_4 | raw}}<span class="text-primary {{status_text_4}}">{{PORTAL_status_5}}</span></a>
+                </div>
+                {% endif %}
+                {% if hn == "2" %}
+                <div class="list-group">
+                  <a href="cat?2" class="list-group-item {{status_label_def}}">
+                  {{PORTAL_trouble_all}}
+                  </a>
+                  <a href="cat?2&status=0" class="list-group-item {{status_label_0}}">{{get_count_post_2_0 | raw}}<span class="">{{PORTAL_status_1}}</span></a>
+                  <a href="cat?2&status=1" class="list-group-item {{status_label_1}}">{{get_count_post_2_1 | raw}}<span class="text-warning {{status_text_1}}">{{PORTAL_status_2}}</span></a>
+                  <a href="cat?2&status=2" class="list-group-item {{status_label_2}}">{{get_count_post_2_2 | raw}}<span class="text-success {{status_text_2}}">{{PORTAL_status_6}}</span></a>
+                  <a href="cat?2&status=3" class="list-group-item {{status_label_3}}">{{get_count_post_2_3 | raw}}<span class="text-danger {{status_text_3}}">{{PORTAL_status_7}}</span></a>
+                  <a href="cat?2&status=4" class="list-group-item {{status_label_4}}">{{get_count_post_2_4 | raw}}<span class="text-primary {{status_text_4}}">{{PORTAL_status_5}}</span></a>
+                </div>
+                {% endif %}
+                {{view_top_news_bar | raw }}
+                {{view_stat_cat | raw }}
+              </div>
+            </div>
+            <!-- info row -->
+          </section>
         </section>
-
-
-
-
-</section>
-</div>
+      </div>

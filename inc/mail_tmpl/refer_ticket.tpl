@@ -277,7 +277,7 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
       <td width="36%" align="center" valign="middle"><b style="
     font-size: 22px;
 ">#{ticket_id}</b></td>
-      <td width="49%" valign="middle" ><p > <a style=" font-size:11px; text-align:center;" href='<?=$CONF['hostname'];?>ticket?{h}'>{MAIL_2link}</a>.</p></td>
+      <td width="49%" valign="middle" ><p > <a style=" font-size:11px; text-align:center;" href='<?=$CONF['real_hostname'];?>ticket?{h}'>{MAIL_2link}</a>.</p></td>
     </tr>
   </tbody>
 </table>

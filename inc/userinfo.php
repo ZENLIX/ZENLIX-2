@@ -18,13 +18,18 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
   <section class="content-header">
                     <h1>
-                        <i class="fa fa-tag"></i> <?php echo lang('userinfo_ticket'); ?>
-                        <small><?php echo name_of_client($user_id); ?></small>
+                        <i class="fa fa-tag"></i> <?php
+        echo lang('userinfo_ticket'); ?>
+                        <small><?php
+        echo name_of_client($user_id); ?></small>
                         
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?php echo $CONF['hostname'] ?>"><span class="icon-svg"></span>  <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('userinfo_ticket'); ?></li>
+                        <li><a href="<?php
+        echo $CONF['hostname'] ?>"><span class="icon-svg"></span>  <?php
+        echo $CONF['name_of_firm'] ?></a></li>
+                        <li class="active"><?php
+        echo lang('userinfo_ticket'); ?></li>
                     </ol>
                 </section>
 
@@ -60,13 +65,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
   <div class="col-md-8">
   
   <?php
-        
         $stmt = $dbConnection->prepare('SELECT 
                             id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, arch
                             from tickets
                             where client_id=:user_id
                             order by id DESC');
-        $stmt->execute(array(':user_id' => $user_id));
+        $stmt->execute(array(
+            ':user_id' => $user_id
+        ));
         $res1 = $stmt->fetchAll();
         if (!empty($res1)) {
             
@@ -78,7 +84,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 $cid = $row['client_id'];
                 $tid = $row['id'];
                 $arch = $row['arch'];
-                $hn=$row['hash_name'];
+                $hn = $row['hash_name'];
                 
                 $status_ok = $row['status'];
                 
@@ -109,7 +115,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 if ($row['is_read'] == "0") {
                     
                     $res = $dbConnection->prepare("update tickets set is_read=:n where id=:tid");
-                    $res->execute(array(':n' => '1', ':tid' => $tid));
+                    $res->execute(array(
+                        ':n' => '1',
+                        ':tid' => $tid
+                    ));
                 }
                 
                 if ($lock_by <> "0") {
@@ -119,7 +128,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                         //$lock_disabled="";
                         $lock_text = "<i class=\"fa fa-unlock\"></i> " . lang('TICKET_action_unlock') . "";
                         $lock_status = "unlock";
-                    } else {
+                    } 
+                    else {
                         
                         $status_lock = "you";
                         
@@ -159,43 +169,63 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 }
 ?>
         <div class="panel panel-default">
-  <div class="panel-heading"><i class="fa fa-ticket"></i> <a href="<?php echo $CONF['hostname'] ?>/ticket&<?php echo $row['hash_name'] ?>"> <?php echo lang('TICKET_name'); ?> <strong>#<?php echo $row['id'] ?></strong></a></div>
+  <div class="panel-heading"><i class="fa fa-ticket"></i> <a href="<?php
+                echo $CONF['hostname'] ?>/ticket&<?php
+                echo $row['hash_name'] ?>"> <?php
+                echo lang('TICKET_name'); ?> <strong>#<?php
+                echo $row['id'] ?></strong></a></div>
   <div class="panel-body">
         <table class="table table-bordered">
                 <tbody>
                 <tr>
-                    <td style="width:50px;"><small><strong><?php echo lang('TICKET_t_from'); ?> </strong></small></td>
-                    <td><small><?php echo name_of_user($row['user_init_id']) ?> </small></td>
-                    <td style="width:150px;"><small><strong> <?php echo lang('TICKET_t_was_create'); ?></strong></small></td>
-                    <td style="width:150px;"><small><time id="c" datetime="<?php echo $row['date_create']; ?>"></time> </small></td>
+                    <td style="width:50px;"><small><strong><?php
+                echo lang('TICKET_t_from'); ?> </strong></small></td>
+                    <td><small><?php
+                echo name_of_user($row['user_init_id']) ?> </small></td>
+                    <td style="width:150px;"><small><strong> <?php
+                echo lang('TICKET_t_was_create'); ?></strong></small></td>
+                    <td style="width:150px;"><small><time id="c" datetime="<?php
+                echo $row['date_create']; ?>"></time> </small></td>
                 </tr>
                 <tr>
-                    <td style="width:50px;"><small><strong><?php echo lang('TICKET_t_to'); ?> </strong></small></td>
-                    <td><small><?php echo $to_text; ?> </small></td>
-                    <td style="width:50px;"><small><strong><?php echo lang('TICKET_t_last_edit'); ?> </strong></small></td>
+                    <td style="width:50px;"><small><strong><?php
+                echo lang('TICKET_t_to'); ?> </strong></small></td>
                     <td><small><?php
-                if ($row['last_edit']) { ?> <time id="c" datetime="<?php echo $row['last_edit']; ?>"></time> <?php
+                echo $to_text; ?> </small></td>
+                    <td style="width:50px;"><small><strong><?php
+                echo lang('TICKET_t_last_edit'); ?> </strong></small></td>
+                    <td><small><?php
+                if ($row['last_edit']) { ?> <time id="c" datetime="<?php
+                    echo $row['last_edit']; ?>"></time> <?php
                 } ?> </small></td>
                 </tr>
                 <tr>
-                    <td><small><strong><?php echo lang('TICKET_t_worker'); ?></strong></small>
+                    <td><small><strong><?php
+                echo lang('TICKET_t_worker'); ?></strong></small>
                     </td>
-                    <td class=""><small><?php echo name_of_client($cid) ?></small></td>
+                    <td class=""><small><?php
+                echo name_of_client($cid) ?></small></td>
 
-                    <td style="width:50px;"><small><strong><?php echo lang('TICKET_t_last_up'); ?> </strong></small></td>
+                    <td style="width:50px;"><small><strong><?php
+                echo lang('TICKET_t_last_up'); ?> </strong></small></td>
                     <td><small><?php
-                if ($row['last_update']) { ?> <time id="c" datetime="<?php echo $row['last_update']; ?>"></time> <?php
+                if ($row['last_update']) { ?> <time id="c" datetime="<?php
+                    echo $row['last_update']; ?>"></time> <?php
                 } ?> </small></td>
 
 
                 </tr>
                 <tr>
-                    <td><small><strong><?php echo lang('TICKET_t_status'); ?></strong></small>
+                    <td><small><strong><?php
+                echo lang('TICKET_t_status'); ?></strong></small>
                     </td>
-                    <td><small><?php echo $st; ?></small></td>
-                    <td><small><strong><?php echo lang('TICKET_t_prio'); ?></strong></small>
+                    <td><small><?php
+                echo $st; ?></small></td>
+                    <td><small><strong><?php
+                echo lang('TICKET_t_prio'); ?></strong></small>
                     </td>
-                    <td><small><?php echo $prio; ?></small>
+                    <td><small><?php
+                echo $prio; ?></small>
                     </td>
                 </tr>
 
@@ -205,48 +235,46 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 
 <?php
-        $stmts = $dbConnection->prepare('SELECT * FROM ticket_data where ticket_hash=:n');
-        $stmts->execute(array(':n' => $hn));
-        $res11 = $stmts->fetchAll();
-
-
-if (!empty($res11)) {
+                $stmts = $dbConnection->prepare('SELECT * FROM ticket_data where ticket_hash=:n');
+                $stmts->execute(array(
+                    ':n' => $hn
+                ));
+                $res11 = $stmts->fetchAll();
+                
+                if (!empty($res11)) {
 ?><br>
-<small class="text-muted"><?=lang('FIELD_add_title');?>: </small>
+<small class="text-muted"><?php echo lang('FIELD_add_title'); ?>: </small>
 <table class="table table-bordered">
                 <tbody>
 <?php
-        foreach ($res11 as $rown) { 
-
-    $stmt2 = $dbConnection->prepare('SELECT name from ticket_fields where id=:tm and status=:s');
-    $stmt2->execute(array(
-        ':tm' => $rown['field_id'],
-        ':s'=>'1'
-    ));
-    
-    $tt = $stmt2->fetch(PDO::FETCH_ASSOC);
-
-    
-
-
+                    foreach ($res11 as $rown) {
+                        
+                        $stmt2 = $dbConnection->prepare('SELECT name from ticket_fields where id=:tm and status=:s');
+                        $stmt2->execute(array(
+                            ':tm' => $rown['field_id'],
+                            ':s' => '1'
+                        ));
+                        
+                        $tt = $stmt2->fetch(PDO::FETCH_ASSOC);
 ?>
 
         <tr>
-                    <td style="width:150px"><small class="text-muted"><?php echo $rown['field_name']; ?>: </small></td>
-                    <td><small><?php echo $rown['field_val']; ?> </small></td>
+                    <td style="width:150px"><small class="text-muted"><?php
+                        echo $rown['field_name']; ?>: </small></td>
+                    <td><small><?php
+                        echo $rown['field_val']; ?> </small></td>
                     
                     
                 </tr>
 
 
 <?php
-
-}
+                    }
 ?>
  </tbody>
             </table>
 <?php
-}
+                }
 ?>
 
 
@@ -255,15 +283,18 @@ if (!empty($res11)) {
             <table class="table table-bordered">
                     <tbody>
                     <tr>
-                        <td style="width:50px;padding: 8px;border-right: 0px;"><small><strong><?php echo lang('TICKET_t_subj'); ?>: </strong></small></td>
+                        <td style="width:50px;padding: 8px;border-right: 0px;"><small><strong><?php
+                echo lang('TICKET_t_subj'); ?>: </strong></small></td>
                         <td style="padding: 8px; border-left: 0px;">
 
-                                <?php echo make_html($row['subj']) ?>
+                                <?php
+                echo make_html($row['subj']) ?>
                      </td>
 
                     </tr>
                     <tr>
-                        <td style=" padding: 5px; " colspan="2"><?php echo make_html($row['msg']) ?> </td>
+                        <td style=" padding: 5px; " colspan="2"><?php
+                echo make_html($row['msg']) ?> </td>
                     </tr>
                     </tbody>
                 </table>
@@ -313,7 +344,8 @@ if (!empty($res11)) {
 ?>
 
 <?php
-} else {
+} 
+else {
     include 'auth.php';
 }
 ?>

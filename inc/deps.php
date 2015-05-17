@@ -4,22 +4,25 @@ include ("../functions.inc.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if (validate_admin($_SESSION['helpdesk_user_id'])) {
-
-                          $CONF['title_header'] = lang('DEPS_title') . " - " . $CONF['name_of_firm'];
-
-
-
+        
+        $CONF['title_header'] = lang('DEPS_title') . " - " . $CONF['name_of_firm'];
+        
         include ("head.inc.php");
         include ("navbar.inc.php");
 ?>
 <section class="content-header">
                     <h1>
-                        <i class="fa fa-sitemap"></i> <?php echo lang('DEPS_title'); ?>
-                        <small><?php echo lang('DEPS_title_ext'); ?></small>
+                        <i class="fa fa-sitemap"></i> <?php
+        echo lang('DEPS_title'); ?>
+                        <small><?php
+        echo lang('DEPS_title_ext'); ?></small>
                     </h1>
                     <ol class="breadcrumb">
-                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('DEPS_title'); ?></li>
+                       <li><a href="<?php
+        echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php
+        echo $CONF['name_of_firm'] ?></a></li>
+                        <li class="active"><?php
+        echo lang('DEPS_title'); ?></li>
                     </ol>
                 </section>
                 
@@ -29,14 +32,17 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     <!-- row -->
                     <div class="row">
                     <div class="col-md-3">
-                    <input type="text" class="form-control input-sm ui-autocomplete-input" id="deps_text" placeholder="<?php echo lang('DEPS_name'); ?>" autocomplete="off">
-                    <button id="deps_add" class="btn btn-block btn-default btn-sm" type="submit"><?php echo lang('DEPS_add'); ?></button><br>
+                    <input type="text" class="form-control input-sm ui-autocomplete-input" id="deps_text" placeholder="<?php
+        echo lang('DEPS_name'); ?>" autocomplete="off">
+                    <button id="deps_add" class="btn btn-block btn-default btn-sm" type="submit"><?php
+        echo lang('DEPS_add'); ?></button><br>
                    
 
                     <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
-<?php echo lang('DEPS_info'); ?>
+<?php
+        echo lang('DEPS_info'); ?>
          </small>
                                     </div>
                                     </div>
@@ -55,9 +61,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
       
       
 <?php
-        
         $stmt = $dbConnection->prepare('select id, name, status from deps where id!=:n');
-        $stmt->execute(array(':n' => '0'));
+        $stmt->execute(array(
+            ':n' => '0'
+        ));
         $res1 = $stmt->fetchAll();
 ?>      
       
@@ -67,13 +74,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <thead>
           <tr>
             
-            <th><center><?php echo lang('DEPS_n'); ?></center></th>
-            <th><center><?php echo lang('DEPS_action'); ?></center></th>
+            <th><center><?php
+        echo lang('DEPS_n'); ?></center></th>
+            <th><center><?php
+        echo lang('DEPS_action'); ?></center></th>
           </tr>
         </thead>
         <tbody>     
         <?php
-        
         foreach ($res1 as $row) {
             
             $cl = "";
@@ -88,16 +96,24 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 $cl = "";
             }
 ?>
-        <tr id="tr_<?php echo $row['id']; ?>" class="<?php echo $cl; ?>">
+        <tr id="tr_<?php
+            echo $row['id']; ?>" class="<?php
+            echo $cl; ?>">
         
         
         
-        <td><small><a href="#" data-pk="<?php echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php echo $row['name']; ?></a></small></td>
+        <td><small><a href="#" data-pk="<?php
+            echo $row['id'] ?>" data-url="actions.php" id="edit_deps" data-type="text"><?php
+            echo $row['name']; ?></a></small></td>
 <td>
 
-<small><center><button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['id']; ?>">del</button> 
+<small><center><button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php
+            echo $row['id']; ?>">del</button> 
 
-<button id="<?php echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php echo $row['id']; ?>"><?php echo $icon; ?></button></center></small>
+<button id="<?php
+            echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php
+            echo $row['id']; ?>"><?php
+            echo $icon; ?></button></center></small>
 
 </td>
         </tr>
@@ -135,7 +151,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 <?php
     }
-} else {
+} 
+else {
     include '../auth.php';
 }
 ?>

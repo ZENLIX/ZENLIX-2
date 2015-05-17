@@ -1,4 +1,5 @@
 <?php
+
 //session_start();
 //include_once ("../functions.inc.php");
 $CONF['title_header'] = lang('NEW_title') . " - " . $CONF['name_of_firm'];
@@ -16,7 +17,9 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                         404 Error Page
                     </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
+                        <li><a href="<?php
+        echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php
+        echo $CONF['name_of_firm'] ?></a></li>
                         <li class="active">404 error</li>
                     </ol>
                 </section>
@@ -29,7 +32,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                             <h3><i class="fa fa-warning text-yellow"></i> Oops! Page not found.</h3>
                             <p>
                                 We could not find the page you were looking for.
-                                Meanwhile, you may <a href="<?php echo $CONF['hostname'] ?>index.php">return to dashboard</a> or try using the search form.
+                                Meanwhile, you may <a href="<?php
+        echo $CONF['hostname'] ?>index.php">return to dashboard</a> or try using the search form.
                             </p>
                             
                         </div><!-- /.error-content -->
@@ -38,10 +42,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 </section>
 
 <?php
-include ("footer.inc.php");
+        include ("footer.inc.php");
     }
-}
- else {
+} 
+else {
     include 'auth.php';
 }
 ?>

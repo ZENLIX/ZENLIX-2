@@ -10,14 +10,16 @@ if (isset($_POST['menu'])) {
         
         if (isset($_GET['ok'])) {
 ?>
-  <div class="alert alert-success"><?php echo lang('USERS_msg_add'); ?></div>
+  <div class="alert alert-success"><?php
+            echo lang('USERS_msg_add'); ?></div>
   <?php
         }
 ?>
 
 <div class="box box-solid">
 <div class="box-header">
-                                    <h3 class="box-title"><?php echo lang('USERS_new_add'); ?></h3>
+                                    <h3 class="box-title"><?php
+        echo lang('USERS_new_add'); ?></h3>
                                 </div>
                                 
                                 
@@ -30,15 +32,19 @@ if (isset($_POST['menu'])) {
 
 
   <div class="form-group" id="login_user_grp">
-    <label for="login" class="col-sm-2 control-label"><?php echo lang('USERS_login'); ?></label>
+    <label for="login" class="col-sm-2 control-label"><?php
+        echo lang('USERS_login'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="login_user" type="" class="form-control input-sm" id="login_user" placeholder="<?php echo lang('USERS_login'); ?>">
+    <input autocomplete="off" name="login_user" type="" class="form-control input-sm" id="login_user" placeholder="<?php
+        echo lang('USERS_login'); ?>">
         </div>
   </div>
   <div class="form-group" id="pass_user_grp">
-    <label for="exampleInputPassword1" class="col-sm-2 control-label"><?php echo lang('USERS_pass'); ?></label>
+    <label for="exampleInputPassword1" class="col-sm-2 control-label"><?php
+        echo lang('USERS_pass'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="password" type="password" class="form-control input-sm" id="exampleInputPassword1" placeholder="<?php echo lang('USERS_pass'); ?>">
+    <input autocomplete="off" name="password" type="password" class="form-control input-sm" id="exampleInputPassword1" placeholder="<?php
+        echo lang('USERS_pass'); ?>">
         </div>
   </div>
   <div class="form-group">
@@ -50,8 +56,10 @@ if (isset($_POST['menu'])) {
     <div class="col-sm-10">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="ldap_auth_key"> <?php echo lang('CONF_true'); ?>
-      <p class="help-block"><small><?php echo lang('EXT_perf_must_ldap'); ?> </small></p>
+      <input type="checkbox" id="ldap_auth_key"> <?php
+        echo lang('CONF_true'); ?>
+      <p class="help-block"><small><?php
+        echo lang('EXT_perf_must_ldap'); ?> </small></p>
     </label>
   </div>
     </div>
@@ -66,19 +74,21 @@ if (isset($_POST['menu'])) {
               <!-- Custom Tabs -->
               <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><?=lang('APPROVE_info');?></a></li>
-                  <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><?=lang('USERS_privs');?></a></li>
-                  <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false"><?=lang('MAIL_msg');?></a></li>
-                  <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="false"><?=lang('PERF_menu_ticket_conf');?></a></li>
+                  <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><?php echo lang('APPROVE_info'); ?></a></li>
+                  <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><?php echo lang('USERS_privs'); ?></a></li>
+                  <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false"><?php echo lang('MAIL_msg'); ?></a></li>
+                  <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="false"><?php echo lang('PERF_menu_ticket_conf'); ?></a></li>
                   
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="tab_1">
 
       <div class="form-group" id="fio_user_grp">
-    <label for="fio" class="col-sm-2 control-label"><?php echo lang('USERS_fio'); ?></label>
+    <label for="fio" class="col-sm-2 control-label"><?php
+        echo lang('USERS_fio'); ?></label>
     <div class="col-sm-10">
-    <input autocomplete="off" id="fio_user" name="fio_user" type="" class="form-control input-sm" placeholder="<?php echo lang('USERS_fio_full'); ?>">
+    <input autocomplete="off" id="fio_user" name="fio_user" type="" class="form-control input-sm" placeholder="<?php
+        echo lang('USERS_fio_full'); ?>">
     </div>
   </div>
     
@@ -89,9 +99,11 @@ if (isset($_POST['menu'])) {
     
     
     <div class="form-group">
-    <label for="mail" class="col-sm-2 control-label"><?php echo lang('USERS_mail'); ?></label>
+    <label for="mail" class="col-sm-2 control-label"><?php
+        echo lang('USERS_mail'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="<?php echo lang('USERS_mail'); ?>">
+    <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="<?php
+        echo lang('USERS_mail'); ?>">
         </div>
   </div>
   
@@ -105,9 +117,11 @@ if (isset($_POST['menu'])) {
   
   
     <div class="form-group">
-    <label for="tel" class="col-sm-2 control-label"><?php echo lang('APPROVE_tel'); ?></label>
+    <label for="tel" class="col-sm-2 control-label"><?php
+        echo lang('APPROVE_tel'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="<?php echo lang('APPROVE_tel'); ?>">
+    <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="<?php
+        echo lang('APPROVE_tel'); ?>">
         </div>
   </div>
   
@@ -119,9 +133,11 @@ if (isset($_POST['menu'])) {
   </div>
   
       <div class="form-group">
-    <label for="adr" class="col-sm-2 control-label"><?php echo lang('APPROVE_adr'); ?></label>
+    <label for="adr" class="col-sm-2 control-label"><?php
+        echo lang('APPROVE_adr'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="<?php echo lang('APPROVE_adr'); ?>">
+    <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="<?php
+        echo lang('APPROVE_adr'); ?>">
         </div>
   </div>
 
@@ -131,9 +147,11 @@ if (isset($_POST['menu'])) {
    <div class="control-group">
     <div class="controls">
         <div class="form-group">
-            <label for="posada" class="col-sm-2 control-label"><?php echo lang('WORKER_posada'); ?>: </label>
+            <label for="posada" class="col-sm-2 control-label"><?php
+        echo lang('WORKER_posada'); ?>: </label>
             <div class="col-sm-10" style="">
-                <select name="posada" id="posada" data-placeholder="<?php echo lang('WORKER_posada'); ?>" class="chosen-select form-control input-sm">
+                <select name="posada" id="posada" data-placeholder="<?php
+        echo lang('WORKER_posada'); ?>" class="chosen-select form-control input-sm">
                     <option value="0"></option>
                     <?php
         $stmt = $dbConnection->prepare('SELECT name FROM posada order by name COLLATE utf8_unicode_ci ASC');
@@ -142,7 +160,9 @@ if (isset($_POST['menu'])) {
         foreach ($res1 as $row) {
 ?>
 
-                        <option value="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></option>
+                        <option value="<?php
+            echo $row['name'] ?>"><?php
+            echo $row['name'] ?></option>
 
                     <?php
         }
@@ -160,9 +180,11 @@ if (isset($_POST['menu'])) {
  <div class="control-group">
     <div class="controls">
         <div class="form-group">
-            <label for="pidrozdil" class="col-sm-2 control-label"><?php echo lang('WORKER_unit'); ?>: </label>
+            <label for="pidrozdil" class="col-sm-2 control-label"><?php
+        echo lang('WORKER_unit'); ?>: </label>
             <div class="col-sm-10" style="">
-                <select name="pid" id="pidrozdil" data-placeholder="<?php echo lang('WORKER_unit'); ?>" class="chosen-select form-control input-sm">
+                <select name="pid" id="pidrozdil" data-placeholder="<?php
+        echo lang('WORKER_unit'); ?>" class="chosen-select form-control input-sm">
                     <option value="0"></option>
                     <?php
         
@@ -176,7 +198,9 @@ if (isset($_POST['menu'])) {
         foreach ($res1 as $row) {
 ?>
 
-                        <option value="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></option>
+                        <option value="<?php
+            echo $row['name'] ?>"><?php
+            echo $row['name'] ?></option>
 
                     <?php
         }
@@ -188,9 +212,11 @@ if (isset($_POST['menu'])) {
 
     </div>
 </div>  <div class="form-group">
-    <label for="lang" class="col-sm-2 control-label"><?php echo lang('SYSTEM_lang'); ?></label>
+    <label for="lang" class="col-sm-2 control-label"><?php
+        echo lang('SYSTEM_lang'); ?></label>
         <div class="col-sm-10">
-    <select data-placeholder="<?php echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
+    <select data-placeholder="<?php
+        echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
                     <option value="0"></option>
                     
                         <option value="en">English</option>
@@ -209,88 +235,102 @@ if (isset($_POST['menu'])) {
     <div >
 <?php
         $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
-        $stmt->execute(array(':n' => '1'));
+        $stmt->execute(array(
+            ':n' => '1'
+        ));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
-
-
 ?>
 
                       <div class="control-group" id="">
     <div class="controls">
         <div class="form-group">
-            <label for="<?=$row['hash'];?>" class="col-sm-2 control-label"><?=$row['name'];?>: </label>
+            <label for="<?php echo $row['hash']; ?>" class="col-sm-2 control-label"><?php echo $row['name']; ?>: </label>
 
             <div class="col-sm-10" style=" padding-top: 5px; ">
 
-<?php 
-if ($row['t_type'] == "text") {
-    $v=$row['value'];
-    if ($row['value'] == "0") {$v="";}
+<?php
+            if ($row['t_type'] == "text") {
+                $v = $row['value'];
+                if ($row['value'] == "0") {
+                    $v = "";
+                }
 ?>
-<input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
-<?php } ?>
+<input type="text" class="form-control input-sm" name="<?php echo $row['hash']; ?>" id="<?php echo $row['hash']; ?>" placeholder="<?php echo $row['placeholder']; ?>" value='<?php echo $v; ?>'>
+<?php
+            } ?>
 
 
-<?php 
-if ($row['t_type'] == "textarea") {
-    $v=$row['value'];
-    if ($row['value'] == "0") {$v="";}
+<?php
+            if ($row['t_type'] == "textarea") {
+                $v = $row['value'];
+                if ($row['value'] == "0") {
+                    $v = "";
+                }
 ?>
-<textarea rows="3" class="form-control input-sm animated" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>"><?=$v;?></textarea>
-<?php } ?>
+<textarea rows="3" class="form-control input-sm animated" name="<?php echo $row['hash']; ?>" id="<?php echo $row['hash']; ?>" placeholder="<?php echo $row['placeholder']; ?>"><?php echo $v; ?></textarea>
+<?php
+            } ?>
 
 
-<?php 
-if ($row['t_type'] == "select") {
-    $v=$row['value'];
-    if ($row['value'] == "0") {$v="";}
+<?php
+            if ($row['t_type'] == "select") {
+                $v = $row['value'];
+                if ($row['value'] == "0") {
+                    $v = "";
+                }
 ?>
-<select data-placeholder="<?=$row['placeholder'];?>" class="chosen-select form-control" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>">
+<select data-placeholder="<?php echo $row['placeholder']; ?>" class="chosen-select form-control" id="<?php echo $row['hash']; ?>" name="<?php echo $row['hash']; ?>">
 
-<?php 
-$v=explode(",", $row['value']);
- foreach ($v as $value) {
-     # code...
- 
+<?php
+                $v = explode(",", $row['value']);
+                foreach ($v as $value) {
+                    // code...
+                    
+                    
 ?>
-                            <option value="<?=$value;?>"><?=$value;?></option>
+                            <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
 
                             <?php
-                        }
-                            ?>
+                }
+?>
                 
                         
             </select>
-<?php } ?>
+<?php
+            } ?>
 
-<?php 
-if ($row['t_type'] == "multiselect") {
-    $v=$row['value'];
-    if ($row['value'] == "0") {$v="";}
+<?php
+            if ($row['t_type'] == "multiselect") {
+                $v = $row['value'];
+                if ($row['value'] == "0") {
+                    $v = "";
+                }
 ?>
 
 
 
 
 
-<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple="multiple" >
+<select data-placeholder="<?php echo $row['placeholder']; ?>" class="multi_field" id="<?php echo $row['hash']; ?>" name="<?php echo $row['hash']; ?>[]" multiple="multiple" >
 
-<?php 
-$v=explode(",", $row['value']);
- foreach ($v as $value) {
-     # code...
- 
+<?php
+                $v = explode(",", $row['value']);
+                foreach ($v as $value) {
+                    // code...
+                    
+                    
 ?>
-                            <option value="<?=$value;?>"><?=$value;?></option>
+                            <option value="<?php echo $value; ?>"><?php echo $value; ?></option>
 
                             <?php
-                        }
-                            ?>
+                }
+?>
                 
                         
             </select>
-<?php } ?>
+<?php
+            } ?>
                 
             </div>
             
@@ -300,8 +340,8 @@ $v=explode(",", $row['value']);
     </div> 
 
     <?php
-}
-    ?>
+        }
+?>
 </div>
     </form>
     
@@ -318,49 +358,45 @@ $v=explode(",", $row['value']);
 
 
               <div class="form-group">
-    <label for="mail_nf" class="col-sm-2 control-label"><?php echo lang('CONF_mail_status'); ?></label>
+    <label for="mail_nf" class="col-sm-2 control-label"><?php
+        echo lang('CONF_mail_status'); ?></label>
         <div class="col-sm-10">
-    <select data-placeholder="<?php echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
+    <select data-placeholder="<?php
+        echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
 
 <?php
-
-$stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
-    $stmt2->execute(array(':uto' => get_user_val_by_hash($usid, 'id')));
-    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-
-
-
-
-$nl=get_notify_opt_list();
-
-foreach ($nl as $key => $value) {
-    # code...
-
-$sc="";
-
-if ($tt2['mail']) {
-
-$al=explode(",", $tt2['mail']);
-
-if (in_array($key, $al)) {
-    $sc="selected";
-}
-
-}
-else if (!$tt2['mail']) {
-
-$sc="selected";
-
-}
-
-
+        $stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
+        $stmt2->execute(array(
+            ':uto' => get_user_val_by_hash($usid, 'id')
+        ));
+        $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        
+        $nl = get_notify_opt_list();
+        
+        foreach ($nl as $key => $value) {
+            // code...
+            
+            $sc = "";
+            
+            if ($tt2['mail']) {
+                
+                $al = explode(",", $tt2['mail']);
+                
+                if (in_array($key, $al)) {
+                    $sc = "selected";
+                }
+            } 
+            else if (!$tt2['mail']) {
+                
+                $sc = "selected";
+            }
 ?>
-                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+                            <option value="<?php echo $key; ?>" <?php echo $sc; ?>><?php echo $value; ?></option>
 
 
               <?php
-}
-              ?>  
+        }
+?>  
                         
             </select>
         </div>
@@ -376,28 +412,35 @@ $sc="selected";
   </div>
                   <div class="tab-pane" id="tab_2">
   <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?php echo lang('USERS_profile_priv'); ?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('USERS_profile_priv'); ?></label>
   <div class="col-sm-10">
 <div class="radio col-sm-12">
   <label>
     <input type="radio" name="optionsRadios" id="optionsRadios3" value="2" >
-    <strong class="text-warning"><?php echo lang('USERS_nach1'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_nach1_desc'); ?></small></p>
+    <strong class="text-warning"><?php
+        echo lang('USERS_nach1'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_nach1_desc'); ?></small></p>
   </label>
 </div>
 
 <div class="radio col-sm-12">
   <label>
     <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" >
-    <strong class="text-success"><?php echo lang('USERS_nach'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_nach_desc'); ?></small></p>
+    <strong class="text-success"><?php
+        echo lang('USERS_nach'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_nach_desc'); ?></small></p>
   </label>
 </div>
 <div class="radio col-sm-12">
   <label>
     <input type="radio" name="optionsRadios" id="optionsRadios2" value="1">
-    <strong class="text-info"><?php echo lang('USERS_wo'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_wo_desc'); ?></small></p>
+    <strong class="text-info"><?php
+        echo lang('USERS_wo'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_wo_desc'); ?></small></p>
   </label>
   
 </div>
@@ -405,8 +448,10 @@ $sc="selected";
 <div class="radio col-sm-12">
   <label>
     <input type="radio" name="optionsRadios" id="optionsRadios4" value="4" checked="checked">
-    <strong class="text-default"><?php echo lang('EXT_client'); ?></strong>
-    <p class="help-block"><small><?php echo lang('EXT_client_what'); ?></small></p>
+    <strong class="text-default"><?php
+        echo lang('EXT_client'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('EXT_client_what'); ?></small></p>
   </label>
   
 </div>
@@ -415,7 +460,8 @@ $sc="selected";
   
   
     <div class="form-group">
-  <label for="my-select" class="col-sm-2 control-label"><?php echo lang('USERS_units'); ?></label>
+  <label for="my-select" class="col-sm-2 control-label"><?php
+        echo lang('USERS_units'); ?></label>
   <div class="col-sm-10">
   <select multiple="multiple" id="my-select" name="unit[]" disabled>
 <?php
@@ -426,7 +472,9 @@ $sc="selected";
         */
         
         $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n');
-        $stmt->execute(array(':n' => '0'));
+        $stmt->execute(array(
+            ':n' => '0'
+        ));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             
@@ -435,7 +483,9 @@ $sc="selected";
             $row['value'] = (int)$row['value'];
 ?>
 
-                            <option value="<?php echo $row['value'] ?>"><?php echo $row['label'] ?></option>
+                            <option value="<?php
+            echo $row['value'] ?>"><?php
+            echo $row['label'] ?></option>
 
                         <?php
         }
@@ -445,7 +495,8 @@ $sc="selected";
   </div>
   </div>
   <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?php echo lang('USERS_privs'); ?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('USERS_privs'); ?></label>
   <div class="col-sm-10">
   
   
@@ -453,7 +504,8 @@ $sc="selected";
     <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_add_client" checked="checked" disabled> <?php echo lang('TICKET_p_add_client'); ?>
+      <input type="checkbox" id="priv_add_client" checked="checked" disabled> <?php
+        echo lang('TICKET_p_add_client'); ?>
     </label>
   </div>
     </div>
@@ -461,7 +513,8 @@ $sc="selected";
         <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_edit_client" checked="checked" disabled> <?php echo lang('TICKET_p_edit_client'); ?>
+      <input type="checkbox" id="priv_edit_client" checked="checked" disabled> <?php
+        echo lang('TICKET_p_edit_client'); ?>
     </label>
   </div>
     </div>
@@ -470,24 +523,28 @@ $sc="selected";
     </div>
       </div>
                   <div class="tab-pane" id="tab_3">  <div class="form-group">
-    <label for="msg_title" class="col-sm-2 control-label"><?php echo lang('EXT_perf_msg_t'); ?></label>
+    <label for="msg_title" class="col-sm-2 control-label"><?php
+        echo lang('EXT_perf_msg_t'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="msg_title" type="text" class="form-control input-sm" id="msg_title" placeholder="<?php echo lang('EXT_perf_msg_t'); ?>">
+    <input autocomplete="off" name="msg_title" type="text" class="form-control input-sm" id="msg_title" placeholder="<?php
+        echo lang('EXT_perf_msg_t'); ?>">
         </div>
   </div>
   
 
       <div class="form-group">
-    <label for="mess" class="col-sm-2 control-label"><?php echo lang('MAIL_msg'); ?></label>
+    <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('MAIL_msg'); ?></label>
         <div class="col-sm-10">
-        <textarea placeholder="<?php echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"></textarea>
+        <textarea placeholder="<?php
+        echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"></textarea>
         
 
         </div>
   </div>
   
     <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?=lang('CONF_messages_type');?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php echo lang('CONF_messages_type'); ?></label>
   <div class="col-sm-10">
     <div class="radio col-sm-12">
   <label>
@@ -518,7 +575,7 @@ $sc="selected";
 
 
   <div class="form-group">
-  <label for="user_to_def" class="col-sm-4 control-label"><?=lang('CONF_PERF_def_do');?></label>
+  <label for="user_to_def" class="col-sm-4 control-label"><?php echo lang('CONF_PERF_def_do'); ?></label>
   <div class="col-sm-8">
   
   
@@ -526,8 +583,9 @@ $sc="selected";
     <div class="col-sm-10">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="user_to_def"> <?php echo lang('CONF_true'); ?>
-      <p class="help-block"><small><?=lang('CONF_PERF_def_do_ext');?></small></p>
+      <input type="checkbox" id="user_to_def"> <?php
+        echo lang('CONF_true'); ?>
+      <p class="help-block"><small><?php echo lang('CONF_PERF_def_do_ext'); ?></small></p>
     </label>
   </div>
     </div>
@@ -539,28 +597,28 @@ $sc="selected";
     <div class="form-group" id="for_to" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right">
         
         <div class="col-md-6">
-            <select data-placeholder="<?php echo lang('NEW_to_unit'); ?>" class="input-sm form-control" id="to" name="unit_id" disabled>
+            <select data-placeholder="<?php
+        echo lang('NEW_to_unit'); ?>" class="input-sm form-control" id="to" name="unit_id" disabled>
                 <option value="0"></option>
                 <?php
         $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
-        $stmt->execute(array(':n' => '0', ':s' => '1'));
+        $stmt->execute(array(
+            ':n' => '0',
+            ':s' => '1'
+        ));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             
-$s="";
-
-
-
-
-
-
-
+            $s = "";
+            
             //echo($row['label']);
             $row['label'] = $row['label'];
             $row['value'] = (int)$row['value'];
 ?>
 
-                            <option value="<?php echo $row['value'] ?>" ><?php echo $row['label'] ?></option>
+                            <option value="<?php
+            echo $row['value'] ?>" ><?php
+            echo $row['label'] ?></option>
 
                         <?php
         }
@@ -575,7 +633,8 @@ $s="";
         <div class="col-md-6" style="" id="dsd">
     
     
-    <select data-placeholder="<?php echo lang('NEW_to_user'); ?>" id="users_do" name="unit_id" class="form-control input-sm" multiple disabled>
+    <select data-placeholder="<?php
+        echo lang('NEW_to_user'); ?>" id="users_do" name="unit_id" class="form-control input-sm" multiple disabled>
         <option></option>
 
 
@@ -587,7 +646,10 @@ $s="";
         */
         
         $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and login !=:system and is_client=0 order by fio ASC');
-        $stmt->execute(array(':n' => '1', ':system' => 'system'));
+        $stmt->execute(array(
+            ':n' => '1',
+            ':system' => 'system'
+        ));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             
@@ -597,16 +659,15 @@ $s="";
             
             if (get_user_status_text($row['value']) == "online") {
                 $s = "online";
-            } else if (get_user_status_text($row['value']) == "offline") {
+            } 
+            else if (get_user_status_text($row['value']) == "offline") {
                 $s = "offline";
             }
-
-
-
-
-
 ?>
-                    <option data-foo="<?php echo $s; ?>" value="<?php echo $row['value'] ?>"><?php echo nameshort($row['label']) ?> </option>
+                    <option data-foo="<?php
+            echo $s; ?>" value="<?php
+            echo $row['value'] ?>"><?php
+            echo nameshort($row['label']) ?> </option>
 
                 <?php
         }
@@ -653,7 +714,8 @@ $s="";
 <div class=""><hr></div>
 <div class="">
 <center>
-    <button type="submit" id="create_user" class="btn btn-success"><?php echo lang('USERS_make_create'); ?></button>
+    <button type="submit" id="create_user" class="btn btn-success"><?php
+        echo lang('USERS_make_create'); ?></button>
 </center>
 </div>
 </div>
@@ -666,24 +728,21 @@ $s="";
 <?php
     }
     
-if ($_POST['menu'] == 'import_step_3') {
-include_once "library/ldap_import.class.php";
-
-
-
-
-
- $ldap = new LDAP($_SESSION['zenlix_def_ldap_ip'], $_SESSION['zenlix_def_ldap_domain'], $_SESSION['zenlix_def_ldap_admin_user'], $_SESSION['zenlix_def_ldap_admin_pass']);
-$users = $ldap->get_users();
-
-//$output = array_slice($users, 0, 10);
-//echo $_SESSION['zenlix_def_ldap_login'];
-
-//print_r($_SESSION);
+    if ($_POST['menu'] == 'import_step_3') {
+        include_once "library/ldap_import.class.php";
+        
+        $ldap = new LDAP($_SESSION['zenlix_def_ldap_ip'], $_SESSION['zenlix_def_ldap_domain'], $_SESSION['zenlix_def_ldap_admin_user'], $_SESSION['zenlix_def_ldap_admin_pass']);
+        $users = $ldap->get_users();
+        
+        //$output = array_slice($users, 0, 10);
+        //echo $_SESSION['zenlix_def_ldap_login'];
+        
+        //print_r($_SESSION);
+        
 ?>
 <div class="box box-solid">
 <div class="box-header">
-                                    <h3 class="box-title"><?=lang('LDAP_IMPORT_title_step3');?></h3>
+                                    <h3 class="box-title"><?php echo lang('LDAP_IMPORT_title_step3'); ?></h3>
                                 </div>
                                 
                                 
@@ -694,20 +753,20 @@ $users = $ldap->get_users();
 <div class="form-horizontal" role="form">
 
 <div class="alert alert-info alert-dismissable">
-<?=lang('LDAP_IMPORT_sel_obj');?>
+<?php echo lang('LDAP_IMPORT_sel_obj'); ?>
                   </div>
     <div class="form-group">
-  <label for="my-select" class="col-sm-2 control-label"><?=lang('USERS_list');?></label>
+  <label for="my-select" class="col-sm-2 control-label"><?php echo lang('USERS_list'); ?></label>
   <div class="col-sm-10">
 <select data-placeholder="" id="ldap_step3_obj" name="unit_id" class="form-control input-sm">
 
 
 
-                    <option value="all"><?=lang('LDAP_IMPORT_all');?> </option>
-                    <option value="selected"><?=lang('LDAP_IMPORT_sel');?></option>
+                    <option value="all"><?php echo lang('LDAP_IMPORT_all'); ?> </option>
+                    <option value="selected"><?php echo lang('LDAP_IMPORT_sel'); ?></option>
 
     </select>
-    <p class="help-block"><small><?=lang('LDAP_IMPORT_ad_limit');?></small></p>
+    <p class="help-block"><small><?php echo lang('LDAP_IMPORT_ad_limit'); ?></small></p>
   </div>
   </div>
 
@@ -726,32 +785,29 @@ $users = $ldap->get_users();
         while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){
         */
         
+        $login = $_SESSION['zenlix_def_ldap_login'];
         
-
-
-$login=$_SESSION['zenlix_def_ldap_login'];
-
-        foreach ($users  as $row) {
-            
+        foreach ($users as $row) {
             
             //echo($row['label']);
-          $st="";
-           if (validate_exist_login($row[$login]) == false) {
-            $st="disabled";
-           }
-
+            $st = "";
+            if (validate_exist_login($row[$login]) == false) {
+                $st = "disabled";
+            }
 ?>
-                    <option value="<?php echo $row[$login] ?>" <?=$st;?>><?php echo $row[$login]; ?> </option>
+                    <option value="<?php
+            echo $row[$login] ?>" <?php echo $st; ?>><?php
+            echo $row[$login]; ?> </option>
 
                 <?php
         }
 ?>
     </select>
-    <p class="help-block"><small><?=lang('LDAP_IMPORT_info_deactive');?></small></p>
+    <p class="help-block"><small><?php echo lang('LDAP_IMPORT_info_deactive'); ?></small></p>
   </div>
   </div>
   <center>
-    <button type="submit" id="ldap_make_import" class="btn btn-success"><?=lang('LDAP_IMPORT_make');?></button>
+    <button type="submit" id="ldap_make_import" class="btn btn-success"><?php echo lang('LDAP_IMPORT_make'); ?></button>
 </center>
 </form>
 <div id="ldap_res"></div>
@@ -760,17 +816,13 @@ $login=$_SESSION['zenlix_def_ldap_login'];
 
 
 <?php
-}
-
-if ($_POST['menu'] == 'import_step_2') {
-
-
-
-
+    }
+    
+    if ($_POST['menu'] == 'import_step_2') {
 ?>
 <div class="box box-solid">
 <div class="box-header">
-                                    <h3 class="box-title"><?=lang('LDAP_IMPORT_title_step2');?></h3>
+                                    <h3 class="box-title"><?php echo lang('LDAP_IMPORT_title_step2'); ?></h3>
                                 </div>
                                 
                                 
@@ -787,32 +839,38 @@ if ($_POST['menu'] == 'import_step_2') {
 </thead>
 <tbody>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('USERS_fio'); ?></td>
-<td><?=$_SESSION['zenlix_def_ldap_fio'];?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('USERS_fio'); ?></td>
+<td><?php echo $_SESSION['zenlix_def_ldap_fio']; ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('USERS_login'); ?></td>
-<td><?=$_SESSION['zenlix_def_ldap_login'];?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('USERS_login'); ?></td>
+<td><?php echo $_SESSION['zenlix_def_ldap_login']; ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('USERS_mail'); ?></td>
-<td><?=$_SESSION['zenlix_def_ldap_mail'];?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('USERS_mail'); ?></td>
+<td><?php echo $_SESSION['zenlix_def_ldap_mail']; ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('APPROVE_tel'); ?></td>
-<td><?=$_SESSION['zenlix_def_ldap_tel'];?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('APPROVE_tel'); ?></td>
+<td><?php echo $_SESSION['zenlix_def_ldap_tel']; ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('APPROVE_adr'); ?></td>
-<td><?=$_SESSION['zenlix_def_ldap_adr'];?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('APPROVE_adr'); ?></td>
+<td><?php echo $_SESSION['zenlix_def_ldap_adr']; ?></td>
 </tr>
 <tr>
 <td style=" width: 150px; vertical-align: inherit;">Skype</td>
-<td><?=$_SESSION['zenlix_def_ldap_skype'];?></td>
+<td><?php echo $_SESSION['zenlix_def_ldap_skype']; ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('WORKER_unit'); ?></td>
-<td><?=$_SESSION['zenlix_def_ldap_unit'];?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('WORKER_unit'); ?></td>
+<td><?php echo $_SESSION['zenlix_def_ldap_unit']; ?></td>
 </tr>
 
 </tbody>
@@ -821,12 +879,14 @@ if ($_POST['menu'] == 'import_step_2') {
                                         
 <form class="form-horizontal" role="form">
 <div class="alert alert-info alert-dismissable">
-<?=lang('LDAP_IMPORT_sel_conf');?>
+<?php echo lang('LDAP_IMPORT_sel_conf'); ?>
                   </div>
 <div class="form-group">
-    <label for="lang" class="col-sm-2 control-label"><?php echo lang('SYSTEM_lang'); ?></label>
+    <label for="lang" class="col-sm-2 control-label"><?php
+        echo lang('SYSTEM_lang'); ?></label>
         <div class="col-sm-10">
-    <select data-placeholder="<?php echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
+    <select data-placeholder="<?php
+        echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
                     <option value="0"></option>
                     
                         <option value="en">English</option>
@@ -838,28 +898,35 @@ if ($_POST['menu'] == 'import_step_2') {
 
 
 <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?php echo lang('USERS_profile_priv'); ?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('USERS_profile_priv'); ?></label>
   <div class="col-sm-10">
 <div class="radio col-sm-12">
   <label>
     <input type="radio" name="optionsRadios" id="optionsRadios3" value="2" >
-    <strong class="text-warning"><?php echo lang('USERS_nach1'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_nach1_desc'); ?></small></p>
+    <strong class="text-warning"><?php
+        echo lang('USERS_nach1'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_nach1_desc'); ?></small></p>
   </label>
 </div>
 
 <div class="radio col-sm-12">
   <label>
     <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" >
-    <strong class="text-success"><?php echo lang('USERS_nach'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_nach_desc'); ?></small></p>
+    <strong class="text-success"><?php
+        echo lang('USERS_nach'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_nach_desc'); ?></small></p>
   </label>
 </div>
 <div class="radio col-sm-12">
   <label>
     <input type="radio" name="optionsRadios" id="optionsRadios2" value="1">
-    <strong class="text-info"><?php echo lang('USERS_wo'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_wo_desc'); ?></small></p>
+    <strong class="text-info"><?php
+        echo lang('USERS_wo'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_wo_desc'); ?></small></p>
   </label>
   
 </div>
@@ -867,8 +934,10 @@ if ($_POST['menu'] == 'import_step_2') {
 <div class="radio col-sm-12">
   <label>
     <input type="radio" name="optionsRadios" id="optionsRadios4" value="4" checked="checked">
-    <strong class="text-default"><?php echo lang('EXT_client'); ?></strong>
-    <p class="help-block"><small><?php echo lang('EXT_client_what'); ?></small></p>
+    <strong class="text-default"><?php
+        echo lang('EXT_client'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('EXT_client_what'); ?></small></p>
   </label>
   
 </div>
@@ -877,7 +946,8 @@ if ($_POST['menu'] == 'import_step_2') {
   
   
     <div class="form-group">
-  <label for="my-select" class="col-sm-2 control-label"><?php echo lang('USERS_units'); ?></label>
+  <label for="my-select" class="col-sm-2 control-label"><?php
+        echo lang('USERS_units'); ?></label>
   <div class="col-sm-10">
   <select multiple="multiple" id="my-select" name="unit[]" disabled>
 <?php
@@ -888,7 +958,9 @@ if ($_POST['menu'] == 'import_step_2') {
         */
         
         $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n');
-        $stmt->execute(array(':n' => '0'));
+        $stmt->execute(array(
+            ':n' => '0'
+        ));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             
@@ -897,7 +969,9 @@ if ($_POST['menu'] == 'import_step_2') {
             $row['value'] = (int)$row['value'];
 ?>
 
-                            <option value="<?php echo $row['value'] ?>"><?php echo $row['label'] ?></option>
+                            <option value="<?php
+            echo $row['value'] ?>"><?php
+            echo $row['label'] ?></option>
 
                         <?php
         }
@@ -907,7 +981,8 @@ if ($_POST['menu'] == 'import_step_2') {
   </div>
   </div>
   <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?php echo lang('USERS_privs'); ?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('USERS_privs'); ?></label>
   <div class="col-sm-10">
   
   
@@ -915,7 +990,8 @@ if ($_POST['menu'] == 'import_step_2') {
     <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_add_client" checked="checked" disabled> <?php echo lang('TICKET_p_add_client'); ?>
+      <input type="checkbox" id="priv_add_client" checked="checked" disabled> <?php
+        echo lang('TICKET_p_add_client'); ?>
     </label>
   </div>
     </div>
@@ -923,7 +999,8 @@ if ($_POST['menu'] == 'import_step_2') {
         <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_edit_client" checked="checked" disabled> <?php echo lang('TICKET_p_edit_client'); ?>
+      <input type="checkbox" id="priv_edit_client" checked="checked" disabled> <?php
+        echo lang('TICKET_p_edit_client'); ?>
     </label>
   </div>
     </div>
@@ -931,24 +1008,28 @@ if ($_POST['menu'] == 'import_step_2') {
   </div>
     </div>
     <div class="form-group">
-    <label for="msg_title" class="col-sm-2 control-label"><?php echo lang('EXT_perf_msg_t'); ?></label>
+    <label for="msg_title" class="col-sm-2 control-label"><?php
+        echo lang('EXT_perf_msg_t'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="msg_title" type="text" class="form-control input-sm" id="msg_title" placeholder="<?php echo lang('EXT_perf_msg_t'); ?>">
+    <input autocomplete="off" name="msg_title" type="text" class="form-control input-sm" id="msg_title" placeholder="<?php
+        echo lang('EXT_perf_msg_t'); ?>">
         </div>
   </div>
   
 
       <div class="form-group">
-    <label for="mess" class="col-sm-2 control-label"><?php echo lang('MAIL_msg'); ?></label>
+    <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('MAIL_msg'); ?></label>
         <div class="col-sm-10">
-        <textarea placeholder="<?php echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"></textarea>
+        <textarea placeholder="<?php
+        echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"></textarea>
         
 
         </div>
   </div>
   
     <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?=lang('CONF_messages_type');?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php echo lang('CONF_messages_type'); ?></label>
   <div class="col-sm-10">
     <div class="radio col-sm-12">
   <label>
@@ -974,12 +1055,17 @@ if ($_POST['menu'] == 'import_step_2') {
   </div>
   </div>
    <div class="form-group">
-    <label for="lock" class="col-sm-2 control-label"><?php echo lang('USERS_acc'); ?></label>
+    <label for="lock" class="col-sm-2 control-label"><?php
+        echo lang('USERS_acc'); ?></label>
         <div class="col-sm-10">
     
     <select class="form-control input-sm" name="lock" id="lock">
-  <option <?php echo $status_lock ?> value="0"><?php echo lang('USERS_not_active'); ?></option>
-  <option <?php echo $status_unlock ?> value="1"><?php echo lang('USERS_active'); ?></option>
+  <option <?php
+        echo $status_lock ?> value="0"><?php
+        echo lang('USERS_not_active'); ?></option>
+  <option <?php
+        echo $status_unlock ?> value="1"><?php
+        echo lang('USERS_active'); ?></option>
     </select>
     
         </div>
@@ -987,28 +1073,25 @@ if ($_POST['menu'] == 'import_step_2') {
 </form>
 <center>
     
-    <button type="submit" id="ldap_import_next_2" class="btn btn-success"><?=lang('LDAP_IMPORT_next');?>  </button>
+    <button type="submit" id="ldap_import_next_2" class="btn btn-success"><?php echo lang('LDAP_IMPORT_next'); ?>  </button>
 </center>
 </div></div>
 <?php
-
-}
-
-
-if ($_POST['menu'] == 'ad_f') {
-
+    }
+    
+    if ($_POST['menu'] == 'ad_f') {
 ?>
 <div class="col-md-12">
 <div class="box box-solid">
 <div class="box-header">
-<h3 class="box-title"><i class="fa fa-bookmark-o"></i> <?=lang('FIELD_title');?></h3>
-<div class="box-tools pull-right"><button id="user_field_plus" class="btn btn-success btn-xs" type="submit"><?=lang('FIELD_new');?></button></div>
+<h3 class="box-title"><i class="fa fa-bookmark-o"></i> <?php echo lang('FIELD_title'); ?></h3>
+<div class="box-tools pull-right"><button id="user_field_plus" class="btn btn-success btn-xs" type="submit"><?php echo lang('FIELD_new'); ?></button></div>
 </div>
       <div class="box-body">
       <form class="form-horizontal" role="form">
 
 <div id="user_fields_res">
-<?=get_user_form_view();?> 
+<?php echo get_user_form_view(); ?> 
 </div>
 
 <!--center>
@@ -1020,17 +1103,14 @@ if ($_POST['menu'] == 'ad_f') {
       </div>
       </div>
 <?php
-
-  }
-
-if ($_POST['menu'] == 'import') {
-
-
-  ?>
+    }
+    
+    if ($_POST['menu'] == 'import') {
+?>
 
 <div class="box box-solid">
 <div class="box-header">
-                                    <h3 class="box-title"><?=lang('LDAP_IMPORT_title_step1');?></h3>
+                                    <h3 class="box-title"><?php echo lang('LDAP_IMPORT_title_step1'); ?></h3>
                                 </div>
                                 
                                 
@@ -1043,16 +1123,20 @@ if ($_POST['menu'] == 'import') {
 
 
   <div class="form-group" id="login_user_grp">
-    <label for="login" class="col-sm-4 control-label"><?php echo lang('USERS_login'); ?></label>
+    <label for="login" class="col-sm-4 control-label"><?php
+        echo lang('USERS_login'); ?></label>
         <div class="col-sm-8">
-    <input autocomplete="off" name="login_user" type="" class="form-control input-sm" id="ldap_admin_user" placeholder="<?php echo lang('USERS_login'); ?>"><p class="help-block"><small><?=lang('LDAP_IMPORT_need_admin');?> </small></p>
+    <input autocomplete="off" name="login_user" type="" class="form-control input-sm" id="ldap_admin_user" placeholder="<?php
+        echo lang('USERS_login'); ?>"><p class="help-block"><small><?php echo lang('LDAP_IMPORT_need_admin'); ?> </small></p>
         </div>
 
   </div>
 <div class="form-group" id="pass_user_grp">
-    <label for="exampleInputPassword1" class="col-sm-4 control-label"><?php echo lang('USERS_pass'); ?></label>
+    <label for="exampleInputPassword1" class="col-sm-4 control-label"><?php
+        echo lang('USERS_pass'); ?></label>
         <div class="col-sm-8">
-    <input autocomplete="off" name="password" type="password" class="form-control input-sm" id="ldap_admin_pass" placeholder="<?php echo lang('USERS_pass'); ?>">
+    <input autocomplete="off" name="password" type="password" class="form-control input-sm" id="ldap_admin_pass" placeholder="<?php
+        echo lang('USERS_pass'); ?>">
         </div>
   </div>
 <div class="form-group">
@@ -1075,7 +1159,7 @@ if ($_POST['menu'] == 'import') {
   </div>
 <hr>
 <div class="alert alert-info alert-dismissable">
-<?=lang('LDAP_IMPORT_need_val');?>
+<?php echo lang('LDAP_IMPORT_need_val'); ?>
                   </div>
 
 
@@ -1084,38 +1168,44 @@ if ($_POST['menu'] == 'import') {
 <table class="table table-hover table-bordered">
 <thead>
 <tr>
-<th><center><?=lang('LDAP_IMPORT_field');?> ZENLIX</center></th>
-<th><center><?=lang('LDAP_IMPORT_field');?> LDAP</center></th>
+<th><center><?php echo lang('LDAP_IMPORT_field'); ?> ZENLIX</center></th>
+<th><center><?php echo lang('LDAP_IMPORT_field'); ?> LDAP</center></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('USERS_fio'); ?></td>
-<td><?=sel_ldap_attr('users_fio');?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('USERS_fio'); ?></td>
+<td><?php echo sel_ldap_attr('users_fio'); ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('USERS_login'); ?></td>
-<td><?=sel_ldap_attr('users_login');?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('USERS_login'); ?></td>
+<td><?php echo sel_ldap_attr('users_login'); ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('USERS_mail'); ?></td>
-<td><?=sel_ldap_attr('users_mail');?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('USERS_mail'); ?></td>
+<td><?php echo sel_ldap_attr('users_mail'); ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('APPROVE_tel'); ?></td>
-<td><?=sel_ldap_attr('users_tel');?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('APPROVE_tel'); ?></td>
+<td><?php echo sel_ldap_attr('users_tel'); ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('APPROVE_adr'); ?></td>
-<td><?=sel_ldap_attr('users_adr');?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('APPROVE_adr'); ?></td>
+<td><?php echo sel_ldap_attr('users_adr'); ?></td>
 </tr>
 <tr>
 <td style=" width: 150px; vertical-align: inherit;">Skype</td>
-<td><?=sel_ldap_attr('users_skype');?></td>
+<td><?php echo sel_ldap_attr('users_skype'); ?></td>
 </tr>
 <tr>
-<td style=" width: 150px; vertical-align: inherit;"><?php echo lang('WORKER_unit'); ?></td>
-<td><?=sel_ldap_attr('users_unit');?></td>
+<td style=" width: 150px; vertical-align: inherit;"><?php
+        echo lang('WORKER_unit'); ?></td>
+<td><?php echo sel_ldap_attr('users_unit'); ?></td>
 </tr>
 
 </tbody>
@@ -1129,7 +1219,7 @@ if ($_POST['menu'] == 'import') {
 
 <center>
     <button type="submit" id="ldap_import_check" class="btn btn-default">Test </button>
-    <button type="submit" id="ldap_import_next" class="btn btn-success"><?=lang('LDAP_IMPORT_next');?> </button>
+    <button type="submit" id="ldap_import_next" class="btn btn-success"><?php echo lang('LDAP_IMPORT_next'); ?> </button>
 </center>
 
 <div id="ldap_res">
@@ -1144,12 +1234,8 @@ if ($_POST['menu'] == 'import') {
 
 
   <?php
-
-
-
-}
-
-
+    }
+    
     if ($_POST['menu'] == 'list') {
         
         $page = ($_POST['page']);
@@ -1160,7 +1246,8 @@ if ($_POST['menu'] == 'import') {
 
 <div class="box box-solid">
 <div class="box-header">
-                                    <h3 class="box-title"><?php echo lang('USERS_make_edit_user'); ?></h3>
+                                    <h3 class="box-title"><?php
+        echo lang('USERS_make_edit_user'); ?></h3>
                                 </div>
                                 
                                 
@@ -1174,11 +1261,15 @@ if ($_POST['menu'] == 'import') {
   <table class="table table-hover table-bordered">
         <thead>
           <tr>
-      <th><center><small><?php echo lang('USERS_login'); ?>   </small></center></th>
-            <th><center><small><?php echo lang('USERS_fio'); ?>     </small></center></th>
+      <th><center><small><?php
+        echo lang('USERS_login'); ?>   </small></center></th>
+            <th><center><small><?php
+        echo lang('USERS_fio'); ?>     </small></center></th>
             <th><center><small>E-mail             </small></center></th>
-            <th><center><small><?php echo lang('USERS_privs'); ?>   </small></center></th>
-            <th><center><small><?php echo lang('USERS_unit'); ?>        </small></center></th>
+            <th><center><small><?php
+        echo lang('USERS_privs'); ?>   </small></center></th>
+            <th><center><small><?php
+        echo lang('USERS_unit'); ?>        </small></center></th>
             <th><center><small>Status               </small></center></th>
             <th><center><small>kill                 </small></center></th>
           </tr>
@@ -1193,7 +1284,12 @@ if ($_POST['menu'] == 'import') {
             //$results = mysql_query("SELECT id, fio, login, tel, unit_desc, adr, email, posada from clients where ((fio like '%" . $t . "%') or (login like '%" . $t . "%')) limit $start_pos, $perpage;");
             
             $stmt = $dbConnection->prepare('SELECT id, fio, login, priv, tel, unit, adr, email, posada, uniq_id, is_client,status from users where ((fio like :t) or (login like :t2)) limit :start_pos, :perpage');
-            $stmt->execute(array(':t' => '%' . $t . '%', ':t2' => '%' . $t . '%', ':start_pos' => $start_pos, ':perpage' => $perpage));
+            $stmt->execute(array(
+                ':t' => '%' . $t . '%',
+                ':t2' => '%' . $t . '%',
+                ':start_pos' => $start_pos,
+                ':perpage' => $perpage
+            ));
             $res1 = $stmt->fetchAll();
             
             //foreach($res1 as $row) {
@@ -1205,7 +1301,10 @@ if ($_POST['menu'] == 'import') {
             //$results = mysql_query("SELECT id, fio, login, tel, unit_desc, adr, email, posada from clients limit $start_pos, $perpage;");
             
             $stmt = $dbConnection->prepare('SELECT id, fio, login, priv, unit, status, uniq_id,is_client,email from users limit :start_pos, :perpage');
-            $stmt->execute(array(':start_pos' => $start_pos, ':perpage' => $perpage));
+            $stmt->execute(array(
+                ':start_pos' => $start_pos,
+                ':perpage' => $perpage
+            ));
             $res1 = $stmt->fetchAll();
         }
         
@@ -1217,21 +1316,25 @@ if ($_POST['menu'] == 'import') {
             
             if ($row['is_client'] == "1") {
                 $priv = lang('USERS_p_4');
-            } else if ($row['is_client'] == "0") {
+            } 
+            else if ($row['is_client'] == "0") {
                 
                 if ($row['priv'] == "0") {
                     $priv = lang('USERS_p_1');
-                } else if ($row['priv'] == "1") {
+                } 
+                else if ($row['priv'] == "1") {
                     $priv = lang('USERS_p_2');
-                } else if ($row['priv'] == "2") {
+                } 
+                else if ($row['priv'] == "2") {
                     $priv = lang('USERS_p_3');
                 }
             }
             if ($statuss == "0") {
                 $r = "<span class=\"label label-danger\">disable</span>";
-            } else if ($statuss == "1") {
+            } 
+            else if ($statuss == "1") {
                 $r = "<span class=\"label label-success\">enable</span>";
-            }
+            } 
             else if ($statuss == "2") {
                 $r = "<span class=\"label label-default\">deleted</span>";
             }
@@ -1240,15 +1343,21 @@ if ($_POST['menu'] == 'import') {
             <td><small><?php
             echo $row['login']; ?></small></td>
             <td><small><a href="<?php
-            echo $CONF['hostname']; ?>users?edit=<?php echo $row['uniq_id']; ?>"><?php
+            echo $CONF['hostname']; ?>users?edit=<?php
+            echo $row['uniq_id']; ?>"><?php
             echo $row['fio']; ?></a></small></td>
             <td><small><?php
             echo $row['email']; ?></small></td>
             <td><small><?php
             echo $priv; ?></small></td>
-            <td><small><span data-toggle="tooltip" data-html="true" data-placement="right" title="<?php echo $unit; ?>"><?php echo lang('LIST_pin') ?> <?php echo count(get_unit_name_return($row['unit'])); ?> </span></small></td>
-            <td><small><center><?php echo $r; ?></center></small></td>
-            <td><small><center><button id="make_logout_user" value="<?php echo $row['uniq_id']; ?>" class="btn btn-warning btn-xs">logout</button></center></small></td>
+            <td><small><span data-toggle="tooltip" data-html="true" data-placement="right" title="<?php
+            echo $unit; ?>"><?php
+            echo lang('LIST_pin') ?> <?php
+            echo count(get_unit_name_return($row['unit'])); ?> </span></small></td>
+            <td><small><center><?php
+            echo $r; ?></center></small></td>
+            <td><small><center><button id="make_logout_user" value="<?php
+            echo $row['uniq_id']; ?>" class="btn btn-warning btn-xs">logout</button></center></small></td>
           </tr>
           <?php
         } ?>
@@ -1275,7 +1384,9 @@ if ($_POST['menu'] == 'import') {
         */
         
         $stmt = $dbConnection->prepare('SELECT * from users where uniq_id=:usid');
-        $stmt->execute(array(':usid' => $usid));
+        $stmt->execute(array(
+            ':usid' => $usid
+        ));
         $res1 = $stmt->fetchAll();
         
         foreach ($res1 as $row) {
@@ -1298,9 +1409,9 @@ if ($_POST['menu'] == 'import') {
             $adr = $row['adr'];
             $msg_t = $row['messages_title'];
             $msg_type = $row['messages_type'];
-
-            $def_unit_id=$row['def_unit_id'];
-            $def_user_id=$row['def_user_id'];
+            
+            $def_unit_id = $row['def_unit_id'];
+            $def_user_id = $row['def_user_id'];
             
             $unitss = $row['unit_desc'];
             $posada = $row['posada'];
@@ -1309,28 +1420,33 @@ if ($_POST['menu'] == 'import') {
             
             if ($priv_add_client == "1") {
                 $priv_add_client = "checked";
-            } else {
+            } 
+            else {
                 $priv_add_client = "";
             }
             if ($priv_edit_client == "1") {
                 $priv_edit_client = "checked";
-            } else {
+            } 
+            else {
                 $priv_edit_client = "";
             }
             
             if ($lk == "1") {
                 $lk_status = "checked";
                 $pd = "disabled";
-            } else {
+            } 
+            else {
                 $lk_status = "";
                 $pd = "";
             }
             
             if ($langu == "en") {
                 $status_lang_en = "selected";
-            } else if ($langu == "ru") {
+            } 
+            else if ($langu == "ru") {
                 $status_lang_ru = "selected";
-            } else if ($langu == "ua") {
+            } 
+            else if ($langu == "ua") {
                 $status_lang_ua = "selected";
             }
             
@@ -1343,26 +1459,34 @@ if ($_POST['menu'] == 'import') {
             
             if ($is_client == "1") {
                 $status_client = "checked";
-            } else if ($is_client == "0") {
+            } 
+            else if ($is_client == "0") {
                 
                 if ($priv == "0") {
                     $status_admin = "checked";
-                } else if ($priv == "1") {
+                } 
+                else if ($priv == "1") {
                     $status_user = "checked";
-                } else if ($priv == "2") {
+                } 
+                else if ($priv == "2") {
                     $status_superadmin = "checked";
                 }
             }
-
-            if ($msg_type == "0") { $msg_type_0="checked";}
-            else if ($msg_type == "1") {$msg_type_1="checked";}
-            else if ($msg_type == "2") {$msg_type_2="checked";}
-
-
+            
+            if ($msg_type == "0") {
+                $msg_type_0 = "checked";
+            } 
+            else if ($msg_type == "1") {
+                $msg_type_1 = "checked";
+            } 
+            else if ($msg_type == "2") {
+                $msg_type_2 = "checked";
+            }
         }
         if (isset($_GET['ok'])) {
 ?>
-  <div class="alert alert-success"><?php echo lang('USERS_msg_edit_ok'); ?></div>
+  <div class="alert alert-success"><?php
+            echo lang('USERS_msg_edit_ok'); ?></div>
   <?php
         }
 ?>
@@ -1372,7 +1496,8 @@ if ($_POST['menu'] == 'import') {
 
 <div class="box box-solid">
 <div class="box-header">
-                                    <h3 class="box-title"><?php echo lang('USERS_make_edit_user'); ?></h3>
+                                    <h3 class="box-title"><?php
+        echo lang('USERS_make_edit_user'); ?></h3>
                                 </div>
                                 
                                 
@@ -1388,15 +1513,22 @@ if ($_POST['menu'] == 'import') {
 
 
   <div class="form-group" id="login_user_grp">
-    <label for="login" class="col-sm-2 control-label"><?php echo lang('USERS_login'); ?></label>
+    <label for="login" class="col-sm-2 control-label"><?php
+        echo lang('USERS_login'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="login_user" type="" class="form-control input-sm" id="login_user2" exclude-param="<?php echo $login ?>" placeholder="<?php echo lang('USERS_login'); ?>" value="<?php echo $login ?>">
+    <input autocomplete="off" name="login_user" type="" class="form-control input-sm" id="login_user2" exclude-param="<?php
+        echo $login ?>" placeholder="<?php
+        echo lang('USERS_login'); ?>" value="<?php
+        echo $login ?>">
         </div>
   </div>
   <div class="form-group" id="pass_user_grp">
-    <label for="exampleInputPassword1" class="col-sm-2 control-label"><?php echo lang('USERS_pass'); ?></label>
+    <label for="exampleInputPassword1" class="col-sm-2 control-label"><?php
+        echo lang('USERS_pass'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="password" type="password" class="form-control input-sm" id="exampleInputPassword1" placeholder="<?php echo lang('USERS_pass'); ?>" <?php echo $pd ?>>
+    <input autocomplete="off" name="password" type="password" class="form-control input-sm" id="exampleInputPassword1" placeholder="<?php
+        echo lang('USERS_pass'); ?>" <?php
+        echo $pd ?>>
         </div>
   </div>
   <div class="form-group">
@@ -1408,8 +1540,11 @@ if ($_POST['menu'] == 'import') {
     <div class="col-sm-10">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="ldap_auth_key" <?php echo $lk_status; ?>> <?php echo lang('CONF_true'); ?>
-      <p class="help-block"><small><?php echo lang('EXT_perf_must_ldap'); ?> </small></p>
+      <input type="checkbox" id="ldap_auth_key" <?php
+        echo $lk_status; ?>> <?php
+        echo lang('CONF_true'); ?>
+      <p class="help-block"><small><?php
+        echo lang('EXT_perf_must_ldap'); ?> </small></p>
     </label>
   </div>
     </div>
@@ -1418,18 +1553,28 @@ if ($_POST['menu'] == 'import') {
     
     
    <div class="form-group">
-    <label for="lock" class="col-sm-2 control-label"><?php echo lang('USERS_acc'); ?></label>
+    <label for="lock" class="col-sm-2 control-label"><?php
+        echo lang('USERS_acc'); ?></label>
         <div class="col-sm-10">
     <?php
-    $idtag['input']="lock_not_active"; $idtag['select']="lock";
-if ($status == "2") {$sd="disabled"; $idtag['input']="lock"; $idtag['select']="lock_not_active";}
-    ?>
-    <input type="hidden" value="2" id="<?=$idtag['input'];?>">
-    <select class="form-control input-sm" name="lock" id="<?=$idtag['select'];?>" <?=$sd;?>>    
+        $idtag['input'] = "lock_not_active";
+        $idtag['select'] = "lock";
+        if ($status == "2") {
+            $sd = "disabled";
+            $idtag['input'] = "lock";
+            $idtag['select'] = "lock_not_active";
+        }
+?>
+    <input type="hidden" value="2" id="<?php echo $idtag['input']; ?>">
+    <select class="form-control input-sm" name="lock" id="<?php echo $idtag['select']; ?>" <?php echo $sd; ?>>    
 
 
-  <option <?php echo $status_lock ?> value="0"><?php echo lang('USERS_not_active'); ?></option>
-  <option <?php echo $status_unlock ?> value="1"><?php echo lang('USERS_active'); ?></option>
+  <option <?php
+        echo $status_lock ?> value="0"><?php
+        echo lang('USERS_not_active'); ?></option>
+  <option <?php
+        echo $status_unlock ?> value="1"><?php
+        echo lang('USERS_active'); ?></option>
     </select>
     
         </div>
@@ -1444,26 +1589,32 @@ if ($status == "2") {$sd="disabled"; $idtag['input']="lock"; $idtag['select']="l
               <!-- Custom Tabs -->
               <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><?=lang('APPROVE_info');?></a></li>
-                  <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><?=lang('USERS_privs');?></a></li>
-                  <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false"><?=lang('MAIL_msg');?></a></li>
-                  <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="false"><?=lang('PERF_menu_ticket_conf');?></a></li>
+                  <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true"><?php echo lang('APPROVE_info'); ?></a></li>
+                  <li class=""><a href="#tab_2" data-toggle="tab" aria-expanded="false"><?php echo lang('USERS_privs'); ?></a></li>
+                  <li class=""><a href="#tab_3" data-toggle="tab" aria-expanded="false"><?php echo lang('MAIL_msg'); ?></a></li>
+                  <li class=""><a href="#tab_4" data-toggle="tab" aria-expanded="false"><?php echo lang('PERF_menu_ticket_conf'); ?></a></li>
                   <li class=""><a href="#tab_5" data-toggle="tab" aria-expanded="false">
-<?php 
-
-if ($status != "2") {echo lang('USER_DEL_t');}
-if ($status == "2") {echo lang('USER_RE_t');}
-
-                  ?>
+<?php
+        
+        if ($status != "2") {
+            echo lang('USER_DEL_t');
+        }
+        if ($status == "2") {
+            echo lang('USER_RE_t');
+        }
+?>
                   </a></li>
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane active" id="tab_1">
                     
       <div class="form-group" id="fio_user_grp">
-    <label for="fio" class="col-sm-2 control-label"><?php echo lang('USERS_fio'); ?></label>
+    <label for="fio" class="col-sm-2 control-label"><?php
+        echo lang('USERS_fio'); ?></label>
     <div class="col-sm-10">
-    <input autocomplete="off" id="fio_user" name="fio_user" type="" class="form-control input-sm" placeholder="<?php echo lang('USERS_fio_full'); ?>" value="<?php echo $fio ?>">
+    <input autocomplete="off" id="fio_user" name="fio_user" type="" class="form-control input-sm" placeholder="<?php
+        echo lang('USERS_fio_full'); ?>" value="<?php
+        echo $fio ?>">
     </div>
   </div>
     
@@ -1474,9 +1625,12 @@ if ($status == "2") {echo lang('USER_RE_t');}
     
     
     <div class="form-group">
-    <label for="mail" class="col-sm-2 control-label"><?php echo lang('USERS_mail'); ?></label>
+    <label for="mail" class="col-sm-2 control-label"><?php
+        echo lang('USERS_mail'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="<?php echo lang('USERS_mail'); ?>" value="<?php echo $email; ?>">
+    <input autocomplete="off" name="mail" type="text" class="form-control input-sm" id="mail" placeholder="<?php
+        echo lang('USERS_mail'); ?>" value="<?php
+        echo $email; ?>">
         </div>
   </div>
   
@@ -1484,29 +1638,37 @@ if ($status == "2") {echo lang('USER_RE_t');}
       <div class="form-group">
     <label for="push" class="col-sm-2 control-label">Push</label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="push" type="text" class="form-control input-sm" id="push" placeholder="push" value="<?php echo $push; ?>">
+    <input autocomplete="off" name="push" type="text" class="form-control input-sm" id="push" placeholder="push" value="<?php
+        echo $push; ?>">
         </div>
   </div>
   
   
     <div class="form-group">
-    <label for="tel" class="col-sm-2 control-label"><?php echo lang('APPROVE_tel'); ?></label>
+    <label for="tel" class="col-sm-2 control-label"><?php
+        echo lang('APPROVE_tel'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="<?php echo lang('APPROVE_tel'); ?>" value="<?php echo $tel; ?>">
+    <input autocomplete="off" name="tel" type="text" class="form-control input-sm" id="tel" placeholder="<?php
+        echo lang('APPROVE_tel'); ?>" value="<?php
+        echo $tel; ?>">
         </div>
   </div>
   
       <div class="form-group">
     <label for="skype" class="col-sm-2 control-label">Skype</label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="skype" type="text" class="form-control input-sm" id="skype" placeholder="skype" value="<?php echo $skype; ?>">
+    <input autocomplete="off" name="skype" type="text" class="form-control input-sm" id="skype" placeholder="skype" value="<?php
+        echo $skype; ?>">
         </div>
   </div>
   
       <div class="form-group">
-    <label for="adr" class="col-sm-2 control-label"><?php echo lang('APPROVE_adr'); ?></label>
+    <label for="adr" class="col-sm-2 control-label"><?php
+        echo lang('APPROVE_adr'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="<?php echo lang('APPROVE_adr'); ?>" value="<?php echo $adr; ?>">
+    <input autocomplete="off" name="adr" type="text" class="form-control input-sm" id="adr" placeholder="<?php
+        echo lang('APPROVE_adr'); ?>" value="<?php
+        echo $adr; ?>">
         </div>
   </div>
   
@@ -1514,9 +1676,11 @@ if ($status == "2") {echo lang('USER_RE_t');}
    <div class="control-group">
     <div class="controls">
         <div class="form-group">
-            <label for="posada" class="col-sm-2 control-label"><?php echo lang('WORKER_posada'); ?>: </label>
+            <label for="posada" class="col-sm-2 control-label"><?php
+        echo lang('WORKER_posada'); ?>: </label>
             <div class="col-sm-10" style="">
-                <select name="posada" id="posada" data-placeholder="<?php echo lang('WORKER_posada'); ?>" class="chosen-select form-control input-sm">
+                <select name="posada" id="posada" data-placeholder="<?php
+        echo lang('WORKER_posada'); ?>" class="chosen-select form-control input-sm">
                     <option value="0"></option>
                     <?php
         $stmt = $dbConnection->prepare('SELECT name FROM posada order by name COLLATE utf8_unicode_ci ASC');
@@ -1530,7 +1694,10 @@ if ($status == "2") {echo lang('USER_RE_t');}
             }
 ?>
 
-                        <option <?php echo $se; ?> value="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></option>
+                        <option <?php
+            echo $se; ?> value="<?php
+            echo $row['name'] ?>"><?php
+            echo $row['name'] ?></option>
 
                     <?php
         }
@@ -1548,9 +1715,11 @@ if ($status == "2") {echo lang('USER_RE_t');}
  <div class="control-group">
     <div class="controls">
         <div class="form-group">
-            <label for="pidrozdil" class="col-sm-2 control-label"><?php echo lang('WORKER_unit'); ?>: </label>
+            <label for="pidrozdil" class="col-sm-2 control-label"><?php
+        echo lang('WORKER_unit'); ?>: </label>
             <div class="col-sm-10" style="">
-                <select name="pid" id="pidrozdil" data-placeholder="<?php echo lang('WORKER_unit'); ?>" class="chosen-select form-control input-sm">
+                <select name="pid" id="pidrozdil" data-placeholder="<?php
+        echo lang('WORKER_unit'); ?>" class="chosen-select form-control input-sm">
                     <option value="0"></option>
                     <?php
         
@@ -1569,7 +1738,10 @@ if ($status == "2") {echo lang('USER_RE_t');}
             }
 ?>
 
-                        <option <?php echo $se2; ?> value="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></option>
+                        <option <?php
+            echo $se2; ?> value="<?php
+            echo $row['name'] ?>"><?php
+            echo $row['name'] ?></option>
 
                     <?php
         }
@@ -1582,14 +1754,19 @@ if ($status == "2") {echo lang('USER_RE_t');}
     </div>
 </div>  
       <div class="form-group">
-    <label for="lang" class="col-sm-2 control-label"><?php echo lang('SYSTEM_lang'); ?></label>
+    <label for="lang" class="col-sm-2 control-label"><?php
+        echo lang('SYSTEM_lang'); ?></label>
         <div class="col-sm-10">
-    <select data-placeholder="<?php echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
+    <select data-placeholder="<?php
+        echo lang('SYSTEM_lang'); ?>" class="chosen-select form-control input-sm" id="lang" name="lang">
                     <option value="0"></option>
                     
-                        <option value="en" <?php echo $status_lang_en; ?>>English</option>
-                        <option value="ru" <?php echo $status_lang_ru; ?>>Русский</option>
-                        <option value="ua" <?php echo $status_lang_ua; ?>>Українська</option>
+                        <option value="en" <?php
+        echo $status_lang_en; ?>>English</option>
+                        <option value="ru" <?php
+        echo $status_lang_ru; ?>>Русский</option>
+                        <option value="ua" <?php
+        echo $status_lang_ua; ?>>Українська</option>
 </select>
         </div>
   </div>
@@ -1602,92 +1779,101 @@ if ($status == "2") {echo lang('USER_RE_t');}
     <div >
 <?php
         $stmt = $dbConnection->prepare('SELECT * FROM user_fields where status=:n');
-        $stmt->execute(array(':n' => '1'));
+        $stmt->execute(array(
+            ':n' => '1'
+        ));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
-
-
 ?>
 
                       <div class="control-group" id="">
     <div class="controls">
         <div class="form-group">
-            <label for="<?=$row['hash'];?>" class="col-sm-2 control-label"><?=$row['name'];?>: </label>
+            <label for="<?php echo $row['hash']; ?>" class="col-sm-2 control-label"><?php echo $row['name']; ?>: </label>
 
             <div class="col-sm-10" style=" padding-top: 5px; ">
 
-<?php 
-//echo get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
-if ($row['t_type'] == "text") {
-    $v=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
-    //if ($row['value'] == "0") {$v="";}
+<?php
+            
+            //echo get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+            if ($row['t_type'] == "text") {
+                $v = get_user_add_field_val(get_user_val_by_hash($usid, 'id') , $row['id']);
+                
+                //if ($row['value'] == "0") {$v="";}
+                
 ?>
-<input type="text" class="form-control input-sm" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>" value='<?=$v;?>'>
-<?php } ?>
+<input type="text" class="form-control input-sm" name="<?php echo $row['hash']; ?>" id="<?php echo $row['hash']; ?>" placeholder="<?php echo $row['placeholder']; ?>" value='<?php echo $v; ?>'>
+<?php
+            } ?>
 
 
-<?php 
-if ($row['t_type'] == "textarea") {
-$v=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+<?php
+            if ($row['t_type'] == "textarea") {
+                $v = get_user_add_field_val(get_user_val_by_hash($usid, 'id') , $row['id']);
 ?>
-<textarea rows="3" class="form-control input-sm animated" name="<?=$row['hash'];?>" id="<?=$row['hash'];?>" placeholder="<?=$row['placeholder'];?>"><?=$v;?></textarea>
-<?php } ?>
+<textarea rows="3" class="form-control input-sm animated" name="<?php echo $row['hash']; ?>" id="<?php echo $row['hash']; ?>" placeholder="<?php echo $row['placeholder']; ?>"><?php echo $v; ?></textarea>
+<?php
+            } ?>
 
 
-<?php 
-if ($row['t_type'] == "select") {
-$vs=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
-
-
+<?php
+            if ($row['t_type'] == "select") {
+                $vs = get_user_add_field_val(get_user_val_by_hash($usid, 'id') , $row['id']);
 ?>
-<select data-placeholder="<?=$row['placeholder'];?>" class="chosen-select form-control" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>">
+<select data-placeholder="<?php echo $row['placeholder']; ?>" class="chosen-select form-control" id="<?php echo $row['hash']; ?>" name="<?php echo $row['hash']; ?>">
 
-<?php 
-$v=explode(",", $row['value']);
-$vs=explode(",", $vs);
- foreach ($v as $value) {
-     # code...
- $sc="";
- if (in_array($value, $vs)) {$sc="selected";}
+<?php
+                $v = explode(",", $row['value']);
+                $vs = explode(",", $vs);
+                foreach ($v as $value) {
+                    // code...
+                    $sc = "";
+                    if (in_array($value, $vs)) {
+                        $sc = "selected";
+                    }
 ?>
-                            <option value="<?=$value;?>" <?=$sc;?>><?=$value;?></option>
+                            <option value="<?php echo $value; ?>" <?php echo $sc; ?>><?php echo $value; ?></option>
 
                             <?php
-                        }
-                            ?>
+                }
+?>
                 
                         
             </select>
-<?php } ?>
+<?php
+            } ?>
 
-<?php 
-if ($row['t_type'] == "multiselect") {
-$vs=get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+<?php
+            if ($row['t_type'] == "multiselect") {
+                $vs = get_user_add_field_val(get_user_val_by_hash($usid, 'id') , $row['id']);
 ?>
 
 
 
 
 
-<select data-placeholder="<?=$row['placeholder'];?>" class="multi_field" id="<?=$row['hash'];?>" name="<?=$row['hash'];?>[]" multiple >
+<select data-placeholder="<?php echo $row['placeholder']; ?>" class="multi_field" id="<?php echo $row['hash']; ?>" name="<?php echo $row['hash']; ?>[]" multiple >
 
-<?php 
-$v=explode(",", $row['value']);
-$vs=explode(",", $vs);
- foreach ($v as $value) {
-     # code...
-  $sc="";
- if (in_array($value, $vs)) {$sc="selected";}
+<?php
+                $v = explode(",", $row['value']);
+                $vs = explode(",", $vs);
+                foreach ($v as $value) {
+                    // code...
+                    $sc = "";
+                    if (in_array($value, $vs)) {
+                        $sc = "selected";
+                    }
 ?>
-                            <option value="<?=$value;?>"<?=$sc;?>><?=$value;?></option>
+                            <option value="<?php echo $value; ?>"<?php echo $sc; ?>><?php echo $value; ?></option>
 
                             <?php
-                        }
-                            ?>
+                }
+?>
                 
                         
             </select>
-<?php } ?>
+<?php
+            } ?>
                 
             </div>
             
@@ -1697,8 +1883,8 @@ $vs=explode(",", $vs);
     </div> 
 
     <?php
-}
-    ?>
+        }
+?>
 </div>
     </form>
     
@@ -1709,49 +1895,45 @@ $vs=explode(",", $vs);
 
 
               <div class="form-group">
-    <label for="mail_nf" class="col-sm-2 control-label"><?php echo lang('CONF_mail_status'); ?></label>
+    <label for="mail_nf" class="col-sm-2 control-label"><?php
+        echo lang('CONF_mail_status'); ?></label>
         <div class="col-sm-10">
-    <select data-placeholder="<?php echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
+    <select data-placeholder="<?php
+        echo lang('CONF_mail_status'); ?>" class="multi_field" id="mail_nf" name="mail_nf[]" multiple="multiple" >
 
 <?php
-
-$stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
-    $stmt2->execute(array(':uto' => get_user_val_by_hash($usid, 'id')));
-    $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-
-
-
-
-$nl=get_notify_opt_list();
-
-foreach ($nl as $key => $value) {
-    # code...
-
-$sc="";
-
-if ($tt2['mail']) {
-
-$al=explode(",", $tt2['mail']);
-
-if (in_array($key, $al)) {
-    $sc="selected";
-}
-
-}
-else if (!$tt2['mail']) {
-
-$sc="selected";
-
-}
-
-
+        $stmt2 = $dbConnection->prepare('SELECT mail from users_notify where user_id=:uto');
+        $stmt2->execute(array(
+            ':uto' => get_user_val_by_hash($usid, 'id')
+        ));
+        $tt2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+        
+        $nl = get_notify_opt_list();
+        
+        foreach ($nl as $key => $value) {
+            // code...
+            
+            $sc = "";
+            
+            if ($tt2['mail']) {
+                
+                $al = explode(",", $tt2['mail']);
+                
+                if (in_array($key, $al)) {
+                    $sc = "selected";
+                }
+            } 
+            else if (!$tt2['mail']) {
+                
+                $sc = "selected";
+            }
 ?>
-                            <option value="<?=$key;?>" <?=$sc;?>><?=$value;?></option>
+                            <option value="<?php echo $key; ?>" <?php echo $sc; ?>><?php echo $value; ?></option>
 
 
               <?php
-}
-              ?>  
+        }
+?>  
                         
             </select>
         </div>
@@ -1764,37 +1946,50 @@ $sc="selected";
                   </div><!-- /.tab-pane -->
                   <div class="tab-pane" id="tab_2">
                       <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?php echo lang('USERS_profile_priv'); ?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('USERS_profile_priv'); ?></label>
   <div class="col-sm-10">
 <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios3" value="2" <?php echo $status_superadmin ?>>
-    <strong class="text-warning"><?php echo lang('USERS_nach1'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_nach1_desc'); ?></small></p>
+    <input type="radio" name="optionsRadios" id="optionsRadios3" value="2" <?php
+        echo $status_superadmin ?>>
+    <strong class="text-warning"><?php
+        echo lang('USERS_nach1'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_nach1_desc'); ?></small></p>
   </label>
 </div>
 
 <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" <?php echo $status_admin ?>>
-    <strong class="text-success"><?php echo lang('USERS_nach'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_nach_desc'); ?></small></p>
+    <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" <?php
+        echo $status_admin ?>>
+    <strong class="text-success"><?php
+        echo lang('USERS_nach'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_nach_desc'); ?></small></p>
   </label>
 </div>
 <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios2" value="1" <?php echo $status_user ?>>
-    <strong class="text-info"><?php echo lang('USERS_wo'); ?></strong>
-    <p class="help-block"><small><?php echo lang('USERS_wo_desc'); ?></small></p>
+    <input type="radio" name="optionsRadios" id="optionsRadios2" value="1" <?php
+        echo $status_user ?>>
+    <strong class="text-info"><?php
+        echo lang('USERS_wo'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('USERS_wo_desc'); ?></small></p>
   </label>
   
 </div>
 
 <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios4" value="4" <?php echo $status_client ?>>
-    <strong class="text-default"><?php echo lang('EXT_client'); ?></strong>
-    <p class="help-block"><small><?php echo lang('EXT_client_what'); ?></small></p>
+    <input type="radio" name="optionsRadios" id="optionsRadios4" value="4" <?php
+        echo $status_client ?>>
+    <strong class="text-default"><?php
+        echo lang('EXT_client'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('EXT_client_what'); ?></small></p>
   </label>
   
 </div>
@@ -1803,7 +1998,8 @@ $sc="selected";
   
   
     <div class="form-group">
-  <label for="my-select" class="col-sm-2 control-label"><?php echo lang('USERS_units'); ?></label>
+  <label for="my-select" class="col-sm-2 control-label"><?php
+        echo lang('USERS_units'); ?></label>
   <div class="col-sm-10">
   <select multiple="multiple" id="my-select" name="unit[]">
 <?php
@@ -1814,7 +2010,9 @@ $sc="selected";
                         while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){*/
         
         $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n');
-        $stmt->execute(array(':n' => '0'));
+        $stmt->execute(array(
+            ':n' => '0'
+        ));
         $res1 = $stmt->fetchAll();
         
         foreach ($res1 as $row) {
@@ -1831,11 +2029,15 @@ $sc="selected";
             }
 ?>
 
-                            <option <?php echo $opt_sel; ?> value="<?php echo $row['value'] ?>"><?php echo $row['label'] ?></option>
+                            <option <?php
+            echo $opt_sel; ?> value="<?php
+            echo $row['value'] ?>"><?php
+            echo $row['label'] ?></option>
 
                         <?php
             
             //
+            
             
         }
 ?>
@@ -1846,7 +2048,8 @@ $sc="selected";
   
   
   <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?php echo lang('USERS_privs'); ?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('USERS_privs'); ?></label>
   <div class="col-sm-10">
   
   
@@ -1854,7 +2057,9 @@ $sc="selected";
     <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_add_client" <?php echo $priv_add_client ?>> <?php echo lang('TICKET_p_add_client'); ?>
+      <input type="checkbox" id="priv_add_client" <?php
+        echo $priv_add_client ?>> <?php
+        echo lang('TICKET_p_add_client'); ?>
     </label>
   </div>
     </div>
@@ -1862,7 +2067,9 @@ $sc="selected";
         <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_edit_client" <?php echo $priv_edit_client ?>> <?php echo lang('TICKET_p_edit_client'); ?>
+      <input type="checkbox" id="priv_edit_client" <?php
+        echo $priv_edit_client ?>> <?php
+        echo lang('TICKET_p_edit_client'); ?>
     </label>
   </div>
     </div>
@@ -1874,17 +2081,23 @@ $sc="selected";
                   <div class="tab-pane" id="tab_3">
                       
   <div class="form-group">
-    <label for="msg_title" class="col-sm-2 control-label"><?php echo lang('EXT_perf_msg_t'); ?></label>
+    <label for="msg_title" class="col-sm-2 control-label"><?php
+        echo lang('EXT_perf_msg_t'); ?></label>
         <div class="col-sm-10">
-    <input autocomplete="off" name="msg_title" type="text" class="form-control input-sm" id="msg_title" placeholder="<?php echo lang('EXT_perf_msg_t'); ?>" value="<?php echo $msg_t; ?>">
+    <input autocomplete="off" name="msg_title" type="text" class="form-control input-sm" id="msg_title" placeholder="<?php
+        echo lang('EXT_perf_msg_t'); ?>" value="<?php
+        echo $msg_t; ?>">
         </div>
   </div>
   
 
       <div class="form-group">
-    <label for="mess" class="col-sm-2 control-label"><?php echo lang('MAIL_msg'); ?></label>
+    <label for="mess" class="col-sm-2 control-label"><?php
+        echo lang('MAIL_msg'); ?></label>
         <div class="col-sm-10">
-        <textarea placeholder="<?php echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"><?php echo $messages; ?></textarea>
+        <textarea placeholder="<?php
+        echo lang(''); ?>" class="form-control input-sm animated" name="mess" id="mess" rows="3"><?php
+        echo $messages; ?></textarea>
         
 
         </div>
@@ -1893,24 +2106,27 @@ $sc="selected";
 
 
   <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?=lang('CONF_messages_type');?></label>
+  <label for="mess" class="col-sm-2 control-label"><?php echo lang('CONF_messages_type'); ?></label>
   <div class="col-sm-10">
     <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" <?php echo $msg_type_0; ?>>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_1" value="0" <?php
+        echo $msg_type_0; ?>>
     <strong class="text-info">Info</strong>
   </label>
 </div>
 <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios_msg" id="msg_type_0" value="1" <?php echo $msg_type_1; ?>>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_0" value="1" <?php
+        echo $msg_type_1; ?>>
     <strong class="text-warning">Warning</strong>
   </label>
 </div>
 
 <div class="radio col-sm-12">
   <label>
-    <input type="radio" name="optionsRadios_msg" id="msg_type_2" value="2" <?php echo $msg_type_2; ?>>
+    <input type="radio" name="optionsRadios_msg" id="msg_type_2" value="2" <?php
+        echo $msg_type_2; ?>>
     <strong class="text-danger">Danger</strong>
   </label>
   
@@ -1926,29 +2142,26 @@ $sc="selected";
 
 
   <div class="form-group">
-  <label for="user_to_def" class="col-sm-4 control-label"><?=lang('CONF_PERF_def_do');?></label>
+  <label for="user_to_def" class="col-sm-4 control-label"><?php echo lang('CONF_PERF_def_do'); ?></label>
   <div class="col-sm-8">
   
   
 <?php
-
-if ($def_unit_id != "0") {
-  $c1="checked";
-}
-else if ($def_unit_id == "0") {
-  $di="disabled";
-}
-
-
-
+        if ($def_unit_id != "0") {
+            $c1 = "checked";
+        } 
+        else if ($def_unit_id == "0") {
+            $di = "disabled";
+        }
 ?>
 
   
     <div class="col-sm-10">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="user_to_def" <?=$c1;?>> <?php echo lang('CONF_true'); ?>
-      <p class="help-block"><small><?=lang('CONF_PERF_def_do_ext');?></small></p>
+      <input type="checkbox" id="user_to_def" <?php echo $c1; ?>> <?php
+        echo lang('CONF_true'); ?>
+      <p class="help-block"><small><?php echo lang('CONF_PERF_def_do_ext'); ?></small></p>
     </label>
   </div>
     </div>
@@ -1960,30 +2173,33 @@ else if ($def_unit_id == "0") {
     <div class="form-group" id="for_to" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right">
         
         <div class="col-md-6">
-            <select data-placeholder="<?php echo lang('NEW_to_unit'); ?>" class="input-sm form-control" id="to" name="unit_id" <?=$di;?>>
+            <select data-placeholder="<?php
+        echo lang('NEW_to_unit'); ?>" class="input-sm form-control" id="to" name="unit_id" <?php echo $di; ?>>
                 <option value="0"></option>
                 <?php
         $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
-        $stmt->execute(array(':n' => '0', ':s' => '1'));
+        $stmt->execute(array(
+            ':n' => '0',
+            ':s' => '1'
+        ));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             
-$s1="";
-if ($def_unit_id == $row['value']) {
-  $s1="selected";
-}
-
-
-
-
-//if (get_conf_param('email_gate_unit_id') == $row['value']) {$s="selected";}
-
+            $s1 = "";
+            if ($def_unit_id == $row['value']) {
+                $s1 = "selected";
+            }
+            
+            //if (get_conf_param('email_gate_unit_id') == $row['value']) {$s="selected";}
+            
             //echo($row['label']);
             $row['label'] = $row['label'];
             $row['value'] = (int)$row['value'];
 ?>
 
-                            <option value="<?php echo $row['value'] ?>" <?=$s1;?>><?php echo $row['label'] ?></option>
+                            <option value="<?php
+            echo $row['value'] ?>" <?php echo $s1; ?>><?php
+            echo $row['label'] ?></option>
 
                         <?php
         }
@@ -1998,7 +2214,8 @@ if ($def_unit_id == $row['value']) {
         <div class="col-md-6" style="" id="dsd">
     
     
-    <select data-placeholder="<?php echo lang('NEW_to_user'); ?>" id="users_do" name="unit_id" class="form-control input-sm" multiple <?=$di;?>>
+    <select data-placeholder="<?php
+        echo lang('NEW_to_user'); ?>" id="users_do" name="unit_id" class="form-control input-sm" multiple <?php echo $di; ?>>
         <option></option>
 
 
@@ -2010,7 +2227,10 @@ if ($def_unit_id == $row['value']) {
         */
         
         $stmt = $dbConnection->prepare('SELECT fio as label, id as value FROM users where status=:n and login !=:system and is_client=0 order by fio ASC');
-        $stmt->execute(array(':n' => '1', ':system' => 'system'));
+        $stmt->execute(array(
+            ':n' => '1',
+            ':system' => 'system'
+        ));
         $res1 = $stmt->fetchAll();
         foreach ($res1 as $row) {
             
@@ -2020,18 +2240,21 @@ if ($def_unit_id == $row['value']) {
             
             if (get_user_status_text($row['value']) == "online") {
                 $s = "online";
-            } else if (get_user_status_text($row['value']) == "offline") {
+            } 
+            else if (get_user_status_text($row['value']) == "offline") {
                 $s = "offline";
             }
-
-
-
-$st_sel="";
-$mass=explode(",", $def_user_id);
-if (in_array($row['value'], $mass)) {$st_sel="selected";}
-
+            
+            $st_sel = "";
+            $mass = explode(",", $def_user_id);
+            if (in_array($row['value'], $mass)) {
+                $st_sel = "selected";
+            }
 ?>
-                    <option data-foo="<?php echo $s; ?>" value="<?php echo $row['value'] ?>" <?=$st_sel;?>><?php echo nameshort($row['label']) ?> </option>
+                    <option data-foo="<?php
+            echo $s; ?>" value="<?php
+            echo $row['value'] ?>" <?php echo $st_sel; ?>><?php
+            echo nameshort($row['label']) ?> </option>
 
                 <?php
         }
@@ -2050,17 +2273,19 @@ if (in_array($row['value'], $mass)) {$st_sel="selected";}
 </div>
 
 <div class="tab-pane" id="tab_5">
-<?php 
-if ($status == "2") {
-  ?>
-<button type="button" class="btn btn-success btn-lg btn-block" value="<?php echo $usid; ?>" id="re_user"><?=lang('USER_RE_button');?></button>
-  <?php
-}
-if ($status != "2") {
-?>
-<button type="button" class="btn btn-danger btn-lg btn-block" value="<?php echo $usid; ?>" id="del_user"><?=lang('USER_DEL_button');?></button>
 <?php
-}
+        if ($status == "2") {
+?>
+<button type="button" class="btn btn-success btn-lg btn-block" value="<?php
+            echo $usid; ?>" id="re_user"><?php echo lang('USER_RE_button'); ?></button>
+  <?php
+        }
+        if ($status != "2") {
+?>
+<button type="button" class="btn btn-danger btn-lg btn-block" value="<?php
+            echo $usid; ?>" id="del_user"><?php echo lang('USER_DEL_button'); ?></button>
+<?php
+        }
 ?>
 </div>
 
@@ -2079,7 +2304,9 @@ if ($status != "2") {
 <div class=""><hr></div>
 <div class="">
 <center>
-    <button type="submit" id="edit_user" value="<?php echo $usid; ?>" class="btn btn-success"><?php echo lang('USERS_make_edit_user'); ?></button>
+    <button type="submit" id="edit_user" value="<?php
+        echo $usid; ?>" class="btn btn-success"><?php
+        echo lang('USERS_make_edit_user'); ?></button>
 </center>
 </div>
 </div>

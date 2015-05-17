@@ -1,95 +1,79 @@
-<header class="main-header">               
+<header class="main-header">
   <nav class="navbar navbar-static-top">
     <div class="container-fluid">
-    <div class="navbar-header" style="border-right: 1px solid #eee;">
-      <a href="{{hostname}}index.php" class="logo" style="
-    color: black;
-">
-
-      <img src="{{get_logo_img}}"> {{name_of_firm}}
-
-      </a>
-
-
-
-
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+      <div class="navbar-header" style="border-right: 1px solid #eee;">
+        <a href="{{hostname}}index.php" class="logo" style="
+        color: black;
+        ">
+        <img src="{{get_logo_img}}"> {{name_of_firm}}
+        </a>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
         <i class="fa fa-bars"></i>
-      </button>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="navbar-collapse">
-
-
-
-      <ul class="nav navbar-nav">
-        <li {% if cur_file_name == "feed" %} class="active" {% endif %}><a href="{{hostname}}feed">{{PORTAL_news}} </a></li>
-        <li {% if cur_file_name == "version" %} class="active" {% endif %}><a href="{{hostname}}version">{{PORTAL_versions}} </a></li>
-        <li {% if cur_file_name == "manual" %} class="active" {% endif %}> <a href="{{hostname}}manual">{{PORTAL_help_center}}</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{PORTAL_cats}} <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="{{hostname}}cat?1">{{PORTAL_idea}}</a></li>
-            <li><a href="{{hostname}}cat?2">{{PORTAL_trouble}}</a></li>
-            <li><a href="{{hostname}}cat?3">{{PORTAL_question}}</a></li>
-            <li><a href="{{hostname}}cat?4">{{PORTAL_thank}}</a></li>
-          </ul>
-        </li>
-      </ul> 
-      <form class="navbar-form navbar-left" role="search" method="get" action="manual">
-        <div class="form-group">
-          <input type="text" name="find" class="form-control" id="navbar-search-input" placeholder="{{PORTAL_find}}"><button id="find_in_manual" class="" style="display:none;" type="submit"></button>
-        </div>
-      </form>
-
-
-
-      <ul class="nav navbar-nav navbar-right">
-
-{% if validate == true %}    
-
-<li class="">
-<a href="{{hostname}}dashboard">{{PORTAL_helpdesk}}</a>
-</li>
-
-<li class="dropdown user user-menu">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <img src="{{get_user_img}}" class="user-image" alt="User Image">
-                  <span>{{fio}}</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <!-- User image -->
-                  <li class="user-header ">
-                    <img src="{{get_user_img}}" class="img-circle" alt="User Image">
-                    <p>
-                      {{fio}} 
-                      <small>{{posada}}</small>
-                    </p>
-                  </li>
-                  <!-- Menu Body -->
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="{{hostname}}profile" class="btn btn-default btn-flat"> <i class="fa fa-user"></i> {{NAVBAR_profile}}</a></a>
-                    </div>
-                    <div class="pull-right">
-                      <a href="{{hostname}}logout" class="btn btn-default btn-flat">{{PORTAL_logout}}</a>
-                    </div>
-                  </li>
-                </ul>
+        </button>
+      </div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li {% if cur_file_name == "feed" %} class="active" {% endif %}><a href="{{hostname}}feed">{{PORTAL_news}} </a></li>
+          <li {% if cur_file_name == "version" %} class="active" {% endif %}><a href="{{hostname}}version">{{PORTAL_versions}} </a></li>
+          <li {% if cur_file_name == "manual" %} class="active" {% endif %}> <a href="{{hostname}}manual">{{PORTAL_help_center}}</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{PORTAL_cats}} <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{hostname}}cat?1">{{PORTAL_idea}}</a></li>
+              <li><a href="{{hostname}}cat?2">{{PORTAL_trouble}}</a></li>
+              <li><a href="{{hostname}}cat?3">{{PORTAL_question}}</a></li>
+              <li><a href="{{hostname}}cat?4">{{PORTAL_thank}}</a></li>
+            </ul>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search" method="get" action="manual">
+          <div class="form-group">
+            <input type="text" name="find" class="form-control" id="navbar-search-input" placeholder="{{PORTAL_find}}"><button id="find_in_manual" class="" style="display:none;" type="submit"></button>
+          </div>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          {% if validate == true %}
+          <li class="">
+            <a href="{{hostname}}dashboard">{{PORTAL_helpdesk}}</a>
+          </li>
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <img src="{{get_user_img}}" class="user-image" alt="User Image">
+            <span>{{fio}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- User image -->
+              <li class="user-header ">
+                <img src="{{get_user_img}}" class="img-circle" alt="User Image">
+                <p>
+                {{fio}}
+                <small>{{posada}}</small>
+                </p>
               </li>
-{% endif %}
-{% if validate == false %}      
-<li><a href="auth"><i class="fa fa-user"></i> {{PORTAL_login}}</a></li>
-{% if allow_register == "true" %}  
-<li><a href="register"><i class="fa fa-user"></i> {{PORTAL_register}}</a></li>
-{% endif %}
-{% endif %}
-        
-        
-      </ul>
-    </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-  </nav>
-</header>
+              <!-- Menu Body -->
+              <!-- Menu Footer-->
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a href="{{hostname}}profile" class="btn btn-default btn-flat"> <i class="fa fa-user"></i> {{NAVBAR_profile}}</a></a>
+                </div>
+                <div class="pull-right">
+                  <a href="{{hostname}}logout" class="btn btn-default btn-flat">{{PORTAL_logout}}</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          {% endif %}
+          {% if validate == false %}
+          <li><a href="auth"><i class="fa fa-user"></i> {{PORTAL_login}}</a></li>
+          {% if allow_register == "true" %}
+          <li><a href="register"><i class="fa fa-user"></i> {{PORTAL_register}}</a></li>
+          {% endif %}
+          {% endif %}
+
+
+        </ul>
+        </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+      </nav>
+    </header>

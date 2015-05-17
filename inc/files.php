@@ -4,22 +4,25 @@ include ("../functions.inc.php");
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if (validate_admin($_SESSION['helpdesk_user_id'])) {
-
-            $CONF['title_header'] = lang('FILES_title') . " - " . $CONF['name_of_firm'];
-
-
-
+        
+        $CONF['title_header'] = lang('FILES_title') . " - " . $CONF['name_of_firm'];
+        
         include ("head.inc.php");
         include ("navbar.inc.php");
 ?>
 <section class="content-header">
                     <h1>
-                        <i class="fa fa-files-o"></i> <?php echo lang('FILES_title'); ?>
-                        <small><?php echo lang('FILES_title_ext'); ?></small>
+                        <i class="fa fa-files-o"></i> <?php
+        echo lang('FILES_title'); ?>
+                        <small><?php
+        echo lang('FILES_title_ext'); ?></small>
                     </h1>
                     <ol class="breadcrumb">
-                       <li><a href="<?php echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php echo $CONF['name_of_firm'] ?></a></li>
-                        <li class="active"><?php echo lang('FILES_title'); ?></li>
+                       <li><a href="<?php
+        echo $CONF['hostname'] ?>index.php"><span class="icon-svg"></span> <?php
+        echo $CONF['name_of_firm'] ?></a></li>
+                        <li class="active"><?php
+        echo lang('FILES_title'); ?></li>
                     </ol>
                 </section>
                 
@@ -33,14 +36,16 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         if ($CONF['file_uploads'] == "false") { ?>
                     
                     <div class="callout">
-                        <?php echo lang('FILES_off'); ?>
+                        <?php
+            echo lang('FILES_off'); ?>
                     </div>
                     <?php
         } ?>
                     <div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
-<?php echo lang('FILES_info'); ?>
+<?php
+        echo lang('FILES_info'); ?>
          </small>
                                     </div></div>
                     <div class="col-md-9">
@@ -55,7 +60,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
       
       
 <?php
-        
         $stmt = $dbConnection->prepare('select id, ticket_hash, original_name,file_hash,file_type,file_size,file_ext from files');
         $stmt->execute();
         $res1 = $stmt->fetchAll();
@@ -67,28 +71,42 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <thead>
           <tr>
             
-            <th><center><?php echo lang('FILES_name'); ?></center></th>
-            <th><center><?php echo lang('FILES_ticket'); ?></center></th>
-            <th><center><?php echo lang('FILES_size'); ?></center></th>
-            <th><center><?php echo lang('t_LIST_action'); ?></center></th>
+            <th><center><?php
+        echo lang('FILES_name'); ?></center></th>
+            <th><center><?php
+        echo lang('FILES_ticket'); ?></center></th>
+            <th><center><?php
+        echo lang('FILES_size'); ?></center></th>
+            <th><center><?php
+        echo lang('t_LIST_action'); ?></center></th>
           </tr>
         </thead>
         <tbody>     
         <?php
-        
         foreach ($res1 as $row) {
 ?>
-        <tr id="tr_<?php echo $row['id']; ?>">
+        <tr id="tr_<?php
+            echo $row['id']; ?>">
         
         
         
         
-        <td><small><?php echo get_file_icon($row['file_hash']); ?> <?php echo $row['original_name']; ?></small></td>
-        <td><small><a href="./ticket&<?php echo $row['ticket_hash'] ?>">#<?php echo get_ticket_id_by_hash($row['ticket_hash']); ?></a></small></td>
-        <td><small><?php echo round(($row['file_size'] / (1024 * 1024)), 2); ?> Mb</small></td>
+        <td><small><?php
+            echo get_file_icon($row['file_hash']); ?> <?php
+            echo $row['original_name']; ?></small></td>
+        <td><small><a href="./ticket&<?php
+            echo $row['ticket_hash'] ?>">#<?php
+            echo get_ticket_id_by_hash($row['ticket_hash']); ?></a></small></td>
+        <td><small><?php
+            echo round(($row['file_size'] / (1024 * 1024)) , 2); ?> Mb</small></td>
 <td><small><center>
-<button id="files_del" type="button" class="btn btn-danger btn-xs" value="<?php echo $row['file_hash']; ?>" title="<?php echo lang('FILES_del'); ?>"><i class="fa fa-trash-o"></i> </button>
-<a href="<?php echo $CONF['hostname']; ?>sys/download.php?<?php echo $row['file_hash']; ?>" class="btn btn-success btn-xs" title="<?php echo lang('FILES_down'); ?>"><i class="fa fa-download"></i> </a>
+<button id="files_del" type="button" class="btn btn-danger btn-xs" value="<?php
+            echo $row['file_hash']; ?>" title="<?php
+            echo lang('FILES_del'); ?>"><i class="fa fa-trash-o"></i> </button>
+<a href="<?php
+            echo $CONF['hostname']; ?>sys/download.php?<?php
+            echo $row['file_hash']; ?>" class="btn btn-success btn-xs" title="<?php
+            echo lang('FILES_down'); ?>"><i class="fa fa-download"></i> </a>
 </center></small></td>
 
 
@@ -126,7 +144,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
 <?php
     }
-} else {
+} 
+else {
     include '../auth.php';
 }
 ?>

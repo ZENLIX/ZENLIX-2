@@ -8,14 +8,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         include ("navbar.inc.php");
         $priv_val = priv_status($_SESSION['helpdesk_user_id']);
         if (($priv_val == "2") || ($priv_val == "0")) {
-
-
-
-
-
-$ulist=array();
+            
+            $ulist = array();
             $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where id !=:system and is_client=0 and status!=2 order by fio ASC');
-            $stmt->execute(array(':system' => '1'));
+            $stmt->execute(array(
+                ':system' => '1'
+            ));
             $res1 = $stmt->fetchAll();
             foreach ($res1 as $row) {
                 $unit_user = unit_of_user($_SESSION['helpdesk_user_id']);
@@ -32,75 +30,64 @@ $ulist=array();
                     
                     if (get_user_status_text($row['value']) == "online") {
                         $s = "online";
-                    } else if (get_user_status_text($row['value']) == "offline") {
+                    } 
+                    else if (get_user_status_text($row['value']) == "offline") {
                         $s = "offline";
                     }
-
-array_push($ulist, array(
-
-'s'=>$s,
-'value'=>$row['value'],
-'nameshort'=>nameshort($row['label'])
-
-    ));
-
-
+                    
+                    array_push($ulist, array(
+                        
+                        's' => $s,
+                        'value' => $row['value'],
+                        'nameshort' => nameshort($row['label'])
+                    ));
                 }
             }
-
-
-
-
-
-
-
-
-$basedir = dirname(dirname(__FILE__)); 
+            
+            $basedir = dirname(dirname(__FILE__));
+            
             ////////////
-    try {
-            
-            // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($basedir.'/inc/views');
-            
-            // инициализируем Twig
-            if (get_conf_param('twig_cache') == "true") {
-$twig = new Twig_Environment($loader,array(
-    'cache' => $basedir.'/inc/cache',
-));
-            }
-            else {
-$twig = new Twig_Environment($loader);
-            }
-            
-            // подгружаем шаблон
-            $template = $twig->loadTemplate('user_stats.view.tmpl');
-            
-            // передаём в шаблон переменные и значения
-            // выводим сформированное содержание
-            echo $template->render(array(
-                'hostname'=>$CONF['hostname'],
-                'name_of_firm'=>$CONF['name_of_firm'],
-                'EXT_graph_user_ext'=>lang('EXT_graph_user_ext'),
-                'EXT_graph_user'=>lang('EXT_graph_user'),
-                't_LIST_worker'=>lang('t_LIST_worker'),
-                'ulist'=>$ulist,
-                'date'=>date("Y-m-d"),
-                'STATS_make'=>lang('STATS_make'),
-                'EXT_graph_user_ext2'=>lang('EXT_graph_user_ext2'),
-                'EXT_stats_main_todo'=>lang('EXT_stats_main_todo')
+            try {
                 
-
-
-
-            ));
-        }
-        catch(Exception $e) {
-            die('ERROR: ' . $e->getMessage());
-        }
-/*
-?>
-
-<section class="content-header">
+                // указывае где хранятся шаблоны
+                $loader = new Twig_Loader_Filesystem($basedir . '/inc/views');
+                
+                // инициализируем Twig
+                if (get_conf_param('twig_cache') == "true") {
+                    $twig = new Twig_Environment($loader, array(
+                        'cache' => $basedir . '/inc/cache',
+                    ));
+                } 
+                else {
+                    $twig = new Twig_Environment($loader);
+                }
+                
+                // подгружаем шаблон
+                $template = $twig->loadTemplate('user_stats.view.tmpl');
+                
+                // передаём в шаблон переменные и значения
+                // выводим сформированное содержание
+                echo $template->render(array(
+                    'hostname' => $CONF['hostname'],
+                    'name_of_firm' => $CONF['name_of_firm'],
+                    'EXT_graph_user_ext' => lang('EXT_graph_user_ext') ,
+                    'EXT_graph_user' => lang('EXT_graph_user') ,
+                    't_LIST_worker' => lang('t_LIST_worker') ,
+                    'ulist' => $ulist,
+                    'date' => date("Y-m-d") ,
+                    'STATS_make' => lang('STATS_make') ,
+                    'EXT_graph_user_ext2' => lang('EXT_graph_user_ext2') ,
+                    'EXT_stats_main_todo' => lang('EXT_stats_main_todo')
+                ));
+            }
+            catch(Exception $e) {
+                die('ERROR: ' . $e->getMessage());
+            }
+            
+            /*
+            ?>
+            
+            <section class="content-header">
                     <h1>
                         <i class="fa fa-bar-chart-o"></i> <?php echo lang('EXT_graph_user'); ?>
                         <small><?php echo lang('EXT_graph_user_ext'); ?></small>
@@ -110,45 +97,45 @@ $twig = new Twig_Environment($loader);
                         <li class="active"><?php echo lang('EXT_graph_user'); ?></li>
                     </ol>
                 </section>
-
-
-
-<section class="content">
-
-
-<div class="row">
-
-
-<div class="col-md-3">
-  <div class="row">
-    <div class="col-md-12">
-    
-    <div class="box box-info">
-
+            
+            
+            
+            <section class="content">
+            
+            
+            <div class="row">
+            
+            
+            <div class="col-md-3">
+            <div class="row">
+            <div class="col-md-12">
+            
+            <div class="box box-info">
+            
                                 <div class="box-body">
                                     
                                     
                                     <form class="form-horizontal" role="form">
-
-
-
-
-
-                                        <div class="form-group">
-
-<div class="col-md-12">
-
-    <div class="input-group ">
-      <span class="input-group-addon"><i class="fa fa-user"></i></span>
-      
-      
-      <select data-placeholder="<?php echo lang('t_LIST_worker'); ?>" id="user_list" name="unit_id" class="form-control input-sm">
-      <option></option>
-
-
-<?php
             
-
+            
+            
+            
+            
+                                        <div class="form-group">
+            
+            <div class="col-md-12">
+            
+            <div class="input-group ">
+            <span class="input-group-addon"><i class="fa fa-user"></i></span>
+            
+            
+            <select data-placeholder="<?php echo lang('t_LIST_worker'); ?>" id="user_list" name="unit_id" class="form-control input-sm">
+            <option></option>
+            
+            
+            <?php
+            
+            
             
             $stmt = $dbConnection->prepare('SELECT fio as label, id as value, unit FROM users where id !=:system and is_client=0 and status!=2 order by fio ASC');
             $stmt->execute(array(':system' => '1'));
@@ -171,57 +158,57 @@ $twig = new Twig_Environment($loader);
                     } else if (get_user_status_text($row['value']) == "offline") {
                         $s = "offline";
                     }
-?>
+            ?>
                     <option data-foo="<?php echo $s; ?>" value="<?php echo $row['value'] ?>"><?php echo nameshort($row['label']) ?> </option>
-
+            
                 <?php
                 }
             }
-?>
-    </select>
-    
-    
-    
-    </div></div>
-  </div>
-  
-  
-  <div class="form-group">
-<div class="col-md-12">
-    <div class="input-group ">
-      <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm"   value="<?php echo date("Y-m-d"); ?> - <?php echo date("Y-m-d"); ?>"/>
-    </div>
-</div>
-  </div>
- <div class="form-group">
-<div class="col-md-12">
-    <button class="btn btn-info btn-block btn-sm" id="user_stat_make"><?=lang('STATS_make');?></button>
-</div>
-</div>
-<input type="hidden" id="start_time" value="<?php echo date("Y-m-d"); ?>">
-<input type="hidden" id="stop_time" value="<?php echo date("Y-m-d"); ?>">
-</form>
+            ?>
+            </select>
+            
+            
+            
+            </div></div>
+            </div>
+            
+            
+            <div class="form-group">
+            <div class="col-md-12">
+            <div class="input-group ">
+            <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" name="reservation" id="reservation" class="form-control input-sm"   value="<?php echo date("Y-m-d"); ?> - <?php echo date("Y-m-d"); ?>"/>
+            </div>
+            </div>
+            </div>
+            <div class="form-group">
+            <div class="col-md-12">
+            <button class="btn btn-info btn-block btn-sm" id="user_stat_make"><?=lang('STATS_make');?></button>
+            </div>
+            </div>
+            <input type="hidden" id="start_time" value="<?php echo date("Y-m-d"); ?>">
+            <input type="hidden" id="stop_time" value="<?php echo date("Y-m-d"); ?>">
+            </form>
                                     
                                     
                                     
                                                                     </div><!-- /.box-body -->
                             </div>
-    
-  </div>
-    <div class="col-md-12"><div class="callout">
+            
+            </div>
+            <div class="col-md-12"><div class="callout">
                                         
                                         <small> <i class="fa fa-info-circle"></i> 
-<?php echo lang('EXT_graph_user_ext2'); ?>
-       </small>
+            <?php echo lang('EXT_graph_user_ext2'); ?>
+            </small>
                                     </div></div>
-  </div>
-  
-</div>
-
-
-<div class="col-md-9">
-    
-    <div class="box box-solid">
+            </div>
+            
+            </div>
+            
+            
+            <div class="col-md-9">
+            
+            <div class="box box-solid">
                                 
                                 <div class="box-body">
                                   
@@ -235,36 +222,37 @@ $twig = new Twig_Environment($loader);
                                     
                                                                    </div><!-- /.box-body -->
                             </div>
-    
-  </div>
-
-</div>
-
-
-
-</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<?php
-*/
+            
+            </div>
+            
+            </div>
+            
+            
+            
+            </section>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <?php
+            */
             include ("footer.inc.php");
 ?>
 
 <?php
         }
     }
-} else {
+} 
+else {
     include '../auth.php';
 }
 ?>
