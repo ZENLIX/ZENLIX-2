@@ -13,7 +13,7 @@ if (isset($_POST['menu'])) {
                 $oks = true;
             }
         }
-    }
+    } 
     if ($_POST['menu'] == 'list') {
         $menu = "list";
         $page = ($_POST['page']);
@@ -85,19 +85,19 @@ if (isset($_POST['menu'])) {
             $adr = $row['adr'];
             $tel = $row['tel'];
             $skype = $row['skype'];
-            $mail = $row['email'];
+            $email = $row['email'];
             $uniq_id = $row['uniq_id'];
             
-            if ($adr) {
+            if (!empty($adr)) {
                 $adr_t = true;
             }
-            if ($skype) {
+            if (!empty($skype)) {
                 $skype_t = true;
             }
-            if ($tel) {
+            if (!empty($tel)) {
                 $tel_t = true;
             }
-            if ($mail) {
+            if (!empty($email)) {
                 $mail_t = true;
             }
             

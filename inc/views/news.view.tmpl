@@ -164,7 +164,7 @@
                                         <h3 class="timeline-header"><a href="view_user?{{item.initUserHash}}">{{item.initUserName | raw}}</a>
                                         
                                         
-                                         {{item.NEWS_action_refer}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a>  {{item.mail_msg_ticket_to_ext}} {{item.to_text}} </h3>
+                                         {{item.NEWS_action_refer | raw}} <a href="ticket?{{item.ticketHash}}">#{{item.ticketID}}</a>  {{item.mail_msg_ticket_to_ext}} {{item.to_text | raw}} </h3>
                                         <div class="timeline-body">
 
 

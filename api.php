@@ -1,16 +1,28 @@
 <?php
+
+
 header('Content-Type: application/json');
 include_once ("functions.inc.php");
 
 $data_json = json_decode(file_get_contents('php://input'));
 
 if (get_conf_param('api_status') == "true") {
+
+
+
+
+
+
+
+
     
     if (isset($data_json->mode)) {
+$mode = $data_json->mode;
+
         
-        $mode = $data_json->mode;
         
-        if ($mode == "auth") {
+        
+     if ($mode == "auth") {
             
             if (isset($data_json->login, $data_json->pass)) {
                 $login = ($data_json->login);
@@ -1230,6 +1242,22 @@ values (:lock, :n, :unow, :tid)');
             $row_set[] = $r;
             print json_encode($row_set);
         } 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         else if ($mode == "get_unit_list") {
             if (isset($data_json->uniq_id)) {
                 
