@@ -1218,7 +1218,8 @@ function make_html($in, $type) {
     $config->set('Cache.DefinitionImpl', null);
     $config->set('AutoFormat.RemoveEmpty', false);
     $config->set('AutoFormat.AutoParagraph', true);
-    $config->set('HTML', 'Allowed', 'p,ul,li,ol,br,strong,b,em,pre,code');
+    $config->set('HTML', 'Allowed', 'p,ul,li,ol,br,strong,b,em,pre,code,a,href');
+    $config->set('HTML.AllowedAttributes', 'a.href');
     
     //$config->set('URI.DisableExternal', true);
     if ($type == "no") {
