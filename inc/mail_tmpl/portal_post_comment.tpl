@@ -243,8 +243,8 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 <div class="content">
 <table bgcolor="#f9f9f9">
 <tbody><tr>
-<td><?=get_conf_param('name_of_firm');?></td>
-<td align="right"><h6 class="collapse">{PORTAL_post_comment}!</h6></td>
+<td>{{name_of_firm}}</td>
+<td align="right"><h6 class="collapse">{{PORTAL_post_comment}}!</h6></td>
 </tr>
 </tbody></table>
 </div>
@@ -274,18 +274,18 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
  <table width="100%" cellspacing="0" cellpadding="3" style="">
   <tr style="">
     <td colspan="2" ><center>
-      <strong>{MAIL_info} </strong>
+      <strong>{{MAIL_info}} </strong>
     </center></td>
 
 
   </tr>
   <tr>
-    <td style="">{POST_created_author}:</td>
-    <td style="">{uin}</td>
+    <td style="">{{POST_created_author}}:</td>
+    <td style="">{{uin}}</td>
   </tr>
   <tr>
-    <td  >{POST_MAIL_subj}:</td>
-    <td  >{to_text}</td>
+    <td  >{{POST_MAIL_subj}}:</td>
+    <td  >{{to_text}}</td>
   </tr>
     
  
@@ -296,10 +296,10 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 </tr>
 </tbody></table> 
 
-<p class="lead">{PORTAL_post_comment_ext} <strong>{who_init}</strong>:
-<pre>{comment}</pre>
+<p class="lead">{{PORTAL_post_comment_ext}} <strong>{{who_init}}</strong>:
+<pre>{{comment}}</pre>
 <br>
-<a style=" font-size:11px; text-align:center;" href='<?=$CONF['real_hostname'];?>thread?{h}'>{MAIL_2link}</a>
+<a style=" font-size:11px; text-align:center;" href='{{real_hostname}}thread?{{h}}'>{{MAIL_2link}}</a>
 </p>
 
 

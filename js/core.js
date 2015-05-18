@@ -4171,38 +4171,7 @@ $.ajax({
         });
     }
     if (ispath('calendar')) {
-        $('#reservation').daterangepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
-            timePicker: true,
-            timePicker12Hour: false
-        });
-        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
-            $("#current_start").val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
-            $("#current_end").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
-        });
-        loadCal($("#filter_events").val());
-        $('#all_day').on('ifChanged', function(event) {
-            if ($(this).is(":checked")) {
-                $('#reservation').prop("disabled", true);
-            } else {
-                $('#reservation').prop("disabled", false);
-            }
-        });
-        $('.make_event_filter').on('ifChanged', function(event) {
-            console.log($('.make_event_filter:checked').map(function() {
-                return this.value;
-            }).get().join(','));
-            $("#filter_events").val($('.make_event_filter:checked').map(function() {
-                return this.value;
-            }).get().join(','));
-            //$('#calendar').fullCalendar("refetchEvents");
-            //$('#calendar').fullCalendar( 'destroy' );
-            loadCal($('.make_event_filter:checked').map(function() {
-                return this.value;
-            }).get().join(','));
-            //$('#calendar').fullCalendar('render');
-            //$('#calendar').fullCalendar("refetchEvents");
-        });
+
         /* initialize the external events
          -----------------------------------------------------------------*/
         function ini_events(ele) {
@@ -4540,6 +4509,38 @@ $.ajax({
                     $('#event_modal').modal('hide');
                 }
             });
+        });
+        $('#reservation').daterangepicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+            timePicker: true,
+            timePicker12Hour: false
+        });
+        $('#reservation').on('apply.daterangepicker', function(ev, picker) {
+            $("#current_start").val(picker.startDate.format('YYYY-MM-DD HH:mm:ss'));
+            $("#current_end").val(picker.endDate.format('YYYY-MM-DD HH:mm:ss'));
+        });
+        loadCal($("#filter_events").val());
+        $('#all_day').on('ifChanged', function(event) {
+            if ($(this).is(":checked")) {
+                $('#reservation').prop("disabled", true);
+            } else {
+                $('#reservation').prop("disabled", false);
+            }
+        });
+        $('.make_event_filter').on('ifChanged', function(event) {
+            console.log($('.make_event_filter:checked').map(function() {
+                return this.value;
+            }).get().join(','));
+            $("#filter_events").val($('.make_event_filter:checked').map(function() {
+                return this.value;
+            }).get().join(','));
+            //$('#calendar').fullCalendar("refetchEvents");
+            //$('#calendar').fullCalendar( 'destroy' );
+            loadCal($('.make_event_filter:checked').map(function() {
+                return this.value;
+            }).get().join(','));
+            //$('#calendar').fullCalendar('render');
+            //$('#calendar').fullCalendar("refetchEvents");
         });
     }
     if (ispath('config')) {

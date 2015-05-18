@@ -1226,6 +1226,9 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $subject = $SUBJ_POST . ' - ' . lang($lang, 'POST_MAIL_POST_NEW');
         
         //$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
+
+
+        /*
         ob_start();
         include ($base . "/inc/mail_tmpl/portal_post_new.tpl");
         $message = ob_get_clean();
@@ -1242,7 +1245,65 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{who_init}", $AUTHOR_POST, $message);
         $message = str_replace("{comment}", $POST_COMMENT, $message);
         $message = str_replace("{h}", $THREAD_HASH, $message);
-        
+        */
+
+
+
+        try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('portal_post_new.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+
+
+'PORTAL_post_comment'=>lang($lang, 'POST_MAIL_POST_NEW') . ' ' . get_conf_param('name_of_firm'),
+'MAIL_info'=>lang($lang, 'MAIL_info'),
+'POST_created_author'=>lang($lang, 'POST_created_author'),
+'POST_MAIL_subj'=>lang($lang, 'POST_MAIL_subj'),
+'PORTAL_post_comment_ext'=>lang($lang, 'PORTAL_post_NEWM_ext'),
+'MAIL_2link'=>lang($lang, 'PORTAL_post_MAIL_2link'),
+'uin'=>$AUTHOR_POST,
+'to_text'=>$SUBJ_POST,
+'who_init'=>$AUTHOR_POST,
+'comment'=>$POST_COMMENT,
+'h'=>$THREAD_HASH
+
+));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         send_mail($user_mail, $subject, $message, $post_res['uniq_id']);
     } 
     else if ($type_op == "portal_post_comment") {
@@ -1271,6 +1332,9 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $subject = $SUBJ_POST . ' - ' . lang($lang, 'POST_MAIL_COMMENT');
         
         //$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
+
+/*
+
         ob_start();
         include ($base . "/inc/mail_tmpl/portal_post_comment.tpl");
         $message = ob_get_clean();
@@ -1287,7 +1351,62 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $message = str_replace("{who_init}", $USER_AUTHOR_COMMENT, $message);
         $message = str_replace("{comment}", $POST_COMMENT, $message);
         $message = str_replace("{h}", $THREAD_HASH, $message);
-        
+        */
+
+
+
+
+
+ try {
+            
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('portal_post_comment.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+
+
+'PORTAL_post_comment'=>lang($lang, 'POST_MAIL_COMMENT') . ' ' . get_conf_param('name_of_firm'),
+'MAIL_info'=>lang($lang, 'MAIL_info'),
+'POST_created_author'=>lang($lang, 'POST_created_author'),
+'POST_MAIL_subj'=>lang($lang, 'POST_MAIL_subj'),
+'PORTAL_post_comment_ext'=>lang($lang, 'PORTAL_post_comment_ext'),
+'MAIL_2link'=>lang($lang, 'PORTAL_post_MAIL_2link'),
+'uin'=>$AUTHOR_POST,
+'to_text'=>$SUBJ_POST,
+'who_init'=>$AUTHOR_POST,
+'comment'=>$POST_COMMENT,
+'h'=>$THREAD_HASH
+
+));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
+
+
+
+
         send_mail($user_mail, $subject, $message, $post_res['uniq_id']);
     } 
     else if ($type_op == "ticket_create") {
