@@ -3324,10 +3324,10 @@ function get_client_info_ticket($id) {
     $posada = $fio['posada'];
     $email = $fio['email'];
     if ($fio['usr_img']) {
-        $user_img = $CONF['hostname'] . '/upload_files/avatars/' . $fio['usr_img'];
+        $user_img = $CONF['hostname'] . 'upload_files/avatars/' . $fio['usr_img'];
     } 
     else if (!$fio['usr_img']) {
-        $user_img = $CONF['hostname'] . '/img/avatar5.png';
+        $user_img = $CONF['hostname'] . 'img/avatar5.png';
     }
     
     $stmt = $dbConnection->prepare('select count(id) as t1 from tickets where client_id=:id');
@@ -4636,10 +4636,10 @@ function get_my_info() {
     $posada = $fio['posada'];
     
     if ($fio['usr_img']) {
-        $user_img = $CONF['hostname'] . '/upload_files/avatars/' . $fio['usr_img'];
+        $user_img = $CONF['hostname'] . 'upload_files/avatars/' . $fio['usr_img'];
     } 
     else if (!$fio['usr_img']) {
-        $user_img = $CONF['hostname'] . '/img/avatar5.png';
+        $user_img = $CONF['hostname'] . 'img/avatar5.png';
     }
     
     $stmt = $dbConnection->prepare('select count(id) as t1 from tickets where client_id=:id');

@@ -37,10 +37,10 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             $user_status = $row['status'];
             
             if ($row['usr_img']) {
-                $user_img = $CONF['hostname'] . '/upload_files/avatars/' . $row['usr_img'];
+                $user_img = $CONF['hostname'] . 'upload_files/avatars/' . $row['usr_img'];
             } 
             else if (!$row['usr_img']) {
-                $user_img = $CONF['hostname'] . '/img/avatar5.png';
+                $user_img = $CONF['hostname'] . 'img/avatar5.png';
             }
         }
         $finduser = true;
