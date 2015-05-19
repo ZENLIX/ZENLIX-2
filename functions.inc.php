@@ -1211,25 +1211,31 @@ function make_html($in, $type) {
     $Parsedown = new Parsedown();
     $text = $Parsedown->text($in);
     $text = str_replace("\n", "<br />", $text);
+    
+
+
+
     $config = HTMLPurifier_Config::createDefault();
-    
+
+$config->set('HTML.AllowedAttributes', 'img.src,a.href');
+$config->set('HTML.AllowedElements', 'ul,li,ol,br,strong,b,em,pre,code,a,img');
+    $config->set('Core.Encoding', 'UTF-8'); 
+    $config->set('HTML.Doctype', 'HTML 4.01 Transitional');
+    //$config->set('HTML.AllowedAttributes', 'a.href');
+
+
+/*
     $config->set('Core.Encoding', 'UTF-8');
-    $config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
-    $config->set('Cache.DefinitionImpl', null);
-    $config->set('AutoFormat.RemoveEmpty', false);
-    $config->set('AutoFormat.AutoParagraph', true);
-    $config->set('HTML', 'Allowed', 'p,ul,li,ol,br,strong,b,em,pre,code,a,href');
-    $config->set('HTML.AllowedAttributes', 'a.href');
-    
-    //$config->set('URI.DisableExternal', true);
-    if ($type == "no") {
-        $config->set('HTML.ForbiddenElements', array(
-            'p',
-            'h'
-        ));
-    }
-    
+    $config->set('HTML.Allowed', 'p,ul,li,ol,br,strong,b,em,pre,code,a,img');
+    $config->set('HTML.AllowedAttributes', 'a.href,img.src');
+*/
     $purifier = new HTMLPurifier($config);
+
+
+
+
+
+
     $def = $config->getHTMLDefinition(true);
     $def->addElement('ul', 'List', 'Optional: List | li', 'Common', array());
     $def->addElement('ol', 'List', 'Optional: List | li', 'Common', array());
@@ -2152,7 +2158,7 @@ function get_ticket_time_reaction($t_id) {
 }
 
 function view_comment($tid) {
-    global $dbConnection;
+    global $dbConnection, $CONF;
 ?>
     
     
@@ -6486,7 +6492,7 @@ function get_total_tickets_free_client() {
     
     return $count;
 }
-function get_total_tickets_free($in) {
+function get_total_tickets_free() {
     global $dbConnection;
     
     if (empty($in)) {

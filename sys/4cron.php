@@ -794,8 +794,8 @@ if (get_conf_param('email_gate_status') == "true") {
             
             //print_r($message);
             
-            $subj = strip_tags(xss_clean($message->subject));
-            $msg = strip_tags(xss_clean($message->all));
+            $subj = strip_tags($message->subject);
+            $msg = strip_tags($message->all);
             
             /*
             

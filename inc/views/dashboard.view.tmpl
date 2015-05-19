@@ -18,7 +18,7 @@
             <div class="alert alert-{{global_msg_type}} alert-dismissable">
                 <i class="fa fa-{{gm_type}}"></i>
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                {{global_msg_data}}
+                {{global_msg_data | raw}}
             </div>
         </div>
         {% endif %}
@@ -126,7 +126,7 @@
                 <div class="box-body">
                     <div class="callout callout-{{style_msg}}">
                         <h4>{{messages_title}}</h4>
-                        <p>{{messages}}</p>
+                        <p>{{messages | raw}}</p>
                     </div>
 
                 </div>
