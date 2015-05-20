@@ -1629,7 +1629,7 @@ console.log(ids);
                     data: "mode=add_comment" + "&user=" + encodeURIComponent(usr) + "&textmsg=" + encodeURIComponent(($("textarea#msg").val())) + "&tid=" + tid+
                     "&files="+ids,
                     success: function(html) {
-                        //$("#comment_content").html(html);
+                        $("#comment_content").html(html);
                         $("textarea#msg").val('')
                         makemytime(true);
                         //comment_body
