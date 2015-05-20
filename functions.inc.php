@@ -1208,7 +1208,7 @@ function view_log($tid) {
     }
 }
 
-function make_html($in, $type) {
+function make_html($in, $type=NULL) {
     
     $Parsedown = new Parsedown();
     $text = $Parsedown->text($in);

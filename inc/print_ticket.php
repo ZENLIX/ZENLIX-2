@@ -1,6 +1,6 @@
 <?php
 session_start();
-include ("../functions.inc.php");
+//include ("../functions.inc.php");
 $rkeys = array_keys($_GET);
 
 $CONF['title_header'] = lang('TICKET_name') . " #" . get_ticket_id_by_hash($rkeys[1]) . " - " . $CONF['name_of_firm'];
@@ -9,7 +9,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     
     include ("head.inc.php");
     
-    $hn = $rkeys[1];
+    $hn = $rkeys[0];
     $stmt = $dbConnection->prepare('SELECT
                            id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, comment, last_edit, is_read, lock_by, ok_by, arch, ok_date, prio, last_update
                             from tickets

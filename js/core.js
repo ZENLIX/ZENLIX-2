@@ -395,6 +395,7 @@ $(document).ready(function() {
         });
         $('time#f').each(function(i, e) {
             var time = $(e).attr('datetime');
+            
             var duration = moment.duration(time * 1000, 'milliseconds');
             $(e).html('<span>' + duration.format("d " + MOMENTJS_DAY + ", h " + MOMENTJS_HOUR + ", m " + MOMENTJS_MINUTE + ", s " + MOMENTJS_SEC + "") + '</span>');
             //time.from(now)
@@ -1628,7 +1629,7 @@ console.log(ids);
                     data: "mode=add_comment" + "&user=" + encodeURIComponent(usr) + "&textmsg=" + encodeURIComponent(($("textarea#msg").val())) + "&tid=" + tid+
                     "&files="+ids,
                     success: function(html) {
-                        $("#comment_content").html(html);
+                        //$("#comment_content").html(html);
                         $("textarea#msg").val('')
                         makemytime(true);
                         //comment_body
@@ -1637,6 +1638,7 @@ console.log(ids);
                         scroll.scrollTop(height);
                         $("#previews").html('');
                         ids = [];
+                        $('#comment_body').append(html);
                         //console.log(height);
                     }
                 });

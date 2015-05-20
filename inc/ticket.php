@@ -27,7 +27,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $t_true = true;
         
         //echo "ok";
-        
+        $status_lock=NULL;
         //foreach ($res1 as $row) {}
         
         $lock_by = $row['lock_by'];
@@ -113,7 +113,11 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         if ($row['user_init_id'] == $_SESSION['helpdesk_user_id']) {
             $inituserid_flag = 1;
         }
-        
+        $prio_style=array(
+            'normal'=>NULL,
+            'low'=>NULL,
+            'high'=>NULL
+            );
         $prio = "<span class=\"label label-info\"><i class=\"fa fa-minus\"></i> " . lang('t_list_a_p_norm') . "</span>";
         if ($row['prio'] == "1") {
             $prio_style['normal'] = "active";

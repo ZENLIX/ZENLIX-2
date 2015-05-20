@@ -8031,7 +8031,7 @@ values (:unlock, :n, :unow, :tid)');
                 
                 if (strlen($tom) > 2) {
                     
-                    $x_refer_comment = '<strong><small class=\'text-danger\'>' . nameshort(name_of_user_ret($_SESSION['helpdesk_user_id'])) . ' ' . lang('REFER_comment_add') . ' (' . date(' d.m.Y h:i:s') . '):</small> </strong>' . strip_tags(xss_clean(($_POST['tom'])));
+                    $x_refer_comment = '<strong><small class=\'text-danger\'>' . nameshort(name_of_user_ret($_SESSION['helpdesk_user_id'])) . ' ' . lang('REFER_comment_add') . ' (' . date(' d.m.Y h:i:s') . '):</small> </strong>' . strip_tags((($_POST['tom'])));
                     
                     $stmt = $dbConnection->prepare('update tickets set 
             unit_id=:to, 
