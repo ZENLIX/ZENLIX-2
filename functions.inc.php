@@ -659,9 +659,9 @@ function validate_exist_mail($str) {
     global $dbConnection;
     $uid = $_SESSION['helpdesk_user_id'];
     
-    $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email=:str and id != :uid and status!=2 ');
+    $stmt = $dbConnection->prepare('SELECT count(email) as n from users where email like :str and id != :uid and status!=2 ');
     $stmt->execute(array(
-        ':str' => $str,
+        ':str' => '%' . $str . '%',
         ':uid' => $uid
     ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -676,7 +676,7 @@ function validate_exist_mail($str) {
 }
 
 function validate_email($str) {
-    return preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $str);
+    return filter_var($str, FILTER_VALIDATE_EMAIL);
 }
 
 function validate_alphanumeric_underscore($str) {

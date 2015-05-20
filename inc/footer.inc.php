@@ -164,6 +164,11 @@ if (get_current_URL_name('calendar')) {
         'js/daterangepicker.js'
     );
 }
+if (get_current_URL_name('news')) {
+    $page_js_res = array(
+        'js/fancybox/jquery.fancybox.js'
+    );
+}
  
 $JS_conf_arr = array(
     'MyHOSTNAME' => site_proto().$_SERVER['HTTP_HOST'].$CONF['hostname'],

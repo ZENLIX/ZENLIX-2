@@ -882,6 +882,15 @@ $(document).ready(function() {
 ###############################################
 */
     //
+
+    if (ispath('news')) {
+        $('.fancybox').fancybox({
+            openEffect: 'elastic',
+            closeEffect: 'elastic'
+        });
+}
+
+
     if (ispath('scheduler')) {
         $('body').on('click', 'button#cron_delete', function(event) {
             event.preventDefault();

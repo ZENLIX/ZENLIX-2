@@ -12,6 +12,11 @@ $stmt->execute(array(
 
 $post = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
+if (empty($post)){
+    header("Location: " . site_proto() . $_SERVER['HTTP_HOST'] . $CONF['hostname']);
+}
+
 $validate = false;
 if ((validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) || (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code']))) {
     $validate = true;

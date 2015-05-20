@@ -19,6 +19,14 @@ if (get_current_URL_name('create')) {
     );
 }
 
+
+if (get_current_URL_name('news')) {
+    $rstyle = array(
+        'js/fancybox/jquery.fancybox.css'
+    );
+}
+
+
 if (get_current_URL_name('deps')) {
     $rstyle = array(
         'js/bootstrap3-editable/css/bootstrap-editable.css',
