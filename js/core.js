@@ -1594,18 +1594,154 @@ php:
                 });
             }
         });
-    }
+    } 
     if (ispath('ticket')) {
+
+
+
+var ids = [];
+
+        $('body').on('click', 'button#do_comment', function(event) {
+            event.preventDefault();
+            var tid = $(this).attr('value');
+            var usr = $(this).attr('user');
+            var m = $("textarea#msg").val().length;
+            if ($("textarea#msg").val().replace(/ /g, '').length > 1) {
+                $("textarea#msg").popover('hide');
+                $("#for_msg").removeClass('has-error').addClass('has-success');
+
+
+console.log(ids);
+
+                $.ajax({
+                    type: "POST",
+                    url: ACTIONPATH,
+                    data: "mode=add_comment" + "&user=" + encodeURIComponent(usr) + "&textmsg=" + encodeURIComponent(($("textarea#msg").val())) + "&tid=" + tid+
+                    "&files="+ids,
+                    success: function(html) {
+                        $("#comment_content").html(html);
+                        $("textarea#msg").val('')
+                        makemytime(true);
+                        //comment_body
+                        var scroll = $('#comment_body');
+                        var height = scroll[0].scrollHeight;
+                        scroll.scrollTop(height);
+                        $("#previews").html('');
+                        ids = [];
+                        //console.log(height);
+                    }
+                });
+            } else {
+                $("textarea#msg").popover('show');
+                $("#for_msg").addClass('has-error');
+                setTimeout(function() {
+                    $("textarea#msg").popover('hide');
+                }, 2000);
+            }
+        });
+
+
+        if ($('#myid').length) {
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+            var ph = '1';
+            $('#myid').dropzone({
+                url: ACTIONPATH,
+                maxFilesize: 100,
+                paramName: "myfile",
+                params: {
+                    mode: 'upload_manual_file',
+                    post_hash: ph,
+                    type: '1'
+                },
+                removedfile: function(file) {
+                  
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                maxThumbnailFilesize: 5,
+                previewTemplate: previewTemplate,
+                previewsContainer: "#previews",
+                autoQueue: true,
+                maxFiles: 50,
+                init: function() {
+
+
+//var ids = [];
+
+
+
+
+
+                    this.on('success', function(file, response) {
+                        //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
+                        //$.each(json, function(i, item) {
+                        //var obj = jQuery.parseJSON(json);
+                        var obj = jQuery.parseJSON(response);
+                        //console.log(obj);
+                        $.each(obj, function(i, item) {
+                            if (item.status == "ok") {
+                                $(file.previewTemplate).append('<input type="hidden" class="server_file" value="' + item.uniq_code + '">');
+
+
+ids.push(item.uniq_code);
+//console.log(ids);
+
+                            } else if (item.status == "error") {
+                                //$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
+                                $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' + item.msg + '</div>').fadeOut(3000);
+                            }
+                        })
+                        //});
+                    });
+                    this.on("removedfile", function(file) {
+                        var server_file = $(file.previewTemplate).children('.server_file').val();
+                        //console.log(server_file);
+
+ids = jQuery.grep(ids, function(value) {
+  return value != server_file;
+});
+//console.log(ids);
+
+
+
+
+
+
+                        $.ajax({
+                            type: 'POST',
+                            url: ACTIONPATH,
+                            data: "mode=delete_manual_file" + "&uniq_code=" + server_file,
+                            dataType: 'html',
+                        });
+                    });
+                    this.on("addedfile", function(file) {
+                        //console.log(file);
+                    });
+                    this.on('drop', function(file) {
+                        //alert('file');
+                    });
+                }
+            });
+        }
+
+
         var scroll = $('#comment_body');
         var height = scroll[0].scrollHeight;
         scroll.scrollTop(height);
-        $('.file-inputs').bootstrapFileInput();
+        $('input.file-inputs').bootstrapFileInput();
         $('#do_comment_file').change(function() {
             upl();
         });
         //tab_2
         $('body').on('click', 'a#get_new_log', function(event) {
             event.preventDefault();
+
+
+
+
             var t_id = $('#ticket_hash').val();
             $.ajax({
                 type: "POST",
@@ -1995,37 +2131,7 @@ php:
                 });
             }
         });
-        $('body').on('click', 'button#do_comment', function(event) {
-            event.preventDefault();
-            var tid = $(this).attr('value');
-            var usr = $(this).attr('user');
-            var m = $("textarea#msg").val().length;
-            if ($("textarea#msg").val().replace(/ /g, '').length > 1) {
-                $("textarea#msg").popover('hide');
-                $("#for_msg").removeClass('has-error').addClass('has-success');
-                $.ajax({
-                    type: "POST",
-                    url: ACTIONPATH,
-                    data: "mode=add_comment" + "&user=" + encodeURIComponent(usr) + "&textmsg=" + encodeURIComponent(($("textarea#msg").val())) + "&tid=" + tid,
-                    success: function(html) {
-                        $("#comment_content").html(html);
-                        $("textarea#msg").val('')
-                        makemytime(true);
-                        //comment_body
-                        var scroll = $('#comment_body');
-                        var height = scroll[0].scrollHeight;
-                        scroll.scrollTop(height);
-                        //console.log(height);
-                    }
-                });
-            } else {
-                $("textarea#msg").popover('show');
-                $("#for_msg").addClass('has-error');
-                setTimeout(function() {
-                    $("textarea#msg").popover('hide');
-                }, 2000);
-            }
-        });
+
         $("#refer_to").hide();
         $("#t_users_do").select2({
             formatResult: format,
@@ -3243,6 +3349,9 @@ view_helper_cat();
         },5000);*/
     }
     if (ispath('create')) {
+
+
+
         if ($('#myid').length) {
             var previewNode = document.querySelector("#template");
             previewNode.id = "";
@@ -3258,6 +3367,7 @@ view_helper_cat();
                     post_hash: ph,
                     type: '1'
                 },
+
                 removedfile: function(file) {
                     //console.log('d:'+file);
                     //var name = file.name;
@@ -3278,6 +3388,16 @@ $.ajax({
                 autoQueue: true,
                 maxFiles: 50,
                 init: function() {
+
+
+
+
+
+                    // Using a closure.
+      //var _this = this;
+
+
+
                     this.on('success', function(file, response) {
                         //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
                         //$.each(json, function(i, item) {
@@ -3296,13 +3416,14 @@ $.ajax({
                     });
                     this.on("removedfile", function(file) {
                         var server_file = $(file.previewTemplate).children('.server_file').val();
-                        //console.log(server_file);
+                        //
                         $.ajax({
                             type: 'POST',
                             url: ACTIONPATH,
                             data: "mode=delete_post_file" + "&uniq_code=" + server_file,
                             dataType: 'html',
                         });
+                        //console.log(file);
                     });
                     this.on("addedfile", function(file) {
                         console.log(file);

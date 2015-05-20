@@ -1,6 +1,6 @@
 <?php
-session_start();
-include_once ("../functions.inc.php");
+//session_start();
+//include_once ("../functions.inc.php");
 $CONF['title_header'] = lang('DASHBOARD_TITLE') . " - " . $CONF['name_of_firm'];
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {

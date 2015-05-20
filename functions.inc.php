@@ -214,7 +214,7 @@ else if ($forhostname <> "/") {
 
 function get_user_lang() {
     global $dbConnection;
-    
+    if (isset($_SESSION['helpdesk_user_id'])){
     $mid = $_SESSION['helpdesk_user_id'];
     $stmt = $dbConnection->prepare('SELECT lang from users where id=:mid');
     $stmt->execute(array(
@@ -230,6 +230,8 @@ function get_user_lang() {
     else {
         $ress = $max_id;
     }
+}
+else {$ress=get_conf_param('lang_def');}
     return $ress;
 }
 
@@ -533,7 +535,7 @@ function get_deadline_label($in) {
         ':id' => $in
     ));
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+    $r=NULL;
     $status = $row['n'];
     $date_finish = $row['deadline_time'];
     
@@ -2180,6 +2182,12 @@ function view_comment($tid) {
         
         // if (startsWith($rews['comment_text'], '[file:') ) { $ct="file"; }
         // else if (!startsWith($rews['comment_text'], '[file:')) {$ct=make_html($rews['comment_text'], true); }
+
+
+
+
+
+/*
         if (substr($rews['comment_text'], 0, 6) === "[file:") {
             
             $arr_hash = explode(":", $rews['comment_text']);
@@ -2210,6 +2218,61 @@ function view_comment($tid) {
             
             $ct.= '</div>';
         } 
+
+*/
+$fl=strpos(make_html($rews['comment_text'], true),'[files:');
+
+if ($fl !== false) {
+    
+
+
+$cline=substr(make_html($rews['comment_text'], true), strpos(make_html($rews['comment_text'], true),'[files:'));
+
+$cline=rtrim($cline, "]");
+
+
+
+$cline_res=explode(":", $cline);
+
+$some_arr=explode(",", $cline_res[1]);
+
+$ct = substr(make_html($rews['comment_text'], true), 0, strpos(make_html($rews['comment_text'], true),'[files:'));
+$ct .= '<div class=\'text-muted\' style=\'margin-bottom: 5px;\'><em><small>' . lang('EXT_attach_file') . '</small> <br></em>';
+
+foreach ($some_arr as $f_hash) {
+
+$stmt2 = $dbConnection->prepare('SELECT original_name, file_size,file_type,file_ext FROM files where file_hash=:tid');
+            $stmt2->execute(array(
+                ':tid' => $f_hash
+            ));
+$file_arr = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+$fts = array(
+                'image/jpeg',
+                'image/gif',
+                'image/png'
+            );
+            
+            if (in_array($file_arr['file_type'], $fts)) {
+                
+                $ct.= ' <small><a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'><img style=\'max-height:100px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'></a>  </small> ';
+            } 
+            else {
+                $ct.= get_file_icon($f_hash) . ' <small><a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $f_hash . '\'>' . $file_arr['original_name'] . '</a> ' . round(($file_arr['file_size'] / (1024 * 1024)) , 2) . ' Mb </small><br>';
+            }
+
+    # code...
+}
+$ct.= '</div>';
+
+
+
+}
+
+
+
+
+
         else {
             $ct = make_html($rews['comment_text'], true);
         }
@@ -3656,6 +3719,7 @@ function get_unit_name_return($input) {
 
 function view_array($in) {
     $end_element = array_pop($in);
+    $res=NULL;
     foreach ($in as $value) {
         
         // делаем что-либо с каждым элементом
@@ -4555,7 +4619,11 @@ function get_user_val_by_id($id, $in) {
 
 function get_user_name($in) {
     $parts = explode(" ", $in);
-    return $parts[1];
+
+if (isset($parts[1])) {return $parts[1];}
+
+
+    
 }
 
 function get_user_val($in) {
@@ -4572,7 +4640,7 @@ function get_user_val($in) {
     return $fior[0];
 }
 
-function get_logo_img($type) {
+function get_logo_img($type=NULL) {
     global $CONF;
     
     if (isset($type)) {
@@ -6366,7 +6434,7 @@ function get_total_client_tickets_ok($in) {
     return $count[0];
 }
 
-function get_total_tickets_lock($in) {
+function get_total_tickets_lock($in=NULL) {
     global $dbConnection;
     if (empty($in)) {
         $uid = $_SESSION['helpdesk_user_id'];
@@ -6382,7 +6450,7 @@ function get_total_tickets_lock($in) {
     $count = $res->fetch(PDO::FETCH_NUM);
     return $count[0];
 }
-function get_total_tickets_ok($in) {
+function get_total_tickets_ok($in=NULL) {
     global $dbConnection;
     if (empty($in)) {
         $uid = $_SESSION['helpdesk_user_id'];
@@ -6398,7 +6466,7 @@ function get_total_tickets_ok($in) {
     
     return $count[0];
 }
-function get_total_tickets_out_and_success($in) {
+function get_total_tickets_out_and_success($in=NULL) {
     global $dbConnection;
     
     if (empty($in)) {
@@ -6665,7 +6733,7 @@ function get_total_pages($menu, $id) {
         $priv_val = priv_status($id);
         $units = explode(",", $unit_user);
         $units = implode("', '", $units);
-        
+        $in_query=NULL;
         $ee = explode(",", $unit_user);
         foreach ($ee as $key => $value) {
             $in_query = $in_query . ' :val_' . $key . ', ';
@@ -7297,14 +7365,14 @@ function name_of_user_ret_nolink($input) {
             ':input' => $input
         ));
         $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-        $res.= $fio['fio'];
+        $res= $fio['fio'];
     }
     return ($res);
 }
 
 function name_of_user_ret($input) {
     global $dbConnection;
-    
+    $res=NULL;
     $u = explode(",", $input);
     $u_count = count($u);
     
@@ -7315,7 +7383,7 @@ function name_of_user_ret($input) {
                 ':input' => $val
             ));
             $fio = $stmt->fetch(PDO::FETCH_ASSOC);
-            $res= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>, ";
+            $res.= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>, ";
         }
         $res = substr($res, 0, -2);
     } 
@@ -7326,7 +7394,7 @@ function name_of_user_ret($input) {
         ));
         $fio = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $res= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>";
+        $res.= "<a href='view_user?" . $fio['uniq_id'] . "'>" . $fio['fio'] . "</a>";
     }
     return ($res);
 }

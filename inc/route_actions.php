@@ -3,12 +3,21 @@
 function get_privs() {
     $val_status = 'GUEST';
     
+
+if (isset($_SESSION['helpdesk_user_id'],$_SESSION['code'])) {
+
     if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $val_status = 'USER';
     } 
     else if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $val_status = 'CLIENT';
     }
+}
+else {
+    $val_status='GUEST';
+}
+
+
     
     return $val_status;
 }
@@ -45,6 +54,14 @@ function auth() {
     //echo $_POST['login'];
     global $dbConnection, $CONF;
     
+
+
+
+if (!isset($_POST['remember_me'])) {
+    $_POST['remember_me']=NULL;
+}
+
+
     /////////////////START IF LOGIN-AUTH FORM SUBMITTED/////////////////////////
     
     //echo($_COOKIE['authhash_code']);
@@ -147,6 +164,11 @@ function auth() {
         }
     }
     
+
+
+//if ()
+
+
     if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code']) || validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         
         $url = parse_url($CONF['hostname']);

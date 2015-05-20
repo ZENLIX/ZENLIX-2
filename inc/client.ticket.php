@@ -613,7 +613,8 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             't_true' => $t_true,
             'TICKET_t_no' => lang('TICKET_t_no') ,
             'TICKET_file_list' => lang('TICKET_file_list') ,
-            'FIELD_add_title' => lang('FIELD_add_title')
+            'FIELD_add_title' => lang('FIELD_add_title'),
+            'PORTAL_fileplace'=>lang('PORTAL_fileplace')
         ));
     }
     catch(Exception $e) {

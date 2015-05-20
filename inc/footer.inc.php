@@ -5,7 +5,7 @@ global $lang;
 if ($lang == "ua") {
     $lang = "uk";
 }
-
+$page_js_res=NULL;
 if (get_current_URL_name('create')) {
     $page_js_res = array(
         'js/jquery.ui.autocomplete.js',
@@ -60,7 +60,8 @@ if (get_current_URL_name('ticket')) {
         'js/jquery.autosize.min.js',
         'js/bootstrap.file-input.js',
         'js/fancybox/jquery.fancybox.js',
-        'js/moment-duration-format.js'
+        'js/moment-duration-format.js',
+        'js/dropzone.js'
     );
 }
 if (get_current_URL_name('config')) {

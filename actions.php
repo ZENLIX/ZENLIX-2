@@ -6146,7 +6146,7 @@ a, a:visited {
             //priv_status($_SESSION['helpdesk_user_login']);
             $units = explode(",", $unit_user);
             $units = implode("', '", $units);
-            
+            $in_query=NULL;
             $ee = explode(",", $unit_user);
             foreach ($ee as $key => $value) {
                 $in_query = $in_query . ' :val_' . $key . ', ';
@@ -6228,6 +6228,11 @@ a, a:visited {
             <?php
             }
             if ($aha <> "0") {
+$id_icon=NULL;
+$prio_icon=NULL;
+$subj_icon=NULL;
+$cli_icon=NULL;
+$init_icon=NULL;
 ?>
 
                 <input type="hidden" value="<?php
@@ -7548,7 +7553,7 @@ a, a:visited {
                 $p_old = md5(($_POST['old_pass']));
                 $p_new = md5(($_POST['new_pass']));
                 $p_new2 = md5(($_POST['new_pass2']));
-                $id = ($_POST['id']);
+                $id = ($_SESSION['helpdesk_user_id']);
                 
                 $stmt = $dbConnection->prepare('select pass from users where id=:id');
                 $stmt->execute(array(
@@ -8517,8 +8522,22 @@ values (:edit_msg, :n, :unow, :pk)');
             $tid_comment = get_ticket_id_by_hash($_POST['tid']);
             
             //$text_comment=strip_tags(xss_clean(($_POST['textmsg'])),"<b><a><br>");
+
+
+if (!empty($_POST['files'])) {
+
+$f_list.="[files:";
+$f_list.=$_POST['files'];
+$f_list.="]";
+
+}
+
+
             $text_comment = $_POST['textmsg'];
-            
+            $text_comment=$text_comment."<br>".$f_list;
+
+
+
             //if ($_SESSION['helpdesk_user_type'] == "user") {
             
             $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
@@ -8550,6 +8569,10 @@ values (:comment, :n, :user_comment, :tid_comment)');
             ));
             
             view_comment($tid_comment);
+
+//echo $_POST['files'];
+
+
         }
         
         if ($mode == "upload_file") {

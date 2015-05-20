@@ -1,4 +1,7 @@
 <?php
+
+$rstyle=array();
+
 if (get_current_URL_name('subj')) {
     $rstyle = array(
         'js/bootstrap3-editable/css/bootstrap-editable.css'

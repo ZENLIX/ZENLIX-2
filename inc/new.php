@@ -1,6 +1,4 @@
 <?php
-session_start();
-include_once ("../functions.inc.php");
 $CONF['title_header'] = lang('NEW_title') . " - " . $CONF['name_of_firm'];
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
@@ -169,6 +167,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $fields_forms = $new_ticket_form->get_fields_forms();
         
         $ok_msg = false;
+        $h=NULL;
         if (isset($_GET['ok'])) {
             if (isset($_GET['h'])) {
                 $h = $_GET['h'];

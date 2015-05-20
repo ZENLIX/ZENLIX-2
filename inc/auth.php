@@ -10,6 +10,16 @@ else if ($CONF['main_portal'] == false) {
     $link = "index.php";
 }
 
+
+if (!isset($va)) {
+    $va=NULL;
+}
+
+
+if (!isset($_SESSION['z.times'])) {
+    $_SESSION['z.times']=NULL;
+}
+
 if ($_SESSION['z.times'] >= 5) {
     
     //$vart = "bf";
@@ -33,6 +43,12 @@ else if ($_SESSION['z.times'] < 5) {
     //показать форму логина
     $login_form = true;
 }
+
+
+
+
+
+
 
 $allow_register = false;
 if (get_conf_param('allow_register') == "true") {

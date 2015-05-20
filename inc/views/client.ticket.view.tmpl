@@ -103,7 +103,7 @@
 {% endfor %}
  </tbody>
             </table>
-{% endif %}
+{% endif %} 
 
             <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;   background-color: #FDFDFD;">
                                 {{msg | raw}}
@@ -280,30 +280,60 @@
                                     
                                 </div><!-- /.chat -->
                                 <div class="box-footer">
-                                    <div class="" id="for_msg">
-                                        
+                                    <div class="row" id="for_msg">
+                                        <div class="col-md-12">
 
 
 <textarea id="msg" name="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="&lt;small&gt;{{TICKET_t_det_ticket}}&lt;/small&gt;" placeholder="{{TICKET_t_comm_ph}}"></textarea>
-</div>
+ <div class="text-muted well well-sm no-shadow" id="myid" style="margin-bottom: 0px;">
 
+                          <div class="dz-message" data-dz-message>
+                            <center class="text-muted"><small>{{PORTAL_fileplace}}</small></center>
+                          </div>
 
+                          <style type="text/css">
+                          .note-editor .note-dropzone { opacity: 0 !important; }
+                          </style>
 
+                          <form action="upload.php" class=""></form>
 
+                        <div class="table table-striped" class="files" id="previews" style="margin-bottom: 0px;">
+                          <div id="template" class="file-row">
 
-
-<div class="">
-<div style="height: 30px;" class="">
-
-                                        <div class="btn-group pull-right">
+                            <table class="table" style="margin-bottom: 0px;">
+                              <tbody><tr>
+                                <th style="width:50%"><p class="name" data-dz-name></p> </th>
+                                <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                                <td style="width:30%"><div class="progress progress-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                  <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                </div></td>
+                                <td class="pull-right"><button data-dz-remove class="btn btn-sm btn-danger delete">
+                                  <i class="glyphicon glyphicon-trash"></i>
+                                  <span>Delete</span>
+                                </button></td>
+                              </tr>
+                            </tbody></table>
+                          </div>
+                        </div>
+                        </div><div style="height: 30px;" class="">
+                        <div class="btn-group pull-right">
                                             <button value="{{hn}}" id="do_comment" class="btn btn-success btn-sm"><i class="fa fa-comment"></i></button>
+
+                                          
                                             
-  <input type="file" id="do_comment_file" value="{{hn}}" class="file-inputs" title="+">
+  <!--input type="file" id="do_comment_file" value="{{hn}}" class="file-inputs" title="+"-->
                                             
                                             
                                             </div>
-                                        </div>
+
+                                        
+                                       
                                     </div>
+                        </div>
+
+</div>
+        
+                      
                                 </div>
                             </div>
                                     </div><!-- /.tab-pane -->
