@@ -1487,8 +1487,8 @@ $message=$template->render(array(
 'MAIL_msg'=>$MAIL_msg,
 'MAIL_subj'=>$MAIL_subj,
 's'=>$s,
-'MAIL_text'=>$MAIL_text,
-'m'=>$m,
+'MAIL_text'=>strip_tags($MAIL_text),
+'m'=>strip_tags($m),
 'h'=>$h,
 
 ));
@@ -1674,8 +1674,8 @@ $message=$template->render(array(
 'MAIL_msg'=>$MAIL_msg,
 'MAIL_subj'=>$MAIL_subj,
 's'=>$s,
-'MAIL_text'=>$MAIL_text,
-'m'=>$m,
+'MAIL_text'=>strip_tags($MAIL_text),
+'m'=>strip_tags($m),
 'h'=>$h   ));
 
         }
@@ -1768,7 +1768,7 @@ $message=$template->render(array(
 'MAIL_msg_comment'=>$MAIL_msg_comment,
 'MAIL_msg_comment_ext'=>$MAIL_msg_comment_ext,
 'who_init'=>$who_init,
-'comment'=>$comment,
+'comment'=>strip_tags($comment),
 'MAIL_code'=>$MAIL_code,
 'ticket_id'=>$ticket_id,
 'MAIL_2link'=>$MAIL_2link,
@@ -1784,8 +1784,8 @@ $message=$template->render(array(
 'MAIL_msg'=>$MAIL_msg,
 'MAIL_subj'=>$MAIL_subj,
 's'=>$s,
-'MAIL_text'=>$MAIL_text,
-'m'=>$m,
+'MAIL_text'=>strip_tags($MAIL_text),
+'m'=>strip_tags($m),
 'h'=>$h
    
     ));
@@ -1955,8 +1955,8 @@ $message=$template->render(array(
 'MAIL_msg' =>$MAIL_msg,
 'MAIL_subj' =>$MAIL_subj,
 's' =>$s,
-'MAIL_text' =>$MAIL_text,
-'m' =>$m,
+'MAIL_text' =>strip_tags($MAIL_text),
+'m' =>strip_tags($m),
 'h' =>$h
    
     ));
@@ -2095,8 +2095,8 @@ $message=$template->render(array(
 'MAIL_msg'=>$MAIL_msg,
 'MAIL_subj'=>$MAIL_subj,
 's'=>$s,
-'MAIL_text'=>$MAIL_text,
-'m'=>$m,
+'MAIL_text'=>strip_tags($MAIL_text),
+'m'=>strip_tags($m),
 'h'=>$h
 
     ));
@@ -2232,8 +2232,8 @@ $message=$template->render(array(
 'MAIL_msg'=>$MAIL_msg,
 'MAIL_subj'=>$MAIL_subj,
 's'=>$s,
-'MAIL_text'=>$MAIL_text,
-'m'=>$m,
+'MAIL_text'=>strip_tags($MAIL_text),
+'m'=>strip_tags($m),
 'h'=>$h
     ));
 
@@ -2334,8 +2334,8 @@ $message=$template->render(array(
 'MAIL_msg'=>$MAIL_msg,
 'MAIL_subj'=>$MAIL_subj,
 's'=>$s,
-'MAIL_text'=>$MAIL_text,
-'m'=>$m,
+'MAIL_text'=>strip_tags($MAIL_text),
+'m'=>strip_tags($m),
 'h'=>$h
    ));
 
