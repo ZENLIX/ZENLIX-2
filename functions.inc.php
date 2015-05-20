@@ -2220,13 +2220,13 @@ function view_comment($tid) {
         } 
 
 */
-$fl=strpos(make_html($rews['comment_text'], true),'[files:');
+$fl=strpos(make_html($rews['comment_text'], true),'[file:');
 
 if ($fl !== false) {
     
 
 
-$cline=substr(make_html($rews['comment_text'], true), strpos(make_html($rews['comment_text'], true),'[files:'));
+$cline=substr(make_html($rews['comment_text'], true), strpos(make_html($rews['comment_text'], true),'[file:'));
 
 $cline=rtrim($cline, "]");
 
@@ -2236,7 +2236,7 @@ $cline_res=explode(":", $cline);
 
 $some_arr=explode(",", $cline_res[1]);
 
-$ct = substr(make_html($rews['comment_text'], true), 0, strpos(make_html($rews['comment_text'], true),'[files:'));
+$ct = substr(make_html($rews['comment_text'], true), 0, strpos(make_html($rews['comment_text'], true),'[file:'));
 $ct .= '<div class=\'text-muted\' style=\'margin-bottom: 5px;\'><em><small>' . lang('EXT_attach_file') . '</small> <br></em>';
 
 foreach ($some_arr as $f_hash) {

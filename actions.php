@@ -8526,7 +8526,7 @@ values (:edit_msg, :n, :unow, :pk)');
 
 if (!empty($_POST['files'])) {
 
-$f_list.="[files:";
+$f_list.="[file:";
 $f_list.=$_POST['files'];
 $f_list.="]";
 

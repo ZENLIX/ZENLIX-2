@@ -162,13 +162,13 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
         */ 
 
-$fl=strpos(make_html($tc, true),'[files:');
+$fl=strpos(make_html($tc, true),'[file:');
 
 if ($fl !== false) {
     
 
 
-$cline=substr(make_html($tc, true), strpos(make_html(tc, true),'[files:'));
+$cline=substr(make_html($tc, true), strpos(make_html(tc, true),'[file:'));
 
 $cline=rtrim($cline, "]");
 
@@ -178,7 +178,7 @@ $cline_res=explode(":", $cline);
 
 $some_arr=explode(",", $cline_res[1]);
 
-$ct = substr(make_html($tc, true), 0, strpos(make_html($tc, true),'[files:'));
+$ct = substr(make_html($tc, true), 0, strpos(make_html($tc, true),'[file:'));
 $ct .= '<div class=\'text-muted\' style=\'margin-bottom: 5px;\'><em><small>' . lang('EXT_attach_file') . '</small> <br></em>';
 
 foreach ($some_arr as $f_hash) {
