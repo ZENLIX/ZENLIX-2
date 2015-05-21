@@ -1281,7 +1281,7 @@ $message=$template->render(array(
 'uin'=>$AUTHOR_POST,
 'to_text'=>$SUBJ_POST,
 'who_init'=>$AUTHOR_POST,
-'comment'=>$POST_COMMENT,
+'comment'=>strip_tags($POST_COMMENT),
 'h'=>$THREAD_HASH
 
 ));
@@ -1389,7 +1389,7 @@ $message=$template->render(array(
 'uin'=>$AUTHOR_POST,
 'to_text'=>$SUBJ_POST,
 'who_init'=>$AUTHOR_POST,
-'comment'=>$POST_COMMENT,
+'comment'=>strip_tags($POST_COMMENT),
 'h'=>$THREAD_HASH
 
 ));

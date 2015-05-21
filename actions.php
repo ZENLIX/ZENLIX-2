@@ -96,6 +96,8 @@ if (isset($_POST['mode'])) {
                     
                     $subject = $CONF['name_of_firm'] . " - password changed successfull";
                     
+
+                    /*
                     ob_start();
                     $base = dirname(__FILE__);
                     include ($base . "/inc/mail_tmpl/forgot_mail_success.tpl");
@@ -113,6 +115,53 @@ if (isset($_POST['mode'])) {
                     //$message = str_replace("{link}", '<a href=\''.$link4mail.'\'>'.$link4mail.'</a>', $message);
                     
                     //$msg.=$message;
+
+                    */
+
+
+
+try {
+            $base = dirname(__FILE__);
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('forgot_mail_success.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+
+
+'MAIL_forgot_success'=>lang('MAIL_forgot'),
+'MAIL_forgot_success_ext'=>lang('MAIL_forgot_ext'),
+'MAIL_info'=>lang('MAIL_REG_title_data'),
+'MAIL_login'=>lang('PORTAL_login_name'),
+'login'=>$loginname,
+'MAIL_pass'=>lang('CONF_mail_pass'),
+'pass'=>$_POST['p2'],
+'link'=>$link4mail,
+));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
                     
                     send_mail_reg($mail, $subject, $message);
                 }
@@ -187,6 +236,10 @@ if (isset($_POST['mode'])) {
                 
                 $subject = $CONF['name_of_firm'] . " - password recovery";
                 
+
+
+
+                /*
                 ob_start();
                 $base = dirname(__FILE__);
                 include ($base . "/inc/mail_tmpl/forgot_mail.tpl");
@@ -198,6 +251,49 @@ if (isset($_POST['mode'])) {
                 $message = str_replace("{MAIL_info}", lang('MAIL_REG_title_data') , $message);
                 $message = str_replace("{MAIL_forgot_link}", lang('MAIL_forgot_link') , $message);
                 $message = str_replace("{link}", '<a href=\'' . $link4mail . '\'>' . $link4mail . '</a>', $message);
+*/
+
+
+
+ try {
+            $base = dirname(__FILE__);
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+            $template = $twig->loadTemplate('forgot_mail.tpl');
+
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+
+
+'MAIL_forgot'=>lang('MAIL_forgot'),
+'MAIL_forgot_ext'=>lang('MAIL_forgot_ext'),
+'MAIL_info'=>lang('MAIL_REG_title_data'),
+'MAIL_forgot_link'=>lang('MAIL_forgot_link'),
+'link'=>$link4mail,
+));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
                 
                 send_mail_reg($mail, $subject, $message);
                 
@@ -253,26 +349,32 @@ if (isset($_POST['mode'])) {
         - Проверка правильный ли вообще email.
         - Проверка есть ли такой email - проверка дубликатов?
         */
-        
+
+
+            
         if (validate_exist_login($login) == false) {
             $errors = true;
             $el = lang('ticket_login_error') . "<br>";
         }
+        
         if (!validate_email($mail)) {
             $errors = true;
             $el.= lang('PROFILE_msg_error') . "<br>";
         }
+
         if (validate_exist_mail_not_auth($mail) == false) {
             $errors = true;
             $el.= lang('PROFILE_msg_error') . "(already exist)<br>";
         }
-        
+        /* */
+
+
         if ($errors == true) {
             $check_error = "false";
             $msg = "<div class=\"body bg-gray\">";
-            $msg.= "<div class=\"alert alert-danger alert-dismissable\">
+            $msg.= "<div class=\"alert alert-danger\">
                                         <i class=\"fa fa-ban\"></i>
-                                        <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">×</button>";
+                                        ";
             $msg.= $el;
             $msg.= "</div>";
             $msg.= "</div>";
@@ -337,7 +439,7 @@ if (isset($_POST['mode'])) {
             ));
             
             //send mail to user & admin
-            
+             /*
             $subject = $CONF['name_of_firm'] . " - registration successfull";
             
             ob_start();
@@ -353,7 +455,49 @@ if (isset($_POST['mode'])) {
             $message = str_replace("{MAIL_new_reg_pass}", lang('CONF_mail_pass') , $message);
             $message = str_replace("{login}", $login, $message);
             $message = str_replace("{pass}", $pass, $message);
+            */
+
+
+try {
+             $base = dirname(__FILE__);
+            // указывае где хранятся шаблоны
+            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
             
+            // инициализируем Twig
+            if (get_conf_param('twig_cache') == "true") {
+                $twig = new Twig_Environment($loader, array(
+                    'cache' => $base . '/inc/cache',
+                ));
+            } 
+            else {
+                $twig = new Twig_Environment($loader);
+            }
+            
+            // подгружаем шаблон
+$template = $twig->loadTemplate('register_mail.tpl');
+$subject = $CONF['name_of_firm'] . " - registration successfull";
+$message=$template->render(array(
+'real_hostname'=>$CONF['real_hostname'],
+'name_of_firm'=>get_conf_param('name_of_firm'),
+'MAIL_new_reg'=>lang('MAIL_REG_title'),
+'MAIL_new_reg_ext'=>lang('MAIL_REG_title_ext'),
+'MAIL_info'=>lang('MAIL_REG_title_data'),
+'MAIL_new_reg_login'=>lang('CONF_mail_login'),
+'login'=>$login,
+'MAIL_new_reg_pass'=>lang('CONF_mail_pass'),
+'pass'=>$pass
+   ));
+
+        }
+        catch(Exception $e) {
+            die('ERROR: ' . $e->getMessage());
+        }
+
+
+
+
+
+
             send_mail_reg($mail, $subject, $message);
         }
     }
