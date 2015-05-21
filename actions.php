@@ -8712,9 +8712,88 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 ':n' => $CONF['now_dt']
             ));
             
-            view_comment($tid_comment);
+            //view_comment($tid_comment);
+$fl=strpos(make_html($text_comment, true),'[file:');
 
-//echo $_POST['files'];
+if ($fl !== false) {
+    
+
+
+$cline=substr(make_html($text_comment, true), strpos(make_html($text_comment, true),'[file:'));
+
+$cline=rtrim($cline, "]");
+
+
+
+$cline_res=explode(":", $cline);
+
+$some_arr=explode(",", $cline_res[1]);
+
+$ct = substr(make_html($text_comment, true), 0, strpos(make_html($text_comment, true),'[file:'));
+$ct .= '<div class=\'text-muted\' style=\'margin-bottom: 5px;\'><em><small>' . lang('EXT_attach_file') . '</small> <br></em>';
+
+foreach ($some_arr as $f_hash) {
+
+$stmt2 = $dbConnection->prepare('SELECT original_name, file_size,file_type,file_ext FROM files where file_hash=:tid');
+            $stmt2->execute(array(
+                ':tid' => $f_hash
+            ));
+$file_arr = $stmt2->fetch(PDO::FETCH_ASSOC);
+
+$fts = array(
+                'image/jpeg',
+                'image/gif',
+                'image/png'
+            );
+            
+            if (in_array($file_arr['file_type'], $fts)) {
+                
+                $ct.= ' <small><a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'><img style=\'max-height:100px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'></a>  </small> ';
+            } 
+            else {
+                $ct.= get_file_icon($f_hash) . ' <small><a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $f_hash . '\'>' . $file_arr['original_name'] . '</a> ' . round(($file_arr['file_size'] / (1024 * 1024)) , 2) . ' Mb </small><br>';
+            }
+
+    # code...
+}
+$ct.= '</div>';
+
+
+
+}
+
+
+
+
+
+        else {
+            $ct = make_html($text_comment, true);
+        }
+?>
+ <!-- Message. Default to the left -->
+                    <div class="direct-chat-msg">
+                      <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-name pull-left"><a href="view_user?<?php
+        echo get_user_hash_by_id($user_comment); ?>" class="name">
+                                                
+                                                <?php
+        echo $ru; ?>
+                                            </a></span>
+                        <span class="direct-chat-timestamp pull-right"><small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 
+                                                <time id="b" datetime="<?php
+        echo $CONF['now_dt']; ?>"></time> <time id="c" datetime="<?php
+        echo $CONF['now_dt']; ?>"></time>
+                                                </small></span>
+                      </div><!-- /.direct-chat-info -->
+                      <img class="direct-chat-img <?php
+        echo get_user_status_text($user_comment); ?>"  src="<?php
+        echo get_user_img_by_id($user_comment); ?>" alt=""><!-- /.direct-chat-img -->
+                      <div class="direct-chat-text">
+                     <?php
+        echo $ct; ?>
+                      </div><!-- /.direct-chat-text -->
+                    </div><!-- /.direct-chat-msg -->
+<?php
 
 
         }
