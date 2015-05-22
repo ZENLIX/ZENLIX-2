@@ -656,6 +656,132 @@ function randomhash() {
     return implode($pass);
 }
 
+
+function send_notification_ticket_comment($tid_comment) {
+    global $dbConnection, $now_date_time;
+
+    $zenlix_session_id = "api";
+
+$stmt_notificate = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_create,subj,msg, client_id, unit_id, status, hash_name, prio,last_update FROM tickets where id=:tid');
+    $stmt_notificate->execute(array(
+        ':tid' => $tid_comment
+    ));
+    $res_ticket = $stmt_notificate->fetch(PDO::FETCH_ASSOC);
+    
+    $user_to_id = $res_ticket['user_to_id'];
+    $unit_to_id = $res_ticket['unit_id'];
+    $user_init_id = $res_ticket['user_init_id'];
+        // отправить письмо автору заявки, исполнителям, всех кто есть в комментариях
+        // $user_init_id, $user_to_id,
+        // узнать
+        $delivers_ids = array();
+        
+        $stmt = $dbConnection->prepare('SELECT init_user_id FROM ticket_log where ticket_id=:id and msg=:n');
+        $stmt->execute(array(
+            ':n' => 'comment',
+            ':id' => $tid_comment
+        ));
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $qrow) {
+            
+            //всем кто в комментах есть
+            array_push($delivers_ids, $qrow['init_user_id']);
+        }
+        
+        //автору заявки
+        array_push($delivers_ids, $user_init_id);
+        
+        ///////////Исполнителям?///////////////////
+        if ($user_to_id == 0) {
+            
+            //выбрать всех с отдела
+            $stmt = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and status=:n and is_client=0');
+            $stmt->execute(array(
+                ':n' => '1',
+                ':id' => $unit_to_id
+            ));
+            $res1 = $stmt->fetchAll();
+            
+            foreach ($res1 as $qrow) {
+                array_push($delivers_ids, $qrow['id']);
+            }
+        } 
+        else if ($user_to_id <> 0) {
+            $users = explode(",", $user_to_id);
+            foreach ($users as $val) {
+                
+                //всем исполнителям
+                array_push($delivers_ids, $val);
+            }
+        }
+        
+        ///////////Исполнителям?///////////////////
+        
+        //кто прокомментировал - тому не слать
+        //SELECT id,init_user_id FROM ticket_log where ticket_id=1 and msg='comment' order by id DESC limit 1
+        $stmt = $dbConnection->prepare("SELECT init_user_id FROM ticket_log where ticket_id=:id and msg=:n order by id DESC limit 1");
+        $stmt->execute(array(
+            ':n' => 'comment',
+            ':id' => $tid_comment
+        ));
+        $who_last = $stmt->fetch(PDO::FETCH_NUM);
+        $res = $who_last[0];
+        
+        $delivers_ids = array_unique($delivers_ids);
+        $del_nodes = $delivers_ids;
+        if (($key = array_search($res, $delivers_ids)) !== false) {
+            unset($delivers_ids[$key]);
+        }
+        
+        $init_user_h = get_user_hash_by_id($res);
+        
+        foreach ($del_nodes as $uniq_id_row) {
+            
+            $u_hash = get_user_hash_by_id($uniq_id_row);
+            $stmt_n = $dbConnection->prepare('insert into notification_msg_pool (delivers_id, type_op, ticket_id, dt, session_id, user_init) VALUES (:delivers_id, :type_op, :tid, :n, :s, :ui)');
+            $stmt_n->execute(array(
+                ':delivers_id' => $u_hash,
+                ':type_op' => 'ticket_comment',
+                ':tid' => $tid_comment,
+                ':n' => $now_date_time,
+                ':s' => $zenlix_session_id,
+                ':ui' => $init_user_h
+            ));
+        }
+        
+        $delivers_ids = implode(",", array_unique($delivers_ids));
+        
+        $stmt_log = $dbConnection->prepare('SELECT init_user_id FROM ticket_log where ticket_id=:tid and msg=:msg order by ID desc limit 1');
+        $stmt_log->execute(array(
+            ':tid' => $tid_comment,
+            ':msg' => 'comment'
+        ));
+        $ticket_log_res = $stmt_log->fetch(PDO::FETCH_ASSOC);
+        $who_init = $ticket_log_res['init_user_id'];
+        
+        $stmt = $dbConnection->prepare('insert into news (date_op, msg, init_user_id, target_user, ticket_id) 
+                                                           VALUES (:n, :msg, :init_user_id, :target_user,:ticket_id)');
+        $stmt->execute(array(
+            ':msg' => 'ticket_comment',
+            ':init_user_id' => $who_init,
+            ':target_user' => $delivers_ids,
+            ':ticket_id' => $tid_comment,
+            ':n' => $now_date_time
+        ));
+        
+        $stmt = $dbConnection->prepare('insert into notification_pool (delivers_id, type_op, ticket_id, dt) VALUES (:delivers_id, :type_op, :tid, :n)');
+        $stmt->execute(array(
+            ':delivers_id' => $delivers_ids,
+            ':type_op' => 'ticket_comment',
+            ':tid' => $tid_comment,
+            ':n' => $now_date_time
+        ));
+
+
+
+}
+
+
 function add_file($hn, $name, $path) {
     global $dbConnection;
     
@@ -833,6 +959,29 @@ $ticketfrommail_id=substr($mt[0], 1);
 $user_comment = $user_init_id;
 $tid_comment = $ticketfrommail_id;
 $text_comment = $replyTextMsg;
+/*
+if (strpos($text_comment,'-- \n') !== false) {
+    $text_comment=substr($text_comment, 0, strpos($text_comment,'-- \n'));
+}
+if (strpos($text_comment,'--\n') !== false) {
+    $text_comment=substr($text_comment, 0, strpos($text_comment,'--\n'));
+}
+*/
+/*
+Lines that equal '-- \n' (standard email sig delimiter)
+Lines that equal '--\n' (people often forget the space in sig delimiter; and this is not that common outside sigs)
+Lines that begin with '-----Original Message-----' (MS Outlook default)
+Lines that begin with '________________________________' (32 underscores, Outlook again)
+Lines that begin with 'On ' and end with ' wrote:\n' (OS X Mail.app default)
+Lines that begin with 'From: ' (failsafe four Outlook and some other reply formats)
+Lines that begin with 'Sent from my iPhone'
+Lines that begin with 'Sent from my BlackBerry'
+*/
+
+
+
+
+
 
 $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
 values (:tid_comment, :user_comment, :text_comment, :n)');
@@ -852,7 +1001,18 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 ':n' => $now_date_time
             ));
             
-            send_notification('ticket_comment', $tid_comment);
+            send_notification_ticket_comment($tid_comment);
+
+
+
+
+
+
+
+
+
+
+
             
             //}
             
@@ -897,43 +1057,7 @@ else {
             $ft = get_conf_param('file_types');
             
             $ag = explode("|", $ft);
-            
-            /*
-            
-            
-            Весь текст в $message->all
-            загруженные данные сначала проверить расширение, размер и тд, если норм то добавить в бд
-            если нет то удалить
-            
-            в текст письма вставлять
-            ----------------------не удаляйте данный текст-------------------------
-            
-            если есть такое то добавлять к комментарию заявке
-            
-            
-            */
-            
-            /*
-            foreach ($attachments as $attachment) {
-            // Array of IncomingMailAttachment objects
-            
-                //echo $attachment->name;
-                $ext = pathinfo($attachment->filePath, PATHINFO_EXTENSION);
-                
-                //echo $attachment->filePath;
-            
-                if (in_array($ext, $ag)) {
-                
-                
-            add_file($hashname, $attachment->name, $attachment->filePath);
-            
-            
-            }
-            
-            }
-            */
-            
-            //$unow=$user_init_id;
+
             $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id, to_user_id, to_unit_id) values (:create, :n, :unow, :max_id_res_ticket, :user_to_id, :unit_id)');
             
             $stmt->execute(array(

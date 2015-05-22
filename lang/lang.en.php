@@ -7,7 +7,8 @@ function lang_en($phrase){
 'LOGIN_ERROR_desc' => 'You have exceeded the allowed number of login attempts. Try again later. ',
 
 'twig_cache'=>'TWIG-cache',
-
+'REPLY_INFORMATION_YES'=>'Please, do not edit or delete subject of this message, if you want to reply.',
+'REPLY_INFORMATION_NO'=>'Please, do not reply to this message.',
 'CALENDAR_allday' => 'All Day',
 'CALENDAR_title' => 'Calendar',
 'CALENDAR_title_desc' => 'Events',

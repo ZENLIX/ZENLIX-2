@@ -5,7 +5,8 @@ function lang_ru($phrase){
     
 
 'twig_cache'=>'TWIG-кэширование',
-
+'REPLY_INFORMATION_YES'=>'Пожалуйста, не меняйте темы письма, если хотите ответить на него.',
+'REPLY_INFORMATION_NO'=>'Пожалуйста, не отвечайте на это письмо.',
 'CALENDAR_allday'=>'Весь день',
 'CALENDAR_title'=>'Календарь',
 'CALENDAR_title_desc'=>'События и мероприятия',

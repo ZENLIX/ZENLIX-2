@@ -4,7 +4,8 @@ function lang_ua($phrase){
     
 
 'twig_cache'=>'TWIG-кешування',
-
+'REPLY_INFORMATION_YES'=>'Будь-ласка, не змінюйте теми цього повідомлення, якщо хочете відповісти на нього.',
+'REPLY_INFORMATION_NO'=>'Будь-ласка, не відповідайте на це повідомлення.',
 'CALENDAR allday' => 'Весь день',
 'CALENDAR title' => 'Календар',
 'CALENDAR title_desc' => 'Події та заходи',

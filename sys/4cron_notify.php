@@ -1282,7 +1282,8 @@ $message=$template->render(array(
 'to_text'=>$SUBJ_POST,
 'who_init'=>$AUTHOR_POST,
 'comment'=>strip_tags($POST_COMMENT),
-'h'=>$THREAD_HASH
+'h'=>$THREAD_HASH,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_NO')
 
 ));
 
@@ -1390,7 +1391,8 @@ $message=$template->render(array(
 'to_text'=>$SUBJ_POST,
 'who_init'=>$AUTHOR_POST,
 'comment'=>strip_tags($POST_COMMENT),
-'h'=>$THREAD_HASH
+'h'=>$THREAD_HASH,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_NO')
 
 ));
 
@@ -1490,6 +1492,7 @@ $message=$template->render(array(
 'MAIL_text'=>strip_tags($MAIL_text),
 'm'=>strip_tags($m),
 'h'=>$h,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_YES')
 
 ));
 
@@ -1676,7 +1679,8 @@ $message=$template->render(array(
 's'=>$s,
 'MAIL_text'=>strip_tags($MAIL_text),
 'm'=>strip_tags($m),
-'h'=>$h   ));
+'h'=>$h,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_YES')   ));
 
         }
         catch(Exception $e) {
@@ -1786,7 +1790,8 @@ $message=$template->render(array(
 's'=>$s,
 'MAIL_text'=>strip_tags($MAIL_text),
 'm'=>strip_tags($m),
-'h'=>$h
+'h'=>$h,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_YES')
    
     ));
 
@@ -1957,7 +1962,8 @@ $message=$template->render(array(
 's' =>$s,
 'MAIL_text' =>strip_tags($MAIL_text),
 'm' =>strip_tags($m),
-'h' =>$h
+'h' =>$h,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_YES')
    
     ));
 
@@ -2097,7 +2103,8 @@ $message=$template->render(array(
 's'=>$s,
 'MAIL_text'=>strip_tags($MAIL_text),
 'm'=>strip_tags($m),
-'h'=>$h
+'h'=>$h,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_YES')
 
     ));
 
@@ -2234,7 +2241,8 @@ $message=$template->render(array(
 's'=>$s,
 'MAIL_text'=>strip_tags($MAIL_text),
 'm'=>strip_tags($m),
-'h'=>$h
+'h'=>$h,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_YES')
     ));
 
         }
@@ -2336,7 +2344,8 @@ $message=$template->render(array(
 's'=>$s,
 'MAIL_text'=>strip_tags($MAIL_text),
 'm'=>strip_tags($m),
-'h'=>$h
+'h'=>$h,
+'REPLY_INFORMATION'=>lang($lang,'REPLY_INFORMATION_YES')
    ));
 
         }
