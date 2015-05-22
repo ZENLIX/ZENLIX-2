@@ -99,6 +99,7 @@ if ($CONF_HD['debug_mode'] == false) {
 }
 
 function check_user_noty_layot($in) {
+    $r=Null;
     $layot = get_user_val_by_id($_SESSION['helpdesk_user_id'], 'noty_layot');
     if ($in == $layot) {
         $r = "selected";

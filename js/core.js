@@ -633,7 +633,7 @@ $(document).ready(function() {
         var pt = $("#page_type").attr('value');
         $.ajax({
             type: "POST",
-            url: MyHOSTNAME + "inc/list_content.inc.php",
+            url: MyHOSTNAME + "inc/models/list_content.inc.php",
             data: "menu=" + encodeURIComponent(pt) + "&page=" + encodeURIComponent(oo),
             success: function(html) {
                 $('[data-toggle="tooltip"]').tooltip('hide');
@@ -2834,7 +2834,7 @@ php:
             var hostadr = get_host_conf();
             var langp = get_lang_param('JS_save');
             var langup = get_lang_param('JS_pub');
-            $('#exampleInputEmail1').attr('value', MyHOSTNAME + "/inc/note.php?h=" + u);
+            $('#exampleInputEmail1').attr('value', MyHOSTNAME + "/inc/models/note.php?h=" + u);
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
@@ -2908,7 +2908,7 @@ php:
                 success: function(html) {
                     var u = html;
                     var hostadr = get_host_conf();
-                    $('#exampleInputEmail1').attr('value', MyHOSTNAME + "/inc/note.php?h=" + u);
+                    $('#exampleInputEmail1').attr('value', MyHOSTNAME + "/inc/models/note.php?h=" + u);
                     $.ajax({
                         type: "POST",
                         url: ACTIONPATH,
@@ -3892,7 +3892,7 @@ $.ajax({
                     $("#curent_page").attr('value', page);
                     $.ajax({
                         type: "POST",
-                        url: MyHOSTNAME + "inc/client.list_content.inc.php",
+                        url: MyHOSTNAME + "inc/models/client.list_content.inc.php",
                         data: "menu=out" + "&page=" + encodeURIComponent(page),
                         success: function(html) {
                             $("#content").hide().html(html).fadeIn(500);
@@ -3923,7 +3923,7 @@ $.ajax({
                     $("#spinner").fadeIn(300);
                     $.ajax({
                         type: "POST",
-                        url: MyHOSTNAME + "inc/list_content.inc.php",
+                        url: MyHOSTNAME + "inc/models/list_content.inc.php",
                         data: "menu=in" + "&page=" + encodeURIComponent(page),
                         success: function(html) {
                             $("#content").hide().html(html).fadeIn(500);
@@ -3955,7 +3955,7 @@ $.ajax({
                     $("#curent_page").attr('value', page);
                     $.ajax({
                         type: "POST",
-                        url: MyHOSTNAME + "inc/list_content.inc.php",
+                        url: MyHOSTNAME + "inc/models/list_content.inc.php",
                         data: "menu=out" + "&page=" + encodeURIComponent(page),
                         success: function(html) {
                             $("#content").hide().html(html).fadeIn(500);
@@ -3987,7 +3987,7 @@ $.ajax({
                     $("#spinner").fadeIn(300);
                     $.ajax({
                         type: "POST",
-                        url: MyHOSTNAME + "inc/list_content.inc.php",
+                        url: MyHOSTNAME + "inc/models/list_content.inc.php",
                         data: "menu=arch" + "&page=" + encodeURIComponent(page),
                         success: function(html) {
                             $("#content").hide().html(html).fadeIn(500);
@@ -4019,7 +4019,7 @@ $.ajax({
                     $("#curent_page").attr('value', page);
                     $.ajax({
                         type: "POST",
-                        url: MyHOSTNAME + "inc/client.list_content.inc.php",
+                        url: MyHOSTNAME + "inc/models/client.list_content.inc.php",
                         data: "menu=out" + "&page=" + encodeURIComponent(page),
                         success: function(html) {
                             $("#content").hide().html(html).fadeIn(500);
@@ -5511,7 +5511,7 @@ $.ajax({
                 t_l = $(this).val().length;
             $.ajax({
                 type: "POST",
-                url: MyHOSTNAME + "/inc/users.inc.php",
+                url: MyHOSTNAME + "/inc/models/users.inc.php",
                 data: "menu=list" + "&page=1" + "&t=" + t,
                 success: function(html) {
                     $("#content_users").html(html);
@@ -5542,7 +5542,7 @@ $.ajax({
                     $("#curent_page").attr('value', page);
                     $.ajax({
                         type: "POST",
-                        url: MyHOSTNAME + "inc/users.inc.php",
+                        url: MyHOSTNAME + "inc/models/users.inc.php",
                         data: "page=" + encodeURIComponent(page) + "&menu=list",
                         success: function(html) {
                             $("#content_users").hide().html(html).fadeIn(500);
@@ -5856,7 +5856,7 @@ $.ajax({
                 t_l = $(this).val().length;
             $.ajax({
                 type: "POST",
-                url: MyHOSTNAME + "/inc/clients.inc.php",
+                url: MyHOSTNAME + "/inc/models/clients.inc.php",
                 data: "menu=list" + "&page=1" + "&t=" + t,
                 success: function(html) {
                     $("#content_clients").html(html);
@@ -5877,7 +5877,7 @@ $.ajax({
                     $("#curent_page").attr('value', page);
                     $.ajax({
                         type: "POST",
-                        url: MyHOSTNAME + "inc/clients.inc.php",
+                        url: MyHOSTNAME + "inc/models/clients.inc.php",
                         data: "page=" + encodeURIComponent(page) + "&menu=list",
                         success: function(html) {
                             $("#content_clients").hide().html(html).fadeIn(500);

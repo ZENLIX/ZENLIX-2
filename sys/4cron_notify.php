@@ -9,7 +9,7 @@ include ($base . "/conf.php");
 date_default_timezone_set('Europe/Kiev');
 include ($base . '/sys/class.phpmailer.php');
 
-include ($base . '/integration/PushBullet.class.php');
+include ($base . '/library/PushBullet.class.php');
 
 include_once $base . '/lang/lang.ua.php';
 include_once $base . '/lang/lang.ru.php';

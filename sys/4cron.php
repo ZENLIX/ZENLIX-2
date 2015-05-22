@@ -7,6 +7,14 @@ include ($base . "/conf.php");
 //date_default_timezone_set('Europe/Kiev');
 include ($base . "/library/ImapMailbox.php");
 include ($base . '/sys/class.phpmailer.php');
+
+
+
+include ($base . '/library/autoload.php');
+
+
+use EmailReplyParser\Parser\EmailParser;
+
 function humanTiming_old($time) {
     
     $time = time() - $time;
@@ -791,23 +799,72 @@ if (get_conf_param('email_gate_status') == "true") {
             }
             
             //echo $message->all;
-            
-            //print_r($message);
-            
+ /*
+            echo "<code><pre>";
+            print_r($message);
+            echo "</pre></code>";
+
+*/
+
             $subj = strip_tags($message->subject);
             $msg = strip_tags($message->all);
             
-            /*
+
+
+
+
+
+//print_r($subj);
+if (preg_match('/(#[0-9]+)/',$subj)) {
+$email = (new EmailParser())->parse($msg);
+$fragment = current($email->getFragments());
+
+
+
+$replyTextMsg=$fragment->getContent();
+$v=preg_match('/(#[0-9]+)/',$subj, $mt);
+
+$ticketfrommail_id=substr($mt[0], 1);
+
+
+
+
+
+$user_comment = $user_init_id;
+$tid_comment = $ticketfrommail_id;
+$text_comment = $replyTextMsg;
+
+$stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
+values (:tid_comment, :user_comment, :text_comment, :n)');
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':user_comment' => $user_comment,
+                ':text_comment' => $text_comment,
+                ':n' => $now_date_time
+            ));
             
-            $mref
-            Если $message->references
+            $stmt = $dbConnection->prepare('INSERT INTO ticket_log (msg, date_op, init_user_id, ticket_id)
+values (:comment, :n, :user_comment, :tid_comment)');
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':user_comment' => $user_comment,
+                ':comment' => 'comment',
+                ':n' => $now_date_time
+            ));
             
-            то найти ticket_id
+            send_notification('ticket_comment', $tid_comment);
             
-            */
+            //}
             
-            //echo $mref."<br>";
-            //echo $mid_code;
+            $stmt = $dbConnection->prepare('update tickets set last_update=:n where id=:tid_comment');
+            $stmt->execute(array(
+                ':tid_comment' => $tid_comment,
+                ':n' => $now_date_time
+            ));
+
+}
+
+else {
             
             $status = '0';
             $hashname = md5(time()) . generateRandomString();
@@ -892,6 +949,7 @@ if (get_conf_param('email_gate_status') == "true") {
             //if ($CONF_MAIL['active'] == "true") {
             send_notification($max_id_res_ticket);
             insert_ticket_info($max_id_res_ticket, 'mail');
+        }
         } 
         else if (check_user_mail($message->fromAddress) == true) {
             

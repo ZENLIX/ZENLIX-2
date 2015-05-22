@@ -29,7 +29,7 @@ $router = new AltoRouter();
 
 //echo get_base_path();
 $router->setBasePath(get_base_path());
-
+ 
 $router->map('GET', '/register', 'registerAction');
 $router->map('GET', '/forgot', 'forgotAction');
 $router->map('GET', '/index.php', 'indexAction');
@@ -109,13 +109,13 @@ else {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "USER") {
-        include ('inc/404.inc.php');
+        include ('inc/models/404.inc.php');
     }
     if ($privs == "GUEST") {
-        include ('inc/auth.php');
+        include ('inc/models/auth.php');
     }
 }
 ?>

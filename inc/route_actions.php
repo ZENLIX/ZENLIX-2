@@ -1,5 +1,5 @@
 <?php
-
+ 
 function get_privs() {
     $val_status = 'GUEST';
     
@@ -188,7 +188,7 @@ if (!isset($_POST['remember_me'])) {
         */
     } 
     else {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
     
     /////////////////END IF LOGIN-AUTH FORM SUBMITTED/////////////////////////
@@ -206,28 +206,28 @@ function indexAction() {
     if ($privs == "GUEST") {
         
         if ($portalStatus) {
-            require 'inc/main_portal/index.php';
+            require 'inc/main_portal/models/index.php';
         } 
         else if (!$portalStatus) {
-            require 'inc/auth.php';
+            require 'inc/models/auth.php';
         }
     } 
     else if (($privs == "USER")) {
         
         if ($portalStatus) {
-            require 'inc/main_portal/index.php';
+            require 'inc/main_portal/models/index.php';
         } 
         else if (!$portalStatus) {
-            require ("inc/dashboard.php");
+            require ("inc/models/dashboard.php");
         }
     } 
     else if (($privs == "CLIENT")) {
         
         if ($portalStatus) {
-            require 'inc/main_portal/index.php';
+            require 'inc/main_portal/models/index.php';
         } 
         else if (!$portalStatus) {
-            require ("inc/client.dashboard.php");
+            require ("inc/models/client.dashboard.php");
         }
     }
 }
@@ -236,13 +236,13 @@ function dashboardAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "GUEST") {
-        include ('inc/auth.php');
+        include ('inc/models/auth.php');
     } 
     else if (($privs == "CLIENT")) {
-        require 'inc/client.dashboard.php';
+        require 'inc/models/client.dashboard.php';
     } 
     else if (($privs == "USER")) {
-        require 'inc/dashboard.php';
+        require 'inc/models/dashboard.php';
     }
 }
 
@@ -257,17 +257,17 @@ function registerAction() {
     if ($privs == "GUEST") {
         
         if ($portalStatus) {
-            require ('inc/main_portal/register.php');
+            require ('inc/main_portal/models/register.php');
         } 
         else if (!$portalStatus) {
-            require ('inc/register.php');
+            require ('inc/models/register.php');
         }
     } 
     else if ($privs == "USER") {
-        include ('inc/404.inc.php');
+        include ('inc/models/404.inc.php');
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     }
 }
 
@@ -279,13 +279,13 @@ function forgotAction() {
     
     if ($privs == "GUEST") {
         
-        require ('inc/forgot.php');
+        require ('inc/models/forgot.php');
     } 
     else if ($privs == "USER") {
-        include ('inc/404.inc.php');
+        include ('inc/models/404.inc.php');
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     }
 }
 
@@ -305,10 +305,10 @@ function auth_get() {
     else {
         
         if (!$portalStatus) {
-            include 'inc/auth.php';
+            include 'inc/models/auth.php';
         } 
         else if ($portalStatus) {
-            include 'inc/main_portal/auth.php';
+            include 'inc/main_portal/models/auth.php';
         }
     }
 }
@@ -320,13 +320,13 @@ function listAction() {
     
     if ($privs == "GUEST") {
         
-        require 'inc/auth.php';
+        require 'inc/models/auth.php';
     } 
     else if (($privs == "CLIENT")) {
-        require ("inc/client.list.php");
+        require ("inc/models/client.list.php");
     } 
     else if (($privs == "USER")) {
-        require ("inc/list.php");
+        require ("inc/models/list.php");
     }
 }
 
@@ -336,13 +336,13 @@ function ticketAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'inc/ticket.php';
+        include 'inc/models/ticket.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'inc/client.ticket.php';
+        include 'inc/models/client.ticket.php';
     } 
     else {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -352,13 +352,13 @@ function createAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'inc/new.php';
+        include 'inc/models/new.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'inc/client.new.php';
+        include 'inc/models/client.new.php';
     } 
     else {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -368,13 +368,13 @@ function view_userAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'inc/view_user.php';
+        include 'inc/models/view_user.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'inc/client.view_user.php';
+        include 'inc/models/client.view_user.php';
     } 
     else {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -384,13 +384,13 @@ function profileAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'inc/profile.php';
+        include 'inc/models/profile.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'inc/client.profile.php';
+        include 'inc/models/client.profile.php';
     } 
     else {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -400,13 +400,13 @@ function helperAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'inc/helper.php';
+        include 'inc/models/helper.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'inc/client.helper.php';
+        include 'inc/models/client.helper.php';
     } 
     else {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -414,13 +414,13 @@ function statsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/stats.php';
+        include 'inc/models/stats.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -428,13 +428,13 @@ function notesAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/notes.php';
+        include 'inc/models/notes.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -442,13 +442,13 @@ function usersAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/users.php';
+        include 'inc/models/users.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -456,13 +456,13 @@ function helpAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/help.php';
+        include 'inc/models/help.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -470,13 +470,13 @@ function depsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/deps.php';
+        include 'inc/models/deps.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -484,13 +484,13 @@ function approveAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/approve.php';
+        include 'inc/models/approve.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -498,13 +498,13 @@ function unitsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/units.php';
+        include 'inc/models/units.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -512,13 +512,13 @@ function posadaAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/posada.php';
+        include 'inc/models/posada.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -526,13 +526,13 @@ function subjAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/subj.php';
+        include 'inc/models/subj.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -540,13 +540,13 @@ function userinfoAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/userinfo.php';
+        include 'inc/models/userinfo.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -554,13 +554,13 @@ function perfAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/perf.php';
+        include 'inc/models/perf.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -568,13 +568,13 @@ function filesAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/files.php';
+        include 'inc/models/files.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -582,13 +582,13 @@ function newsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/news.php';
+        include 'inc/models/news.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -596,13 +596,13 @@ function clientsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/clients.php';
+        include 'inc/models/clients.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -610,13 +610,13 @@ function all_statsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/all_stats.php';
+        include 'inc/models/all_stats.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -624,13 +624,13 @@ function user_statsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/user_stats.php';
+        include 'inc/models/user_stats.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -638,13 +638,13 @@ function sla_repAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/sla_rep.php';
+        include 'inc/models/sla_rep.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -652,13 +652,13 @@ function schedulerAction() {
     global $dbConnection, $CONF,$CONF_MAIL;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/scheduler.php';
+        include 'inc/models/scheduler.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -666,13 +666,13 @@ function messagesAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/messages.php';
+        include 'inc/models/messages.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -680,13 +680,13 @@ function print_ticketAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/print_ticket.php';
+        include 'inc/models/print_ticket.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -694,13 +694,13 @@ function calendarAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/calendar.php';
+        include 'inc/models/calendar.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -708,13 +708,13 @@ function portalAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/portal.php';
+        include 'inc/models/portal.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -722,13 +722,13 @@ function mailersAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'inc/mailers.php';
+        include 'inc/models/mailers.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('inc/client.404.inc.php');
+        include ('inc/models/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'inc/auth.php';
+        include 'inc/models/auth.php';
     }
 }
 
@@ -737,17 +737,17 @@ function manualAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'inc/main_portal/manual.php';
+        include 'inc/main_portal/models/manual.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'inc/404.inc.php';
+            include 'inc/models/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('inc/client.404.inc.php');
+            include ('inc/models/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'inc/auth.php';
+            include 'inc/models/auth.php';
         }
     }
 }
@@ -757,17 +757,17 @@ function versionAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'inc/main_portal/version.php';
+        include 'inc/main_portal/models/version.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'inc/404.inc.php';
+            include 'inc/models/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('inc/client.404.inc.php');
+            include ('inc/models/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'inc/auth.php';
+            include 'inc/models/auth.php';
         }
     }
 }
@@ -777,17 +777,17 @@ function feedAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'inc/main_portal/feed.php';
+        include 'inc/main_portal/models/feed.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'inc/404.inc.php';
+            include 'inc/models/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('inc/client.404.inc.php');
+            include ('inc/models/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'inc/auth.php';
+            include 'inc/models/auth.php';
         }
     }
 }
@@ -797,17 +797,17 @@ function catAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'inc/main_portal/cat.php';
+        include 'inc/main_portal/models/cat.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'inc/404.inc.php';
+            include 'inc/models/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('inc/client.404.inc.php');
+            include ('inc/models/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'inc/auth.php';
+            include 'inc/models/auth.php';
         }
     }
 }
@@ -819,24 +819,24 @@ function new_postAction() {
     if ($portal) {
         
         if ($privs == "USER") {
-            include 'inc/main_portal/new_post.php';
+            include 'inc/main_portal/models/new_post.php';
         } 
         else if ($privs == "CLIENT") {
-            include 'inc/main_portal/new_post.php';
+            include 'inc/main_portal/models/new_post.php';
         } 
         else if ($privs == "GUEST") {
-            include 'inc/main_portal/auth.php';
+            include 'inc/main_portal/models/auth.php';
         }
     }
     if (!$portal) {
         if ($privs == "USER") {
-            include 'inc/404.inc.php';
+            include 'inc/models/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('inc/client.404.inc.php');
+            include ('inc/models/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'inc/auth.php';
+            include 'inc/models/auth.php';
         }
     }
 }
@@ -846,17 +846,17 @@ function postAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'inc/main_portal/post.php';
+        include 'inc/main_portal/models/post.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'inc/404.inc.php';
+            include 'inc/models/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('inc/client.404.inc.php');
+            include ('inc/models/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'inc/auth.php';
+            include 'inc/models/auth.php';
         }
     }
 }
