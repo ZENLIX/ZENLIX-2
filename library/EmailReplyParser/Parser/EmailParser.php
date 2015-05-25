@@ -26,6 +26,7 @@ class EmailParser
      * @var string[]
      */
     private $quoteHeadersRegex = array(
+        '/^(На\s.+?написал:)$/ms', // On DATE, NAME <EMAIL> wrote:
         '/^(On\s.+?wrote:)$/ms', // On DATE, NAME <EMAIL> wrote:
         '/^(Le\s.+?écrit :)$/ms', // Le DATE, NAME <EMAIL> a écrit :
         '/^(El\s.+?escribió:)$/ms', // El DATE, NAME <EMAIL> escribió:

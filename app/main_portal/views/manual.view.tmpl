@@ -1,0 +1,484 @@
+<div class="content-wrapper">
+    <section class="content">
+        <section class="invoice">
+            <!-- title row -->
+            <div class="row">
+                <div class="col-md-9">
+                    {% if hn_set == true %}
+                    {% if hn_param == "edit_some_qa" %}
+                    {% if val_user == true %}
+                    <div class="box box-default">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">{{PORTAL_edit_qa}}</h3>
+                            <div class="box-tools pull-right">
+                                <h4> <i class="fa fa-file-text-o"></i></h4>
+                            </div>
+                            </div><!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="">
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_q}}" value="{{question}}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+
+                                            <div class="col-sm-12">
+                                                <div id="note">{{answer | raw}}</div>
+                                            </div>
+                                            <div class="col-sm-12" >
+                                            </div>
+                                            <div class="col-sm-12" id="post_res">
+                                            </div>
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <br>
+                                                <button class="btn btn-block btn-info" id="make_edit_manual_qa" >{{PORTAL_news_save}}</button>
+                                                <input type="hidden" value="{{uniq_id}}" id="manual_hash">
+                                            </div>
+                                        </div>
+                                    </form>
+                                    </div><!-- /.footer -->
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                            {% if hn_param == "edit_qa" %}
+                            {% if val_user == true %}
+                            <style type="text/css">
+
+                            pre, code {
+                            font-size: 12px;
+                            }
+                            pre {
+                            width: 100%;
+                            overflow: auto;
+                            }
+                            small {
+                            font-size: 90%;
+                            }
+                            small code {
+                            font-size: 11px;
+                            }
+                            .placeholder {
+                            outline: 1px dashed #4183C4;
+                            /*-webkit-border-radius: 3px;
+                            -moz-border-radius: 3px;
+                            border-radius: 3px;
+                            margin: -1px;*/
+                            height: 20px;
+                            }
+                            .mjs-nestedSortable-error {
+                            background: #fbe3e4;
+                            border-color: transparent;
+                            }
+                            ul {
+                            margin: 0;
+                            padding: 0;
+                            padding-left: 30px;
+                            }
+                            ul.sortable, ul.sortable ul {
+                            margin: 0 0 0 25px;
+                            padding: 0;
+                            list-style-type: none;
+                            }
+                            ul.sortable {
+                            margin: 4em 0;
+                            }
+                            .sortable li {
+                            margin: 5px 0 0 0;
+                            padding: 0;
+                            }
+                            .sortable li div  {
+
+                            }
+                            .sortable li.mjs-nestedSortable-branch div {
+
+                            list-style-type: none;
+                            }
+                            .sortable li.mjs-nestedSortable-leaf div {
+                            }
+                            li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+                            border-color: #999;
+                            background: #fafafa;
+                            }
+                            .disclose {
+                            cursor: pointer;
+                            width: 10px;
+                            display: none;
+                            }
+                            .sortable li.mjs-nestedSortable-collapsed > ul {
+                            display: none;
+                            }
+                            .sortable li.mjs-nestedSortable-branch > div > .disclose {
+                            display: inline-block;
+                            }
+                            .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
+                            content: '+ ';
+                            }
+                            .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
+                            content: '- ';
+                            }
+
+                            p, ol, ul, pre, form {
+                            margin-top: 0;
+                            margin-bottom: 1em;
+                            }
+                            dl {
+                            margin: 0;
+                            }
+                            dd {
+                            margin: 0;
+                            padding: 0 0 0 1.5em;
+                            }
+                            code {
+                            background: #e5e5e5;
+                            }
+                            input {
+                            vertical-align: text-bottom;
+                            }
+                            .notice {
+                            color: #c33;
+                            }
+                            </style>
+                            <div class="box box-default">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">{{PORTAL_q_manag}}</h3>
+                                    <div class="box-tools pull-right">
+                                        <h4> <i class="fa fa-file-text-o"></i></h4>
+                                    </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <div id="content_items">
+                                            {{showMenu_qa | raw }}
+                                        </div>
+                                    </div>
+                                    <div class="box-footer clearfix no-border">
+                                        <button id="add_qa_item" class="btn btn-default pull-right"><i class="fa fa-plus"></i> {{NOTES_create}}</button>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endif %}
+                                {% if hn_param == "edit_cat" %}
+                                {% if val_user == true %}
+                                <style type="text/css">
+
+                                pre, code {
+                                font-size: 12px;
+                                }
+                                pre {
+                                width: 100%;
+                                overflow: auto;
+                                }
+                                small {
+                                font-size: 90%;
+                                }
+                                small code {
+                                font-size: 11px;
+                                }
+                                .placeholder {
+                                outline: 1px dashed #4183C4;
+                                height: 20px;
+                                }
+                                .mjs-nestedSortable-error {
+                                background: #fbe3e4;
+                                border-color: transparent;
+                                }
+                                ul {
+                                margin: 0;
+                                padding: 0;
+                                padding-left: 30px;
+                                }
+                                ul.sortable, ul.sortable ul {
+                                margin: 0 0 0 25px;
+                                padding: 0;
+                                list-style-type: none;
+                                }
+                                ul.sortable {
+                                margin: 4em 0;
+                                }
+                                .sortable li {
+                                margin: 5px 0 0 0;
+                                padding: 0;
+                                }
+                                .sortable li div  {
+
+                                }
+                                .sortable li.mjs-nestedSortable-branch div {
+
+                                list-style-type: none;
+                                }
+                                .sortable li.mjs-nestedSortable-leaf div {
+                                }
+                                li.mjs-nestedSortable-collapsed.mjs-nestedSortable-hovering div {
+                                border-color: #999;
+                                background: #fafafa;
+                                }
+                                .disclose {
+                                cursor: pointer;
+                                width: 10px;
+                                display: none;
+                                }
+                                .sortable li.mjs-nestedSortable-collapsed > ul {
+                                display: none;
+                                }
+                                .sortable li.mjs-nestedSortable-branch > div > .disclose {
+                                display: inline-block;
+                                }
+                                .sortable li.mjs-nestedSortable-collapsed > div > .disclose > span:before {
+                                content: '+ ';
+                                }
+                                .sortable li.mjs-nestedSortable-expanded > div > .disclose > span:before {
+                                content: '- ';
+                                }
+
+                                p, ol, ul, pre, form {
+                                margin-top: 0;
+                                margin-bottom: 1em;
+                                }
+                                dl {
+                                margin: 0;
+                                }
+                                dd {
+                                margin: 0;
+                                padding: 0 0 0 1.5em;
+                                }
+                                code {
+                                background: #e5e5e5;
+                                }
+                                input {
+                                vertical-align: text-bottom;
+                                }
+                                .notice {
+                                color: #c33;
+                                }
+                                </style>
+                                <div class="box box-default">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">{{PORTAL_cat_manag}}</h3>
+                                        <div class="box-tools pull-right">
+                                            <h4> <i class="fa fa-file-text-o"></i></h4>
+                                        </div>
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                            <div id="content_items">
+                                                {{showMenu_manual | raw }}
+                                            </div>
+                                        </div>
+                                        <div class="box-footer clearfix no-border">
+                                            <button id="add_manual_item" class="btn btn-default pull-right"><i class="fa fa-plus"></i> {{NOTES_create}}</button>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    {% endif %}
+                                    {% if hn_param == "qa" %}
+                                    <div class="box box-default">
+                                        <div class="box-header with-border">
+                                            <h3 class="box-title">{{question}}</h3>
+                                            <div class="box-tools pull-right">
+                                                <h4> </h4>
+                                            </div>
+                                            </div><!-- /.box-header -->
+                                            <div class="box-body">
+                                                {{answer | raw }}
+                                            </div>
+                                            <div class="box-footer">
+                                                <small class="text-muted">
+                                                <time id="c" datetime="{{dt}}"></time>
+                                                </small>
+                                                <small class="text-muted pull-right">
+                                                {{author_id}}
+                                                </small>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if hn_param == "find" %}
+                                        <div class="box box-default">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">{{PORTAL_s_res}}</h3>
+                                                <div class="box-tools pull-right">
+                                                    <h4> </h4>
+                                                </div>
+                                                </div><!-- /.box-header -->
+                                                <div class="box-body">
+                                                    {{find_res | raw }}
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            {% if hn_param == "no_new_manual" %}
+                                            {% if get_param == "edit_manual" %}
+                                            {% if val_user == true %}
+                                            <div class="box box-default">
+                                                <div class="box-header with-border">
+                                                    <h3 class="box-title">{{PORTAL_edit_n}}</h3>
+                                                    <div class="box-tools pull-right">
+                                                        <h4> <i class="fa fa-file-text-o"></i></h4>
+                                                    </div>
+                                                    </div><!-- /.box-header -->
+                                                    <div class="box-body">
+                                                        <div class="">
+                                                            <form class="form-horizontal">
+                                                                <div class="form-group">
+
+                                                                    <div class="col-sm-9">
+                                                                        <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_subj}}" value="{{name}}">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+
+                                                                    <div class="col-sm-12">
+                                                                        <div id="note">{{msg | raw}}</div>
+                                                                    </div>
+                                                                    <div class="col-sm-12" >
+                                                                        <div class="text-muted well well-sm no-shadow" id="myid" >
+                                                                            <div class="dz-message" data-dz-message>
+                                                                                <center class="text-muted">{{PORTAL_fileplace}}</center>
+                                                                            </div>
+                                                                        <form action="#" class="dropzone"></form>
+                                                                        <div class="table table-striped" class="files" id="previews">
+
+                                                                            <div id="template" class="file-row">
+                                                                                <!-- This is used as the file preview template -->
+                                                                                <table class="table" style="margin-bottom: 0px;">
+                                                                                    <tbody><tr>
+                                                                                        <th style="width:50%"><p class="name" data-dz-name></p> </th>
+                                                                                        <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                                                                                        <td style="width:30%"><div class="progress progress-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                                                            <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                                                        </div></td>
+                                                                                        <td class="pull-right"><button data-dz-remove class="btn btn-sm btn-danger delete">
+                                                                                            <i class="glyphicon glyphicon-trash"></i>
+                                                                                            <span>Delete</span>
+                                                                                        </button></td>
+                                                                                    </tr>
+                                                                                </tbody></table>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12" >
+                                                                </div>
+                                                                <div class="col-sm-12" id="post_res">
+                                                                </div>
+                                                                <div class="col-sm-6 col-sm-offset-3">
+                                                                    <br>
+                                                                    <button class="btn btn-block btn-info" id="make_edit_manual" >{{PORTAL_news_save}}</button>
+                                                                    <input type="hidden" value="{{uniq_id}}" id="manual_hash">
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                        </div><!-- /.footer -->
+                                                    </div>
+                                                    {% endif %}
+                                                </div>
+                                                {% endif %}
+                                                {% endif %}
+                                                {% if get_param == "no_edit_manual" %}
+                                                <div class="box box-default">
+                                                    <div class="box-header with-border">
+                                                        <h3 class="box-title">{{name}}</h3>
+                                                        <div class="box-tools pull-right">
+                                                            <h4> <i class="fa fa-file-text-o"></i></h4>
+                                                        </div>
+                                                        </div><!-- /.box-header -->
+                                                        <div class="box-body">
+                                                            <p class="text-muted">{{title}}</p>
+                                                            {{msg | raw}}
+                                                        {{view_attach_files | raw }}</div>
+                                                        <div class="box-footer">
+                                                            <small class="text-muted">
+                                                            <time id="c" datetime="{{dt}}"></time>
+                                                            </small>
+                                                            <small class="text-muted pull-right">
+                                                            {{author_id | raw }}
+                                                            {% if val_user == true %}
+                                                            <div class="btn-group ">
+                                                                <button class="btn btn-xs bg-maroon" id="delete_manual" value="{{id}}">{{PORTAL_act_del}}</button>
+                                                                <a class="btn btn-xs bg-orange btn-flat" href="manual?{{uniq_id}}&edit_manual">{{PORTAL_act_edit}}</a>
+                                                            </div>
+                                                            {% endif %}
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                    {% endif %}
+                                                    {% if hn_set == false %}
+                                                    <div class="box box-primary">
+                                                        <div class="box-header with-border">
+                                                            <h3 class="box-title">{{PORTAL_findby_h}}</h3>
+                                                            <div class="box-tools pull-right">
+                                                                <h4> <i class="fa fa-search"></i></h4>
+                                                            </div>
+                                                            </div><!-- /.box-header -->
+                                                            <div class="box-body">
+
+                                                                <form method="get" action="manual">
+                                                                    <div class="input-group input-group-lg">
+                                                                        <input type="text" class="form-control" name="find" id="navbar-search-input" placeholder="{{PORTAL_sel_text}}">
+                                                                        <span class="input-group-btn">
+                                                                        <button id="find_in_manual" class="btn btn-info btn-flat" type="submit">{{PORTAL_find_act}}</button>
+                                                                        </span>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box box-info">
+                                                            <div class="box-header with-border">
+                                                                <h3 class="box-title">{{PORTAL_help_center}}</h3>
+                                                                <div class="box-tools pull-right">
+                                                                    <h4> <i class="fa fa-graduation-cap"></i></h4>
+                                                                </div>
+                                                                </div><!-- /.box-header -->
+                                                                <div class="box-body">
+                                                                    <div class="row">
+                                                                        {{get_main_manual | raw }}
+                                                                    </div>
+                                                                    </div><!-- /.box-body -->
+                                                                </div>
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title">{{PORTAL_qa}}</h3>
+                                                                        <div class="box-tools pull-right">
+                                                                            <h4> <i class="fa fa-graduation-cap"></i></h4>
+                                                                        </div>
+                                                                        </div><!-- /.box-header -->
+                                                                        <div class="box-body">{{show_qa_manual | raw}}
+                                                                            </div><!-- /.box-body -->
+                                                                        </div>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        {% if val_user == true %}
+                                                                        <div class="box">
+                                                                            <div class="box-header">
+                                                                                <h3 class="box-title">{{PORTAL_admin_menu}}</h3>
+                                                                            </div>
+                                                                            <div class="box-body">
+                                                                                <a href="manual?edit_cat" class="btn btn-default btn-block">{{PORTAL_cat_n_manag}}</a>
+                                                                                <!--a href="manual?new_manual" class="btn btn-default btn-block">Создать статью</a-->
+                                                                                <a href="manual?edit_qa" class="btn btn-default btn-block">{{PORTAL_q_manag}}</a>
+
+                                                                            </div>
+                                                                        </div>
+                                                                        {% endif %}
+                                                                        <div class="box">
+                                                                            <div class="box-header">
+                                                                                <h3 class="box-title">{{PORTAL_cat_list}}</h3>
+                                                                            </div>
+                                                                            <div class="box-body">
+                                                                                {{show_all_manual | raw}}
+                                                                            </div>
+                                                                        </div>
+                                                                        {{view_stat_cat | raw}}
+                                                                    </div>
+                                                                </div>
+                                                                <!-- info row -->
+
+                                                            </section>
+                                                        </section>
+                                                    </div>

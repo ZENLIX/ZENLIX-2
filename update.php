@@ -4,13 +4,13 @@ ini_set('max_execution_time', 300);
 ini_set('memory_limit', '512M');
 
 //ok!
-include ("functions.inc.php");
-include ("sys/dbu.class.php");
+include_once ("functions.inc.php");
+include ("library/DBbackup/dbu.class.php");
 $main_portal = $CONF['main_portal'];
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if (validate_admin($_SESSION['helpdesk_user_id'])) {
-        include ("inc/models/head.inc.php");
-        include ("inc/models/navbar.inc.php");
+        include ("app/models/head.inc.php");
+        include ("app/models/navbar.inc.php");
         $rp = realpath(dirname(__FILE__));
         
         function rrmdir($dir) {
@@ -224,7 +224,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 }
                 
                 /* execute sql */
-                $sql_file = file_get_contents($rp . '/sys/DB.sql');
+                $sql_file = file_get_contents($rp . '/sys/DB.update.sql');
                 $qr = $dbConnection->exec($sql_file);
                 
                 unlink($zipFile);
@@ -340,7 +340,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 //
                 
                 $files_def = array(
-                    '/actions.php',
                     '/functions.inc.php',
                     '/index.php',
                     '/.htaccess'
@@ -351,7 +350,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     
                     //subdirs
                     '/img/',
-                    '/inc/',
+                    '/app/',
                     '/integration/',
                     '/js/',
                     
@@ -507,7 +506,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 <?php
             }
         }
-        include ("inc/models/footer.inc.php");
+        include ("app/models/footer.inc.php");
 ?>
 
 <?php

@@ -1,0 +1,84 @@
+<div class="content-wrapper">
+  <section class="content">
+    <style type="text/css">
+    .note-editor .note-dropzone { opacity: 0 !important; }
+    </style>
+    <section class="invoice">
+      <!-- title row -->
+      <div class="row">
+        <div class="col-md-9">
+          <div class="box box-default">
+            <div class="box-header with-border">
+              <h3 class="box-title">{{PORTAL_new_msg}}</h3>
+              <div class="box-tools pull-right">
+                <h4> <i class="fa fa-comment"></i></h4>
+              </div>
+              </div><!-- /.box-header -->
+              <div class="box-body">
+                <div class="">
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <div class="col-sm-9">
+                        <input type="text" class="form-control" id="subj" placeholder="{{PORTAL_subj}}" value="{{subj}}">
+                      </div>
+                      <div class="col-sm-3">
+                        <select class="form-control" id="type">
+                          <option {{type1}} value="1">{{PORTAL_idea_one}} </option>
+                          <option {{type2}} value="2">{{PORTAL_trouble_one}}</option>
+                          <option {{type3}} value="3">{{PORTAL_question_one}}</option>
+                          <option {{type4}} value="4">
+                          {{PORTAL_thank_one}}</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-12">
+                        <div id="note"></div>
+                      </div>
+                      <div class="col-sm-12" >
+                        <div class="text-muted well well-sm no-shadow" id="myid" >
+                          <div class="dz-message" data-dz-message>
+                            <center class="text-muted">{{PORTAL_fileplace}}</center>
+                          </div>
+                        <form action="#" class="dropzone"></form>
+                        <div class="table table-striped" class="files" id="previews">
+                          <div id="template" class="file-row">
+                            <!-- This is used as the file preview template -->
+                            <table class="table" style="margin-bottom: 0px;">
+                              <tbody><tr>
+                                <th style="width:50%"><p class="name" data-dz-name></p> </th>
+                                <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                                <td style="width:30%"><div class="progress progress-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                  <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                </div></td>
+                                <td class="pull-right"><button data-dz-remove class="btn btn-sm btn-danger delete">
+                                  <i class="glyphicon glyphicon-trash"></i>
+                                  <span>Delete</span>
+                                </button></td>
+                              </tr>
+                            </tbody></table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12" id="post_res">
+                    </div>
+                    <div class="col-sm-6 col-sm-offset-3">
+                      <br>
+                      <button class="btn btn-block btn-info" id="make_new_post_data" >{{PORTAL_news_create}}</button>
+                      <input type="hidden" value="{{time}}" id="post_hash">
+                    </div>
+                  </div>
+                </form>
+                </div><!-- /.footer -->
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            {{view_stat_cat | raw }}
+          </div>
+        </div>
+        <!-- info row -->
+      </section>
+    </section>
+  </div>

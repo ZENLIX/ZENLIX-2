@@ -131,7 +131,7 @@ if (isset($_POST['mode'])) {
 <?php
     
     // Name of the file
-    $filename = realpath(dirname(dirname(__FILE__))) . '/DB/HD.db.sql';
+    $filename = realpath(dirname(dirname(__FILE__))) . '/DB/DB.install.sql';
     $fileconf = realpath(dirname(dirname(__FILE__))) . '/conf.php';
     $nodeserver = realpath(dirname(dirname(__FILE__))) . '/nodejs/server.js';
     
@@ -502,7 +502,7 @@ RewriteRule . index.php [L]
                 <td>Cache directory</td>
                 <td width="100px;">
                   <?php
-            $filename = realpath(dirname(dirname(__FILE__))) . "/inc/cache";
+            $filename = realpath(dirname(dirname(__FILE__))) . "/app/cache";
             if (!is_writable($filename)) { ?>
     <span class="label label-danger">not active</span>
     <div class="alert alert-danger" role="alert">Permission-error: <em><?php echo $filename

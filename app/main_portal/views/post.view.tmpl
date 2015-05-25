@@ -1,0 +1,281 @@
+<div class="content-wrapper">
+  <section class="content">
+    <section class="invoice">
+      <!-- title row -->
+      <div class="row">
+        <div class="col-md-9">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"> {{icon | raw}} {{subj}}</h3>
+              <div class="box-tools pull-right">
+                <h4 style="  margin-top: 0px;"> {{get_post_status | raw}} </h4>
+              </div>
+              </div><!-- /.box-header -->
+              <div class="box-body" style="
+                line-height: 23px;
+                font-size: 15px;
+                padding: 10px 20px;
+                ">
+                <div id="{{uniq_id}}" value="post">
+                  <div class="editable_text">
+                    {{msg | raw }}
+                  </div>
+                  {{view_attach_files_main | raw}}
+                  {% if validate_user == true %}
+                  <div class="edit-bar" style="display: none;">
+                    <div class="btn-group ">
+                      <button class="btn btn-xs btn-primary main-cancel-edit" value="{{uniq_id}}">{{PORTAL_cancel}}</button>
+                      <button class="btn btn-xs btn-success main-save-edit" value="{{uniq_id}}">{{PORTAL_save}}</button>
+                    </div>
+                  </div>
+                  {% endif %}
+                  <div class="comment-bar"> <small class="subclass" style="display: none;">
+                  </small></div>
+                </div>
+              </div>
+              <div class="box-footer">
+                <small class="text-muted"><i class="fa fa-clock-o"></i> <time id="c" datetime="{{dt}}"></time> <a style="padding-left:20px;" href="#{{uniq_id}}"><i class="fa fa-link"></i> {{PORTAL_adr | raw}} </a> </small> <small style="padding-left:20px;"> {{get_post_rate_post | raw}}</small>
+                <small class="text-muted pull-right">
+                {% if validate == true %}
+                {{view_likes_button | raw}}
+                {% endif %} </small>
+              </div>
+            </div>
+            {% if official_status == true %}
+            <div class="box box-success box-solid direct-chat direct-chat-primary">
+              <div class="box-header with-border">
+                <h4 class="box-title">{{PORTAL_oa}}</h4>
+                <div class="box-tools pull-right">
+                </div>
+                </div><!-- /.box-header -->
+                <div class="box-body" style="display: block;">
+                  <!-- Conversations are loaded here -->
+                  <div class="direct-chat-messages">
+                    <!-- Message. Default to the left -->
+                    {% for item in official_arr %}
+                    <div class="direct-chat-msg">
+                      <div class="direct-chat-info clearfix">
+                        <span class="direct-chat-name pull-left">{{item.nameshort}}</span>
+                        <span class="direct-chat-timestamp pull-right"></span>
+                        </div><!-- /.direct-chat-info -->
+                        <img class="direct-chat-img" src="{{item.get_user_img_by_id}}" alt="message user image"><!-- /.direct-chat-img -->
+                        <div class="direct-chat-text" style="  background: #FCFCFC;
+                          border: 1px solid #FCFCFC;  margin-bottom: 15px;">
+                          <div id="{{item.uniq_hash}}" value="comment">
+                            <div class="editable_text">
+                              {{item.comment_text | raw}}
+                            </div>
+                            {{item.view_attach_files | raw}}
+                            <br>
+                            {% if validate_user == true %}
+                            <div class="edit-bar" style="display: none;">
+                              <div class="btn-group ">
+                                <button class="btn btn-xs btn-primary cancel-edit" value="{{item.uniq_hash}}">{{item.PORTAL_cancel}}</button>
+                                <button class="btn btn-xs btn-success save-edit" value="{{item.uniq_hash}}">{{item.PORTAL_save}}</button>
+                              </div>
+                            </div>
+                            {% endif %}
+                            <div class="comment-bar"> <small class="subclass" style="display: none;">
+                              {% if validate_user == true %}
+                              <div class="btn-group pull-right">
+                                <button class="btn btn-xs bg-maroon post-del" value="{{item.uniq_hash}}">{{item.PORTAL_act_del}}</button>
+                                <button class="btn btn-xs bg-orange btn-flat post-edit" value="{{item.uniq_hash}}">{{item.PORTAL_act_edit}}</button>
+                              </div>
+                              {% endif %}
+                            </small></div>
+                          </div>
+                          </div><!-- /.direct-chat-text -->
+                        </div>
+                        {% endfor %}
+                        </div><!--/.direct-chat-messages-->
+                      </div>
+                      <div class="box-footer">
+                        <small class="text-muted"><i class="fa fa-clock-o"></i>
+                        <time id="c" datetime="{{ro_dt}}"></time>
+                        </small><small style="padding-left:20px;"><a href="#{{ro_uh}}"><i class="fa fa-link"></i> {{PORTAL_adr}} </a></small>
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% if no_official_status == true %}
+                    <div class="box box-default direct-chat direct-chat-primary">
+                      <div class="box-header with-border">
+                        <h4 class="box-title">{{PORTAL_com}}</h4>
+                        <div class="box-tools pull-right">
+                        </div>
+                        </div><!-- /.box-header -->
+                        <div class="box-body" style="display: block;">
+                          <!-- Conversations are loaded here -->
+                          <div class="direct-chat-messages">
+                            <!-- Message. Default to the left -->
+                            {% for item in no_official_arr %}
+                            <div class="direct-chat-msg">
+                              <a name="{{item.uniq_hash}}"></a>
+                              <div class="direct-chat-info clearfix">
+                                <span class="direct-chat-name pull-left">{{item.nameshort}}</span>
+                                <span class="direct-chat-timestamp pull-right">
+                                <small><a href="#{{item.uniq_hash}}"><i class="fa fa-link"></i> {{PORTAL_adr}} </a></small>
+                                <small style="padding-left:10px;" class="text-muted"><i class="fa fa-clock-o"></i>
+                                <time id="c" datetime="{{item.dt}}"></time>
+                                </small>
+                                </span>
+                                </div><!-- /.direct-chat-info -->
+                                <img class="direct-chat-img" src="{{item.get_user_img_by_id}}" alt="message user image"><!-- /.direct-chat-img -->
+                                <div class="direct-chat-text" style="  background: #FCFCFC;
+                                  border: 1px solid #FCFCFC;  margin-bottom: 15px;">
+                                  <div id="{{item.uniq_hash}}" value="comment">
+                                    <div class="editable_text">
+                                      {{item.comment_text | raw }}
+                                    </div>
+                                    {{item.view_attach_files | raw }}
+                                    <br>
+                                    {% if validate_user == true %}
+                                    <div class="edit-bar" style="display: none;">
+                                      <div class="btn-group ">
+                                        <button class="btn btn-xs btn-primary cancel-edit" value="{{item.uniq_hash}}">{{item.PORTAL_cancel}}</button>
+                                        <button class="btn btn-xs btn-success save-edit" value="{{item.uniq_hash}}">{{item.PORTAL_save}}</button>
+                                      </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="comment-bar"> <small class="subclass" style="display: none;">
+                                      {% if validate_user == true %}
+                                      <div class="btn-group pull-right">
+                                        <button class="btn btn-xs bg-maroon post-del" value="{{item.uniq_hash}}">{{item.PORTAL_act_del}}</button>
+                                        <button class="btn btn-xs bg-orange btn-flat post-edit" value="{{item.uniq_hash}}">{{item.PORTAL_act_edit}}</button>
+                                      </div>
+                                      {% endif %}
+                                    </small></div>
+                                  </div>
+                                  </div><!-- /.direct-chat-text -->
+                                  </div><!-- /.direct-chat-msg -->
+                                  {% endfor %}
+                                  </div><!--/.direct-chat-messages-->
+                                </div>
+                                <div class="box-footer">
+                                  <div class="row">
+                                    <div class="col-sm-12">
+                                      <ul class="nav nav-pills nav-stacked">
+                                        <li class="pull-right">
+                                        <ul id="comm_pages" class="pagination pagination-sm pull-right no-margin "></ul>
+                                      </li>
+                                    </ul>
+                                    <input type="hidden" id="curent_page" value="{{p}}">
+                                    <input type="hidden" id="cur_page" value="{{p}}">
+                                    <input type="hidden" id="post" value="{{uniq_id}}">
+                                    <input type="hidden" id="total_pages" value="{{get_total_pages_comments}}">
+                                    </div><!-- /.col -->
+                                    </div><!-- /.row -->
+                                  </div>
+                                </div>
+                                {% endif %}
+                                {% if validate == false %}
+                                <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                <center>{{PORTAL_must_reg}}</center></div>
+                                {% endif %}
+                                {% if validate == true %}
+                                <div class="box box-default">
+                                  <div class="box-header with-border">
+                                    <h4 class="box-title">{{PORTAL_add_comm}}</h4>
+                                    <div class="box-tools pull-right">
+                                    </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                      <div class="row">
+                                        <div class="col-md-2" style="
+                                          padding-right: 0px;
+                                          ">
+                                          <center>
+                                          <img class="img-rounded"  src="{{get_user_img}}" alt="" height="120"><p>
+                                          <small> {{fio}} </small>
+                                          </p>
+                                          </center>
+                                          <hr>
+                                          {% if validate_user == true %}
+                                          <div class="checkbox">
+                                            <center><label>
+                                              <input id="mc" name="remember_me" value="1" type="checkbox"> <br>{{PORTAL_oa}}
+                                            </label></center>
+                                          </div>
+                                          {% endif %}
+                                          {% if validate_user == false %}
+                                          <input id="mc" name="remember_me" value="0" type="hidden">
+                                          {% endif %}
+                                        </div>
+                                        <div class="col-md-10" style="
+                                          padding-left: 0px;
+                                          ">
+                                          <div class="col-md-12">
+                                            <div id="notes"></div>
+                                          </div>
+                                          <div class="col-sm-12" >
+                                            <div class="text-muted well well-sm no-shadow" id="myid" >
+                                              <div class="dz-message" data-dz-message>
+                                                <center class="text-muted">{{PORTAL_fileplace}}</center>
+                                              </div>
+                                              <style type="text/css">
+                                              .note-editor .note-dropzone { opacity: 0 !important; }
+                                              </style>
+                                            <form action="#" class=""></form>
+                                            <div class="table table-striped" class="files" id="previews">
+                                              <div id="template" class="file-row">
+                                                <!-- This is used as the file preview template -->
+                                                <table class="table" style="margin-bottom: 0px;">
+                                                  <tbody><tr>
+                                                    <th style="width:50%"><p class="name" data-dz-name></p> </th>
+                                                    <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                                                    <td style="width:30%"><div class="progress progress-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                      <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                    </div></td>
+                                                    <td class="pull-right"><button data-dz-remove class="btn btn-sm btn-danger delete">
+                                                      <i class="glyphicon glyphicon-trash"></i>
+                                                      <span>Delete</span>
+                                                    </button></td>
+                                                  </tr>
+                                                </tbody></table>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                          <br>
+                                          <input type="hidden" value="{{time}}" id="comment_hash">
+                                          <input type="hidden" value="{{uniq_id}}" id="post_hash">
+                                          <button class="btn btn-block btn-info" id="add_comment">{{PORTAL_stay_comm}}</button>
+                                          <div id="post_res"></div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                {% endif %}
+                              </div>
+                              <div class="col-md-3">
+                                <div class="box box-default">
+                                  <div class="box-header with-border">
+                                    <h3 class="box-title">{{PORTAL_author}}</h3>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                          <div class="row">
+                                            <div class="col-md-4"><img class="img-rounded" src="{{get_user_img_by_id}}" height="60"></div>
+                                            <div class="col-md-8">
+                                              <center> <h4>{{author_id_fio}}<br><small>{{author_id_posada}}</small>
+                                              </h4>
+                                              </center>
+                                            </div>
+                                          </div>
+                                          </div><!-- /.col -->
+                                        </div>
+                                        </div><!-- /.box-body -->
+                                      </div>
+                                      {% if validate_user == true %}
+                                      {{ view_admin_menu | raw }}
+                                      {% endif %}
+                                      {{ view_maybe_block | raw }}
+                                      {{ view_stat_cat | raw }}
+                                    </div>
+                                  </div>
+                                  <!-- info row -->
+                                </section>
+                              </section>
+                            </div>

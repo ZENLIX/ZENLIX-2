@@ -1,14 +1,14 @@
 <?php
 include_once ('conf.php');
-include_once ('sys/class.phpmailer.php');
-include_once ('sys/Parsedown.php');
-require 'library/HTMLPurifier.auto.php';
-include_once ('library/gump.class.php');
-require_once 'library/Twig/Autoloader.php';
+include_once ('library/PHPMailer/class.phpmailer.php');
+include_once ('library/parsedown/Parsedown.php');
+include_once ('library/HTML_purifier/HTMLPurifier.auto.php');
+include_once ('library/GUMP/gump.class.php');
+require_once ('library/Twig/Autoloader.php');
 
 Twig_Autoloader::register();
 
-include_once ('inc/main_portal/portal.functions.inc.php');
+include_once ('app/main_portal/portal.functions.inc.php');
 
 //include_once('integration/PushBullet.class.php');
 
@@ -203,7 +203,7 @@ function send_mail_reg($to, $subj, $msg) {
     }
 }
 
-include_once ('inc/notification.inc.php');
+include_once ('app/core/notification.inc.php');
 
 $forhostname = substr($CONF['hostname'], -1);
 if ($forhostname == "/") {
@@ -771,7 +771,7 @@ no
             echo $allday; ?></small>
                           </h4>
                           <p style="margin:0px; white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;"><?php
-            echo $de; ?></p>
+            echo make_html($de); ?></p>
                         </a>
                       </li>
     <?php
@@ -2259,7 +2259,7 @@ $fts = array(
                 $ct.= ' <small><a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'><img style=\'max-height:100px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $f_hash . '.' . $file_arr['file_ext'] . '\'></a>  </small> ';
             } 
             else {
-                $ct.= get_file_icon($f_hash) . ' <small><a href=\'' . $CONF['hostname'] . 'sys/download.php?' . $f_hash . '\'>' . $file_arr['original_name'] . '</a> ' . round(($file_arr['file_size'] / (1024 * 1024)) , 2) . ' Mb </small><br>';
+                $ct.= get_file_icon($f_hash) . ' <small><a href=\'' . $CONF['hostname'] . 'action?mode=download_file&file=' . $f_hash . '\'>' . $file_arr['original_name'] . '</a> ' . round(($file_arr['file_size'] / (1024 * 1024)) , 2) . ' Mb </small><br>';
             }
 
     # code...
@@ -4991,7 +4991,7 @@ function get_client_info($id) {
                 <td style=" width: 30px; "><small><?php
         echo lang('WORKER_posada'); ?>:</small></td>
                 <td><small><a href="#" id="edit_posada" data-type="select" data-source="<?php
-        echo $CONF['hostname']; ?>/inc/json.php?posada" data-pk="1" data-title="<?php
+        echo $CONF['hostname']; ?>action?mode=getJSON_posada" data-pk="1" data-title="<?php
         echo lang('WORKER_posada'); ?>"><?php
         echo $posada
 ?></a></small></td>
@@ -5000,7 +5000,7 @@ function get_client_info($id) {
                 <td style=" width: 30px; "><small><?php
         echo lang('WORKER_unit'); ?>:</small></td>
                 <td><small><a href="#" id="edit_unit" data-type="select" data-source="<?php
-        echo $CONF['hostname']; ?>/inc/json.php?units" data-pk="1" data-title="<?php
+        echo $CONF['hostname']; ?>action?mode=getJSON_units" data-pk="1" data-title="<?php
         echo lang('NEW_to_unit'); ?>"><?php
         echo $pod; ?></a></small></td>
             </tr>
@@ -5378,6 +5378,7 @@ function priv_status($input) {
 
 function get_last_ticket_new($id) {
     global $dbConnection;
+    $in_query=NULL;
     $unit_user = unit_of_user($id);
     $priv_val = priv_status($id);
     $units = explode(",", $unit_user);
@@ -5520,7 +5521,7 @@ function get_last_msg_ticket($ticket_id, $type_op) {
 
 function get_last_ticket($menu, $id) {
     global $dbConnection;
-    
+    $in_query=NULL;
     if ($menu == "all") {
         $unit_user = unit_of_user($id);
         $priv_val = priv_status($id);
@@ -5568,7 +5569,7 @@ function get_last_ticket($menu, $id) {
         }
     } 
     else if ($menu == "in") {
-        
+        $in_query=NULL;
         $unit_user = unit_of_user($id);
         $priv_val = priv_status($id);
         $units = explode(",", $unit_user);
@@ -5793,7 +5794,7 @@ function get_last_ticket($menu, $id) {
         }
     } 
     else if ($menu == "arch") {
-        
+        $in_query=NULL;
         $unit_user = unit_of_user($id);
         $priv_val = priv_status($id);
         
@@ -6469,7 +6470,7 @@ function get_total_tickets_ok($in=NULL) {
 }
 function get_total_tickets_out_and_success($in=NULL) {
     global $dbConnection;
-    
+    $in_query=NULL;
     if (empty($in)) {
         $uid = $_SESSION['helpdesk_user_id'];
     } 
@@ -6563,7 +6564,7 @@ function get_total_tickets_free_client() {
 }
 function get_total_tickets_free() {
     global $dbConnection;
-    
+    $in_query=NULL;
     if (empty($in)) {
         $uid = $_SESSION['helpdesk_user_id'];
     } 
@@ -6719,7 +6720,7 @@ function get_approve() {
 }
 
 function get_total_pages($menu, $id) {
-    
+    $in_query=NULL;
     global $dbConnection;
     $perpage = '10';
     
@@ -6773,7 +6774,7 @@ function get_total_pages($menu, $id) {
     
     if ($menu == "in") {
         $perpage = '10';
-        
+        $in_query=NULL;
         if (isset($_SESSION['hd.rustem_list_in'])) {
             $perpage = $_SESSION['hd.rustem_list_in'];
         }
@@ -7020,7 +7021,7 @@ function get_total_pages($menu, $id) {
         }
         
         if ($priv_val == "0") {
-            
+            $in_query=NULL;
             $p = get_users_from_units_by_user();
             
             //print_r($p);
@@ -7140,6 +7141,7 @@ function get_total_pages($menu, $id) {
         }
     }
     if ($menu == "arch") {
+        $in_query=NULL;
         $perpage = '10';
         if (isset($_SESSION['hd.rustem_list_arch'])) {
             $perpage = $_SESSION['hd.rustem_list_arch'];

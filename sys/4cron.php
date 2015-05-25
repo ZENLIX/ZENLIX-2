@@ -5,8 +5,8 @@ $base = dirname(dirname(__FILE__));
 include ($base . "/conf.php");
 
 //date_default_timezone_set('Europe/Kiev');
-include ($base . "/library/ImapMailbox.php");
-include ($base . '/sys/class.phpmailer.php');
+include ($base . "/library/ImapMailbox/ImapMailbox.php");
+include ($base . '/library/PHPMailer/class.phpmailer.php');
 
 
 
@@ -933,7 +933,7 @@ if (get_conf_param('email_gate_status') == "true") {
 */
 
             $subj = strip_tags($message->subject);
-            $msg = strip_tags($message->all);
+            $msg = strip_tags($message->textPlain);
             
 
 
@@ -942,6 +942,9 @@ if (get_conf_param('email_gate_status') == "true") {
 
 //print_r($subj);
 if (preg_match('/(#[0-9]+)/',$subj)) {
+
+$msg = strip_tags($message->all);
+
 $email = (new EmailParser())->parse($msg);
 $fragment = current($email->getFragments());
 

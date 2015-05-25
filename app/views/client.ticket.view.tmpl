@@ -1,0 +1,667 @@
+
+{% if t_true == true %}
+
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-ticket"></i> {{TICKET_name}} <strong>#{{id}}</strong>
+                        <small>
+                            {{subj}}
+                        </small>
+                    </h1>
+                    <ol class="breadcrumb">
+                        <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{TICKET_name}} #{{id}}</li>
+                    </ol>
+                </section>
+            
+            
+            
+            
+            
+            
+             
+            
+            
+            <section class="content">
+                    <!-- title row -->
+                    
+                    
+                    
+                                <div class="row">
+
+            <div class="col-md-8">
+{% if refresh == true %}
+                <div class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <i class="fa fa-refresh"></i> {{TICKET_msg_updated}}</div>
+{% endif %}
+            </div>
+            </div>
+                    
+                    
+                    
+<div class="row">
+<div class="col-md-8">
+    <div class="row">
+    <div class="col-md-12">
+                    <div class="box">
+                                <div class="box-header">
+                                <h3 class="box-title">
+                                    
+                                    
+                                {{subj}}
+                                </h3>
+                                <small class="text-muted">
+                                {{gt_ir}}
+                                </small>
+                                <small class="box-tools pull-right text-muted">
+                                
+                                <i class="fa fa-clock-o"></i>
+                                <time id="c" datetime="{{date_create}}"></time> {{get_deadline_label | raw}}</small>
+                                
+                                </div>
+                                <div class="box-body">
+                                <table class="table table-bordered">
+                <tbody>
+                <tr style="width:50%">
+                    <td ><small class="text-muted">{{TICKET_t_from}}: </small></td>
+                    <td><small>{{user_init | raw}} </small></td>
+                    
+                    <td><small class="text-muted">{{TICKET_t_prio}}:</small>
+                    </td>
+                    <td><small>{{prio | raw}}</small>
+                    </td>
+                </tr>
+                <tr>
+                    <td ><small class="text-muted">{{TICKET_t_to}}: </small></td>
+                    <td><small>{{to_text | raw}} </small></td>
+                    <td><small class="text-muted" >{{TICKET_t_status}}:</small>
+                    </td>
+                    <td><small>{{st | raw}}</small></td>
+                </tr>
+
+
+
+                </tbody>
+            </table>
+
+{% if tdata == true %}<br>
+<small class="text-muted">{{FIELD_add_title}}: </small>
+<table class="table table-bordered">
+                <tbody>
+{% for item in tdata_arr %}
+
+        <tr>
+                    <td style="width:150px"><small class="text-muted">
+                    {{item.field_name}}: </small></td>
+                    <td><small>{{item.field_val}} </small></td>
+                    
+                    
+                </tr>
+
+
+{% endfor %}
+ </tbody>
+            </table>
+{% endif %} 
+
+            <div class="text-muted well well-sm no-shadow" style="margin-top: 10px;   background-color: #FDFDFD;">
+                                {{msg | raw}}
+                            </div>
+                            
+                            <div class="row"><div class="col-md-12">
+                            <small class="text-muted" >
+                                {{get_ticket_info}}
+                            </small>
+                                
+                            {% if can_edit == true %}
+
+            <button type="button" class="btn btn-default btn-xs pull-right" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i>  {{CONF_act_edit}}</button> {% endif %}
+                            </div>
+                            </div>                            
+
+
+                            {% if tfiles == true %}
+                    <hr style="margin:0px;">
+                        <div class="row" style="padding:10px;">
+                        <div class="col-md-3">
+                            <center><small><strong>{{TICKET_file_list}}:</strong></small></center>
+                        </div>
+                        <div class="col-md-9">
+                            <table class="table table-hover">
+                                    <tbody>
+                                
+                          {% for item in tfiles_arr %}          
+                                    
+                                    
+                    <tr>
+                        <td style="width:20px;"><small>{{item.ic | raw}}</small></td>
+                        <td><small>{{item.ct | raw}}</small></td>
+                        <td><small>{{item.size}} Mb</small></td>
+                    </tr>
+{% endfor %}
+                                    </tbody>
+                            </table>
+
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+
+{% endif %}
+
+                            
+
+
+                                </div>
+                    </div>
+                    
+                    
+                    </div>
+    </div>
+    
+
+    
+    <div class="row">
+    <div class="col-md-12">
+<style>
+.info-box {
+  display: block;
+  min-height: 90px;
+  background: #fff;
+  width: 100%;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  border-radius: 2px;
+  margin-bottom: 15px;
+}
+.info-box-icon {
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px;
+  display: block;
+  float: left;
+  height: 90px;
+  width: 90px;
+  text-align: center;
+  font-size: 45px;
+  line-height: 90px;
+  background: rgba(0,0,0,0.2);
+}
+.info-box-content {
+  padding: 5px 10px;
+  margin-left: 90px;
+}
+.info-box-text {
+  text-transform: uppercase;
+}
+.progress-description, .info-box-text {
+  display: block;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.info-box-number {
+  display: block;
+  font-weight: bold;
+  font-size: 17px;
+}
+.info-box .progress, .info-box .progress .progress-bar {
+  border-radius: 0;
+}
+.info-box .progress {
+  background: rgba(0,0,0,0.2);
+  margin: 5px -10px 5px -10px;
+  height: 2px;
+}
+.progress-description {
+  margin: 0;
+}
+.progress-description, .info-box-text {
+  display: block;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.info-box .progress .progress-bar {
+  background: #fff;
+}
+.info-box .progress, .info-box .progress .progress-bar {
+  border-radius: 0;
+}
+</style>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+    
+
+
+    
+
+
+
+    </div>
+    
+    <div class="row">
+    <div class="col-md-12">
+    
+<div id="msg"></div>
+<div class="nav-tabs-custom">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a href="#tab_1" data-toggle="tab"><i class="fa fa-comments-o"></i> {{TICKET_t_comment}}</a></li>
+                                    <li class=""><a href="#tab_2" data-toggle="tab" id="get_new_log">{{TICKET_t_history}}</a></li>
+                                    
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_1">
+                                        <div class="box box-solid" >
+                                <div class="box-header">
+                                    
+                                    
+                                </div>
+                                <div class="box-body chat" id="comment_content">
+                                {{view_comment | raw}}
+                                    <!-- chat item -->
+                                    
+                                </div><!-- /.chat -->
+                                <div class="box-footer">
+                                    <div class="row" id="for_msg">
+                                        <div class="col-md-12">
+
+
+<textarea id="msg" name="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="&lt;small&gt;{{TICKET_t_det_ticket}}&lt;/small&gt;" placeholder="{{TICKET_t_comm_ph}}"></textarea>
+ <div class="text-muted well well-sm no-shadow" id="myid" style="margin-bottom: 0px;">
+
+                          <div class="dz-message" data-dz-message>
+                            <center class="text-muted"><small>{{PORTAL_fileplace}}</small></center>
+                          </div>
+
+                          <style type="text/css">
+                          .note-editor .note-dropzone { opacity: 0 !important; }
+                          </style>
+
+                          <form action="#" class=""></form>
+
+                        <div class="table table-striped" class="files" id="previews" style="margin-bottom: 0px;">
+                          <div id="template" class="file-row">
+
+                            <table class="table" style="margin-bottom: 0px;">
+                              <tbody><tr>
+                                <th style="width:50%"><p class="name" data-dz-name></p> </th>
+                                <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                                <td style="width:30%"><div class="progress progress-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                  <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                </div></td>
+                                <td class="pull-right"><button data-dz-remove class="btn btn-sm btn-danger delete">
+                                  <i class="glyphicon glyphicon-trash"></i>
+                                  <span>Delete</span>
+                                </button></td>
+                              </tr>
+                            </tbody></table>
+                          </div>
+                        </div>
+                        </div><div style="height: 30px;" class="">
+                        <div class="btn-group pull-right">
+                                            <button value="{{hn}}" id="do_comment" class="btn btn-success btn-sm"><i class="fa fa-comment"></i></button>
+
+                                          
+                                            
+  <!--input type="file" id="do_comment_file" value="{{hn}}" class="file-inputs" title="+"-->
+                                            
+                                            
+                                            </div>
+
+                                        
+                                       
+                                    </div>
+                        </div>
+
+</div>
+        
+                      
+                                </div>
+                            </div>
+                                    </div><!-- /.tab-pane -->
+                                    <div class="tab-pane" id="tab_2">
+                                        {{view_log | raw}}
+                                    </div><!-- /.tab-pane -->
+                                </div><!-- /.tab-content -->
+                            </div>
+
+
+
+
+
+    
+
+    </div></div>
+    
+    
+    
+</div>
+<div class="col-md-4">
+
+<div class="row">
+    
+    <div class="col-md-12">
+    {{get_client_info_ticket | raw}}
+    </div>
+    
+</div>
+
+
+
+
+{% if slshow == true %}
+
+
+<div class="row">
+    
+    <div class="col-md-12">
+<div class="info-box bg-aqua">
+                <span class="info-box-icon"><i class="fa fa-bolt"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">{{SLA_perf_reaction}}</span>
+                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;">
+{{get_ticket_time_reaction | raw}}
+                  </span>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: {{per}}%"></div>
+                  </div>
+                  <span class="progress-description">
+                    {{SLA_REGLAMENT}}: {{sla_react | raw}}
+                  </span>
+                </div><!-- /.info-box-content -->
+              </div>
+
+
+<div class="info-box bg-yellow">
+                <span class="info-box-icon"><i class="fa fa-lock"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">{{SLA_perf_work_a}}</span>
+
+                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="work_timer" value="{{sl}}">{{get_ticket_time_lock | raw}}</span>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: {perw}%"></div>
+                  </div>
+                  <span class="progress-description">
+                    {{SLA_REGLAMENT}}: {{sla_work | raw}}
+                  </span>
+                </div><!-- /.info-box-content -->
+              </div>
+
+
+
+
+<div class="info-box bg-orange " style="background-color: #D81B60 !important;">
+                <span class="info-box-icon"><i class="fa fa-check-square"></i></span>
+                <div class="info-box-content">
+                  <span class="info-box-text">{{SLA_perf_deadline_short}}</span>
+                  <span class="info-box-number" style="white-space: nowrap;  overflow: hidden; text-overflow: ellipsis;" id="deadline_timer" value="{{ls}}">{{left_secr | raw}}
+                  </span>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: {{perd}}%"></div>
+                  </div>
+                  <span class="progress-description">
+                    {{SLA_REGLAMENT}}: <time id="f" datetime="{{sla_deadline | raw}}"></time>
+                  </span>
+                </div><!-- /.info-box-content -->
+              </div>
+
+
+
+
+</div>
+</div>
+{% endif %}
+
+
+
+
+
+
+
+<div class="row">
+    
+    <div class="col-md-12">
+
+
+
+
+
+
+
+
+
+
+
+
+                {% if arch == 1 %}
+<div class="callout bg-gray color-palette">
+                                        <h4>{{MAIN_attention}}</h4>
+                                        <p>{{TICKET_t_in_arch}}</p>
+                                    </div>
+                            
+                            
+                            
+                
+                
+                
+                
+                
+{% endif %}
+{% if arch == 0 %}
+            
+{% if status_ok == 1 %}
+<div class="callout callout-warning">
+                                        <h4>{{MAIN_attention}}</h4>
+                                        <p><i class="fa fa-check-circle"></i> {{TICKET_t_ok}} <strong> {{ok_by_fio | raw}}</strong> {{ok_date}}.<br> {{TICKET_t_ok_1}}</p>
+                                    </div>
+
+
+{% endif %}
+{% if status_ok == 0 %}
+               
+                    {% if lock_by != 0 %}       
+                        {% if status_lock == "you" %}   
+                            <div class="callout callout-warning">
+                                        <h4>{{MAIN_attention}}</h4>
+                                        <p><i class="fa fa-check-circle"></i> {{TICKET_t_lock}} <strong> {{lock_by_fio | raw}}</strong> .<br> {{TICKET_t_lock_1}}</p>
+                                    </div>
+                                    
+                                    
+                                    
+                            
+                            
+                            
+                           {% endif %}
+                           {% if status_lock == "me" %} 
+                        
+                            
+                            
+                            
+                            <div class="callout callout-warning">
+                                        <h4>{{MAIN_attention}}</h4>
+                                        <p><i class="fa fa-check-circle"></i> {{TICKET_t_lock_i}}</p>
+                                    </div>
+                                    
+                                    
+                            
+                            
+                            {% endif %}
+                        
+{% endif %}
+{% endif %}
+{% endif %}
+    </div>
+    
+</div>
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                                        
+                    
+
+                </section>
+            
+            
+            
+            
+                <input type="hidden" id="prio" value="{{pr}}">
+
+            <input type="hidden" id="ticket_hash" value="{{hn}}">
+            <input type="hidden" id="ticket_id" value="{{id}}">
+            <input type="hidden" id="ticket_total" value="0">
+            <div class="container">
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="css/ticket_style.css">
+
+
+{% if can_edit == true %}
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">{{P_title}}</h4>
+      </div>
+      <div class="modal-body">
+        
+        
+       <form class="form-horizontal" role="form">
+       
+
+
+
+<div class="control-group" id="for_prio">
+    <div class="controls">
+        <div class="form-group">
+            <label for="" class="col-sm-2 control-label"><small>{{NEW_prio}}: </small></label>
+            <div class="col-sm-10" style=" padding-top: 5px; ">
+
+                <div class="btn-group btn-group-justified">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-xs {{prio_style_low}}" id="prio_low"><i id="lprio_low" class=""></i>{{NEW_prio_low | raw}}</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-info btn-xs prio_style_normal" id="prio_normal"><i id="lprio_norm" class=""></i> {{NEW_prio_norm | raw}}</button>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-danger btn-xs prio_style_high" data-toggle="tooltip" data-placement="top" title="" id="prio_high"><i id="lprio_high" class=""></i>{{NEW_prio_high | raw}}</button>
+                    </div>
+                </div>
+            </div></div></div></div>
+            
+            
+
+
+
+
+
+  <div class="control-group">
+    <div class="controls">
+        <div class="form-group" id="for_msg">
+            <label for="msg" class="col-sm-2 control-label"><small>{{NEW_MSG}}:</small></label>
+            <div class="col-sm-10">
+                <textarea data-toggle="popover" data-html="true" data-trigger="manual" data-placement="right" data-content="<small>{{NEW_MSG_msg}}</small>" placeholder="{{NEW_MSG_ph}}" class="form-control input-sm animated" name="msg" id="msg_up" rows="3" required="" data-validation-required-message="{{EXT_fill_msg}}" aria-invalid="false">{{ms}}</textarea>
+            </div>
+        </div>
+        <div class="help-block"></div></div></div>
+       
+       
+       
+       
+       
+       
+       </form> 
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{TICKET_file_notupload_one}}</button>
+        <button type="button" id="save_edit_ticket" class="btn btn-primary">{{JS_save}}</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+{% endif %}
+
+           
+
+            
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
+
+            
+
+            </div>
+            {% endif %}
+       {% if t_true == false %}
+       <section class="content-header">
+       </section>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            <section class="content">
+        <div class="well well-large well-transparent lead">
+            <center>{{TICKET_t_no}}</center>
+        </div>
+        </section>
+
+        {% endif %}

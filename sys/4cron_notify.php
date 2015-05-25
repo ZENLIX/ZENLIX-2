@@ -7,15 +7,15 @@ include ($base . "/conf.php");
 
 //include_once($base ."/functions.inc.php");
 date_default_timezone_set('Europe/Kiev');
-include ($base . '/sys/class.phpmailer.php');
+include ($base . '/library/PHPMailer/class.phpmailer.php');
 
-include ($base . '/library/PushBullet.class.php');
+include ($base . '/library/PushBullet/PushBullet.class.php');
 
 include_once $base . '/lang/lang.ua.php';
 include_once $base . '/lang/lang.ru.php';
 include_once $base . '/lang/lang.en.php';
 
-//include_once($base .'/inc/notification.inc.php');
+
 
 $dbConnection = new PDO('mysql:host=' . $CONF_DB['host'] . ';dbname=' . $CONF_DB['db_name'], $CONF_DB['username'], $CONF_DB['password'], array(
     PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
@@ -23,7 +23,7 @@ $dbConnection = new PDO('mysql:host=' . $CONF_DB['host'] . ';dbname=' . $CONF_DB
 $dbConnection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-include ($base . '/library/smsc_smpp.php');
+include ($base . '/library/smsc/smsc_smpp.php');
 
 require_once $base.'/library/Twig/Autoloader.php';
 Twig_Autoloader::register();
@@ -1224,40 +1224,19 @@ function make_mail($type_op, $lang, $user_mail, $ticket_id) {
         $POST_COMMENT = $post_res['msg'];
         
         $subject = $SUBJ_POST . ' - ' . lang($lang, 'POST_MAIL_POST_NEW');
-        
-        //$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
 
-
-        /*
-        ob_start();
-        include ($base . "/inc/mail_tmpl/portal_post_new.tpl");
-        $message = ob_get_clean();
-        
-        $message = str_replace("{PORTAL_post_comment}", lang($lang, 'POST_MAIL_POST_NEW') . ' ' . get_conf_param('name_of_firm') , $message);
-        $message = str_replace("{MAIL_info}", lang($lang, 'MAIL_info') , $message);
-        $message = str_replace("{POST_created_author}", lang($lang, 'POST_created_author') , $message);
-        $message = str_replace("{POST_MAIL_subj}", lang($lang, 'POST_MAIL_subj') , $message);
-        $message = str_replace("{PORTAL_post_comment_ext}", lang($lang, 'PORTAL_post_NEWM_ext') , $message);
-        $message = str_replace("{MAIL_2link}", lang($lang, 'PORTAL_post_MAIL_2link') , $message);
-        
-        $message = str_replace("{uin}", $AUTHOR_POST, $message);
-        $message = str_replace("{to_text}", $SUBJ_POST, $message);
-        $message = str_replace("{who_init}", $AUTHOR_POST, $message);
-        $message = str_replace("{comment}", $POST_COMMENT, $message);
-        $message = str_replace("{h}", $THREAD_HASH, $message);
-        */
 
 
 
         try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -1332,27 +1311,7 @@ $message=$template->render(array(
         
         $subject = $SUBJ_POST . ' - ' . lang($lang, 'POST_MAIL_COMMENT');
         
-        //$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
-
-/*
-
-        ob_start();
-        include ($base . "/inc/mail_tmpl/portal_post_comment.tpl");
-        $message = ob_get_clean();
-        
-        $message = str_replace("{PORTAL_post_comment}", lang($lang, 'POST_MAIL_COMMENT') . ' ' . get_conf_param('name_of_firm') , $message);
-        $message = str_replace("{MAIL_info}", lang($lang, 'MAIL_info') , $message);
-        $message = str_replace("{POST_created_author}", lang($lang, 'POST_created_author') , $message);
-        $message = str_replace("{POST_MAIL_subj}", lang($lang, 'POST_MAIL_subj') , $message);
-        $message = str_replace("{PORTAL_post_comment_ext}", lang($lang, 'PORTAL_post_comment_ext') , $message);
-        $message = str_replace("{MAIL_2link}", lang($lang, 'PORTAL_post_MAIL_2link') , $message);
-        
-        $message = str_replace("{uin}", $AUTHOR_POST, $message);
-        $message = str_replace("{to_text}", $SUBJ_POST, $message);
-        $message = str_replace("{who_init}", $USER_AUTHOR_COMMENT, $message);
-        $message = str_replace("{comment}", $POST_COMMENT, $message);
-        $message = str_replace("{h}", $THREAD_HASH, $message);
-        */
+     
 
 
 
@@ -1361,12 +1320,12 @@ $message=$template->render(array(
  try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -1447,17 +1406,17 @@ $message=$template->render(array(
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_new;
         
-        //$message = eval(file_get_contents($base . "/inc/mail_tmpl/new_ticket.tpl"));
+        
 
 try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -1501,33 +1460,7 @@ $message=$template->render(array(
             die('ERROR: ' . $e->getMessage());
         }
 
-        /*
-        ob_start();
-        include ($base . "/inc/mail_tmpl/new_ticket.tpl");
-        $message = ob_get_clean();
-        $message = str_replace("{MAIL_new_ext}", lang('mail_msg_ticket_new') , $message);
-        $message = str_replace("{MAIL_new}", $MAIL_new, $message);
-        $message = str_replace("{MAIL_code}", $MAIL_code, $message);
-        $message = str_replace("{ticket_id}", $ticket_id, $message);
-        $message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
-        $message = str_replace("{MAIL_info}", $MAIL_info, $message);
-        $message = str_replace("{MAIL_created}", $MAIL_created, $message);
-        $message = str_replace("{uin}", $uin, $message);
-        $message = str_replace("{MAIL_to}", $MAIL_to, $message);
-        $message = str_replace("{to_text}", $to_text, $message);
-        $message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
-        $message = str_replace("{prio}", $prio, $message);
-        $message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
-        $message = str_replace("{nou}", $nou, $message);
-        $message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
         
-        $message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
-        $message = str_replace("{s}", $s, $message);
-        $message = str_replace("{MAIL_text}", $MAIL_text, $message);
-        $message = str_replace("{m}", $m, $message);
-        
-        $message = str_replace("{h}", $h, $message);
-        */
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }
@@ -1601,50 +1534,18 @@ $message=$template->render(array(
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_refer;
         
-        /*ob_start();
-        include ($base . "/inc/mail_tmpl/refer_ticket.tpl");
-        $message = ob_get_clean();
-        
-        $message = str_replace("{MAIL_refer}", $MAIL_refer, $message);
-        $message = str_replace("{MAIL_refer_ext}", $MAIL_refer_ext, $message);
-        $message = str_replace("{who_init}", $who_init, $message);
-        $message = str_replace("{MAIL_to_w}", $MAIL_to_w, $message);
-        
-        $message = str_replace("{MAIL_code}", $MAIL_code, $message);
-        $message = str_replace("{ticket_id}", $ticket_id, $message);
-        
-        $message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
-        $message = str_replace("{MAIL_info}", $MAIL_info, $message);
-        
-        $message = str_replace("{MAIL_created}", $MAIL_created, $message);
-        $message = str_replace("{uin}", $uin, $message);
-        $message = str_replace("{MAIL_to}", $MAIL_to, $message);
-        $message = str_replace("{to_text}", $to_text, $message);
-        
-        $message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
-        $message = str_replace("{prio}", $prio, $message);
-        $message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
-        $message = str_replace("{nou}", $nou, $message);
-        
-        $message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
-        $message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
-        $message = str_replace("{s}", $s, $message);
-        $message = str_replace("{MAIL_text}", $MAIL_text, $message);
-        $message = str_replace("{m}", $m, $message);
-        
-        $message = str_replace("{h}", $h, $message, $h);
-        */
+       
 
 
 try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -1751,12 +1652,12 @@ $message=$template->render(array(
         try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -1800,11 +1701,7 @@ $message=$template->render(array(
             die('ERROR: ' . $e->getMessage());
         }
 
-/*
-        ob_start();
-        include ($base . "/inc/mail_tmpl/comment_ticket.tpl");
-        $message = ob_get_clean();
-*/
+
         $message = str_replace("{MAIL_msg_comment}", $MAIL_msg_comment, $message);
         $message = str_replace("{MAIL_msg_comment_ext}", $MAIL_msg_comment_ext, $message);
         $message = str_replace("{who_init}", $who_init, $message);
@@ -1885,51 +1782,18 @@ $message=$template->render(array(
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_msg_lock;
         
-       /* ob_start();
-        include ($base . "/inc/mail_tmpl/lock_ticket.tpl");
-        $message = ob_get_clean();
-        
-        $message = str_replace("{MAIL_msg_lock}", $MAIL_msg_lock, $message);
-        $message = str_replace("{MAIL_msg_lock_ext}", $MAIL_msg_lock_ext, $message);
-        $message = str_replace("{who_init}", $who_init, $message);
-        
-        $message = str_replace("{MAIL_code}", $MAIL_code, $message);
-        $message = str_replace("{ticket_id}", $ticket_id, $message);
-        
-        $message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
-        $message = str_replace("{MAIL_info}", $MAIL_info, $message);
-        
-        $message = str_replace("{MAIL_created}", $MAIL_created, $message);
-        $message = str_replace("{uin}", $uin, $message);
-        
-        $message = str_replace("{MAIL_to}", $MAIL_to, $message);
-        $message = str_replace("{to_text}", $to_text, $message);
-        
-        $message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
-        $message = str_replace("{prio}", $prio, $message);
-        $message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
-        $message = str_replace("{nou}", $nou, $message);
-        
-        $message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
-        $message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
-        $message = str_replace("{s}", $s, $message);
-        $message = str_replace("{MAIL_text}", $MAIL_text, $message);
-        $message = str_replace("{m}", $m, $message);
-        
-        $message = str_replace("{h}", $h, $message);
-
-*/
+      
 
 
  try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -2024,51 +1888,18 @@ $message=$template->render(array(
         }
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_msg_unlock;
-        /*
-        ob_start();
-        include ($base . "/inc/mail_tmpl/unlock_ticket.tpl");
-        $message = ob_get_clean();
-        
-        $message = str_replace("{MAIL_msg_unlock}", $MAIL_msg_unlock, $message);
-        $message = str_replace("{MAIL_msg_unlock_ext}", $MAIL_msg_unlock_ext, $message);
-        $message = str_replace("{who_init}", $who_init, $message);
-        
-        $message = str_replace("{MAIL_code}", $MAIL_code, $message);
-        $message = str_replace("{ticket_id}", $ticket_id, $message);
-        
-        $message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
-        $message = str_replace("{MAIL_info}", $MAIL_info, $message);
-        
-        $message = str_replace("{MAIL_created}", $MAIL_created, $message);
-        $message = str_replace("{uin}", $uin, $message);
-        
-        $message = str_replace("{MAIL_to}", $MAIL_to, $message);
-        $message = str_replace("{to_text}", $to_text, $message);
-        
-        $message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
-        $message = str_replace("{prio}", $prio, $message);
-        $message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
-        $message = str_replace("{nou}", $nou, $message);
-        
-        $message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
-        $message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
-        $message = str_replace("{s}", $s, $message);
-        $message = str_replace("{MAIL_text}", $MAIL_text, $message);
-        $message = str_replace("{m}", $m, $message);
-        
-        $message = str_replace("{h}", $h, $message);
-        */
+
 
 
 try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -2164,50 +1995,18 @@ $message=$template->render(array(
         
         $subject = lang($lang, 'TICKET_name') . ' #' . $ticket_id . ' - ' . $MAIL_msg_ok;
         
-        /*ob_start();
-        include ($base . "/inc/mail_tmpl/ok_ticket.tpl");
-        $message = ob_get_clean();
-        
-        $message = str_replace("{MAIL_msg_ok}", $MAIL_msg_ok, $message);
-        $message = str_replace("{MAIL_msg_ok_ext}", $MAIL_msg_ok_ext, $message);
-        $message = str_replace("{who_init}", $who_init, $message);
-        
-        $message = str_replace("{MAIL_code}", $MAIL_code, $message);
-        $message = str_replace("{ticket_id}", $ticket_id, $message);
-        
-        $message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
-        $message = str_replace("{MAIL_info}", $MAIL_info, $message);
-        
-        $message = str_replace("{MAIL_created}", $MAIL_created, $message);
-        $message = str_replace("{uin}", $uin, $message);
-        
-        $message = str_replace("{MAIL_to}", $MAIL_to, $message);
-        $message = str_replace("{to_text}", $to_text, $message);
-        
-        $message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
-        $message = str_replace("{prio}", $prio, $message);
-        $message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
-        $message = str_replace("{nou}", $nou, $message);
-        
-        $message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
-        $message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
-        $message = str_replace("{s}", $s, $message);
-        $message = str_replace("{MAIL_text}", $MAIL_text, $message);
-        $message = str_replace("{m}", $m, $message);
-        
-        $message = str_replace("{h}", $h, $message, $h);
-        */
+       
 
 
 try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -2306,12 +2105,12 @@ $message=$template->render(array(
 try {
             
             // указывае где хранятся шаблоны
-            $loader = new Twig_Loader_Filesystem($base.'/inc/mail_tmpl');
+            $loader = new Twig_Loader_Filesystem($base.'/app/mail_tmpl');
             
             // инициализируем Twig
             if (get_conf_param('twig_cache') == "true") {
                 $twig = new Twig_Environment($loader, array(
-                    'cache' => $base . '/inc/cache',
+                    'cache' => $base . '/app/cache',
                 ));
             } 
             else {
@@ -2354,39 +2153,7 @@ $message=$template->render(array(
         }
 
 
-        /*ob_start();
-        include ($base . "/inc/mail_tmpl/unok_ticket.tpl");
-        $message = ob_get_clean();
         
-        $message = str_replace("{MAIL_msg_no_ok}", $MAIL_msg_no_ok, $message);
-        $message = str_replace("{MAIL_msg_no_ok_ext}", $MAIL_msg_no_ok_ext, $message);
-        $message = str_replace("{who_init}", $who_init, $message);
-        
-        $message = str_replace("{MAIL_code}", $MAIL_code, $message);
-        $message = str_replace("{ticket_id}", $ticket_id, $message);
-        
-        $message = str_replace("{MAIL_2link}", $MAIL_2link, $message);
-        $message = str_replace("{MAIL_info}", $MAIL_info, $message);
-        
-        $message = str_replace("{MAIL_created}", $MAIL_created, $message);
-        $message = str_replace("{uin}", $uin, $message);
-        
-        $message = str_replace("{MAIL_to}", $MAIL_to, $message);
-        $message = str_replace("{to_text}", $to_text, $message);
-        
-        $message = str_replace("{MAIL_prio}", $MAIL_prio, $message);
-        $message = str_replace("{prio}", $prio, $message);
-        $message = str_replace("{MAIL_worker}", $MAIL_worker, $message);
-        $message = str_replace("{nou}", $nou, $message);
-        
-        $message = str_replace("{MAIL_msg}", $MAIL_msg, $message);
-        $message = str_replace("{MAIL_subj}", $MAIL_subj, $message);
-        $message = str_replace("{s}", $s, $message);
-        $message = str_replace("{MAIL_text}", $MAIL_text, $message);
-        $message = str_replace("{m}", $m, $message);
-        
-        $message = str_replace("{h}", $h, $message);
-        */
         if (check_notify_mail_user($type_op, $user_mail)) {
             send_mail($user_mail, $subject, $message, $h);
         }
@@ -2424,7 +2191,7 @@ foreach ($res1 as $qrow) {
         ));
         $usr_info = $stmt->fetch(PDO::FETCH_ASSOC);
         $pb = $usr_info['pb'];
-        $usr_mail = $usr_info['email'];
+        $usr_mail = strtolower($usr_info['email']);
         $usr_lang = $usr_info['lang'];
         $mob = $usr_info['mob'];
         

@@ -4,33 +4,33 @@
     font-family: 'Source Sans Pro';
     font-style: normal;
     font-weight: 300;
-    src: url(SourceSansPro-Light.woff) format('woff');
+    src: url(Fonts_symbol/SourceSansPro-Light.woff) format('woff');
 }
 @font-face {
     font-family: 'Source Sans Pro';
     font-style: normal;
     font-weight: 400;
-    src: url(SourceSansPro-Regular.woff) format('woff');
+    src: url(Fonts_symbol/SourceSansPro-Regular.woff) format('woff');
 }
 @font-face {
     font-family: 'Source Sans Pro';
     font-style: normal;
     font-weight: 700;
-    src: url(SourceSansPro-Bold.woff) format('woff');
+    src: url(Fonts_symbol/SourceSansPro-Bold.woff) format('woff');
 }
 @font-face {
     font-family: 'Source Sans Pro';
     font-style: italic;
     font-weight: 400;
-    src: url(SourceSansPro-It.woff) format('woff');
+    src: url(Fonts_symbol/SourceSansPro-It.woff) format('woff');
 }
  @font-face {
 font-family: 'Helvetica Neue';
-src: url('helvetica-neue-webfont.eot');
-src: url('helvetica-neue-webfont.eot?#iefix') format('embedded-opentype'),
-     url('helvetica-neue-webfont.woff') format('woff'),
-     url('helvetica-neue-webfont.ttf') format('truetype'),
-     url('helvetica-neue-webfont.svg#Helvetica Neue') format('svg');
+src: url('Fonts_symbol/helvetica-neue-webfont.eot');
+src: url('Fonts_symbol/helvetica-neue-webfont.eot?#iefix') format('embedded-opentype'),
+     url('Fonts_symbol/helvetica-neue-webfont.woff') format('woff'),
+     url('Fonts_symbol/helvetica-neue-webfont.ttf') format('truetype'),
+     url('Fonts_symbol/helvetica-neue-webfont.svg#Helvetica Neue') format('svg');
 
   }
 /*!

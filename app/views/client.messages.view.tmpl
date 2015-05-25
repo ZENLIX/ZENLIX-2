@@ -1,0 +1,113 @@
+<section class="content-header">
+                    <h1>
+                        <i class="fa fa-comments"></i> {{MESSAGES_us}}
+                        <small>{{MESSAGES_us_ext}}</small>
+                    </h1>
+                    <ol class="breadcrumb">
+                       <li><a href="{{hostname}}index.php"><span class="icon-svg"></span> {{name_of_firm}}</a></li>
+                        <li class="active">{{MESSAGES_us}}</li>
+                    </ol>
+                </section>
+
+
+
+<section class="content">
+
+
+<div class="row">
+
+
+
+
+
+
+
+
+<div class="col-md-12">
+		
+		
+		<div class="row">
+			<div class="col-md-12"><div class="box box-primary" style="margin-bottom: 2px; height:100%;">
+                                <div class="box-header">
+                                    <h3 id="title_chat" class="box-title">
+                                    
+                                    {{mwith}}
+                                    
+                                    </h3>
+
+                                </div>
+                                <div class="box-body" >
+	                                
+
+                                    <div class="box-body chat" id="content_chat_client" style=" min-height: 350px; max-height: 350px; scroll-behavior: initial; overflow-y: scroll;">
+                                   
+
+
+<div class="col-md-6 col-md-offset-3">
+    <br><br><br>
+            <a id="" class="btn btn-block btn-primary" >Запрос на чат</a>
+            <br>
+            <center><small class="text-muted">Что бы начать чат, подайте запрос.</small></center>
+        </div>
+
+
+
+                                    </div>
+                                    
+                                                                   </div><!-- /.box-body -->	                                
+                                    <div class="loading1 "></div>
+	                                <div class="loading2 "></div>
+                            </div></div>
+			<div class="col-md-12"><div class="box box-solid">
+                                
+                                <div class="box-body">
+	                                
+	                                
+                                   <div class="input-group" id="for_msg">
+                                        <input name="msg" id="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="{{MESSAGES_sel_text}}" placeholder="{{MESSAGES_sel_text}}">
+                                        <div class="input-group-btn">
+                                            <button value="" id="do_comment" class="btn btn-success"><i class="fa fa-comment"></i></button>
+                                            
+                                            {% if tget == true %}
+                                   <input type="hidden" id="target_user" value="{{get_user_val_by_hash}}">
+                                   <input type="hidden" id="total_msgs_main" value="{{get_total_msgs_main}}">
+									   
+{% else %}
+<input type="hidden" id="target_user" value="main">
+<input type="hidden" id="total_msgs_main" value="{{get_total_msgs_main}}">
+{% endif %}
+                                            
+                                            
+                                            
+
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                                                   </div><!-- /.box-body -->
+                            </div></div>
+			
+		</div>
+		
+		
+		
+		
+	</div>
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+</section>
