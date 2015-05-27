@@ -219,6 +219,7 @@ CREATE TABLE `messages` (
   `msg` varchar(4096) DEFAULT '',
   `type_msg` varchar(128) NOT NULL DEFAULT 'main',
   `is_read` int(11) NOT NULL DEFAULT '0',
+  `client_request_status` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 

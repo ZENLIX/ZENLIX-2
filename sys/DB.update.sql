@@ -325,6 +325,23 @@ PREPARE stmt FROM @sql;
 EXECUTE stmt;
 ######################################################
 
+
+#`client_request_status` int(11) NOT NULL DEFAULT '0',
+#######UPDATE messages.client_request_status####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='messages' and column_name='client_request_status'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE messages ADD client_request_status INT(11) NOT NULL DEFAULT 0;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
+
 #######UPDATE notification_pool.delivers_id####################
 SET @sql = (SELECT IF(
     (SELECT COUNT(*)
