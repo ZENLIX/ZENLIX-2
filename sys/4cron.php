@@ -846,7 +846,7 @@ if (get_conf_param('email_gate_status') == "true") {
     
     */
     
-    $mailbox = new ImapMailbox('{' . get_conf_param('email_gate_host') . ':' . get_conf_param('email_gate_port') . get_conf_param('email_gate_connect_param') . '}' . get_conf_param('email_gate_cat') . '', GMAIL_EMAIL, GMAIL_PASSWORD, ATTACHMENTS_DIR, 'utf-8');
+    $mailbox = new ImapMailbox('{' . get_conf_param('email_gate_host') . ':' . get_conf_param('email_gate_port') . get_conf_param('email_gate_connect_param') . '}' . get_conf_param('email_gate_cat') . '', GMAIL_EMAIL, GMAIL_PASSWORD, ATTACHMENTS_DIR);
     
     $mails = array();
     

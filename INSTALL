@@ -5,7 +5,6 @@ Requirement
 2. PHP (current supported versions): 
 	2.1 php-ldap
 	2.2 php-imap
-	2.3 memory_limit 512M
 
 
 For install ZENLIX system, please:
@@ -33,11 +32,6 @@ sudo apt-get update
 curl -O http://vestacp.com/pub/vst-install.sh
 sudo bash vst-install.sh
 
-sudo nano /etc/php5/apache2/php.ini
-	to memory_limit 512M
-	short_open_tag on
-
-
 apt-get install php5-imap
 php5enmod imap
 sudo apt-get install php5-ldap
@@ -50,4 +44,4 @@ sudo npm install mysql -g
 sudo ln -s /usr/bin/nodejs /usr/bin/node
 
 pm2 start ...
-add in vesta cron strings from zenlix system (/perf -page)
+add in vesta cron strings from zenlix system (config?inform -page)

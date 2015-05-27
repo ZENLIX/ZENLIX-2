@@ -43,12 +43,7 @@
                                    
 
 
-<div class="col-md-6 col-md-offset-3">
-    <br><br><br>
-            <a id="" class="btn btn-block btn-primary" >Запрос на чат</a>
-            <br>
-            <center><small class="text-muted">Что бы начать чат, подайте запрос.</small></center>
-        </div>
+{{chat_msgs | raw}}
 
 
 
@@ -66,15 +61,17 @@
                                    <div class="input-group" id="for_msg">
                                         <input name="msg" id="msg" class="form-control" data-toggle="popover" data-html="true" data-trigger="manual" data-placement="top" data-content="{{MESSAGES_sel_text}}" placeholder="{{MESSAGES_sel_text}}">
                                         <div class="input-group-btn">
-                                            <button value="" id="do_comment" class="btn btn-success"><i class="fa fa-comment"></i></button>
+                                            <button value="" id="do_commentClient" class="btn btn-success"><i class="fa fa-comment"></i></button>
                                             
                                             {% if tget == true %}
                                    <input type="hidden" id="target_user" value="{{get_user_val_by_hash}}">
                                    <input type="hidden" id="total_msgs_main" value="{{get_total_msgs_main}}">
+                                   <input type="hidden" id="client_part" value="true">
 									   
 {% else %}
-<input type="hidden" id="target_user" value="main">
+<input type="hidden" id="target_user" value="{{active_chat}}">
 <input type="hidden" id="total_msgs_main" value="{{get_total_msgs_main}}">
+<input type="hidden" id="client_part" value="true">
 {% endif %}
                                             
                                             

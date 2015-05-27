@@ -2,6 +2,11 @@
 function lang_ua($phrase){
     static $lang = array(
     
+'chat_request'=>'Запит на чат',
+'chat_q'=>'Щоб почати, зробити запит',
+'chat_wait'=>'Очiкування зэднання',
+
+'chat_client_rq'=>'Запит клієнтів',
 
 'twig_cache'=>'TWIG-кешування',
 'REPLY_INFORMATION_YES'=>'Будь-ласка, не змінюйте теми цього повідомлення, якщо хочете відповісти на нього.',

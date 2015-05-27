@@ -745,7 +745,7 @@ LOCK TABLES `users` WRITE;
 
 INSERT INTO `users` (`id`, `fio`, `login`, `pass`, `status`, `priv`, `unit`, `is_admin`, `is_client`, `email`, `messages`, `lang`, `priv_add_client`, `priv_edit_client`, `last_time`, `ldap_key`, `pb`, `messages_title`, `usr_img`, `uniq_id`, `posada`, `tel`, `skype`, `unit_desc`, `adr`)
 VALUES
-	(1, 'System Account', 'system', '81dc9bdb52d04dc20036dbd8313ed055', 1, 2, '1,2,3', 8, 0, '', 'Это необходимо для того, что бы знать кто её выполняет и не происходили дубликаты выполнения одной и той же задачи.', 'ru', 1, 1, '2014-10-23 15:23:49', 0, '', 'Пожалуйста, не забывайте блокировать заявки!', '', '7371a131b959f3527cbde59f0e5caf96', '', '', '', '', '');
+	(1, 'System Account', 'system', '81dc9bdb52d04dc20036dbd8313ed055', 1, 2, '1,2,3', 8, 0, '', 'It is necessary that to know who it serves and there is no duplicate perform the same task.', 'ru', 1, 1, '2014-10-23 15:23:49', 0, '', 'Please, dont forget to lock your tickets!', '', '7371a131b959f3527cbde59f0e5caf96', 'administrator', '', '', '', '');
 
 
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;

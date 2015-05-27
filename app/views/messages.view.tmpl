@@ -77,6 +77,38 @@ height: 25px;" src="{{item.usr_img}}" class="img-circle" alt="User Image">
                                     
                                                                     </div><!-- /.box-body -->
                             </div>
+
+{% if req_clients_status == true %}
+<div class="box box-danger">
+                                <div class="box-header">
+                                    <h3 id="" class="box-title">
+                                    
+                                    {{chat_rq}}
+                                    
+                                    </h3>
+
+                                </div>
+
+<div class="box-body">
+<ul class="nav nav-pills nav-stacked">
+
+{% for v in rc %}
+                        <li class="user_li" user-id="{{v.id}}">
+                                                    <a href="#">
+                                                        <img style="width: 25px;height: 25px;" src="{{v.img}}" class="img-circle" alt="User Image">
+{{v.name}}
+                                                     </a>
+                                                     </li>
+{% endfor %}
+
+
+</ul>
+</div>
+
+
+</div>
+{% endif %}
+
 		
 	</div>
 		

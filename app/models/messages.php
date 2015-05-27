@@ -106,6 +106,36 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 $view_messages = ob_get_contents();
                 ob_end_clean();
             }
+
+
+
+$req_clients_arr=array();
+    $stmt_spec = $dbConnection->prepare('SELECT *  from messages where type_msg=:str and client_request_status=:uf');
+    $stmt_spec->execute(array(
+        ':str' => 'request',
+        ':uf' => '0'
+    ));
+    $req_clients = $stmt_spec->fetchAll();
+
+foreach ($req_clients as $value) {
+    # code...
+    array_push($req_clients_arr, array(
+    'img'=>get_user_img_by_id($value['user_from']),
+    'id'=>$value['user_from'],
+    'name'=>nameshort(name_of_user_ret_nolink($value['user_from']))
+    ));
+}
+
+
+
+
+$req_clients_status=false;
+if (!empty($req_clients)) {
+$req_clients_status=true;
+}
+
+
+
             
             $basedir = dirname(dirname(__FILE__));
             
@@ -144,7 +174,10 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     'MESSAGES_sel_text' => lang('MESSAGES_sel_text') ,
                     'get_user_val_by_hash' => get_user_val_by_hash($t, 'id') ,
                     'get_total_msgs_main' => get_total_msgs_main() ,
-                    'tget' => $tget
+                    'tget' => $tget,
+                    'rc'=>$req_clients_arr,
+                    'req_clients_status'=>$req_clients_status,
+                    'chat_rq'=>lang('chat_client_rq')
                 ));
             }
             catch(Exception $e) {

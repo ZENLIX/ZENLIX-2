@@ -726,6 +726,105 @@ $(document).ready(function() {
         //view_unread_msgs
     };
 
+
+    function check_user_msgs() {
+        var total_msgs_main = $('#total_msgs_main').val();
+        var targ = $('#target_user').val();
+        $.ajax({
+            type: "POST",
+            url: ACTIONPATH,
+            data: "mode=total_msgs_user"+"&in="+targ,
+            success: function(html) {
+                $('#total_msgs_main').val(html);
+                if (total_msgs_main != html) {
+                   // if (targ == "main") {
+                        $.ajax({
+                            type: "POST",
+                            url: ACTIONPATH,
+                            data: "mode=messages_view" + "&target="+targ,
+                            success: function(html) {
+                                $("#content_chat").html(html);
+                                makemytime(true);
+                                var scroll = $('#content_chat');
+                                var height = scroll[0].scrollHeight;
+                                scroll.scrollTop(height);
+                            }
+                        });
+                   // }
+                }
+            }
+        });
+    };
+
+    function check_user_msgs_client() {
+
+
+        var total_msgs_main = $('#total_msgs_main').val();
+        var targ = $('#target_user').val();
+
+        $.ajax({
+            type: "POST",
+            url: ACTIONPATH,
+            data: "mode=check_request_status",
+            success: function(html) {
+
+                if (html == "empty"){
+
+$.ajax({
+                            type: "POST",
+                            url: ACTIONPATH,
+                            data: "mode=clientCloseStatus",
+                            success: function(html) {
+                                $("#content_chat_client").html(html);
+                            }
+                        });
+
+
+                    
+                }
+                else if (html == "wait"){
+                    $.ajax({
+                            type: "POST",
+                            url: ACTIONPATH,
+                            data: "mode=clientWaitStatus",
+                            success: function(html) {
+                                $("#content_chat_client").html(html);
+                            }
+                        });
+                }
+                else if (html == "active"){
+                            $.ajax({
+            type: "POST",
+            url: ACTIONPATH,
+            data: "mode=total_msgs_user_client",
+            success: function(html) {
+                
+                if (total_msgs_main != html) {
+                   // if (targ == "main") {
+                        $.ajax({
+                            type: "POST",
+                            url: ACTIONPATH,
+                            data: "mode=messages_view_client",
+                            success: function(html) {
+                                $("#content_chat_client").html(html);
+                                makemytime(true);
+                                var scroll = $('#content_chat_client');
+                                var height = scroll[0].scrollHeight;
+                                scroll.scrollTop(height);
+                            }
+                        });
+                   // }
+                }
+                $('#total_msgs_main').val(html);
+            }
+        });
+                }
+}
+});
+
+
+    };
+
     function check_main_msgs() {
         var total_msgs_main = $('#total_msgs_main').val();
         var targ = $('#target_user').val();
@@ -735,6 +834,7 @@ $(document).ready(function() {
             data: "mode=total_msgs_main",
             success: function(html) {
                 if (total_msgs_main != html) {
+                    $('#total_msgs_main').val(html);
                     if (targ == "main") {
                         $.ajax({
                             type: "POST",
@@ -1448,12 +1548,152 @@ php:
         //check_main_msgs()
         //setInterval(check_main_msgs(),2000);
         //clearInterval(interval_main);
+
+
+
+        $('body').on('click', 'a#ClientChatRequest_action', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=ClientChatRequest",
+                success: function(html) {
+                    $("#content_chat_client").html(html);
+                    $("#target_user").val('wait');
+
+                }
+            });
+
+});
+
+//do_commentClient
+
+
+if ($('#client_part').length) {
+var tu=$("#target_user").val();
+
+//if (tu != "false") {
         interval = setInterval(function() {
-            check_main_msgs();
+            check_user_msgs_client();
+        }, 2000);
+   // }
+
+}
+
+if ($('#do_commentClient').length) {
+var scroll = $('#content_chat_client');
+        var height = scroll[0].scrollHeight;
+        scroll.scrollTop(height);
+        $('input#msg').bind('keypress', function(e) {
+            if (e.keyCode == 13) {
+                $("button#do_commentClient").click();
+            }
+        });
+
+
+        $('body').on('click', 'button#do_commentClient', function(event) {
+            event.preventDefault();
+            //var tid = $("#target_user").val();
+            var m = $("input#msg").val().length;
+            if ($("input#msg").val().replace(/ /g, '').length > 1) {
+                $("input#msg").popover('hide');
+                $("#for_msg").removeClass('has-error').addClass('has-success');
+                $.ajax({
+                    type: "POST",
+                    url: ACTIONPATH,
+                    data: "mode=messages_sendClient" + "&textmsg=" + encodeURIComponent(($("input#msg").val())) ,
+                    success: function(html) {
+                        $("#content_chat_client").html(html);
+                        $("input#msg").val('')
+                        makemytime(true);
+                        //comment_body
+                        var scroll = $('#content_chat_client');
+                        var height = scroll[0].scrollHeight;
+                        scroll.scrollTop(height);
+                        //console.log(height);
+                    }
+                });
+            } else {
+                $("input#msg").popover('show');
+                $("#for_msg").addClass('has-error');
+                setTimeout(function() {
+                    $("input#msg").popover('hide');
+                }, 2000);
+            }
+        });
+
+
+
+
+}
+
+
+
+
+if (!$('#client_part').length) {
+
+
+//startChatWithClient
+        $('body').on('click', '#startChatWithClient', function(event) {
+            event.preventDefault();
+            var tu=$("#target_user").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: ACTIONPATH,
+                    data: "mode=startChatWithClient" + "&target=" + tu ,
+                    success: function(html) {
+                        $("#content_chat").html(html);
+                        $("input#msg").val('');
+                        makemytime(true);
+                        //comment_body
+                        var scroll = $('#content_chat');
+                        var height = scroll[0].scrollHeight;
+                        scroll.scrollTop(height);
+                        //console.log(height);
+                    }
+                });
+
+
+        });
+
+        //closeChatWithClient
+        $('body').on('click', '#closeChatWithClient', function(event) {
+            event.preventDefault();
+            var tu=$("#target_user").val();
+
+                $.ajax({
+                    type: "POST",
+                    url: ACTIONPATH,
+                    data: "mode=stopChatWithClient" + "&target=" + tu ,
+                    success: function(html) {
+                        $("#content_chat").html(html);
+                        $("input#msg").val('');
+                        makemytime(true);
+                        //comment_body
+                        var scroll = $('#content_chat');
+                        var height = scroll[0].scrollHeight;
+                        scroll.scrollTop(height);
+                        //console.log(height);
+                    }
+                });
+
+
+        });
+
+
+        interval = setInterval(function() {
+            if ($("#target_user").val() == "main") {check_main_msgs();}
+            else {
+                check_user_msgs();
+            }
+            
         }, 2000);
         var scroll = $('#content_chat');
         var height = scroll[0].scrollHeight;
         scroll.scrollTop(height);
+    }
         $('input#msg').bind('keypress', function(e) {
             if (e.keyCode == 13) {
                 $("button#do_comment").click();
@@ -1520,10 +1760,11 @@ php:
                 data: "mode=messages_view" + "&target=" + user_id,
                 success: function(html) {
                     $("#content_chat").html(html);
-                    $("input#msg").val('')
+                    $("input#msg").val('');
                     makemytime(true);
                     $('.loading1').removeClass('overlay');
                     $('.loading2').removeClass('loading-img');
+                    //total_msgs_main
                     //comment_body
                     var scroll = $('#content_chat');
                     var height = scroll[0].scrollHeight;

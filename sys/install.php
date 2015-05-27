@@ -351,21 +351,6 @@ else if (!isset($_POST['mode'])) {
 
 <tbody>
 
-            <tr>
-                <td>PHP short_open_tag</td>
-                <td width="100px;">
-                  
-                  <?php
-            if (ini_get('short_open_tag') == false) { ?> 
-                  <span class="label label-danger">not active</span>
-                  <div class="alert alert-danger" role="alert">PHP-error: <em>short_open_tag</em> must be enable in your php configuration. <br> Details: <a href="http://php.net//manual/ru/language.basic-syntax.phptags.php">http://php.net//manual/ru/language.basic-syntax.phptags.php</a></div>
-                   <?php
-            } ?>
-                  <?php
-            if (ini_get('short_open_tag') == true) { ?><span class="label label-success">Success</span> <?php
-            } ?>
-                </td>
-            </tr>
             
             <tr>
                 <td>File .htaccess</td>
@@ -380,7 +365,7 @@ else if (!isset($_POST['mode'])) {
     <code>
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule . index.php [L]
+RewriteRule . index.php [L] 
 
     </code>
     

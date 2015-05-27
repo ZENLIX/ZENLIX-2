@@ -107,6 +107,106 @@ include_once ("../functions.inc.php");
                 ob_end_clean();
             }
             
+
+
+
+
+
+/*
+
+
+Есть ли открытые запросы?
+Если есть то вывести чат с кнопкой завершить
+Если нет показать кнопку:
+*/
+
+/*
+?>
+<div class="col-md-6 col-md-offset-3">
+    <br><br><br>
+            <a id="ClientChatRequest_action" class="btn btn-block btn-primary" >Запрос на чат</a>
+            <br>
+            <center><small class="text-muted">Что бы начать чат, подайте запрос.</small></center>
+        </div>
+
+<?
+*/
+
+
+
+//$newt = get_total_client_tickets_out();
+//$newt2 = get_total_client_tickets_ok();
+//$newt = $newt - $newt2;
+
+
+    $stmt_spec = $dbConnection->prepare('SELECT client_request_status  from messages where type_msg=:str and user_from=:uf');
+    $stmt_spec->execute(array(
+        ':str' => 'request',
+        ':uf' => $_SESSION['helpdesk_user_id']
+    ));
+    $row = $stmt_spec->fetch(PDO::FETCH_ASSOC);
+
+
+if (!empty($row)){
+$client_request_status=$row['client_request_status'];
+$active_chat='false';
+
+if ($client_request_status == "0") {
+$chat_msgs=lang('chat_wait');
+$active_chat='false';$get_total_msgs_user="false";
+}
+else if ($client_request_status == "1") {
+
+    $stmt = $dbConnection->prepare('SELECT user_to from messages where type_msg=:type_msg and user_from=:ufrom');
+    $stmt->execute(array(
+        ':type_msg'=>'request',
+        ':ufrom' => $_SESSION['helpdesk_user_id']
+    ));
+    
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+   
+
+
+
+$get_total_msgs_user=get_total_msgs_user($tt['user_to']);
+$active_chat=$tt['user_to'];
+ob_start();
+view_messages($tt['user_to']);
+
+//echo get_total_msgs_user('1');
+$view_messages2 = ob_get_contents();
+ob_end_clean();
+
+
+    $chat_msgs=$view_messages2;
+}
+else if ($client_request_status == "2") {
+    $chat_msgs="close";
+    $active_chat='false';
+    $get_total_msgs_user="false";
+}
+
+}
+else if (empty($row)){
+    $get_total_msgs_user="false";
+    $active_chat='false';
+$chat_msgs="
+<div class=\"col-md-6 col-md-offset-3\">
+    <br><br><br>
+            <a id=\"ClientChatRequest_action\" class=\"btn btn-block btn-primary\" >Запрос на чат</a>
+            <br>
+            <center><small class=\"text-muted\">Что бы начать чат, подайте запрос.</small></center>
+        </div>
+    ";
+}
+
+
+
+
+
+
+
+
             $basedir = dirname(dirname(__FILE__));
             
             ////////////
@@ -131,6 +231,7 @@ include_once ("../functions.inc.php");
                 // передаём в шаблон переменные и значения
                 // выводим сформированное содержание
                 echo $template->render(array(
+                    'chat_msgs'=>$chat_msgs,
                     'hostname' => $CONF['hostname'],
                     'name_of_firm' => $CONF['name_of_firm'],
                     'MESSAGES_us' => lang('MESSAGES_us') ,
@@ -143,8 +244,9 @@ include_once ("../functions.inc.php");
                     'view_messages' => $view_messages,
                     'MESSAGES_sel_text' => lang('MESSAGES_sel_text') ,
                     'get_user_val_by_hash' => get_user_val_by_hash($t, 'id') ,
-                    'get_total_msgs_main' => get_total_msgs_main() ,
-                    'tget' => $tget
+                    'get_total_msgs_main' => $get_total_msgs_user ,
+                    'tget' => $tget,
+                    'active_chat'=>$active_chat
                 ));
             }
             catch(Exception $e) {

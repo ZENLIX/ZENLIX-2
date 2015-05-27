@@ -8517,6 +8517,61 @@ values (:edit_msg, :n, :unow, :pk)');
             echo $newtickets;
         }
         
+
+
+//messages_view_client
+if ($mode == "messages_view_client") {
+    $stmt = $dbConnection->prepare('SELECT user_to from messages where type_msg=:type_msg and user_from=:ufrom');
+    $stmt->execute(array(
+        ':type_msg'=>'request',
+        ':ufrom' => $_SESSION['helpdesk_user_id']
+    ));
+    
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    view_messages($tt['user_to']);
+
+}
+
+
+
+
+if ($mode == "clientCloseStatus"){
+?>
+<div class="col-md-6 col-md-offset-3">
+    <br><br><br>
+            <a id="ClientChatRequest_action" class="btn btn-block btn-primary" ><?php echo lang('chat_request');?></a>
+            <br>
+            <center><small class="text-muted"><?php echo lang('chat_q');?></small></center>
+        </div>
+    <?php
+}
+if ($mode == "clientWaitStatus"){
+echo lang('chat_wait');
+}
+
+        if ($mode == "total_msgs_user_client") {
+            
+
+
+
+
+    $stmt = $dbConnection->prepare('SELECT user_to from messages where type_msg=:type_msg and user_from=:ufrom');
+    $stmt->execute(array(
+        ':type_msg'=>'request',
+        ':ufrom' => $_SESSION['helpdesk_user_id']
+    ));
+    
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    echo get_total_msgs_user($tt['user_to']);
+        }
+
+
+        if ($mode == "total_msgs_user") {
+            
+            echo get_total_msgs_user($_POST['in']);
+        }
+
         if ($mode == "total_msgs_main") {
             
             echo get_total_msgs_main();
@@ -8651,6 +8706,168 @@ values (:edit_msg, :n, :unow, :pk)');
             }
         }
         
+
+//check_request_status
+if ($mode == "check_request_status") {
+    $stmt_spec = $dbConnection->prepare('SELECT client_request_status from messages where type_msg=:str and user_from=:uf');
+    $stmt_spec->execute(array(
+        ':str' => 'request',
+        ':uf' => $_SESSION['helpdesk_user_id']
+    ));
+    $row = $stmt_spec->fetch(PDO::FETCH_ASSOC);
+
+if (empty($row)) {
+    $res="empty";
+}
+else if (!empty($row)) {
+    
+    if ($row['client_request_status'] == "0") {
+        $res="wait";
+    }
+    else if ($row['client_request_status'] == "1") {
+        $res="active";
+    }
+
+}
+
+echo $res;
+}
+
+if ($mode == "startChatWithClient") {
+
+            $stmt = $dbConnection->prepare('update messages set client_request_status=1, user_to=:uto where type_msg=:type_msg and user_from=:user_from');
+            $stmt->execute(array(
+                ':type_msg' => 'request',
+                ':user_from' => $_POST['target'],
+                ':uto'=>$_SESSION['helpdesk_user_id']
+            ));
+
+            view_messages($_POST['target']);
+
+}
+
+if ($mode == "stopChatWithClient") {
+
+            $stmt = $dbConnection->prepare('delete from messages  where type_msg=:type_msg and user_from=:user_from');
+            $stmt->execute(array(
+                ':type_msg' => 'request',
+                ':user_from' => $_POST['target']
+            ));
+
+            view_messages($_POST['target']);
+
+}
+
+
+        if ($mode == "messages_sendClient") {
+            
+            $user_comment = $_SESSION['helpdesk_user_id'];
+            $text_comment = $_POST['textmsg'];
+            //$target = $_POST['target'];
+            
+            //chat_msg_id
+            
+    $stmt_spec = $dbConnection->prepare('SELECT client_request_status,user_to  from messages where type_msg=:str and user_from=:uf');
+    $stmt_spec->execute(array(
+        ':str' => 'request',
+        ':uf' => $_SESSION['helpdesk_user_id']
+    ));
+    $row = $stmt_spec->fetch(PDO::FETCH_ASSOC);
+
+
+if (!empty($row)){
+    $client_request_status=$row['client_request_status'];
+
+if ($client_request_status == "0") {
+echo lang('chat_wait');
+}
+else if ($client_request_status == "1") {
+
+
+
+
+
+            $stmt_m = $dbConnection->prepare("SELECT MAX(id) max_id FROM messages");
+            $stmt_m->execute();
+            $max_id_msgs = $stmt_m->fetch(PDO::FETCH_NUM);
+                $a = $row['user_to'];//target_system
+                $b = "0";
+                
+                $unid = get_user_val_by_id($target, 'uniq_id');
+                
+                $stmt = $dbConnection->prepare('INSERT INTO notification_msg_pool (delivers_id,type_op,ticket_id,dt,chat_msg_id)
+                    values (:delivers_id,:type_op,:ticket_id,:n,:chat_msg_id)');
+                $stmt->execute(array(
+                    ':delivers_id' => $unid,
+                    ':type_op' => 'message_send',
+                    ':ticket_id' => $user_comment,
+                    ':chat_msg_id' => $max_id_res_msgs,
+                    ':n' => $CONF['now_dt']
+                ));
+            
+            
+            $stmt = $dbConnection->prepare('INSERT INTO messages (id, user_from,user_to,date_op,msg,type_msg,is_read)
+                    values (:ida, :user_from, :user_to, :n, :msg, :type_msg, :is_read)');
+            $stmt->execute(array(
+                ':ida' => $max_id_res_msgs,
+                ':user_from' => $user_comment,
+                ':user_to' => $a,
+                ':msg' => $text_comment,
+                ':type_msg' => $b,
+                ':is_read' => '0',
+                ':n' => $CONF['now_dt']
+            ));
+
+
+    view_messages($row['user_to']);
+}
+
+
+}
+else if (empty($row)){
+
+            $stmt = $dbConnection->prepare('insert into messages (
+                    user_from,
+                    user_to,
+                    date_op,
+                    msg,
+                    type_msg,
+                    is_read,
+                    client_request_status
+                ) VALUES (
+                    :user_from,
+                    :user_to,
+                    :date_op,
+                    :msg,
+                    :type_msg,
+                    :is_read,
+                    :client_request_status
+                )');
+
+            $stmt->execute(array(
+                ':user_from'=>$_SESSION['helpdesk_user_id'],
+                ':user_to'=>'0',
+                ':date_op'=>$CONF['now_dt'],
+                ':msg'=>$text_comment,
+                ':type_msg'=>'request',
+                ':is_read'=>'0',
+                ':client_request_status'=>'0'
+
+            ));
+}
+
+            
+
+
+
+            //echo "ok";
+            
+            //echo $target.'=='.$_SESSION['helpdesk_user_id'];
+            
+            
+        }
+
+
         if ($mode == "messages_send") {
             
             $user_comment = $_SESSION['helpdesk_user_id'];
@@ -8855,6 +9072,49 @@ $ct.= '</div>';
 
         }
         
+
+
+        if ($mode == "ClientChatRequest") {
+
+            $stmt = $dbConnection->prepare('insert into messages (
+                    user_from,
+                    user_to,
+                    date_op,
+                    msg,
+                    type_msg,
+                    is_read,
+                    client_request_status
+                ) VALUES (
+                    :user_from,
+                    :user_to,
+                    :date_op,
+                    :msg,
+                    :type_msg,
+                    :is_read,
+                    :client_request_status
+                )');
+
+            $stmt->execute(array(
+                ':user_from'=>$_SESSION['helpdesk_user_id'],
+                ':user_to'=>'0',
+                ':date_op'=>$CONF['now_dt'],
+                ':msg'=>'',
+                ':type_msg'=>'request',
+                ':is_read'=>'0',
+                ':client_request_status'=>'0'
+
+            ));
+
+            ?>
+Запрос успешно послан
+            <?php
+
+
+        }
+
+
+
+
         if ($mode == "upload_file") {
             $name = $_POST['name'];
             $hn = $_POST['hn'];

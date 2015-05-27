@@ -5,8 +5,31 @@ include_once ('library/parsedown/Parsedown.php');
 include_once ('library/HTML_purifier/HTMLPurifier.auto.php');
 include_once ('library/GUMP/gump.class.php');
 require_once ('library/Twig/Autoloader.php');
-
+include_once ('library/medoo/medoo.php');
 Twig_Autoloader::register();
+
+
+/*
+$DBC = new medoo([
+    // required
+    'database_type' => 'mysql',
+    'database_name' => $CONF_DB['db_name'],
+    'server' => $CONF_DB['host'],
+    'username' => $CONF_DB['username'],
+    'password' => $CONF_DB['password'],
+    'charset' => 'utf8',
+    // optional
+    'port' => 3306,
+    // driver_option for connection, read more from http://www.php.net/manual/en/pdo.setattribute.php
+    'option' => [
+        PDO::ATTR_CASE => PDO::CASE_NATURAL,
+        PDO::ATTR_ERRMODE=> PDO::ERRMODE_EXCEPTION
+    ]
+]);
+
+*/
+
+
 
 include_once ('app/main_portal/portal.functions.inc.php');
 
@@ -1426,7 +1449,7 @@ FROM
     } 
     else if ($in != "main") {
         
-        $stmt = $dbConnection->prepare('SELECT id, user_from,user_to,date_op,msg,type_msg,is_read
+        $stmt = $dbConnection->prepare('SELECT id, user_from,user_to,date_op,msg,type_msg,is_read,client_request_status
 FROM
 (
      SELECT *
@@ -1463,6 +1486,9 @@ FROM
         }
         
         $ct = make_html($rews['msg'], true);
+
+
+if ($rews['type_msg'] != "request") {
 ?>
 
                                     
@@ -1504,9 +1530,35 @@ FROM
 
         <?php
     }
-    
+    }
+
+
+
+
+    $stmt_spec = $dbConnection->prepare('SELECT client_request_status from messages where type_msg=:str and user_from=:uf');
+    $stmt_spec->execute(array(
+        ':str' => 'request',
+        ':uf' => $in
+    ));
+    $rowf = $stmt_spec->fetch(PDO::FETCH_ASSOC);
     //echo "ok";
+if (!empty($rowf)){
     
+$client_request_status=$rowf['client_request_status'];
+
+if ($client_request_status == "0") {
+$chat_msgs="<a id=\"startChatWithClient\" class=\"btn btn-block btn-default pull-right\">start chat</a>";
+}
+else if ($client_request_status == "1") {
+    $chat_msgs="<a id=\"closeChatWithClient\" class=\"btn btn-block btn-default pull-right\">close chat</a>";
+}
+
+echo $chat_msgs;
+
+}
+
+    
+
     
 }
 
@@ -2347,6 +2399,22 @@ function get_total_msgs_main() {
     
     return $tt['cou'];
 }
+
+
+function get_total_msgs_user($in) {
+    global $dbConnection;
+    $stmt = $dbConnection->prepare('SELECT count(id) as cou from messages where user_to=:uto and user_from=:ufrom');
+    $stmt->execute(array(
+        ':uto' => $_SESSION['helpdesk_user_id'],
+        ':ufrom'=>$in
+    ));
+    
+    $tt = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    return $tt['cou'];
+}
+
+
 
 function get_total_unread_messages() {
     global $dbConnection;

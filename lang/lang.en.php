@@ -2,6 +2,11 @@
 function lang_en($phrase){
     static $lang = array(
 
+'chat_request'=>'Request for chat',
+'chat_q'=>'For start, please push button.',
+'chat_wait'=>'Wait for operator.',
+
+'chat_client_rq'=>'Client requests',
 
 'LOGIN_ERROR_title' => 'Error authorization',
 'LOGIN_ERROR_desc' => 'You have exceeded the allowed number of login attempts. Try again later. ',
