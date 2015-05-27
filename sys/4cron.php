@@ -781,6 +781,33 @@ $stmt_notificate = $dbConnection->prepare('SELECT user_init_id,user_to_id,date_c
 
 }
 
+function check_file($fp) {
+    
+    
+            $maxsize=get_conf_param('file_size');
+            $good_files = explode("|", get_conf_param('file_types'));
+            $acceptable = $good_files;
+            $ext = pathinfo($fp, PATHINFO_EXTENSION);
+    $flag = true;
+    
+    
+    
+    if (filesize($fp) > $maxsize) {
+                        $flag = false;
+    }
+    
+    if ((!in_array($ext, $acceptable)) && (!empty(mime_content_type($fp)))) {
+                        $flag = false;
+                        //$msg = lang('PORTAL_file_ext');
+                    }
+    
+    
+    if ($flag == false) {
+        unlink(￼$fp);
+    } 
+    
+    return $flag;
+}
 
 function add_file($hn, $name, $path) {
     global $dbConnection;
@@ -865,7 +892,7 @@ if (get_conf_param('email_gate_status') == "true") {
         
         $message = $mailbox->getMail($id);
         
-        //$attachments=$message->getAttachments();
+        $attachments=$message->getAttachments();
         //$vv=$message->m_id;
         
         /*
@@ -877,7 +904,7 @@ if (get_conf_param('email_gate_status') == "true") {
         $mref = $message->references;
         $mid_code = $message->m_id;
         
-        //echo "<pre>".$message->all."</pre>";
+        //echo "<pre>".print_r($message->getAttachments())."</pre>";
         
         //to code place
         
@@ -925,20 +952,29 @@ if (get_conf_param('email_gate_status') == "true") {
             }
             
             //echo $message->all;
- /*
-            echo "<code><pre>";
-            print_r($message);
-            echo "</pre></code>";
+ 
 
-*/
+
+
+
 
             $subj = strip_tags($message->subject);
             $msg = strip_tags($message->textPlain);
             
 
-
-
-
+if (empty($message->textPlain)) {
+    
+    if (empty($message->textHTML)) { $msg=strip_tags($message->all); }
+    else { $msg=strip_tags($message->textHTML); }
+    
+    
+    
+}
+/*
+            echo "<code><pre>";
+            print_r($msg);
+            echo "</pre></code>";
+            */
 
 //print_r($subj);
 if (preg_match('/(#[0-9]+)/',$subj)) {
@@ -986,6 +1022,54 @@ Lines that begin with 'Sent from my BlackBerry'
 
 
 
+$at_arr=array();
+            foreach($attachments as $attachment) {
+                
+                //print check_file($attachment->filePath)."->".$attachment->filePath."<br>";
+                
+            if (check_file($attachment->filePath)) {
+                
+                $ext = pathinfo($attachment->filePath, PATHINFO_EXTENSION);
+                $fhash = randomhash();
+                $fileName_norm = $fhash . "." . $ext;
+                
+                $filetype=mime_content_type($attachment->filePath);
+                $filesize=filesize($attachment->filePath);
+                
+                //echo $attachment->filePath." ==> ".$base . '/upload_files/'.$fileName_norm;
+                rename($attachment->filePath, $base . '/upload_files/'.$fileName_norm);
+                $fname=$attachment->name;
+                $stmt = $dbConnection->prepare('insert into files 
+        (original_name, file_hash, file_type, file_size, file_ext, obj_type) values 
+        (:original_name, :file_hash, :file_type, :file_size, :file_ext, :obj_type)');
+                        $stmt->execute(array(
+                            ':original_name' => $fname,
+                            ':file_hash' => $fhash,
+                            ':file_type' => $filetype,
+                            ':file_size' => $filesize,
+                            ':file_ext' => $ext,
+                            ':obj_type' => '1'
+                        ));
+                array_push($at_arr, $fhash);
+            }
+            
+            
+            
+            
+            
+            
+            
+            }
+
+print_r($at_arr);
+//$comma_separated = implode(",", $at_arr);
+if (!empty($at_arr)) {
+    $si=implode(",", $at_arr);
+$text_comment=$text_comment."<br> [file:".$si."]";
+}
+
+
+
 $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)
 values (:tid_comment, :user_comment, :text_comment, :n)');
             $stmt->execute(array(
@@ -1028,10 +1112,58 @@ values (:comment, :n, :user_comment, :tid_comment)');
 }
 
 else {
+    
+
+            
+
+           
+            
+            
+            
             
             $status = '0';
             $hashname = md5(time()) . generateRandomString();
             $prio = '1';
+            
+            
+            
+            
+            foreach($attachments as $attachment) {
+                
+                //print check_file($attachment->filePath)."->".$attachment->filePath."<br>";
+                
+            if (check_file($attachment->filePath)) {
+                
+                $ext = pathinfo($attachment->filePath, PATHINFO_EXTENSION);
+                $fhash = randomhash();
+                $fileName_norm = $fhash . "." . $ext;
+                
+                $filetype=mime_content_type($attachment->filePath);
+                $filesize=filesize($attachment->filePath);
+                
+                //echo $attachment->filePath." ==> ".$base . '/upload_files/'.$fileName_norm;
+                rename($attachment->filePath, $base . '/upload_files/'.$fileName_norm);
+                $fname=$attachment->name;
+                $stmt = $dbConnection->prepare('insert into files 
+        (ticket_hash, original_name, file_hash, file_type, file_size, file_ext, obj_type) values 
+        (:ticket_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext, :obj_type)');
+                        $stmt->execute(array(
+                            ':ticket_hash' => $hashname,
+                            ':original_name' => $fname,
+                            ':file_hash' => $fhash,
+                            ':file_type' => $filetype,
+                            ':file_size' => $filesize,
+                            ':file_ext' => $ext,
+                            ':obj_type' => '1'
+                        ));
+                
+            }
+            }
+            
+            
+            
+            
+            
             
             $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");
             $stmt->execute();
@@ -1111,8 +1243,46 @@ else {
                 $msg = strip_tags(xss_clean($message->all));
                 
                 $status = '0';
-                $hashname = md5(time());
+                $hashname = md5(time().randomhash());
                 $prio = '1';
+                
+                
+                
+                
+                            foreach($attachments as $attachment) {
+                
+                //print check_file($attachment->filePath)."->".$attachment->filePath."<br>";
+                
+            if (check_file($attachment->filePath)) {
+                
+                $ext = pathinfo($attachment->filePath, PATHINFO_EXTENSION);
+                $fhash = randomhash();
+                $fileName_norm = $fhash . "." . $ext;
+                
+                $filetype=mime_content_type($attachment->filePath);
+                $filesize=filesize($attachment->filePath);
+                
+                //echo $attachment->filePath." ==> ".$base . '/upload_files/'.$fileName_norm;
+                rename($attachment->filePath, $base . '/upload_files/'.$fileName_norm);
+                $fname=$attachment->name;
+                $stmt = $dbConnection->prepare('insert into files 
+        (ticket_hash, original_name, file_hash, file_type, file_size, file_ext, obj_type) values 
+        (:ticket_hash, :original_name, :file_hash, :file_type, :file_size, :file_ext, :obj_type)');
+                        $stmt->execute(array(
+                            ':ticket_hash' => $hashname,
+                            ':original_name' => $fname,
+                            ':file_hash' => $fhash,
+                            ':file_type' => $filetype,
+                            ':file_size' => $filesize,
+                            ':file_ext' => $ext,
+                            ':obj_type' => '1'
+                        ));
+                
+            }
+            }
+                
+                
+                
                 
                 $stmt = $dbConnection->prepare("SELECT MAX(id) max_id FROM tickets");
                 $stmt->execute();
