@@ -3625,7 +3625,7 @@ view_helper_cat();
                 params: {
                     mode: 'upload_post_file',
                     post_hash: ph,
-                    type: '1'
+                    type: '0'
                 },
 
                 removedfile: function(file) {

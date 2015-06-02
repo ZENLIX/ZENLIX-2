@@ -162,7 +162,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         }
         
         $can_edit = false;
-        if ((($inituserid_flag == 1) && ($arch == 0)) || (priv_status(id_of_user($_SESSION['helpdesk_user_login'])) == "2") || (priv_status(id_of_user($_SESSION['helpdesk_user_login'])) == "0")) {
+        if ((($inituserid_flag == 1) && ($arch == 0)) || (priv_status($_SESSION['helpdesk_user_id']) == "2") || (priv_status($_SESSION['helpdesk_user_id']) == "0")) {
             $can_edit = true;
         }
         
@@ -202,7 +202,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             }
         }
         
-        $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+        $user_id = $_SESSION['helpdesk_user_id'];
         $unit_user = unit_of_user($user_id);
         $ps = priv_status($user_id);
         

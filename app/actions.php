@@ -5920,7 +5920,7 @@ a, a:visited {
         
         if ($mode == "find_help") {
             $t = ($_POST['t']);
-            $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+            $user_id = $_SESSION['helpdesk_user_id'];
             $unit_user = unit_of_user($user_id);
             $priv_val = priv_status($user_id);
             
@@ -6135,7 +6135,7 @@ a, a:visited {
             } 
             else if ($is_client == "0") {
                 
-                $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+                $user_id = $_SESSION['helpdesk_user_id'];
                 $unit_user = unit_of_user($user_id);
                 $priv_val = priv_status($user_id);
                 
@@ -6339,11 +6339,11 @@ a, a:visited {
             
             $start_pos = ($page - 1) * $perpage;
             
-            $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+            $user_id = $_SESSION['helpdesk_user_id'];
             $unit_user = unit_of_user($user_id);
             $priv_val = priv_status($user_id);
             
-            //priv_status($_SESSION['helpdesk_user_login']);
+
             $units = explode(",", $unit_user);
             $units = implode("', '", $units);
             $in_query=NULL;
@@ -7483,6 +7483,12 @@ $init_icon=NULL;
         }
         
         if ($mode == "upload_post_file") {
+
+if (!isset($_POST['type'])) {
+    $_POST['type']="1";
+}
+
+            $type=$_POST['type'];
             $msg=NULL;
             $output_dir = ZENLIX_DIR."/upload_files/";
             $hn = $_POST['post_hash'];
@@ -7536,7 +7542,7 @@ $init_icon=NULL;
                             ':file_type' => $filetype,
                             ':file_size' => $filesize,
                             ':file_ext' => $ext,
-                            ':obj_type' => '1'
+                            ':obj_type' => $type
                         ));
                     }
                     
@@ -9823,8 +9829,8 @@ $ct.= '</div>';
                 //  }
                 echo ($hashname);
             }
-            
-            check_unlinked_file();
+            validate_file_by_ticket($hashname);
+            //check_unlinked_file();
         }
     }
 }

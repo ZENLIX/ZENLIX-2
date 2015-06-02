@@ -27,43 +27,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             }
         }
         
-        /*
-        function Zip($source, $destination) {
-            if (!extension_loaded('zip') || !file_exists($source)) {
-                return false;
-            }
-            
-            $zip = new ZipArchive();
-            if (!$zip->open($destination, ZIPARCHIVE::CREATE)) {
-                return false;
-            }
-            
-            $source = str_replace('\\', '/', realpath($source));
-            
-            if (is_dir($source) === true) {
-                $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
-                
-                foreach ($files as $file) {
-                    $file = str_replace('\\', '/', $file);
-                    
-                    // Ignore "." and ".." folders
-                    if (in_array(substr($file, strrpos($file, '/') + 1), array('.', '..'))) continue;
-                    
-                    $file = realpath($file);
-                    
-                    if (is_dir($file) === true) {
-                        $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
-                    } else if (is_file($file) === true) {
-                        $zip->addFromString(str_replace($source . '/', '', $file), file_get_contents($file));
-                    }
-                }
-            } else if (is_file($source) === true) {
-                $zip->addFromString(basename($source), file_get_contents($source));
-            }
-            
-            return $zip->close();
-        }
-        */
+        
         $myversion = get_conf_param('version');
         
         //echo $myversion;
@@ -173,7 +137,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     
                 } 
                 else {
-                    echo 'An error has ocurred.';
+                    echo "UPDATE ERROR";
                     $error_tag = true;
                 }
                 
@@ -205,7 +169,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 $page = curl_exec($ch);
                 if (!$page) {
                     $error_tag = true;
-                    echo "Error :- " . curl_error($ch);
+                    echo "Error: " . curl_error($ch);
                 }
                 curl_close($ch);
                 
@@ -351,7 +315,6 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     //subdirs
                     '/img/',
                     '/app/',
-                    '/integration/',
                     '/js/',
                     
                     //subdirs

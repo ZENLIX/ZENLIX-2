@@ -275,7 +275,7 @@ $mode = $data_json->mode;
                         
                         $user_id = get_user_val_by_api($data_json->uniq_id, 'id');
                         
-                        //$user_id = id_of_user($_SESSION['helpdesk_user_login']);
+
                         $unit_user = unit_of_user($user_id);
                         $units = explode(",", $unit_user);
                         $units = implode("', '", $units);
@@ -1520,6 +1520,16 @@ values (:lock, :n, :unow, :tid)');
                         
                         $fio = get_user_val_by_id($dep['user_id'], 'fio');
                         
+
+$fl=strpos(make_html($dep['comment_text'], true),'[file:');
+
+if ($fl !== false) {
+    $ct=explode("[file:", $dep['comment_text']);
+    $dep['comment_text']=$ct[0];
+}
+$dep['comment_text']=strip_tags($dep['comment_text']);
+
+
                         array_push($r['comments'], array(
                             'author' => get_user_hash_by_id($dep['user_id']) ,
                             'text' => $dep['comment_text'],

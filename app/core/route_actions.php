@@ -90,9 +90,9 @@ if (!isset($_POST['remember_me'])) {
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
                         
                         $_SESSION['helpdesk_user_id'] = $row['id'];
-                        $_SESSION['helpdesk_user_login'] = $row['login'];
-                        $_SESSION['helpdesk_user_fio'] = $row['fio'];
-                        $_SESSION['helpdesk_user_type'] = "user";
+//                        $_SESSION['helpdesk_user_login'] = $row['login'];
+//                        $_SESSION['helpdesk_user_fio'] = $row['fio'];
+//                        $_SESSION['helpdesk_user_type'] = "user";
                         $_SESSION['zenlix.session_id'] = md5(time());
                         $_SESSION['code'] = $_POST['password'];
                         unset($_SESSION['z.times']);
@@ -127,11 +127,11 @@ if (!isset($_POST['remember_me'])) {
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     
                     $_SESSION['helpdesk_user_id'] = $row['id'];
-                    $_SESSION['helpdesk_user_login'] = $row['login'];
-                    $_SESSION['helpdesk_user_fio'] = $row['fio'];
-                    $_SESSION['helpdesk_user_type'] = "user";
                     $_SESSION['zenlix.session_id'] = md5(time());
                     $_SESSION['code'] = md5($password);
+
+
+                    
                     unset($_SESSION['z.times']);
                     unset($_SESSION['z.times_lt']);
                     if ($rm == "1") {

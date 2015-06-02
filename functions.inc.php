@@ -1423,6 +1423,42 @@ function get_current_sort($val) {
     return $r;
 }
 
+
+function validate_file_by_ticket($thash) {
+        global $dbConnection;
+
+
+        $stmt2 = $dbConnection->prepare('UPDATE files set obj_type=1 where ticket_hash=:tm');
+        $stmt2->execute(array(
+            ':tm' => $thash
+        ));
+
+ 
+
+    $stmt = $dbConnection->prepare('SELECT id, file_hash, file_ext FROM files where obj_type=0');
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+if (!empty($result)) {
+
+foreach ($result as $row) {
+                $stmt = $dbConnection->prepare("delete FROM files where id=:id");
+            $stmt->execute(array(
+                ':id' => $row['id']
+            ));
+            unlink(realpath(dirname(__FILE__)) . "/upload_files/" . $row['file_hash'] . "." . $row['file_ext']);
+}
+
+}
+
+
+
+}
+
+
+
+
+
+
 function view_messages($in) {
     global $dbConnection;
     
@@ -2562,8 +2598,8 @@ function validate_client($user_id, $input) {
             if ($stmt->rowCount() == 1) {
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                $_SESSION['helpdesk_user_login'] = $row['login'];
-                $_SESSION['helpdesk_user_fio'] = $row['fio'];
+//                $_SESSION['helpdesk_user_login'] = $row['login'];
+//                $_SESSION['helpdesk_user_fio'] = $row['fio'];
                 
                 return true;
             }
@@ -2584,8 +2620,8 @@ function validate_client($user_id, $input) {
         if ($stmt->rowCount() == 1) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $dbpass = md5($row['pass']);
-            $_SESSION['helpdesk_user_login'] = $row['login'];
-            $_SESSION['helpdesk_user_fio'] = $row['fio'];
+//            $_SESSION['helpdesk_user_login'] = $row['login'];
+//            $_SESSION['helpdesk_user_fio'] = $row['fio'];
             
             //$_SESSION['helpdesk_sort_prio'] == "none";
             if ($dbpass == $input) {
@@ -2642,7 +2678,7 @@ function reset_device_token($dt) {
         ));
     }
 }
-
+ 
 function validate_user($user_id, $input) {
     
     global $dbConnection, $CONF;
@@ -2674,8 +2710,6 @@ function validate_user($user_id, $input) {
             if ($stmt->rowCount() == 1) {
                 $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 
-                $_SESSION['helpdesk_user_login'] = $row['login'];
-                $_SESSION['helpdesk_user_fio'] = $row['fio'];
                 $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
                 $stmt->execute(array(
                     ':cid' => $user_id,
@@ -2688,6 +2722,8 @@ function validate_user($user_id, $input) {
             return false;
         }
     } 
+
+
     else if (get_user_authtype($ul) == false) {
         
         $stmt = $dbConnection->prepare('SELECT pass,login,fio from users where id=:user_id and status=:ls and is_client=:ic LIMIT 1');
@@ -2700,10 +2736,6 @@ function validate_user($user_id, $input) {
         if ($stmt->rowCount() == 1) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $dbpass = md5($row['pass']);
-            $_SESSION['helpdesk_user_login'] = $row['login'];
-            $_SESSION['helpdesk_user_fio'] = $row['fio'];
-            
-            //$_SESSION['helpdesk_sort_prio'] == "none";
             if ($dbpass == $input) {
                 $stmt = $dbConnection->prepare('update users set last_time=:n where id=:cid');
                 $stmt->execute(array(
@@ -3212,7 +3244,7 @@ function get_client_helper() {
 function get_helper() {
     global $dbConnection;
     
-    $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+    $user_id = $_SESSION['helpdesk_user_id'];
     $unit_user = unit_of_user($user_id);
     $priv_val = priv_status($user_id);
     
@@ -6022,7 +6054,7 @@ function showMenu_helper($level = 0) {
 function count_items_helper($id) {
     global $dbConnection;
     
-    $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+    $user_id = $_SESSION['helpdesk_user_id'];
     $unit_user = unit_of_user($user_id);
     $priv_val = priv_status($user_id);
     
@@ -6099,7 +6131,7 @@ function show_item_helper_cat($id) {
     global $dbConnection, $CONF;
     
     //  $t = ($_POST['t']);
-    $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+    $user_id = $_SESSION['helpdesk_user_id'];
     $unit_user = unit_of_user($user_id);
     $priv_val = priv_status($user_id);
     
@@ -7290,7 +7322,7 @@ function get_total_pages($menu, $id) {
 function get_users_from_units_by_user() {
     global $dbConnection;
     
-    $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+    $user_id = $_SESSION['helpdesk_user_id'];
     $unit_user = unit_of_user($user_id);
     $unit_user_arr = explode(",", $unit_user);
     
@@ -7484,25 +7516,18 @@ function unit_of_user($input) {
 
 function cutstr_help_ret($input) {
     
-    $result = implode(array_slice(explode('<br>', wordwrap($input, 500, '<br>', false)) , 0, 1));
-    $r = $result;
-    if ($result != $input) $r.= '...';
-    return $r;
+
+    return preg_match("/((\S+[\s-]+){5})/s", $input, $m)? rtrim($m[1]). '...' : $input;
 }
 
 function cutstr_help2_ret($input) {
     
-    $result = implode(array_slice(explode('<br>', wordwrap($input, 100, '<br>', false)) , 0, 1));
-    $r = $result;
-    if ($result != $input) $r.= '...';
-    return $r;
+    return preg_match("/((\S+[\s-]+){4})/s", $input, $m)? rtrim($m[1]). '...' : $input;
 }
 
 function cutstr_ret($input) {
     
-    $result = implode(array_slice(explode('<br>', wordwrap($input, 30, '<br>', true)) , 0, 1));
-    return $result;
-    if ($result != $input) return '...';
+    return preg_match("/((\S+[\s-]+){2})/s", $input, $m)? rtrim($m[1]). '...' : $input;
 }
 
 function cutstr_api($input, $c) {
@@ -7514,9 +7539,7 @@ function cutstr_api($input, $c) {
 
 function cutstr($input) {
     
-    $result = implode(array_slice(explode('<br>', wordwrap($input, 51, '<br>', false)) , 0, 1));
-    echo $result;
-    if ($result != $input) echo '...';
+    echo preg_match("/((\S+[\s-]+){3})/s", $input, $m)? rtrim($m[1]). '...' : $input;
 }
 function get_date_ok($d_create, $id) {
     global $dbConnection;

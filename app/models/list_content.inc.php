@@ -13,7 +13,7 @@ if (isset($_POST['menu'])) {
             $perpage = $_SESSION['hd.rustem_list_out'];
         }
         $start_pos = ($page - 1) * $perpage;
-        $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+        $user_id = $_SESSION['helpdesk_user_id'];
         $ps = priv_status($user_id);
         
         /*
@@ -529,7 +529,7 @@ if (isset($_POST['menu'])) {
         $z = ($_GET['t']);
         
         //echo($z);
-        $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+        $user_id = $_SESSION['helpdesk_user_id'];
         $unit_user = unit_of_user($user_id);
         $priv_val = priv_status($user_id);
         
@@ -618,7 +618,7 @@ if (isset($_POST['menu'])) {
             $ob = $row['ok_by'];
             $arch = $row['arch'];
             
-            $user_id_z = id_of_user($_SESSION['helpdesk_user_login']);
+            $user_id_z = $_SESSION['helpdesk_user_id'];
             $unit_user_z = unit_of_user($user_id_z);
             $status_ok_z = $row['status'];
             $ok_by_z = $row['ok_by'];
@@ -867,7 +867,7 @@ if (isset($_POST['menu'])) {
         
         $start_pos = ($page - 1) * $perpage;
         
-        $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+        $user_id = $_SESSION['helpdesk_user_id'];
         $unit_user = unit_of_user($user_id);
         $priv_val = priv_status($user_id);
         
@@ -1532,7 +1532,7 @@ if (isset($_POST['menu'])) {
         }
         $start_pos = ($page - 1) * $perpage;
         
-        $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+        $user_id = $_SESSION['helpdesk_user_id'];
         $unit_user = unit_of_user($user_id);
         $units = explode(",", $unit_user);
         $units = implode("', '", $units);

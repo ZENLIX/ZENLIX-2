@@ -204,7 +204,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 
                 ////////////////////
                 
-                $user_id = id_of_user($_SESSION['helpdesk_user_login']);
+                $user_id = $_SESSION['helpdesk_user_id'];
                 $unit_user = unit_of_user($user_id);
                 $priv_val = priv_status($user_id);
                 

@@ -803,7 +803,7 @@ function check_file($fp) {
     
     
     if ($flag == false) {
-        unlink(￼$fp);
+        unlink($fp);
     } 
     
     return $flag;

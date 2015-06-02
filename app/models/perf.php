@@ -1178,7 +1178,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         <div class="col-md-4">
             <select data-placeholder="<?php
             echo lang('NEW_to_unit'); ?>" class="chosen-select form-control" id="to" name="unit_id">
-                <option value="0"></option>
+                
                 <?php
             $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
             $stmt->execute(array(

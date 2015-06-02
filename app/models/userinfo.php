@@ -8,7 +8,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     include ("navbar.inc.php");
     
     $user_id = get_user_val_by_hash($_GET["user"], 'id');
-    $user_ids = id_of_user($_SESSION['helpdesk_user_login']);
+    $user_ids = $_SESSION['helpdesk_user_id'];
     $priv_val = priv_status($user_ids);
     
     if (($priv_val == "2") || ($priv_val == "0")) {

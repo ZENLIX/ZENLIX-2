@@ -1,9 +1,10 @@
 <?php
 
+
 $CONF['title_header'] = lang('DASHBOARD_TITLE') . " - " . $CONF['name_of_firm'];
 
-if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
-    if ($_SESSION['helpdesk_user_id']) {
+//if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
+//    if ($_SESSION['helpdesk_user_id']) {
         include ("head.inc.php");
         include ("navbar.inc.php");
         
@@ -113,9 +114,5 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         }
         
         include ("footer.inc.php");
-    }
-} 
-else {
-    include 'auth.php';
-}
+
 ?>
