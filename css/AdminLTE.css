@@ -3776,6 +3776,19 @@ fieldset[disabled] .btn-vk.active {
 .modal-danger .modal-footer {
   color: #fff !important;
 }
+
+.bg-blues {
+    color: #000;
+  background-color: #97C2DB !important;
+
+}
+
+.has-feedback {
+  position: relative;
+}
+.form-control-feedback {
+  color: #777;
+}
 .bg-gray {
   color: #000;
   background-color: #d2d6de !important;

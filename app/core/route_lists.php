@@ -89,7 +89,13 @@ else {
         include ('app/models/404.inc.php');
     }
     if ($privs == "GUEST") {
+        $portal = get_portal_status();
+            if ($portal) {
+                include ('app/main_portal/models/auth.php');
+            }
+            else {
         include ('app/models/auth.php');
+    }
     }
 }
 ?>

@@ -2,7 +2,7 @@
  
 <style type="text/css" media="screen">
 .c {
-background: url(img/login_bg.jpg) no-repeat center center fixed; 
+background: url({{hostname}}img/login_bg.jpg) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -173,14 +173,22 @@ background-repeat: no-repeat;
             <center><img src="{{get_logo_img}}" width="128"></center>
             {{MAIN_TITLE}}</div>
             <form class="form-signin" action="{{hostname}}{{link}}" method="POST" autocomplete="off">
-                <div class="body bg-gray">
-                    <div class="form-group">
+                <div class="body bg-blues">
+                    <div class="form-group has-feedback">
                         <input type="text" name="login" autocomplete="off" autocapitalize="off" autocorrect="off" class="form-control" placeholder="{{login}}"/>
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <input type="password" name="password" class="form-control" placeholder="{{pass}}"/>
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>          
-                    <div class="form-group">
+
+                </div>
+                <div class="footer bg-blues">         
+                                                                     
+                    <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in"></i>  {{log_in}}</button>  <center>
+
+                                        <div class="form-group">
                         <div class="checkbox">
                 <center><label>
                 
@@ -189,10 +197,6 @@ background-repeat: no-repeat;
                 </label></center>
             </div>
                     </div>
-                </div>
-                <div class="footer bg-gray">         
-                                                                     
-                    <button type="submit" class="btn btn-success btn-block"><i class="fa fa-sign-in"></i>  {{log_in}}</button>  <center>
                     <small>
                     {% if allow_register == true %}
                      <a href="register" class="text-center">{{REG_new}}</a> 
@@ -204,6 +208,7 @@ background-repeat: no-repeat;
                     </center>
                     <!--p>Используйте Ваши LDAP-учётные данные для входа</p-->
                     {% if va == "error" %}
+                    <br>
             <div class="alert alert-danger">
                 <center>{{error_auth | raw}}</center>
             </div> {% endif %}
@@ -238,7 +243,7 @@ background-repeat: no-repeat;
 
     
 
-
+ 
 
 
 {% if htf == false %}

@@ -131,7 +131,7 @@ if (isset($_POST['mode'])) {
 <?php
     
     // Name of the file
-    $filename = realpath(dirname(dirname(__FILE__))) . '/DB/DB.install.sql';
+    $filename = realpath(dirname(dirname(__FILE__))) . '/sys/DB.install.sql';
     $fileconf = realpath(dirname(dirname(__FILE__))) . '/conf.php';
     $nodeserver = realpath(dirname(dirname(__FILE__))) . '/nodejs/server.js';
     

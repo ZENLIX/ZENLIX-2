@@ -88,7 +88,7 @@ if (!isset($_POST['remember_me'])) {
                     ));
                     if ($stmt->rowCount() == 1) {
                         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                        
+                         
                         $_SESSION['helpdesk_user_id'] = $row['id'];
 //                        $_SESSION['helpdesk_user_login'] = $row['login'];
 //                        $_SESSION['helpdesk_user_fio'] = $row['fio'];

@@ -2694,7 +2694,7 @@ function validate_user($user_id, $input) {
             $_SESSION['helpdesk_user_id'] = $user_id;
         }
     }
-    
+     
     $ul = get_userlogin_byid($user_id);
     
     if (get_user_authtype($ul)) {

@@ -570,7 +570,7 @@ function lang_en($phrase){
 'remember_me'=>'Remember me',
 'error_auth'=>'Authorization error. <br> Check your login and password.',
 'action_auth'=>'To enable',
-'log_in'=>'Enter',
+'log_in'=>'Sign In',
 'NOTES_single'=>'Record...',
 't_LIST_prio'=>'Priority',
 't_LIST_subj'=>'Subject',

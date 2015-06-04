@@ -100,18 +100,18 @@ background-repeat: no-repeat;
             <center><img src="{{get_logo_img}}" width="128"></center>
             {{MAIN_TITLE}}</div>
             <form class="form-signin" autocomplete="off" id="main_form_register">
-                <div class="body bg-gray">
+                <div class="body bg-blues">
                 <div id="error_result"></div>
 
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <input type="password" name="pass_new" class="form-control" placeholder="{{P_pass_new}}" id="pass_new">
                     </div>
-                                        <div class="form-group">
+                                        <div class="form-group has-feedback">
                         <input type="password" name="pass_new2" class="form-control" placeholder="{{P_pass_new_re}}" id="pass_new2">
                     </div>
 
                 </div>
-                <div class="footer bg-gray">                                                               
+                <div class="footer bg-blues">                                                               
                     <button id="change_pw" class="btn btn-success btn-block"><i class="fa fa-check-circle"></i>  {{P_do_edit_pass}}</button>  
                    
                     <!--p>Используйте Ваши LDAP-учётные данные для входа</p-->
@@ -197,17 +197,19 @@ $(document).ready(function() {
             <center><img src="{{get_logo_img}}" width="128"></center>
             {{MAIN_TITLE}}</div>
             <form class="form-signin" autocomplete="off" id="main_form_register">
-                <div class="body bg-gray">
+                <div class="body bg-blues">
                 <div id="error_result"></div>
-                                        <div class="form-group">
+                                        <div class="form-group has-feedback">
                         <input type="text" name="name" class="form-control" placeholder="{{USERS_login}}" id="login_name">
+                        <span class="glyphicon glyphicon-user form-control-feedback"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <input type="text" name="userid" class="form-control" placeholder="E-mail" id="login_mail">
+                        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                     </div>
 
                 </div>
-                <div class="footer bg-gray">                                                               
+                <div class="footer bg-blues">                                                               
                     <button id="forgot" class="btn btn-success btn-block"><i class="fa fa-check-circle"></i>  {{FORGOT_button}}</button>  
                    <center> <a href="index.php" class="text-center">{{REG_already}}</a></center>
                     <!--p>Используйте Ваши LDAP-учётные данные для входа</p-->

@@ -181,7 +181,7 @@ if (isset($_POST['mode'])) {
                 if ($ec == 0) {
                     
                     $check_error = "true";
-                    $msg = " <div class=\"body bg-gray\"> <div class=\"alert alert-success\">";
+                    $msg = " <div class=\"body bg-blues\"> <div class=\"alert alert-success\">";
                     $msg.= lang('PROFILE_msg_pass_ok');
                     $msg.= "</div></div>";
                     
@@ -439,7 +439,7 @@ $message=$template->render(array(
 
         if ($errors == true) {
             $check_error = "false";
-            $msg = "<div class=\"body bg-gray\">";
+            $msg = "<div class=\"body bg-blues\">";
             $msg.= "<div class=\"alert alert-danger\">
                                         <i class=\"fa fa-ban\"></i>
                                         ";
@@ -9131,8 +9131,37 @@ $ct.= '</div>';
                 ':hn' => $hn
             ));
         }
+
+        if ($mode == "conf_clear_cache") {
+
+function recursiveDelete($str) {
+    if (is_file($str)) {
+        return @unlink($str);
+    }
+    elseif (is_dir($str)) {
+        $scan = glob(rtrim($str,'/').'/*');
+        foreach($scan as $index=>$path) {
+            recursiveDelete($path);
+        }
+        return @rmdir($str);
+    }
+}
+recursiveDelete(ZENLIX_DIR."/app/cache/");
+//array_map('unlink', glob(ZENLIX_DIR."/app/cache/*"));
+//removeDirectory(ZENLIX_DIR."/app/cache/");
+//unlink(ZENLIX_DIR . "/upload_files/" . $id . "." . $ext);
+
+
+            ?>
+<div class="alert alert-success">
+Successfully cleared!
+</div>
+            <?php
+        }
+
         if ($mode == "conf_test_mail") {
-            
+            $res_msg=NULL;
+            echo "<pre>";
             /*
             
             if (get_conf_param('mail_auth_type') != "none")
@@ -9164,14 +9193,14 @@ $ct.= '</div>';
                     echo "Message Sent OK<p></p>\n";
                 }
                 catch(phpmailerException $e) {
-                    echo $e->errorMessage();
+                    $e->errorMessage();
                     
                     //Pretty error messages from PHPMailer
                     
                     
                 }
                 catch(Exception $e) {
-                    echo $e->getMessage();
+                     $e->getMessage();
                     
                     //Boring error messages from anything else!
                     
@@ -9215,20 +9244,22 @@ $ct.= '</div>';
                     echo "Message Sent OK<p></p>\n";
                 }
                 catch(phpmailerException $e) {
-                    echo $e->errorMessage();
+                     $e->errorMessage();
                     
                     //Pretty error messages from PHPMailer
                     
                     
                 }
                 catch(Exception $e) {
-                    echo $e->getMessage();
+                     $e->getMessage();
                     
                     //Boring error messages from anything else!
                     
                     
                 }
             }
+
+            echo "</pre>";
         }
         
         if ($mode == "profile_edit_nf") {

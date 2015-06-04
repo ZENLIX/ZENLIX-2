@@ -296,7 +296,7 @@ INSERT INTO `perf` (`id`, `param`, `value`) VALUES (56, 'mailers_text', '') ON D
 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (57, 'allow_forgot', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
 
-INSERT INTO `perf` (`id`, `param`, `value`) VALUES (58, 'sla_system', 'true') ON DUPLICATE KEY UPDATE `value` = `value`;
+INSERT INTO `perf` (`id`, `param`, `value`) VALUES (58, 'sla_system', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
 
 INSERT INTO `perf` (`id`, `param`, `value`) VALUES (59, 'portal_posts_mail_users', 'false') ON DUPLICATE KEY UPDATE `value` = `value`;
 

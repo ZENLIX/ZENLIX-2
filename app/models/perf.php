@@ -1969,7 +1969,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                                 <div class="box-body">
  <p class="help-block"><small><?php
             echo lang('CONF_node_info'); ?> <br>
-<pre>pm2 start <?php
+<pre>sudo pm2 start <?php
             echo realpath(dirname(dirname(dirname(__FILE__)))) . "/nodejs/server.js" ?></pre></small></p>
 
 
@@ -2221,7 +2221,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 
   <div class="form-group">
     <label for="api_status" class="col-sm-4 control-label"><small><?php echo lang('twig_cache'); ?></small></label>
-    <div class="col-sm-8">
+    <div class="col-sm-6">
   <select class="form-control input-sm" id="twig_cache">
   <option value="true" <?php
             if (get_conf_param('twig_cache') == "true") {
@@ -2234,6 +2234,8 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             } ?>><?php
             echo lang('CONF_false'); ?></option>
 </select>    
+</div>
+<div class="col-sm-2"><button id="clear_cache" class="btn btn-block btn-default btn-sm">clear cache</button>
 </div>
   </div>
   

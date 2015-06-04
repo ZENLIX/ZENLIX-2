@@ -4880,6 +4880,37 @@ console.log(to);
         });
     }
     if (ispath('config')) {
+
+
+//clear_cache
+        $('body').on('click', 'button#clear_cache', function(event) {
+            event.preventDefault();
+
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=conf_clear_cache",
+                
+                success: function(html) {
+                    
+                       
+                            $("#conf_edit_main_res").hide().html(html).fadeIn(500);
+                            setTimeout(function() {
+                                $('#conf_edit_main_res').children('.alert').fadeOut(500);
+                            }, 3000);
+                        
+                        //console.log(item.msg);
+                    
+                }
+            });
+
+        });
+
+
+
+
+
         $("select#to").on('change', function() {
             if ($('select#to').val() != 0) {
                 $('#for_to').popover('hide');

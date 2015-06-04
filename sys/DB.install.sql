@@ -466,7 +466,7 @@ VALUES
   (55, 'mailers_subj', ''),
   (56, 'mailers_text', ''),
   (57, 'allow_forgot', 'true'),
-  (58, 'sla_system', 'true'),
+  (58, 'sla_system', 'false'),
   (59, 'portal_posts_mail_users', 'false'),
   (60, 'email_gate_connect_param', '/imap/ssl'),
   (61, 'smsc_login', ''),
