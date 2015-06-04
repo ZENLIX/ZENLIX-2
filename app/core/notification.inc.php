@@ -443,6 +443,20 @@ function send_notification($type, $ticket_id) {
             }
         } 
         else if ($user_to_id <> 0) {
+            //начальника отдела:
+            $stmt = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and status=1 and is_client=0 and (priv=0 OR priv=2)');
+            $stmt->execute(array(
+                ':id' => $unit_to_id
+            ));
+            $res1 = $stmt->fetchAll();
+            
+            foreach ($res1 as $qrow) {
+                array_push($delivers_ids, $qrow['id']);
+            }
+            /////////////////
+
+
+
             $users = explode(",", $user_to_id);
             foreach ($users as $val) {
                 
@@ -537,6 +551,21 @@ function send_notification($type, $ticket_id) {
             }
         } 
         else if ($user_to_id <> 0) {
+            
+            
+            //начальника отдела:
+            $stmt = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and status=1 and is_client=0 and (priv=0 OR priv=2)');
+            $stmt->execute(array(
+                ':id' => $unit_to_id
+            ));
+            $res1 = $stmt->fetchAll();
+            
+            foreach ($res1 as $qrow) {
+                array_push($delivers_ids, $qrow['id']);
+            }
+            /////////////////
+            
+            
             $users = explode(",", $user_to_id);
             foreach ($users as $val) {
                 array_push($delivers_ids, $val);
@@ -628,6 +657,21 @@ function send_notification($type, $ticket_id) {
             }
         } 
         else if ($user_to_id <> 0) {
+            
+            //начальника отдела:
+            $stmt = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and status=1 and is_client=0 and (priv=0 OR priv=2)');
+            $stmt->execute(array(
+                ':id' => $unit_to_id
+            ));
+            $res1 = $stmt->fetchAll();
+            
+            foreach ($res1 as $qrow) {
+                array_push($delivers_ids, $qrow['id']);
+            }
+            /////////////////
+
+            
+            
             $users = explode(",", $user_to_id);
             foreach ($users as $val) {
                 array_push($delivers_ids, $val);
@@ -717,6 +761,21 @@ function send_notification($type, $ticket_id) {
             }
         } 
         else if ($user_to_id <> 0) {
+            
+            //начальника отдела:
+            $stmt = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and status=1 and is_client=0 and (priv=0 OR priv=2)');
+            $stmt->execute(array(
+                ':id' => $unit_to_id
+            ));
+            $res1 = $stmt->fetchAll();
+            
+            foreach ($res1 as $qrow) {
+                array_push($delivers_ids, $qrow['id']);
+            }
+            /////////////////
+
+
+
             $users = explode(",", $user_to_id);
             foreach ($users as $val) {
                 array_push($delivers_ids, $val);
@@ -804,6 +863,21 @@ function send_notification($type, $ticket_id) {
             }
         } 
         else if ($user_to_id <> 0) {
+            
+            //начальника отдела:
+            $stmt = $dbConnection->prepare('SELECT id FROM users where find_in_set(:id,unit) and status=1 and is_client=0 and (priv=0 OR priv=2)');
+            $stmt->execute(array(
+                ':id' => $unit_to_id
+            ));
+            $res1 = $stmt->fetchAll();
+            
+            foreach ($res1 as $qrow) {
+                array_push($delivers_ids, $qrow['id']);
+            }
+            /////////////////
+
+
+
             $users = explode(",", $user_to_id);
             foreach ($users as $val) {
                 array_push($delivers_ids, $val);
