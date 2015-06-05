@@ -1274,34 +1274,34 @@ $config->set('HTML.AllowedElements', 'ul,li,ol,br,strong,b,em,pre,code,a,img');
 
 function get_current_sort_p($val) {
     
-    $pre = "<span type=\"button\" class=\"label label-success\"><a href=\"#\" id=\"reset_sort\"><span aria-hidden=\"true\">&times;</span></a> " . lang('SORT_BY');
+    $pre = "<span type=\"button\" class=\"label label-default\"><a href=\"#\" style=\"color:black;   font-size: 14px;\" id=\"reset_sort\"><span aria-hidden=\"true\">&times;</span></a> " . lang('SORT_BY');
     $r = "";
     if ($val == "in") {
         if (!isset($_SESSION['hd.rustem_sort_in'])) {
             if (isset($_SESSION['zenlix_list_in_sort'])) {
                 switch ($_SESSION['zenlix_list_in_sort']) {
                     case 'id':
-                        $r = $pre . "<mark>ID</mark>";
+                        $r = $pre . "ID</mark>";
                         break;
 
                     case 'prio':
-                        $r = $pre . "<mark>" . lang('t_LIST_prio') . "</mark>";
+                        $r = $pre . "" . lang('t_LIST_prio') . "";
                         break;
 
                     case 'subj':
-                        $r = $pre . "<mark>" . lang('t_LIST_subj') . "</mark>";
+                        $r = $pre . "" . lang('t_LIST_subj') . "";
                         break;
 
                     case 'client_id':
-                        $r = $pre . "<mark>" . lang('t_LIST_worker') . "</mark>";
+                        $r = $pre . "" . lang('t_LIST_worker') . "";
                         break;
 
                     case 'date_create':
-                        $r = $pre . "<mark>" . lang('t_LIST_create') . "</mark>";
+                        $r = $pre . "" . lang('t_LIST_create') . "";
                         break;
 
                     case 'user_init_id':
-                        $r = $pre . "<mark>" . lang('t_LIST_init') . "</mark>";
+                        $r = $pre . "" . lang('t_LIST_init') . "";
                         break;
                 }
             }
@@ -2314,11 +2314,13 @@ $fl=strpos(make_html($rews['comment_text'], true),'[file:');
 if ($fl !== false) {
     
 
-
+/*
 $cline=substr(make_html($rews['comment_text'], true), strpos(make_html($rews['comment_text'], true),'[file:'));
 
 $cline=rtrim($cline, "]");
-
+*/
+preg_match('#\[file:(.*?)\]#', make_html($rews['comment_text'], true), $match);
+$cline= $match[1];
 
 
 $cline_res=explode(":", $cline);
@@ -2957,6 +2959,7 @@ function get_user_form_view() {
             $sel['select'] = "";
             $sel['multiselect'] = "";
             $sel['textarea'] = "";
+            $sel['date'] = "";
             
             if ($row['status'] == "0") {
                 $st = "";
@@ -2982,6 +2985,9 @@ function get_user_form_view() {
             }
             if ($row['t_type'] == "textarea") {
                 $sel['textarea'] = "selected";
+            }
+            if ($row['t_type'] == "date") {
+                $sel['date'] = "selected";
             }
             
             $input['value'] = $row['value'];
@@ -3034,6 +3040,9 @@ function get_user_form_view() {
 <option value="multiselect" <?php
             echo $sel['multiselect']; ?>><?php
             echo lang('FIELD_type_multiselect'); ?></option>
+<option value="date" <?php
+            echo $sel['date']; ?>><?php
+            echo lang('TICKET_t_date'); ?></option>
 </select>
  </td>
  <td>    <div class="checkbox">

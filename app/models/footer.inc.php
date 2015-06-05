@@ -81,7 +81,8 @@ if (get_current_URL_name('portal')) {
 if (get_current_URL_name('profile')) {
     $page_js_res = array(
         'js/s2/select2.min.js',
-        'js/jquery.autosize.min.js'
+        'js/jquery.autosize.min.js',
+        'js/daterangepicker.js'
     );
 }
 if (get_current_URL_name('helper')) {

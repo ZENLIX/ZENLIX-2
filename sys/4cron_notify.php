@@ -88,6 +88,9 @@ function make_device_push($type_op, $usr_lang, $usr_id, $ticket_id) {
     $to_id = $ticket_res['user_to_id'];
     $s = $ticket_res['subj'];
     $m = $ticket_res['msg'];
+
+$m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
+
     $unit_id = $ticket_res['unit_id'];
     
     //кому?
@@ -270,6 +273,9 @@ function send_smsc($type_op, $lang, $user_mail, $ticket_id) {
     $to_id = $ticket_res['user_to_id'];
     $s = $ticket_res['subj'];
     $m = $ticket_res['msg'];
+
+    $m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
+
     $unit_id = $ticket_res['unit_id'];
     
     //кому?
@@ -702,6 +708,7 @@ function send_pushbullet($type_op, $lang, $user_mail, $ticket_id) {
     $to_id = $ticket_res['user_to_id'];
     $s = $ticket_res['subj'];
     $m = $ticket_res['msg'];
+    $m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
     $unit_id = $ticket_res['unit_id'];
     
     //кому?
@@ -1394,6 +1401,7 @@ $message=$template->render(array(
         $to_id = $ticket_res['user_to_id'];
         $s = $ticket_res['subj'];
         $m = $ticket_res['msg'];
+        $m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
         $unit_id = $ticket_res['unit_id'];
         
         //кому?
@@ -1522,6 +1530,7 @@ $message=$template->render(array(
         $to_id = $ticket_res['user_to_id'];
         $s = $ticket_res['subj'];
         $m = $ticket_res['msg'];
+        $m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
         $unit_id = $ticket_res['unit_id'];
         
         //кому?
@@ -1617,6 +1626,7 @@ $message=$template->render(array(
         ));
         $ticket_com_res = $stmt_com->fetch(PDO::FETCH_ASSOC);
         $comment = $ticket_com_res['comment_text'];
+        $comment=preg_replace('/\[file:([^\]]*)\]/', '', $comment);
         
         $h = $ticket_res['hash_name'];
         $user_init_id = $ticket_res['user_init_id'];
@@ -1770,6 +1780,7 @@ $message=$template->render(array(
         $to_id = $ticket_res['user_to_id'];
         $s = $ticket_res['subj'];
         $m = $ticket_res['msg'];
+        $m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
         $unit_id = $ticket_res['unit_id'];
         
         //кому?
@@ -1877,6 +1888,7 @@ $message=$template->render(array(
         $to_id = $ticket_res['user_to_id'];
         $s = $ticket_res['subj'];
         $m = $ticket_res['msg'];
+        $m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
         $unit_id = $ticket_res['unit_id'];
         
         //кому?
@@ -1983,6 +1995,7 @@ $message=$template->render(array(
         $to_id = $ticket_res['user_to_id'];
         $s = $ticket_res['subj'];
         $m = $ticket_res['msg'];
+        $m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
         $unit_id = $ticket_res['unit_id'];
         
         //кому?
@@ -2089,6 +2102,7 @@ $message=$template->render(array(
         $to_id = $ticket_res['user_to_id'];
         $s = $ticket_res['subj'];
         $m = $ticket_res['msg'];
+        $m=preg_replace('/\[file:([^\]]*)\]/', '', $m);
         $unit_id = $ticket_res['unit_id'];
         
         //кому?

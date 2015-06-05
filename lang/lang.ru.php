@@ -217,7 +217,7 @@ function lang_ru($phrase){
 'PORTAL_more'=>'Узнать больше',
 'PORTAL_stat'=>'Статистика',
 'PORTAL_idea_stat'=>'предложено идей',
-'PORTAL_trouble_stat'=>'найдено проблем',
+'PORTAL_trouble_stat'=>'возможных проблем',
 'PORTAL_question_stat'=>'задано вопросов',
 'PORTAL_thank_stat'=>'приятных отзывов',
 'PORTAL_post_like'=>'поддерживаю',

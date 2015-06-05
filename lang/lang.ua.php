@@ -183,7 +183,7 @@ function lang_ua($phrase){
 'PORTAL_more' => 'Дізнатися більше',
 'PORTAL_stat' => 'Статистика',
 'PORTAL_idea_stat' => 'запропоновано ідей',
-'PORTAL_trouble_stat' => 'знайдено проблем',
+'PORTAL_trouble_stat' => 'можливих проблем',
 'PORTAL_question_stat' => 'задано питань',
 'PORTAL_thank_stat' => 'приємних відгуків',
 'PORTAL_post_like' => 'like',

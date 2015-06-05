@@ -2471,6 +2471,15 @@ console.log(height);
         $(".knob").knob();
     };
     if (ispath('profile')) {
+
+        $('.d_finish').daterangepicker({
+            format: 'YYYY-MM-DD',
+            timePicker: false,
+            
+            singleDatePicker: true
+        });
+        
+
         $('body').on('click', 'button#gen_new_api', function(event) {
             event.preventDefault();
             $.ajax({
@@ -5430,6 +5439,16 @@ console.log(to);
                 formatNoMatches: get_lang_param('JS_not_found')
             });
         }
+
+
+        $('.d_finish').daterangepicker({
+            format: 'YYYY-MM-DD',
+            timePicker: false,
+            
+            singleDatePicker: true
+        });
+
+
         $('body').on('click', 'button#user_field_plus', function(event) {
             event.preventDefault();
             $.ajax({

@@ -226,7 +226,7 @@ if (isset($_POST['menu'])) {
         </div>
   </div>
 
-<hr>
+
 
 
   <!--######### ADDITIONAL FIELDS ############## -->
@@ -239,6 +239,13 @@ if (isset($_POST['menu'])) {
             ':n' => '1'
         ));
         $res1 = $stmt->fetchAll();
+
+
+if (!(empty($res1))) {
+  echo "<hr>";
+}
+
+
         foreach ($res1 as $row) {
 ?>
 
@@ -248,6 +255,28 @@ if (isset($_POST['menu'])) {
             <label for="<?php echo $row['hash']; ?>" class="col-sm-2 control-label"><?php echo $row['name']; ?>: </label>
 
             <div class="col-sm-10" style=" padding-top: 5px; ">
+<?php
+            if ($row['t_type'] == "date") {
+                $v = $row['value'];
+                if ($row['value'] == "0") {
+                    $v = "";
+                }
+?>
+
+
+
+<div class='input-group date' id='date_finish'>
+
+                    <input id="<?php echo $row['hash']; ?>" type='text' class="form-control input-sm d_finish" data-date-format="YYYY-MM-DD" value="<?php echo $v; ?>" name="<?php echo $row['hash']; ?>" placeholder="<?php echo $row['placeholder']; ?>" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+
+
+<?php
+            } ?>
+
 
 <?php
             if ($row['t_type'] == "text") {
@@ -346,7 +375,6 @@ if (isset($_POST['menu'])) {
     </form>
     
 <!--######### ADDITIONAL FIELDS ############## -->
-
 
 
 
@@ -711,7 +739,7 @@ if (isset($_POST['menu'])) {
   
     
 
-<div class=""><hr></div>
+
 <div class="">
 <center>
     <button type="submit" id="create_user" class="btn btn-success"><?php
@@ -1792,6 +1820,28 @@ if (isset($_POST['menu'])) {
             <label for="<?php echo $row['hash']; ?>" class="col-sm-2 control-label"><?php echo $row['name']; ?>: </label>
 
             <div class="col-sm-10" style=" padding-top: 5px; ">
+<?php
+            
+            //echo get_user_add_field_val(get_user_val_by_hash($usid, 'id'), $row['id']);
+            if ($row['t_type'] == "date") {
+                $v = get_user_add_field_val(get_user_val_by_hash($usid, 'id') , $row['id']);
+                
+                //if ($row['value'] == "0") {$v="";}
+                
+?>
+
+
+
+
+<div class='input-group date' id='date_finish'>
+
+                    <input id="<?php echo $row['hash']; ?>" type='text' class="form-control input-sm d_finish" data-date-format="YYYY-MM-DD" value="<?php echo $v; ?>" name="<?php echo $row['hash']; ?>" placeholder="<?php echo $row['placeholder']; ?>" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+<?php
+            } ?>
 
 <?php
             

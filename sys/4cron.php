@@ -7,13 +7,38 @@ include ($base . "/conf.php");
 //date_default_timezone_set('Europe/Kiev');
 include ($base . "/library/ImapMailbox/ImapMailbox.php");
 include ($base . '/library/PHPMailer/class.phpmailer.php');
-
+include_once $base . '/lang/lang.ua.php';
+include_once $base . '/lang/lang.ru.php';
+include_once $base . '/lang/lang.en.php';
 
 
 include ($base . '/library/autoload.php');
 
-
+//
 use EmailReplyParser\Parser\EmailParser;
+
+function lang($lang, $in) {
+    
+    switch ($lang) {
+        case 'ua':
+            $res = lang_ua($in);
+            break;
+
+        case 'ru':
+            $res = lang_ru($in);
+            break;
+
+        case 'en':
+            $res = lang_en($in);
+            break;
+
+        default:
+            $res = lang_en($in);
+    }
+    
+    return $res;
+}
+
 
 function humanTiming_old($time) {
     
@@ -896,6 +921,17 @@ if (get_conf_param('email_gate_status') == "true") {
         //$vv=$message->m_id;
         
         /*
+         echo "<code><pre>";
+            print_r($message);
+            echo "</pre></code><hr><hr>";
+                        echo "<code><pre>";
+            print_r($message->textHtml);
+            echo "</pre></code><hr><hr>";
+        */
+        
+        
+        
+        /*
         echo "MID:".$message->m_id."<br>";
         echo "ref:".$message->references."<br>";
         echo "rto:".$message->in_reply_to."<br>";
@@ -964,22 +1000,25 @@ if (get_conf_param('email_gate_status') == "true") {
 
 if (empty($message->textPlain)) {
     
-    if (empty($message->textHTML)) { $msg=strip_tags($message->all); }
-    else { $msg=strip_tags($message->textHTML); }
+    if (empty($message->textHtml)) { $msg=strip_tags($message->all); }
+    else { $msg=strip_tags($message->textHtml); }
     
     
     
 }
+
 /*
             echo "<code><pre>";
-            print_r($msg);
-            echo "</pre></code>";
+            print_r($message->textPlain);
+            echo "</pre></code><hr><hr>";
+                        echo "<code><pre>";
+            print_r($email->getFragments());
+            echo "</pre></code><hr><hr>";
             */
-
 //print_r($subj);
 if (preg_match('/(#[0-9]+)/',$subj)) {
 
-$msg = strip_tags($message->all);
+//$msg = strip_tags($message->all);
 
 $email = (new EmailParser())->parse($msg);
 $fragment = current($email->getFragments());
@@ -987,6 +1026,14 @@ $fragment = current($email->getFragments());
 
 
 $replyTextMsg=$fragment->getContent();
+
+//echo lang('en', 'REPLY_INFORMATION_YES');
+
+
+$replyTextMsg = array_shift(explode(lang('en', 'REPLY_INFORMATION_YES'), $replyTextMsg));
+$replyTextMsg = array_shift(explode(lang('ru', 'REPLY_INFORMATION_YES'), $replyTextMsg));
+$replyTextMsg = array_shift(explode(lang('ua', 'REPLY_INFORMATION_YES'), $replyTextMsg));
+
 $v=preg_match('/(#[0-9]+)/',$subj, $mt);
 
 $ticketfrommail_id=substr($mt[0], 1);
@@ -1061,13 +1108,13 @@ $at_arr=array();
             
             }
 
-print_r($at_arr);
+//print_r($at_arr);
 //$comma_separated = implode(",", $at_arr);
 if (!empty($at_arr)) {
     $si=implode(",", $at_arr);
 $text_comment=$text_comment."<br> [file:".$si."]";
 }
-
+//echo $text_comment;
 
 
 $stmt = $dbConnection->prepare('INSERT INTO comments (t_id, user_id, comment_text, dt)

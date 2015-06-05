@@ -113,6 +113,10 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         
         foreach ($res1 as $row) {
             
+            if ($row['t_type'] == "date") {
+                $vr = get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
+            }
+
             if ($row['t_type'] == "text") {
                 $vr = get_user_add_field_val($_SESSION['helpdesk_user_id'], $row['id']);
             }

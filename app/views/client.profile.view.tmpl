@@ -216,6 +216,20 @@
             <label for="{{item.hash}}" class="col-sm-4 control-label"><small>{{item.name}}: </small></label>
 
             <div class="col-sm-8" style=" padding-top: 5px; ">
+{% if item.t_type == "date" %}
+
+
+
+<div class='input-group date' id='date_finish'>
+
+                    <input id="{{item.hash}}" type='text' class="form-control input-sm d_finish" data-date-format="YYYY-MM-DD" value="{{item.vr}}" name="{{item.hash}}" placeholder="{{item.placeholder}}" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+
+
+
+{% endif %}
 
 {% if item.t_type == "text" %}
 
