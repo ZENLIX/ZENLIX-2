@@ -5431,6 +5431,190 @@ console.log(to);
         });
     }
     if (ispath('users')) {
+
+
+        $('body').on('click', 'button#delete_user_file', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=delete_user_file" + "&uniq_code=" + encodeURIComponent($("#delete_user_file").val()),
+                success: function(html) {
+                   window.location = MyHOSTNAME + "users?edit=" + $("button#edit_user").attr('value');
+                }
+            });
+        });
+
+
+
+$('.fancybox').fancybox({
+            openEffect: 'elastic',
+            closeEffect: 'elastic'
+        });
+var ids = [];
+        if ($('#myid_create').length) {
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+            var ph = '1';
+            $('#myid_create').dropzone({
+                url: ACTIONPATH,
+                maxFilesize: 100,
+                paramName: "myfile",
+                params: {
+                    mode: 'upload_user_file',
+                    post_hash: ph,
+                    type: '0'
+                },
+                removedfile: function(file) {
+                  
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                maxThumbnailFilesize: 5,
+                previewTemplate: previewTemplate,
+                previewsContainer: "#previews",
+                autoQueue: true,
+                maxFiles: 50,
+                init: function() {
+
+
+//var ids = [];
+
+
+
+
+
+                    this.on('success', function(file, response) {
+                        //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
+                        //$.each(json, function(i, item) {
+                        //var obj = jQuery.parseJSON(json);
+                        var obj = jQuery.parseJSON(response);
+                        //console.log(obj);
+                        $.each(obj, function(i, item) {
+                            if (item.status == "ok") {
+                                $(file.previewTemplate).append('<input type="hidden" class="server_file" value="' + item.uniq_code + '">');
+
+
+ids.push(item.uniq_code);
+//console.log(ids);
+
+                            } else if (item.status == "error") {
+                                //$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
+                                $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' + item.msg + '</div>').fadeOut(3000);
+                            }
+                        })
+                        //});
+                    });
+                    this.on("removedfile", function(file) {
+                        var server_file = $(file.previewTemplate).children('.server_file').val();
+                        //console.log(server_file);
+
+ids = jQuery.grep(ids, function(value) {
+  return value != server_file;
+});
+//console.log(ids);
+
+
+
+
+
+
+                        $.ajax({
+                            type: 'POST',
+                            url: ACTIONPATH,
+                            data: "mode=delete_user_file" + "&uniq_code=" + server_file,
+                            dataType: 'html',
+                        });
+                    });
+                    this.on("addedfile", function(file) {
+                        //console.log(file);
+                    });
+                    this.on('drop', function(file) {
+                        //alert('file');
+                    });
+                }
+            });
+        }
+
+
+
+if ($('#myid').length) {
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+            var ph = $("button#edit_user").attr('value');
+            $('#myid').dropzone({
+                url: ACTIONPATH,
+                maxFilesize: 100,
+                paramName: "myfile",
+                params: {
+                    mode: 'upload_user_file',
+                    post_hash: ph,
+                    type: '1'
+                },
+                removedfile: function(file) {
+                    //console.log('d:'+file);
+                    //var name = file.name;
+                    /*
+$.ajax({
+        type: 'POST',
+        url: 'delete.php',
+        data: "id="+name,
+        dataType: 'html'
+    });
+*/
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                maxThumbnailFilesize: 5,
+                previewTemplate: previewTemplate,
+                previewsContainer: "#previews",
+                autoQueue: true,
+                maxFiles: 50,
+                init: function() {
+                    this.on('success', function(file, response) {
+                        //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
+                        //$.each(json, function(i, item) {
+                        //var obj = jQuery.parseJSON(json);
+                        var obj = jQuery.parseJSON(response);
+                        //console.log(obj);
+                        $.each(obj, function(i, item) {
+                            if (item.status == "ok") {
+                                $(file.previewTemplate).append('<input type="hidden" class="server_file" value="' + item.uniq_code + '">');
+                            } else if (item.status == "error") {
+                                //$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
+                                $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' + item.msg + '</div>').fadeOut(3000);
+                            }
+                        })
+                        //});
+                    });
+                    this.on("removedfile", function(file) {
+                        var server_file = $(file.previewTemplate).children('.server_file').val();
+                        //console.log(server_file);
+                        $.ajax({
+                            type: 'POST',
+                            url: ACTIONPATH,
+                            data: "mode=delete_user_file" + "&uniq_code=" + server_file,
+                            dataType: 'html',
+                        });
+                    });
+                    this.on("addedfile", function(file) {
+                        console.log(file);
+                    });
+                    this.on('drop', function(file) {
+                        //alert('file');
+                    });
+                }
+            });
+        }
+
+
+
+
+
         if (!ispath('create')) {
             $(".multi_field").select2({
                 allowClear: true,
@@ -5955,8 +6139,10 @@ console.log(to);
                 $.ajax({
                     type: "POST",
                     url: ACTIONPATH,
-                    data: "mode=add_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&def_unit_id=" + encodeURIComponent($("#to").val()) + "&mail_nf=" + encodeURIComponent($("#mail_nf").val()) + "&def_user_id=" + encodeURIComponent($("#users_do").val()) + "&user_to_def=" + encodeURIComponent($("#user_to_def").prop('checked')) + "&" + add_from,
+                    data: "mode=add_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&def_unit_id=" + encodeURIComponent($("#to").val()) + "&mail_nf=" + encodeURIComponent($("#mail_nf").val()) + "&def_user_id=" + encodeURIComponent($("#users_do").val()) + "&user_to_def=" + encodeURIComponent($("#user_to_def").prop('checked')) + "&" + add_from+
+                        "&files="+ids,
                     success: function(html) {
+                        //console.log(html);
                         window.location = MyHOSTNAME + "users?create&ok";
                     }
                 });

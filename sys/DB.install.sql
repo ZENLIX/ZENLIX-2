@@ -39,6 +39,19 @@ CREATE TABLE `portal_manual_cat` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `user_files`;
+CREATE TABLE `user_files` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `original_name` varchar(512) DEFAULT NULL,
+  `file_hash` varchar(512) DEFAULT NULL,
+  `file_type` varchar(512) DEFAULT NULL,
+  `file_size` int(11) DEFAULT NULL,
+  `file_ext` varchar(12) DEFAULT NULL,
+  `obj_type` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 DROP TABLE IF EXISTS `portal_manual_qa`;
 CREATE TABLE `portal_manual_qa` (

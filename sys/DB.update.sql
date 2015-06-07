@@ -11,6 +11,20 @@ CREATE TABLE IF NOT EXISTS `user_data` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 
+CREATE TABLE IF NOT EXISTS `user_files` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `original_name` varchar(512) DEFAULT NULL,
+  `file_hash` varchar(512) DEFAULT NULL,
+  `file_type` varchar(512) DEFAULT NULL,
+  `file_size` int(11) DEFAULT NULL,
+  `file_ext` varchar(12) DEFAULT NULL,
+  `obj_type` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
 CREATE TABLE IF NOT EXISTS `user_fields` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `t_type` varchar(512) NOT NULL DEFAULT 'text',

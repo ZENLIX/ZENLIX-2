@@ -821,10 +821,12 @@ function check_file($fp) {
                         $flag = false;
     }
     
-    if ((!in_array($ext, $acceptable)) && (!empty(mime_content_type($fp)))) {
-                        $flag = false;
-                        //$msg = lang('PORTAL_file_ext');
-                    }
+    if (!in_array($ext, $acceptable))
+    {
+       // if (!empty(mime_content_type($fp))) {
+            $flag = false;
+       // }
+    }
     
     
     if ($flag == false) {

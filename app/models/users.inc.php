@@ -377,12 +377,55 @@ if (!(empty($res1))) {
 <!--######### ADDITIONAL FIELDS ############## -->
 
 
-
-
-
-
-
 <hr>
+<div class="form-group">
+<label for="mail_nf" class="col-sm-2 control-label">Files:</label>
+        <div class="col-sm-10">
+
+
+
+
+
+        
+ <div class="text-muted well well-sm no-shadow" id="myid_create" style="margin-bottom: 0px;">
+
+                          <div class="dz-message" data-dz-message>
+                            <center class="text-muted"><small><?php echo lang('PORTAL_fileplace');?></small></center>
+                          </div>
+
+                          <style type="text/css">
+                          .note-editor .note-dropzone { opacity: 0 !important; }
+                          </style>
+
+                          <form action="#" class="">
+                            <input type="hidden" name="mode" value="upload_drop_file">
+                          </form>
+
+                        <div class="table table-striped" class="files" id="previews" style="margin-bottom: 0px;">
+                          <div id="template" class="file-row">
+
+                            <table class="table" style="margin-bottom: 0px;">
+                              <tbody><tr>
+                                <th style="width:50%"><p class="name" data-dz-name></p> </th>
+                                <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                                <td style="width:30%"><div class="progress progress-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                  <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                </div></td>
+                                <td class="pull-right"><button data-dz-remove class="btn btn-sm btn-danger delete">
+                                  <i class="glyphicon glyphicon-trash"></i>
+                                  <span>Delete</span>
+                                </button></td>
+                              </tr>
+                            </tbody></table>
+                          </div>
+                        </div>
+
+</div>
+</div>
+</div>
+<hr>
+
+
 
 
               <div class="form-group">
@@ -1940,7 +1983,124 @@ if (!(empty($res1))) {
     
 <!--######### ADDITIONAL FIELDS ############## -->
 
+<hr>
+<?php
 
+            $stmt = $dbConnection->prepare('SELECT * FROM user_files where user_id=:user_id');
+            $stmt->execute(array(
+                ':user_id' => get_user_val_by_hash($usid, 'id')
+            ));
+            $res1 = $stmt->fetchAll();
+
+if (!empty($res1)){
+?>
+
+                        <div class="row" style="padding:10px;">
+                        <div class="col-md-2">
+                            <center><small><strong><?php echo lang('TICKET_file_list');?>:</strong></small></center>
+                        </div>
+                        <div class="col-md-10">
+                            <table class="table table-hover">
+                                    <tbody>
+                                
+                         <?php 
+                         foreach ($res1 as $r) {
+                          $fts = array(
+                    'image/jpeg',
+                    'image/gif',
+                    'image/png'
+                );
+                
+                if (in_array($r['file_type'], $fts)) {
+                    
+                    $ct = ' <a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'><img style=\'max-height:50px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'></a> ';
+                    $ic = '';
+                } 
+                else {
+                    $ct = ' <a href=\'' . $CONF['hostname'] . 'action?mode=download_user_file&file=' . $r['file_hash'] . '\'>' . $r['original_name'] . '</a>';
+                    $ic = get_file_icon($r['file_hash']);
+                }
+                         ?>        
+                                    
+                                    
+                    <tr>
+                        <td style="width:20px;"><small><?php
+echo $ic;
+                        ?></small></td>
+                        <td><small><?php
+echo $ct;
+                        ?></small></td>
+                        <td><small><?php
+                        echo round(($r['file_size'] / (1024 * 1024)) , 2) ?> Mb</small></td>
+                        <td>
+                            <button type="button" id="delete_user_file" value="<?php echo $r['file_hash'];?>" class="btn btn-default btn-xs"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                    </tr>
+<?php
+}
+?>
+                                    </tbody>
+                            </table>
+
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+<?php 
+}
+?>
+
+
+
+<div class="form-group">
+<label for="mail_nf" class="col-sm-2 control-label">Files:</label>
+        <div class="col-sm-10">
+
+
+
+
+
+
+ <div class="text-muted well well-sm no-shadow" id="myid" style="margin-bottom: 0px;">
+
+                          <div class="dz-message" data-dz-message>
+                            <center class="text-muted"><small><?php echo lang('PORTAL_fileplace');?></small></center>
+                          </div>
+
+                          <style type="text/css">
+                          .note-editor .note-dropzone { opacity: 0 !important; }
+                          </style>
+
+                          <form action="#" class="">
+                            <input type="hidden" name="mode" value="upload_drop_file">
+                          </form>
+
+                        <div class="table table-striped" class="files" id="previews" style="margin-bottom: 0px;">
+                          <div id="template" class="file-row">
+
+                            <table class="table" style="margin-bottom: 0px;">
+                              <tbody><tr>
+                                <th style="width:50%"><p class="name" data-dz-name></p> </th>
+                                <td><small class="text-muted"><p class="size" data-dz-size></p></small></td>
+                                <td style="width:30%"><div class="progress progress-striped" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                  <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                </div></td>
+                                <td class="pull-right"><button data-dz-remove class="btn btn-sm btn-danger delete">
+                                  <i class="glyphicon glyphicon-trash"></i>
+                                  <span>Delete</span>
+                                </button></td>
+                              </tr>
+                            </tbody></table>
+                          </div>
+                        </div>
+
+</div>
+</div>
+</div>
 <hr>
 
 

@@ -38,6 +38,36 @@ $hn=$_GET['file'];
 }
 
 
+if ($mode == "download_user_file") {
+$hn=$_GET['file'];
+//echo $hn;
+
+
+    $stmt = $dbConnection->prepare('SELECT original_name,file_type,file_ext, file_size from user_files where file_hash=:file_hash LIMIT 1');
+    $stmt->execute(array(':file_hash' => $hn));
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    $original_name=$row['original_name'];
+    $file_type=$row['file_type'];
+    $file_ext=$row['file_ext'];
+    $file_size=$row['file_size'];
+    //echo($original_name." ".$file_type);
+    
+    
+    
+    //echo $original_name;
+    if (file_exists(ZENLIX_DIR."/upload_files/".$hn.".".$file_ext)) {
+      header("Content-Type: ".$file_type);
+      header("Content-Disposition:  attachment; filename=\"" . $original_name . "\";" );
+      header("Content-Transfer-Encoding:  binary");
+
+      header('Content-Length: ' . $file_size);
+      ob_clean();
+      flush();
+      readfile(ZENLIX_DIR."/upload_files/".$hn.".".$file_ext);
+      exit;
+          }
+}
+
 
 if ($mode == "getJSON_posada") {
     $term = trim(strip_tags(($_GET['term'])));
@@ -3054,6 +3084,29 @@ values
                     ':def_unit_id' => $user_2_unit,
                     ':def_user_id' => $user_2_user
                 ));
+
+
+
+$flist=$_POST['files'];
+$flist=explode(",", $flist);
+
+//print_r($flist);
+
+if (!empty($flist)) {
+    foreach ($flist as $value) {
+        # code...
+                    $stmt = $dbConnection->prepare('update user_files set user_id=:user_id, obj_type=1 where file_hash=:file_hash');
+
+            $stmt->execute(array(
+                ':user_id' => get_user_val_by_hash($hn,'id'),
+                ':file_hash' => $value
+            ));
+    }
+}
+
+
+
+
                 
                 //########################## ADDITIONAL FIELDS ###############################
                 
@@ -7149,6 +7202,29 @@ $init_icon=NULL;
             push_msg_action2user($_POST['user'], $_POST['op']);
         }
         
+
+        if ($mode == "delete_user_file") {
+            $uniq_code = $_POST['uniq_code'];
+            
+            $stmt = $dbConnection->prepare("SELECT *
+                            from user_files where file_hash=:id");
+            $stmt->execute(array(
+                ':id' => $uniq_code
+            ));
+            $result = $stmt->fetchAll();
+            
+            if (!empty($result)) {
+                foreach ($result as $row) {
+                    
+                    unlink(ZENLIX_DIR . "/upload_files/" . $row['file_hash'] . "." . $row['file_ext']);
+                }
+            }
+            $stmt = $dbConnection->prepare('delete from user_files where file_hash=:id');
+            $stmt->execute(array(
+                ':id' => $uniq_code
+            ));
+        }
+
         if ($mode == "delete_post_file") {
             $uniq_code = $_POST['uniq_code'];
             
@@ -7171,6 +7247,9 @@ $init_icon=NULL;
             ));
         }
         
+
+
+
         if ($mode == "set_zenlix_logo") {
             class SimpleImage
             {
@@ -7403,6 +7482,96 @@ $init_icon=NULL;
                 ':id' => $uniq_code
             ));
         }
+
+
+
+        if ($mode == "upload_user_file") {
+            $msg=NULL;
+            $output_dir = ZENLIX_DIR."/upload_files/";
+            $hn = $_POST['post_hash'];
+            $type="1";
+            if ($_POST['type']) {
+                $type=$_POST['type'];
+            }
+            
+            $maxsize = get_conf_param('file_size');
+            
+            $good_files = explode("|", get_conf_param('file_types'));
+            
+            $acceptable = $good_files;
+            
+            if (isset($_FILES["myfile"])) {
+                $ret = array();
+                
+                $error = $_FILES["myfile"]["error"];
+                $flag = false;
+                
+                //You need to handle  both cases
+                //If Any browser does not support serializing of multiple files using FormData()
+                if (!is_array($_FILES["myfile"]["name"]))
+                
+                //single file
+                {
+                    $fileName = $_FILES["myfile"]["name"];
+                    $filetype = $_FILES["myfile"]["type"];
+                    $filesize = $_FILES["myfile"]["size"];
+                    $ext = pathinfo($fileName, PATHINFO_EXTENSION);
+                    if ($_FILES["myfile"]["size"] > $maxsize) {
+                        $flag = true;
+                        $msg = lang('PORTAL_file_big');
+                    }
+                    if ((!in_array($ext, $acceptable)) && (!empty($_FILES["myfile"]["type"]))) {
+                        $flag = true;
+                        $msg = lang('PORTAL_file_ext');
+                    }
+                    
+                    if ($flag == false) {
+                        
+                        $fhash = randomhash();
+                        
+                        //$ext = pathinfo($fileName, PATHINFO_EXTENSION);
+                        $fileName_norm = $fhash . "." . $ext;
+                        
+                        move_uploaded_file($_FILES["myfile"]["tmp_name"], $output_dir . $fileName_norm);
+                        
+                        $stmt = $dbConnection->prepare('insert into user_files 
+        (user_id, original_name, file_hash, file_type, file_size, file_ext, obj_type) values 
+        (:user_id, :original_name, :file_hash, :file_type, :file_size, :file_ext, :obj_type)');
+                        $stmt->execute(array(
+                            ':user_id' => get_user_val_by_hash($hn, 'id'),
+                            ':original_name' => $fileName,
+                            ':file_hash' => $fhash,
+                            ':file_type' => $filetype,
+                            ':file_size' => $filesize,
+                            ':file_ext' => $ext,
+                            ':obj_type' => $type
+                        ));
+                    }
+                    
+                    //{msg: "Upload limit reached", status: "error", code: "403"}
+                    
+                    if ($flag == false) {
+                        $status = "ok";
+                    } 
+                    else if ($flag == true) {
+                        $status = "error";
+                    }
+                    
+                    $results[] = array(
+                        'uniq_code' => $fhash,
+                        'code' => 501,
+                        'status' => $status,
+                        'msg' => $msg
+                    );
+                    
+                    print json_encode($results);
+                }
+            }
+        }
+
+
+
+
         if ($mode == "upload_manual_file") {
             $msg=NULL;
             $output_dir = ZENLIX_DIR."/upload_files/";

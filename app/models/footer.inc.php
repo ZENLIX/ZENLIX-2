@@ -46,7 +46,9 @@ if (get_current_URL_name('users')) {
         'js/bootstrap3-editable/js/bootstrap-editable.min.js',
         'js/daterangepicker.js',
         'js/s2/select2.min.js',
-        'js/jquery.autosize.min.js'
+        'js/fancybox/jquery.fancybox.js',
+        'js/jquery.autosize.min.js',
+        'js/dropzone.js'
     );
 }
 if (get_current_URL_name('clients')) {

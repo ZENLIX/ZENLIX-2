@@ -61,7 +61,9 @@ if (get_current_URL_name('users')) {
         'js/s2/select2-bootstrap.css',
         'js/fancybox/jquery.fancybox.css',
         'css/dropzone.css',
-        'css/daterangepicker-bs3.css'
+        'css/daterangepicker-bs3.css',
+        'js/fancybox/jquery.fancybox.css',
+        'css/dropzone.css'
     );
 }
 
