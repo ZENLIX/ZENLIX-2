@@ -175,6 +175,55 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     }
     
     /////////////////////////////////////////
+
+
+
+
+
+
+
+
+$tfiles_arr = array();
+        $tfiles = false;
+        $stmt = $dbConnection->prepare('SELECT * FROM user_files where user_id=:tid');
+        $stmt->execute(array(
+            ':tid' => $user_id
+        ));
+        $res1 = $stmt->fetchAll();
+        if (!empty($res1)) {
+            $tfiles = true;
+            foreach ($res1 as $r) {
+                
+                $fts = array(
+                    'image/jpeg',
+                    'image/gif',
+                    'image/png'
+                );
+                
+                if (in_array($r['file_type'], $fts)) {
+                    
+                    $ct = ' <a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'><img style=\'max-height:50px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'></a> ';
+                    $ic = '';
+                } 
+                else {
+                    $ct = ' <a href=\'' . $CONF['hostname'] . 'action?mode=download_user_file&file=' . $r['file_hash'] . '\'>' . $r['original_name'] . '</a>';
+                    $ic = get_file_icon($r['file_hash']);
+                }
+                
+                array_push($tfiles_arr, array(
+                    'filehash'=>$r['file_hash'],
+                    'ic' => $ic,
+                    'ct' => $ct,
+                    'size' => round(($r['file_size'] / (1024 * 1024)) , 2)
+                ));
+            }
+        }
+
+
+
+
+
+
     
     $basedir = dirname(dirname(__FILE__));
     
@@ -252,7 +301,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             'TICKET_t_date' => lang('TICKET_t_date') ,
             'PROFILE_tickets_free' => lang('PROFILE_tickets_free') ,
             'someStatStatus_two' => $someStatStatus_two,
-            'someStatStatus_arr_two' => $someStatStatus_arr_two
+            'someStatStatus_arr_two' => $someStatStatus_arr_two,
+            'tfiles_arr'=>$tfiles_arr,
+            'tfiles'=>$tfiles,
+            'TICKET_file_list'=>lang('TICKET_file_list'),
+            'user_id'=>$user_id,
+            'PORTAL_fileplace'=>lang('PORTAL_fileplace')
         ));
     }
     catch(Exception $e) {
@@ -260,8 +314,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     }
     
     include ("footer.inc.php");
-?>
-                                                <?php
+
     
     //}
     

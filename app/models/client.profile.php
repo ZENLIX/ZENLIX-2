@@ -216,6 +216,49 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $canChangePw = true;
     }
     
+
+
+
+
+$tfiles_arr = array();
+        $tfiles = false;
+        $stmt = $dbConnection->prepare('SELECT * FROM user_files where user_id=:tid');
+        $stmt->execute(array(
+            ':tid' => $_SESSION['helpdesk_user_id']
+        ));
+        $res1 = $stmt->fetchAll();
+        if (!empty($res1)) {
+            $tfiles = true;
+            foreach ($res1 as $r) {
+                
+                $fts = array(
+                    'image/jpeg',
+                    'image/gif',
+                    'image/png'
+                );
+                
+                if (in_array($r['file_type'], $fts)) {
+                    
+                    $ct = ' <a class=\'fancybox\' href=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'><img style=\'max-height:50px;\' src=\'' . $CONF['hostname'] . 'upload_files/' . $r['file_hash'] . '.' . $r['file_ext'] . '\'></a> ';
+                    $ic = '';
+                } 
+                else {
+                    $ct = ' <a href=\'' . $CONF['hostname'] . 'action?mode=download_user_file&file=' . $r['file_hash'] . '\'>' . $r['original_name'] . '</a>';
+                    $ic = get_file_icon($r['file_hash']);
+                }
+                
+                array_push($tfiles_arr, array(
+                    
+                    'ic' => $ic,
+                    'ct' => $ct,
+                    'size' => round(($r['file_size'] / (1024 * 1024)) , 2)
+                ));
+            }
+        }
+
+
+
+    
     $basedir = dirname(dirname(__FILE__));
     
     try {
@@ -280,7 +323,10 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             'P_pass_new2' => lang('P_pass_new2') ,
             'P_pass_new_re' => lang('P_pass_new_re') ,
             'P_pass_new_re2' => lang('P_pass_new_re2') ,
-            'P_do_edit_pass' => lang('P_do_edit_pass')
+            'P_do_edit_pass' => lang('P_do_edit_pass'),
+            'tfiles_arr'=>$tfiles_arr,
+            'tfiles'=>$tfiles,
+            'TICKET_file_list'=>lang('TICKET_file_list')
         ));
     }
     catch(Exception $e) {

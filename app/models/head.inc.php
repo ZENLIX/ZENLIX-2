@@ -110,6 +110,14 @@ if (get_current_URL_name('sla_rep')) {
     );
 }
 
+if (get_current_URL_name('view_user')) {
+    $rstyle = array(
+        'js/fancybox/jquery.fancybox.css',
+        'css/dropzone.css'
+
+    );
+}
+
 if (get_current_URL_name('portal')) {
     $rstyle = array(
         'js/s2/select2.css',
@@ -160,6 +168,8 @@ if (get_current_URL_name('mailers')) {
         'js/s2/select2-bootstrap.css'
     );
 }
+
+
 
 if (get_current_URL_name('calendar')) {
     $rstyle = array(

@@ -1,7 +1,7 @@
 
 <section class="content-header">
                     <h1>
-                        <i class="fa fa-user"></i>{{NAVBAR_profile}}
+                        <i class="fa fa-user"></i> {{NAVBAR_profile}}
                         <small>{{NAVBAR_profile_ext}}</small>
                     </h1>
                     <ol class="breadcrumb">
@@ -375,6 +375,11 @@
 </div>
     </form>
     
+
+
+
+
+
 <!--######### ADDITIONAL FIELDS ############## -->
     <div class="col-md-offset-3 col-md-6">
 <center>
@@ -386,6 +391,48 @@
       </div>
       </div>
       </div>
+{% endif %}
+
+{% if tfiles == true %}
+<div class="col-md-12">
+<div class="box box-solid">
+<div class="box-header">
+                                    <h3 class="box-title"><i class="fa fa-file"></i> {{TICKET_file_list}}</h3>
+                                </div><!-- /.box-header -->
+<div class="box-body">
+
+                    
+                        <div class="row" style="padding:10px;">
+
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                    <tbody>
+                                
+                          {% for item in tfiles_arr %}          
+                                    
+                                    
+                    <tr>
+                        <td style="width:20px;"><small>{{item.ic | raw}}</small></td>
+                        <td><small>{{item.ct | raw}}</small></td>
+                        <td><small>{{item.size}} Mb</small></td>
+                    </tr>
+{% endfor %}
+                                    </tbody>
+                            </table>
+
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+
+
+</div>
+</div>
+</div>
 {% endif %}
 
 <div class="col-md-12">

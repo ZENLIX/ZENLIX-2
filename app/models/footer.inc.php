@@ -51,6 +51,9 @@ if (get_current_URL_name('users')) {
         'js/dropzone.js'
     );
 }
+
+
+
 if (get_current_URL_name('clients')) {
     $page_js_res = array(
         'js/bootstrap-paginator.js'
@@ -125,7 +128,9 @@ if (get_current_URL_name('stats')) {
 }
 if (get_current_URL_name('view_user')) {
     $page_js_res = array(
-        'js/jqueryKnob/jquery.knob.js'
+        'js/jqueryKnob/jquery.knob.js',
+        'js/fancybox/jquery.fancybox.js',
+        'js/dropzone.js'
     );
 }
 if (get_current_URL_name('user_stats')) {

@@ -2468,6 +2468,98 @@ console.log(height);
         makemytime(true);
     }
     if (ispath('view_user')) {
+
+$('body').on('click', 'button#delete_user_file_vu', function(event) {
+            event.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=delete_user_file" + "&uniq_code=" + encodeURIComponent($("#delete_user_file_vu").val()),
+                success: function(html) {
+                   window.location = MyHOSTNAME + "view_user?" + $("input#user_id").attr('value');
+                }
+            });
+        });
+
+if ($('#myid').length) {
+            var previewNode = document.querySelector("#template");
+            previewNode.id = "";
+            var previewTemplate = previewNode.parentNode.innerHTML;
+            previewNode.parentNode.removeChild(previewNode);
+            var ph = $("input#user_id").attr('value');
+            $('#myid').dropzone({
+                url: ACTIONPATH,
+                maxFilesize: 100,
+                paramName: "myfile",
+                params: {
+                    mode: 'upload_user_file',
+                    post_hash: ph,
+                    type: '1'
+                },
+                removedfile: function(file) {
+                    //console.log('d:'+file);
+                    //var name = file.name;
+                    /*
+$.ajax({
+        type: 'POST',
+        url: 'delete.php',
+        data: "id="+name,
+        dataType: 'html'
+    });
+*/
+                    var _ref;
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                },
+                maxThumbnailFilesize: 5,
+                previewTemplate: previewTemplate,
+                previewsContainer: "#previews",
+                autoQueue: true,
+                maxFiles: 50,
+                init: function() {
+                    this.on('success', function(file, response) {
+                        //$(file.previewTemplate).append('<span class="server_file">'+json.uniq_code+'</span>');
+                        //$.each(json, function(i, item) {
+                        //var obj = jQuery.parseJSON(json);
+                        var obj = jQuery.parseJSON(response);
+                        //console.log(obj);
+                        $.each(obj, function(i, item) {
+                            if (item.status == "ok") {
+                                $(file.previewTemplate).append('<input type="hidden" class="server_file" value="' + item.uniq_code + '">');
+                            } else if (item.status == "error") {
+                                //$(file.previewTemplate).append('<div class="alert alert-danger">'+item.msg+'</div>');
+                                $(file.previewTemplate).html('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' + item.msg + '</div>').fadeOut(3000);
+                            }
+                        })
+                        //});
+                    });
+                    this.on("removedfile", function(file) {
+                        var server_file = $(file.previewTemplate).children('.server_file').val();
+                        //console.log(server_file);
+                        $.ajax({
+                            type: 'POST',
+                            url: ACTIONPATH,
+                            data: "mode=delete_user_file" + "&uniq_code=" + server_file,
+                            dataType: 'html',
+                        });
+                    });
+                    this.on("addedfile", function(file) {
+                        console.log(file);
+                    });
+                    this.on('drop', function(file) {
+                        //alert('file');
+                    });
+                }
+            });
+        }
+
+
+
+ $('.fancybox').fancybox({
+            openEffect: 'elastic',
+            closeEffect: 'elastic'
+        });
+
+
         $(".knob").knob();
     };
     if (ispath('profile')) {
