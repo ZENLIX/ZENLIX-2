@@ -285,6 +285,10 @@ include_once 'lang/' . 'lang.ua.php';
 include_once 'lang/' . 'lang.ru.php';
 include_once 'lang/' . 'lang.en.php';
 
+include_once 'lang/' . 'lang.pl.php';
+include_once 'lang/' . 'lang.de.php';
+include_once 'lang/' . 'lang.fr.php';
+
 function lang($in) {
     $lang = get_user_lang();
     
@@ -300,6 +304,18 @@ function lang($in) {
         case 'en':
             $res = lang_en($in);
             break;
+
+        case 'pl':
+            $res = lang_pl($in);
+            break;
+
+        case 'de':
+            $res = lang_de($in);
+            break;          
+
+        case 'fr':
+            $res = lang_fr($in);
+            break;      
 
         default:
             
