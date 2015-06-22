@@ -2325,7 +2325,9 @@ $cline= $match[1];
 
 $cline_res=explode(":", $cline);
 
-$some_arr=explode(",", $cline_res[1]);
+//echo $cline_res[0];
+
+$some_arr=explode(",", $cline_res[0]);
 
 $ct = substr(make_html($rews['comment_text'], true), 0, strpos(make_html($rews['comment_text'], true),'[file:'));
 $ct .= '<div class=\'text-muted\' style=\'margin-bottom: 5px;\'><em><small>' . lang('EXT_attach_file') . '</small> <br></em>';
