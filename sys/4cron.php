@@ -1,6 +1,6 @@
 <?php
 ini_set('max_execution_time', 300);
-
+use EmailReplyParser\Parser\EmailParser;
 $base = dirname(dirname(__FILE__));
 include ($base . "/conf.php");
 
@@ -15,7 +15,7 @@ include_once $base . '/lang/lang.en.php';
 include ($base . '/library/autoload.php');
 
 //
-use EmailReplyParser\Parser\EmailParser;
+
 
 function lang($lang, $in) {
     
@@ -105,7 +105,7 @@ foreach ($res1 as $row) {
     $user_init_id = $row['user_init_id'];
     
     $m = $row['id'];
-    $td = humanTiming_old(strtotime($row['ok_date'])) . "<br>";
+    $td = humanTiming_old(strtotime($row['ok_date']));
     
     if ($td > $CONF['days2arch']) {
         
