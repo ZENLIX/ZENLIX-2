@@ -9,8 +9,8 @@ include ("library/DBbackup/dbu.class.php");
 $main_portal = $CONF['main_portal'];
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if (validate_admin($_SESSION['helpdesk_user_id'])) {
-        include ("app/models/head.inc.php");
-        include ("app/models/navbar.inc.php");
+        include ("app/controllers/head.inc.php");
+        include ("app/controllers/navbar.inc.php");
         $rp = realpath(dirname(__FILE__));
         
         function rrmdir($dir) {
@@ -469,7 +469,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 <?php
             }
         }
-        include ("app/models/footer.inc.php");
+        include ("app/controllers/footer.inc.php");
 ?>
 
 <?php

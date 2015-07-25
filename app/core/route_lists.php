@@ -83,18 +83,18 @@ else {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "USER") {
-        include ('app/models/404.inc.php');
+        include ('app/controllers/404.inc.php');
     }
     if ($privs == "GUEST") {
         $portal = get_portal_status();
             if ($portal) {
-                include ('app/main_portal/models/auth.php');
+                include ('app/main_portal/controllers/auth.php');
             }
             else {
-        include ('app/models/auth.php');
+        include ('app/controllers/auth.php');
     }
     }
 }

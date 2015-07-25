@@ -3,7 +3,7 @@
 //session_start();
 include_once ("../../functions.inc.php");
 
-include ("../models/head.inc.php");
+include ("../controllers/head.inc.php");
 
 
 
@@ -82,5 +82,5 @@ if (isset($_GET['h'])) {
 
 <?php
 }
-include ("../models/footer.inc.php");
+include ("../controllers/footer.inc.php");
 ?>

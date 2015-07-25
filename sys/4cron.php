@@ -107,7 +107,7 @@ foreach ($res1 as $row) {
     $m = $row['id'];
     $td = humanTiming_old(strtotime($row['ok_date']));
     
-    if ($td > $CONF['days2arch']) {
+    if ($td >= $CONF['days2arch']) {
         
         $stmt = $dbConnection->prepare('update tickets set arch=:n1, last_update=:n where id=:m');
         $stmt->execute(array(

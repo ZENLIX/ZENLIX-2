@@ -188,7 +188,7 @@ if (!isset($_POST['remember_me'])) {
         */
     } 
     else {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
     
     /////////////////END IF LOGIN-AUTH FORM SUBMITTED/////////////////////////
@@ -206,28 +206,28 @@ function indexAction() {
     if ($privs == "GUEST") {
         
         if ($portalStatus) {
-            require 'app/main_portal/models/index.php';
+            require 'app/main_portal/controllers/index.php';
         } 
         else if (!$portalStatus) {
-            require 'app/models/auth.php';
+            require 'app/controllers/auth.php';
         }
     } 
     else if (($privs == "USER")) {
         
         if ($portalStatus) {
-            require 'app/main_portal/models/index.php';
+            require 'app/main_portal/controllers/index.php';
         } 
         else if (!$portalStatus) {
-            require ("app/models/dashboard.php");
+            require ("app/controllers/dashboard.php");
         }
     } 
     else if (($privs == "CLIENT")) {
         
         if ($portalStatus) {
-            require 'app/main_portal/models/index.php';
+            require 'app/main_portal/controllers/index.php';
         } 
         else if (!$portalStatus) {
-            require ("app/models/client.dashboard.php");
+            require ("app/controllers/client.dashboard.php");
         }
     }
 }
@@ -236,13 +236,13 @@ function dashboardAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "GUEST") {
-        include ('app/models/auth.php');
+        include ('app/controllers/auth.php');
     } 
     else if (($privs == "CLIENT")) {
-        require 'app/models/client.dashboard.php';
+        require 'app/controllers/client.dashboard.php';
     } 
     else if (($privs == "USER")) {
-        require 'app/models/dashboard.php';
+        require 'app/controllers/dashboard.php';
     }
 }
 
@@ -257,17 +257,17 @@ function registerAction() {
     if ($privs == "GUEST") {
         
         if ($portalStatus) {
-            require ('app/main_portal/models/register.php');
+            require ('app/main_portal/controllers/register.php');
         } 
         else if (!$portalStatus) {
-            require ('app/models/register.php');
+            require ('app/controllers/register.php');
         }
     } 
     else if ($privs == "USER") {
-        include ('app/models/404.inc.php');
+        include ('app/controllers/404.inc.php');
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     }
 }
 
@@ -279,13 +279,13 @@ function forgotAction() {
     
     if ($privs == "GUEST") {
         
-        require ('app/models/forgot.php');
+        require ('app/controllers/forgot.php');
     } 
     else if ($privs == "USER") {
-        include ('app/models/404.inc.php');
+        include ('app/controllers/404.inc.php');
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     }
 }
 
@@ -305,10 +305,10 @@ function auth_get() {
     else {
         
         if (!$portalStatus) {
-            include 'app/models/auth.php';
+            include 'app/controllers/auth.php';
         } 
         else if ($portalStatus) {
-            include 'app/main_portal/models/auth.php';
+            include 'app/main_portal/controllers/auth.php';
         }
     }
 }
@@ -320,13 +320,13 @@ function listAction() {
     
     if ($privs == "GUEST") {
         
-        require 'app/models/auth.php';
+        require 'app/controllers/auth.php';
     } 
     else if (($privs == "CLIENT")) {
-        require ("app/models/client.list.php");
+        require ("app/controllers/client.list.php");
     } 
     else if (($privs == "USER")) {
-        require ("app/models/list.php");
+        require ("app/controllers/list.php");
     }
 }
 
@@ -336,13 +336,13 @@ function ticketAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'app/models/ticket.php';
+        include 'app/controllers/ticket.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'app/models/client.ticket.php';
+        include 'app/controllers/client.ticket.php';
     } 
     else {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -352,13 +352,13 @@ function createAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'app/models/new.php';
+        include 'app/controllers/new.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'app/models/client.new.php';
+        include 'app/controllers/client.new.php';
     } 
     else {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -368,13 +368,13 @@ function view_userAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'app/models/view_user.php';
+        include 'app/controllers/view_user.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'app/models/client.view_user.php';
+        include 'app/controllers/client.view_user.php';
     } 
     else {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -384,13 +384,13 @@ function profileAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'app/models/profile.php';
+        include 'app/controllers/profile.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'app/models/client.profile.php';
+        include 'app/controllers/client.profile.php';
     } 
     else {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -400,13 +400,13 @@ function helperAction() {
     $privs = get_privs();
     
     if ($privs == "USER") {
-        include 'app/models/helper.php';
+        include 'app/controllers/helper.php';
     } 
     else if ($privs == "CLIENT") {
-        include 'app/models/client.helper.php';
+        include 'app/controllers/client.helper.php';
     } 
     else {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -414,13 +414,13 @@ function statsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/stats.php';
+        include 'app/controllers/stats.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -428,13 +428,13 @@ function notesAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/notes.php';
+        include 'app/controllers/notes.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -442,13 +442,13 @@ function usersAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/users.php';
+        include 'app/controllers/users.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -456,13 +456,13 @@ function helpAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/help.php';
+        include 'app/controllers/help.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -470,13 +470,13 @@ function depsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/deps.php';
+        include 'app/controllers/deps.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -484,13 +484,13 @@ function approveAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/approve.php';
+        include 'app/controllers/approve.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -498,13 +498,13 @@ function unitsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/units.php';
+        include 'app/controllers/units.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -512,13 +512,13 @@ function posadaAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/posada.php';
+        include 'app/controllers/posada.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -526,13 +526,13 @@ function subjAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/subj.php';
+        include 'app/controllers/subj.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -540,13 +540,13 @@ function userinfoAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/userinfo.php';
+        include 'app/controllers/userinfo.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -554,13 +554,13 @@ function perfAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/perf.php';
+        include 'app/controllers/perf.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -568,13 +568,13 @@ function filesAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/files.php';
+        include 'app/controllers/files.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -582,13 +582,13 @@ function newsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/news.php';
+        include 'app/controllers/news.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -596,13 +596,13 @@ function clientsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/clients.php';
+        include 'app/controllers/clients.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -610,13 +610,13 @@ function all_statsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/all_stats.php';
+        include 'app/controllers/all_stats.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -624,13 +624,13 @@ function user_statsAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/user_stats.php';
+        include 'app/controllers/user_stats.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -638,13 +638,13 @@ function sla_repAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/sla_rep.php';
+        include 'app/controllers/sla_rep.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -652,13 +652,13 @@ function schedulerAction() {
     global $dbConnection, $CONF,$CONF_MAIL;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/scheduler.php';
+        include 'app/controllers/scheduler.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -666,13 +666,13 @@ function messagesAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/messages.php';
+        include 'app/controllers/messages.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.messages.php');
+        include ('app/controllers/client.messages.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -680,13 +680,13 @@ function print_ticketAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/print_ticket.php';
+        include 'app/controllers/print_ticket.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -694,13 +694,13 @@ function calendarAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/calendar.php';
+        include 'app/controllers/calendar.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -708,13 +708,13 @@ function portalAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/portal.php';
+        include 'app/controllers/portal.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -722,13 +722,13 @@ function mailersAction() {
     global $dbConnection, $CONF;
     $privs = get_privs();
     if ($privs == "USER") {
-        include 'app/models/mailers.php';
+        include 'app/controllers/mailers.php';
     } 
     else if ($privs == "CLIENT") {
-        include ('app/models/client.404.inc.php');
+        include ('app/controllers/client.404.inc.php');
     } 
     else if ($privs == "GUEST") {
-        include 'app/models/auth.php';
+        include 'app/controllers/auth.php';
     }
 }
 
@@ -737,17 +737,17 @@ function manualAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'app/main_portal/models/manual.php';
+        include 'app/main_portal/controllers/manual.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'app/models/404.inc.php';
+            include 'app/controllers/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('app/models/client.404.inc.php');
+            include ('app/controllers/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'app/models/auth.php';
+            include 'app/controllers/auth.php';
         }
     }
 }
@@ -757,17 +757,17 @@ function versionAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'app/main_portal/models/version.php';
+        include 'app/main_portal/controllers/version.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'app/models/404.inc.php';
+            include 'app/controllers/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('app/models/client.404.inc.php');
+            include ('app/controllers/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'app/models/auth.php';
+            include 'app/controllers/auth.php';
         }
     }
 }
@@ -777,17 +777,17 @@ function feedAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'app/main_portal/models/feed.php';
+        include 'app/main_portal/controllers/feed.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'app/models/404.inc.php';
+            include 'app/controllers/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('app/models/client.404.inc.php');
+            include ('app/controllers/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'app/models/auth.php';
+            include 'app/controllers/auth.php';
         }
     }
 }
@@ -797,17 +797,17 @@ function catAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'app/main_portal/models/cat.php';
+        include 'app/main_portal/controllers/cat.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'app/models/404.inc.php';
+            include 'app/controllers/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('app/models/client.404.inc.php');
+            include ('app/controllers/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'app/models/auth.php';
+            include 'app/controllers/auth.php';
         }
     }
 }
@@ -819,24 +819,24 @@ function new_postAction() {
     if ($portal) {
         
         if ($privs == "USER") {
-            include 'app/main_portal/models/new_post.php';
+            include 'app/main_portal/controllers/new_post.php';
         } 
         else if ($privs == "CLIENT") {
-            include 'app/main_portal/models/new_post.php';
+            include 'app/main_portal/controllers/new_post.php';
         } 
         else if ($privs == "GUEST") {
-            include 'app/main_portal/models/auth.php';
+            include 'app/main_portal/controllers/auth.php';
         }
     }
     if (!$portal) {
         if ($privs == "USER") {
-            include 'app/models/404.inc.php';
+            include 'app/controllers/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('app/models/client.404.inc.php');
+            include ('app/controllers/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'app/models/auth.php';
+            include 'app/controllers/auth.php';
         }
     }
 }
@@ -846,17 +846,17 @@ function postAction() {
     $portal = get_portal_status();
     $privs = get_privs();
     if ($portal) {
-        include 'app/main_portal/models/post.php';
+        include 'app/main_portal/controllers/post.php';
     } 
     else {
         if ($privs == "USER") {
-            include 'app/models/404.inc.php';
+            include 'app/controllers/404.inc.php';
         } 
         else if ($privs == "CLIENT") {
-            include ('app/models/client.404.inc.php');
+            include ('app/controllers/client.404.inc.php');
         } 
         else if ($privs == "GUEST") {
-            include 'app/models/auth.php';
+            include 'app/controllers/auth.php';
         }
     }
 }

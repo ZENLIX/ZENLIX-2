@@ -3,7 +3,7 @@ session_start();
 //include ("../functions.inc.php");
 $rkeys = array_keys($_GET);
 
-$CONF['title_header'] = lang('TICKET_name') . " #" . get_ticket_id_by_hash($rkeys[1]) . " - " . $CONF['name_of_firm'];
+$CONF['title_header'] = lang('TICKET_name') . " #" . get_ticket_id_by_hash($rkeys[0]) . " - " . $CONF['name_of_firm'];
 
 if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     

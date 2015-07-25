@@ -1,13 +1,13 @@
 <?php
-session_start();
-include_once ("../functions.inc.php");
 $CONF['title_header'] = lang('NEW_title') . " - " . $CONF['name_of_firm'];
-if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
+
+if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     if ($_SESSION['helpdesk_user_id']) {
         include ("head.inc.php");
-        include ("client.navbar.inc.php");
+        include ("navbar.inc.php");
         
         //check_unlinked_file();
+        //echo get_userlogin_byid($_SESSION['helpdesk_user_id']);
         
         class new_ticket_form
         {
@@ -16,10 +16,9 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 global $dbConnection;
                 
                 $res = array();
-                $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n AND status=:s');
+                $stmt = $dbConnection->prepare('SELECT name as label, id as value FROM deps where id !=:n');
                 $stmt->execute(array(
-                    ':n' => '0',
-                    ':s' => '1'
+                    ':n' => '0'
                 ));
                 $res1 = $stmt->fetchAll();
                 foreach ($res1 as $row) {
@@ -167,6 +166,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         $fields_forms = $new_ticket_form->get_fields_forms();
         
         $ok_msg = false;
+        $h=NULL;
         if (isset($_GET['ok'])) {
             if (isset($_GET['h'])) {
                 $h = $_GET['h'];
@@ -206,7 +206,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             }
             
             // подгружаем шаблон
-            $template = $twig->loadTemplate('client.new.view.tmpl');
+            $template = $twig->loadTemplate('new.view.tmpl');
             
             // передаём в шаблон переменные и значения
             // выводим сформированное содержание
@@ -216,6 +216,7 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                 'name_of_firm' => $CONF['name_of_firm'],
                 'ok_msg' => $ok_msg,
                 'h' => $h,
+                'NEW_to_unit_desc' => lang('NEW_to_unit_desc') ,
                 'NEW_ok' => lang('NEW_ok') ,
                 'NEW_ok_1' => lang('NEW_ok_1') ,
                 'NEW_ok_2' => lang('NEW_ok_2') ,
@@ -271,6 +272,11 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         }
         
         include ("footer.inc.php");
+?>
+
+
+
+<?php
     }
 } 
 else {

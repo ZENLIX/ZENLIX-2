@@ -18,11 +18,12 @@ if (isset($_POST['menu'])) {
         
         $stmt = $dbConnection->prepare('SELECT 
         id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio 
-        from tickets where user_init_id=:user_id and client_id=:cid
+        from tickets where (user_init_id=:user_id and client_id=:cid) or (client_id=:cid2)
         order by ok_by asc, prio desc, id desc limit :start_pos, :perpage');
         $stmt->execute(array(
             ':user_id' => $_SESSION['helpdesk_user_id'],
             ':cid' => $_SESSION['helpdesk_user_id'],
+            ':cid2' => $_SESSION['helpdesk_user_id'],
             ':start_pos' => $start_pos,
             ':perpage' => $perpage
         ));

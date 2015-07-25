@@ -102,7 +102,7 @@ class HTMLPurifier_ElementDef
      * @type array
      * @note SGML permits exclusions for all descendants, but this is
      *       not possible with DTDs or XML Schemas. W3C has elected to
-     *       use complicated compositions of content_models to simulate
+     *       use complicated compositions of content_controllers to simulate
      *       exclusion for children, but we go the simpler, SGML-style
      *       route of flat-out exclusions, which correctly apply to
      *       all descendants and not just children. Note that the XHTML

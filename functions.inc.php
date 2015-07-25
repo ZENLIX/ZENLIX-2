@@ -7082,10 +7082,11 @@ function get_total_pages($menu, $id) {
             $perpage = $_SESSION['hd.rustem_list_out'];
         }
         
-        $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:id and arch='0' and client_id=:cid");
+        $res = $dbConnection->prepare("SELECT count(*) from tickets where (user_init_id=:id and client_id=:cid) OR client_id=:cid2");
         $res->execute(array(
             ':id' => $id,
-            ':cid' => $id
+            ':cid' => $id,
+            ':cid2' => $id
         ));
         $count = $res->fetch(PDO::FETCH_NUM);
         $count = $count[0];

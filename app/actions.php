@@ -8014,7 +8014,7 @@ if (!isset($_POST['type'])) {
             GUMP::set_field_name("login", lang('USERS_login'));
             $is_valid = GUMP::is_valid($_POST, array(
                 'fio' => 'required|max_len,100|min_len,1',
-                'login' => 'required|max_len,50|min_len,1|alpha_numeric'
+                'login' => 'required|max_len,50|min_len,1'
             ));
             
             if ($is_valid === true) {
