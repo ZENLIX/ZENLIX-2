@@ -1,7 +1,12 @@
 <?php
 session_start();
-error_reporting(0);
+
+//error_reporting(0);
 include_once ("../../functions.inc.php");
+if ($CONF_HD['debug_mode'] == false) {
+    error_reporting(E_ALL ^ E_NOTICE);
+    error_reporting(0);
+}
 
 if (isset($_POST['menu'])) {
     
@@ -16,6 +21,69 @@ if (isset($_POST['menu'])) {
         $start_pos = ($page - 1) * $perpage;
         $user_id = $_SESSION['helpdesk_user_id'];
         
+
+
+        /*
+
+проверить все units
+если в каком-то из них есть main_user
+то вывести все заявки где клиенты равны
+    where (user_init_id IN (' . $in_query . ') and client_id) OR (client_id=:cid2)
+
+        */
+
+
+$stmt = $dbConnection->prepare('SELECT id from units where main_user=:u');
+$stmt->execute(array(
+':u'=>$user_id
+    ));
+$res_check = $stmt->fetch(PDO::FETCH_ASSOC);;
+
+
+
+if (!empty($res_check)) {
+$mu_status=true;
+
+$p = get_clients_from_units($res_check['id']);
+//print_r($p);
+            foreach ($p as $key => $value) {
+                $in_query = $in_query . ' :val_' . $key . ', ';
+            }
+            
+            $in_query = substr($in_query, 0, -2);
+            foreach ($p as $key => $value) {
+                $vv[":val_" . $key] = $value;
+            }
+////
+            foreach ($p as $key => $value) {
+                $in_query2 = $in_query2 . ' :val2_' . $key . ', ';
+            }
+            
+            $in_query2 = substr($in_query2, 0, -2);
+            foreach ($p as $key => $value) {
+                $vv2[":val2_" . $key] = $value;
+            }
+
+
+        $stmt = $dbConnection->prepare('SELECT 
+        id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio 
+        from tickets where user_init_id IN (' . $in_query . ') OR client_id IN (' . $in_query2 . ')
+           order by ok_by asc, prio desc, id desc limit :start_pos, :perpage');
+        $paramss=array(
+            ':start_pos' => $start_pos,
+            ':perpage' => $perpage
+        );
+        $stmt->execute(array_merge($vv,$vv2, $paramss));
+        //$stmt->execute();
+        
+        $res1 = $stmt->fetchAll();
+
+        $aha = get_total_pages('clients_main', $_SESSION['helpdesk_user_id']);
+}
+
+else if (empty($res_check)) {
+$mu_status=false;
+
         $stmt = $dbConnection->prepare('SELECT 
         id, user_init_id, user_to_id, date_create, subj, msg, client_id, unit_id, status, hash_name, is_read,lock_by, ok_by, prio 
         from tickets where (user_init_id=:user_id and client_id=:cid) or (client_id=:cid2)
@@ -29,8 +97,10 @@ if (isset($_POST['menu'])) {
         ));
         
         $res1 = $stmt->fetchAll();
-        
         $aha = get_total_pages('clients', $_SESSION['helpdesk_user_id']);
+    }
+        
+        
         
         $ticket_arr = array();
         foreach ($res1 as $row) {
@@ -143,6 +213,7 @@ if (isset($_POST['menu'])) {
                 
                 'id' => $row['id'],
                 'style' => $style,
+                'init_fio' => nameshort(name_of_user_ret($row['user_init_id'])) ,
                 'prio' => $prio,
                 'muclass' => $muclass,
                 'subj' => make_html($row['subj'], 'no') ,
@@ -151,6 +222,7 @@ if (isset($_POST['menu'])) {
                 'subj_cut' => $cut_subj,
                 'date_create' => $row['date_create'],
                 't_ago' => $t_ago,
+                'client' => get_user_val_by_id($row['client_id'], 'fio') ,
                 'to_text' => $to_text,
                 'st' => $st
             ));
@@ -184,16 +256,18 @@ if (isset($_POST['menu'])) {
                 'aha' => $aha,
                 'MSG_no_records' => lang('MSG_no_records') ,
                 'get_total_pages' => get_total_pages('clients', $_SESSION['helpdesk_user_id']) ,
-                
+                'mu_status'=>$mu_status,
+                't_LIST_init' => lang('t_LIST_init') ,
                 't_LIST_prio' => lang('t_LIST_prio') ,
                 't_LIST_subj' => lang('t_LIST_subj') ,
                 't_LIST_create' => lang('t_LIST_create') ,
                 't_LIST_ago' => lang('t_LIST_ago') ,
                 't_LIST_to' => lang('t_LIST_to') ,
+                't_LIST_worker' => lang('t_LIST_worker') ,
                 't_LIST_status' => lang('t_LIST_status') ,
                 'ticket_arr' => $ticket_arr
             ));
-        }
+        } 
         catch(Exception $e) {
             die('ERROR: ' . $e->getMessage());
         }

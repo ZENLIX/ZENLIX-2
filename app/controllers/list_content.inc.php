@@ -1,8 +1,12 @@
 <?php
 session_start();
+
 //error_reporting(0);
 include_once ("../../functions.inc.php");
-
+if ($CONF_HD['debug_mode'] == false) {
+    error_reporting(E_ALL ^ E_NOTICE);
+    error_reporting(0);
+}
 if (isset($_POST['menu'])) {
     
     if ($_POST['menu'] == 'out') {
@@ -21,7 +25,7 @@ if (isset($_POST['menu'])) {
         2 boss
         0 head
         1 user
-        
+         
         
         if boss - all created tickets
         if head - user deps created tickets

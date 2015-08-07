@@ -2037,7 +2037,7 @@ values
                     echo $row['name']; ?></a></small></td>
                         <td><small><center>
                         <button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php
-                    echo $row['id']; ?>">del</button>
+                    echo $row['id']; ?>"><i class="fa fa fa-trash"></i></button>
                         <button id="<?php
                     echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php
                     echo $row['id']; ?>"><?php
@@ -2130,7 +2130,7 @@ values
                     echo $row['id'] ?>" data-url="action" id="edit_deps" data-type="text"><?php
                     echo $row['name']; ?></a></small></td>
                         <td><small><center><button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php
-                    echo $row['id']; ?>">del</button> <button id="<?php
+                    echo $row['id']; ?>"><i class="fa fa fa-trash"></i></button> <button id="<?php
                     echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php
                     echo $row['id']; ?>"><?php
                     echo $icon; ?></button></center></small></center></small></td>
@@ -2342,7 +2342,7 @@ values
                     ':t' => $t
                 ));
                 
-                $stmt = $dbConnection->prepare('select id, name from units');
+                $stmt = $dbConnection->prepare('select id, name,status from units');
                 $stmt->execute();
                 $res1 = $stmt->fetchAll();
 ?>
@@ -2352,7 +2352,7 @@ values
             <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
                 <thead>
                 <tr>
-                    <th><center>ID</center></th>
+                    
                     <th><center><?php
                 echo lang('TABLE_name'); ?></center></th>
                     <th><center><?php
@@ -2362,18 +2362,32 @@ values
                 <tbody>
                 <?php
                 foreach ($res1 as $row) {
+if ($row['status'] == 1) {
+    $l_a='units_lock';
+    $l_i='unlock';
+}
+if ($row['status'] == 0) {
+    $l_a='units_unlock';
+    $l_i='lock';
+}
 ?>
-                    <tr id="tr_<?php
-                    echo $row['id']; ?>">
+    <tr id="tr_<?php
+            echo $row['id']; ?>">
+    
+    
+    
+    <td><small><a href="#" data-pk="<?php
+            echo $row['id'] ?>" data-url="action" id="edit_units" data-type="text"><?php
+            echo $row['name']; ?></a></small></td>
+<td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?php
+            echo $row['id']; ?>"><i class="fa fa fa-trash"></i></button>
 
 
-                        <td><small><center><?php
-                    echo $row['id']; ?></center></small></td>
-                        <td><small><?php
-                    echo $row['name']; ?></small></td>
-                        <td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?php
-                    echo $row['id']; ?>">del</button></center></small></td>
-                    </tr>
+<button id="<?php echo $l_a; ?>" type="button" class="btn btn-default btn-xs" value="<?php
+            echo $row['id']; ?>"><i class="fa fa fa-<?php echo $l_i; ?>"></i></button>
+
+            </center></small></td>
+    </tr>
                 <?php
                 } ?>
 
@@ -2392,7 +2406,7 @@ values
                     ':id' => $id
                 ));
                 
-                $stmt = $dbConnection->prepare('select id, name from units');
+                $stmt = $dbConnection->prepare('select id, name,status from units');
                 $stmt->execute();
                 $res1 = $stmt->fetchAll();
 ?>
@@ -2402,7 +2416,7 @@ values
             <table class="table table-bordered table-hover" style=" font-size: 14px; " id="">
                 <thead>
                 <tr>
-                    <th><center>ID</center></th>
+                    
                     <th><center><?php
                 echo lang('TABLE_name'); ?></center></th>
                     <th><center><?php
@@ -2412,18 +2426,32 @@ values
                 <tbody>
                 <?php
                 foreach ($res1 as $row) {
+if ($row['status'] == 1) {
+    $l_a='units_lock';
+    $l_i='unlock';
+}
+if ($row['status'] == 0) {
+    $l_a='units_unlock';
+    $l_i='lock';
+}
 ?>
-                    <tr id="tr_<?php
-                    echo $row['id']; ?>">
+    <tr id="tr_<?php
+            echo $row['id']; ?>">
+    
+    
+    
+    <td><small><a href="#" data-pk="<?php
+            echo $row['id'] ?>" data-url="action" id="edit_units" data-type="text"><?php
+            echo $row['name']; ?></a></small></td>
+<td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?php
+            echo $row['id']; ?>"><i class="fa fa fa-trash"></i></button>
 
 
-                        <td><small><center><?php
-                    echo $row['id']; ?></center></small></td>
-                        <td><small><?php
-                    echo $row['name']; ?></small></td>
-                        <td><small><center><button id="units_del" type="button" class="btn btn-danger btn-xs" value="<?php
-                    echo $row['id']; ?>">del</button></center></small></td>
-                    </tr>
+<button id="<?php echo $l_a; ?>" type="button" class="btn btn-default btn-xs" value="<?php
+            echo $row['id']; ?>"><i class="fa fa fa-<?php echo $l_i; ?>"></i></button>
+
+            </center></small></td>
+    </tr>
                 <?php
                 } ?>
 
@@ -2600,6 +2628,8 @@ values
                 $posada = $_POST['posada'];
                 $msg_type = $_POST['msg_type'];
                 
+               // $main_unit_user=$_POST['main_unit_user'];
+
                 $def_unit_id = $_POST['def_unit_id'];
                 $def_user_id = $_POST['def_user_id'];
                 $user_to_def = $_POST['user_to_def'];
@@ -2685,6 +2715,39 @@ values
                     }
                 }
                 
+/*
+//get_user_val_by_hash($hn,'id')
+if ($pidrozdil != "NULL") {
+
+if ($main_unit_user == "true") {
+
+    $stmt = $dbConnection->prepare('update units set main_user=:user_id where id=:pidrozdil');
+
+            $stmt->execute(array(
+                ':user_id' => get_user_val_by_hash($usid, 'id'),
+                ':pidrozdil' => $pidrozdil
+            ));
+        }
+
+else if ($main_unit_user == "false") {
+                    $stmt2r1 = $dbConnection->prepare('SELECT main_user from units where id=:uto');
+                $stmt2r1->execute(array(
+                    ':uto' => $pidrozdil
+                ));
+                $tt2r = $stmt2r1->fetch(PDO::FETCH_ASSOC);
+                if ($tt2r['main_user'] == get_user_val_by_hash($usid, 'id')) {
+                        $stmt = $dbConnection->prepare('update units set main_user=Null where id=:pidrozdil');
+
+            $stmt->execute(array(
+                ':pidrozdil' => $pidrozdil
+            ));
+                }
+}
+
+
+}
+
+*/
                 //########################## ADDITIONAL FIELDS ###############################
                 
                 if ($user_to_def == "true") {
@@ -2917,6 +2980,22 @@ values
                 */
             }
             
+
+
+            if ($mode == "unit_save") {
+
+$stmt = $dbConnection->prepare('update units set name=:name, main_user=:main_user where id=:id');
+
+                $stmt->execute(array(
+                    ':name'=>$_POST['name'],
+                    ':main_user'=>$_POST['main_user'],
+                    ':id'=>$_POST['id']));
+
+            }
+
+
+
+
             if ($mode == "add_user") {
                 $fio = ($_POST['fio']);
                 $login = ($_POST['login']);
@@ -2933,7 +3012,7 @@ values
                 $pidrozdil = $_POST['pidrozdil'];
                 $posada = $_POST['posada'];
                 $msg_type = $_POST['msg_type'];
-                
+               // $main_unit_user= $_POST['main_unit_user'];
                 $def_unit_id = $_POST['def_unit_id'];
                 $def_user_id = $_POST['def_user_id'];
                 $user_to_def = $_POST['user_to_def'];
@@ -3105,6 +3184,42 @@ if (!empty($flist)) {
 }
 
 
+/*
+
+//get_user_val_by_hash($hn,'id')
+//get_user_val_by_hash($hn,'id')
+if ($pidrozdil != "NULL") {
+
+if ($main_unit_user == "true") {
+
+    $stmt = $dbConnection->prepare('update units set main_user=:user_id where id=:pidrozdil');
+
+            $stmt->execute(array(
+                ':user_id' => get_user_val_by_hash($hn, 'id'),
+                ':pidrozdil' => $pidrozdil
+            ));
+        }
+
+
+
+else if ($main_unit_user == "false") {
+                    $stmt2r1 = $dbConnection->prepare('SELECT main_user from units where id=:uto');
+                $stmt2r1->execute(array(
+                    ':uto' => $pidrozdil
+                ));
+                $tt2r = $stmt2r1->fetch(PDO::FETCH_ASSOC);
+                if ($tt2r['main_user'] == get_user_val_by_hash($hn, 'id')) {
+                        $stmt = $dbConnection->prepare('update units set main_user=Null where id=:pidrozdil');
+
+            $stmt->execute(array(
+                ':pidrozdil' => $pidrozdil
+            ));
+                }
+}
+
+
+}
+*/
 
 
                 
@@ -5403,13 +5518,7 @@ values (:comment, :n, :user_comment, :tid_comment)');
                 echo $CONF['hostname']; ?>action?mode=getJSON_posada" data-pk="1" data-title="<?php
                 echo lang('WORKER_posada'); ?>"></a></small></td>
                                 </tr>
-                                <tr>
-                                    <td style=" width: 30px; "><small><?php
-                echo lang('WORKER_unit'); ?>:</small></td>
-                                    <td><small><a href="#" id="new_unit" data-type="select" data-source="<?php
-                echo $CONF['hostname']; ?>action?mode=getJSON_units" data-pk="1" data-title="<?php
-                echo lang('NEW_to_unit'); ?>"></a></small></td>
-                                </tr>
+                                
 
                                 <tr>
                                     <td style=" width: 30px; "><small><?php
@@ -7836,7 +7945,7 @@ if (!isset($_POST['type'])) {
                 $adr = ($_POST['adr']);
                 $fio = ($_POST['fio']);
                 $posada = ($_POST['posada']);
-                $unitss = ($_POST['unit']);
+                //$unitss = ($_POST['unit']);
                 $noty = $_POST['user_layot'];
                 
                 $ec = 0;
@@ -7848,7 +7957,7 @@ if (!isset($_POST['type'])) {
                 }
                 if ($ec == 0) {
                     $stmt = $dbConnection->prepare('update users set fio=:fio, skype=:s, tel=:t, email=:m, lang=:langu,
-                adr=:adr,posada=:posada,unit_desc=:unitss,noty_layot=:noty,pb=:pb where id=:id');
+                adr=:adr,posada=:posada,noty_layot=:noty,pb=:pb where id=:id');
                     $stmt->execute(array(
                         ':id' => $id,
                         ':m' => $m,
@@ -7857,7 +7966,6 @@ if (!isset($_POST['type'])) {
                         ':t' => $tel,
                         ':adr' => $adr,
                         ':posada' => $posada,
-                        ':unitss' => $unitss,
                         ':fio' => $fio,
                         ':noty' => $noty,
                         ':pb' => $_POST['pb']
@@ -8070,7 +8178,7 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
             $fio = ($_POST['fio']);
             $login = ($_POST['login']);
             $posada = ($_POST['posada']);
-            $pid = ($_POST['pidrozdil']);
+            //$pid = ($_POST['pidrozdil']);
             $tel = ($_POST['tel']);
             $adr = ($_POST['adr']);
             $mail = strtolower($_POST['mail']);
@@ -8090,14 +8198,13 @@ VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :
                 $r = true;
                 
                 $stmt = $dbConnection->prepare('insert into approved_info
-(fio,login,tel, unit_desc, adr, email, posada,skype,type_op, user_from, client_id, date_app)
-VALUES (:fio, :login, :tel, :unit_desc, :adr, :email, :posada,:skype,:type_op, :user_from, :cid,  :n)');
+(fio,login,tel, adr, email, posada,skype,type_op, user_from, client_id, date_app)
+VALUES (:fio, :login, :tel, :adr, :email, :posada,:skype,:type_op, :user_from, :cid,  :n)');
                 
                 $stmt->execute(array(
                     ':fio' => $fio,
                     ':tel' => $tel,
                     ':login' => $login,
-                    ':unit_desc' => $pid,
                     ':adr' => $adr,
                     ':email' => $mail,
                     ':posada' => $posada,
@@ -8535,7 +8642,7 @@ values (:unlock, :n, :unow, :tid)');
             
             $t_hash = $_POST['t_hash'];
             
-            //$subj = $_POST['subj'];
+            $subj = $_POST['subj'];
             $msg = $_POST['msg'];
             $prio = $_POST['prio'];
             
@@ -8564,12 +8671,12 @@ values (:edit_subj, :n, :unow, :pk)');
                     ':n' => $CONF['now_dt']
                 ));
             }
-            
+             
             if ($subj != $fio['subj']) {
-                $stmt = $dbConnection->prepare('update tickets set last_edit=:n, last_update=:nz where hash_name=:pk');
+                $stmt = $dbConnection->prepare('update tickets set subj=:subj, last_edit=:n, last_update=:nz where hash_name=:pk');
                 $stmt->execute(array(
                     
-                    //':v' => $subj,
+                    ':subj' => $subj,
                     ':pk' => $t_hash,
                     ':n' => $CONF['now_dt'],
                     ':nz' => $CONF['now_dt']
@@ -8609,6 +8716,43 @@ values (:edit_msg, :n, :unow, :pk)');
                 ));
             }
         }
+
+
+        if ($mode == "units_lock") {
+            $id = ($_POST['id']);
+            $stmt = $dbConnection->prepare('update units set status=:v where id=:id');
+            $stmt->execute(array(
+                ':v' => '0',
+                ':id' => $id
+            ));
+
+
+            $stmt = $dbConnection->prepare('update users set status=0 where is_client=1 and unit_desc=:id');
+            $stmt->execute(array(
+                ':id' => $id
+            ));
+//Найти всех клиентов данного подразделения и заблокировать
+            //update users set status = 0 where is_client = 1 and unit_desc = 
+
+
+        }
+        if ($mode == "units_unlock") {
+            $id = ($_POST['id']);
+            $stmt = $dbConnection->prepare('update units set status=:v where id=:id');
+            $stmt->execute(array(
+                ':v' => '1',
+                ':id' => $id
+            ));
+
+            $stmt = $dbConnection->prepare('update users set status=1 where is_client=1 and unit_desc=:id');
+            $stmt->execute(array(
+                ':id' => $id
+            ));
+        }
+
+
+
+
         
         if ($mode == "deps_hide") {
             $id = ($_POST['id']);
@@ -8627,6 +8771,19 @@ values (:edit_msg, :n, :unow, :pk)');
             ));
         }
         
+
+        if ($mode == "edit_units") {
+            $v = ($_POST['value']);
+            $pk = ($_POST['pk']);
+            
+            $stmt = $dbConnection->prepare('update units set name=:v where id=:pk');
+            $stmt->execute(array(
+                ':v' => $v,
+                ':pk' => $pk
+            ));
+        }
+
+
         if ($mode == "edit_deps") {
             $v = ($_POST['value']);
             $pk = ($_POST['pk']);

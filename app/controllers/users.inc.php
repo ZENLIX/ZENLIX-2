@@ -177,41 +177,7 @@ if (isset($_POST['menu'])) {
 
                                 
                                 
- <div class="control-group">
-    <div class="controls">
-        <div class="form-group">
-            <label for="pidrozdil" class="col-sm-2 control-label"><?php
-        echo lang('WORKER_unit'); ?>: </label>
-            <div class="col-sm-10" style="">
-                <select name="pid" id="pidrozdil" data-placeholder="<?php
-        echo lang('WORKER_unit'); ?>" class="chosen-select form-control input-sm">
-                    <option value="0"></option>
-                    <?php
-        
-        /*$qstring = "SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC";
-                    $result = mysql_query($qstring);                    
-                    while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){*/
-        
-        $stmt = $dbConnection->prepare('SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC');
-        $stmt->execute();
-        $res1 = $stmt->fetchAll();
-        foreach ($res1 as $row) {
-?>
-
-                        <option value="<?php
-            echo $row['name'] ?>"><?php
-            echo $row['name'] ?></option>
-
-                    <?php
-        }
-?>
-
-                </select>
-            </div>
-        </div>
-
-    </div>
-</div>  <div class="form-group">
+ <div class="form-group">
     <label for="lang" class="col-sm-2 control-label"><?php
         echo lang('SYSTEM_lang'); ?></label>
         <div class="col-sm-10">
@@ -512,27 +478,11 @@ if (!(empty($res1))) {
         echo lang('USERS_wo'); ?></strong>
     <p class="help-block"><small><?php
         echo lang('USERS_wo_desc'); ?></small></p>
-  </label>
-  
-</div>
 
-<div class="radio col-sm-12">
-  <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios4" value="4" checked="checked">
-    <strong class="text-default"><?php
-        echo lang('EXT_client'); ?></strong>
-    <p class="help-block"><small><?php
-        echo lang('EXT_client_what'); ?></small></p>
-  </label>
-  
-</div>
-  </div>
-  </div>
-  
-  
     <div class="form-group">
-  <label for="my-select" class="col-sm-2 control-label"><?php
-        echo lang('USERS_units'); ?></label>
+  <label for="my-select" class="col-sm-2 control-label">
+  <small><?php
+        echo lang('USERS_units'); ?></small></label>
   <div class="col-sm-10">
   <select multiple="multiple" id="my-select" name="unit[]" disabled>
 <?php
@@ -566,8 +516,8 @@ if (!(empty($res1))) {
   </div>
   </div>
   <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?php
-        echo lang('USERS_privs'); ?></label>
+  <label for="mess" class="col-sm-2 control-label"><small><?php
+        echo lang('USERS_privs'); ?></small></label>
   <div class="col-sm-10">
   
   
@@ -575,8 +525,8 @@ if (!(empty($res1))) {
     <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_add_client" checked="checked" disabled> <?php
-        echo lang('TICKET_p_add_client'); ?>
+      <input type="checkbox" id="priv_add_client" checked="checked" disabled> <small><?php
+        echo lang('TICKET_p_add_client'); ?></small>
     </label>
   </div>
     </div>
@@ -584,14 +534,78 @@ if (!(empty($res1))) {
         <div class="col-sm-6">
     <div class="checkbox">
     <label>
-      <input type="checkbox" id="priv_edit_client" checked="checked" disabled> <?php
-        echo lang('TICKET_p_edit_client'); ?>
+      <input type="checkbox" id="priv_edit_client" checked="checked" disabled><small> <?php
+        echo lang('TICKET_p_edit_client'); ?></small>
     </label>
   </div>
     </div>
     
   </div>
     </div>
+
+
+
+  </label>
+  <hr>
+</div>
+
+<div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios" id="optionsRadios4" value="4" checked="checked">
+    <strong class="text-default"><?php
+        echo lang('EXT_client'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('EXT_client_what'); ?></small></p>
+
+         <div class="control-group">
+    <div class="controls">
+        <div class="form-group">
+            <label for="pidrozdil" class="col-sm-4 control-label"><small><?php
+        echo lang('WORKER_unit'); ?></small> </label>
+            <div class="col-sm-8" style="">
+                <select name="pid" id="pidrozdil" data-placeholder="<?php
+        echo lang('WORKER_unit'); ?>" class="form-control input-sm">
+                    <option value="0"></option>
+                    <?php
+        
+        /*$qstring = "SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC";
+                    $result = mysql_query($qstring);                    
+                    while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){*/
+        
+        $stmt = $dbConnection->prepare('SELECT id, name FROM units order by name COLLATE utf8_unicode_ci ASC');
+        $stmt->execute();
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+?>
+
+                        <option value="<?php
+            echo $row['id'] ?>"><?php
+            echo $row['name'] ?></option>
+
+                    <?php
+        }
+?>
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div> 
+
+  </label>
+  
+</div>
+  </div>
+  </div>
+  
+  
+
+
+
+
+
+
       </div>
                   <div class="tab-pane" id="tab_3">  <div class="form-group">
     <label for="msg_title" class="col-sm-2 control-label"><?php
@@ -1782,48 +1796,7 @@ if (!(empty($res1))) {
 </div>
 
                                 
-                                
- <div class="control-group">
-    <div class="controls">
-        <div class="form-group">
-            <label for="pidrozdil" class="col-sm-2 control-label"><?php
-        echo lang('WORKER_unit'); ?>: </label>
-            <div class="col-sm-10" style="">
-                <select name="pid" id="pidrozdil" data-placeholder="<?php
-        echo lang('WORKER_unit'); ?>" class="chosen-select form-control input-sm">
-                    <option value="0"></option>
-                    <?php
-        
-        /*$qstring = "SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC";
-                    $result = mysql_query($qstring);                    
-                    while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){*/
-        
-        $stmt = $dbConnection->prepare('SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC');
-        $stmt->execute();
-        $res1 = $stmt->fetchAll();
-        foreach ($res1 as $row) {
-            
-            $se2 = "";
-            if ($unitss == $row['name']) {
-                $se2 = "selected";
-            }
-?>
 
-                        <option <?php
-            echo $se2; ?> value="<?php
-            echo $row['name'] ?>"><?php
-            echo $row['name'] ?></option>
-
-                    <?php
-        }
-?>
-
-                </select>
-            </div>
-        </div>
-
-    </div>
-</div>  
       <div class="form-group">
     <label for="lang" class="col-sm-2 control-label"><?php
         echo lang('SYSTEM_lang'); ?></label>
@@ -2192,26 +2165,22 @@ echo $ct;
   
 </div>
 
-<div class="radio col-sm-12">
-  <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios4" value="4" <?php
-        echo $status_client ?>>
-    <strong class="text-default"><?php
-        echo lang('EXT_client'); ?></strong>
-    <p class="help-block"><small><?php
-        echo lang('EXT_client_what'); ?></small></p>
-  </label>
-  
-</div>
-  </div>
-  </div>
-  
-  
+
+
+<?php
+ 
+  if ($status_client == "checked") {
+    $d="disabled";
+  }
+?>
+
+
     <div class="form-group">
-  <label for="my-select" class="col-sm-2 control-label"><?php
-        echo lang('USERS_units'); ?></label>
+  <label for="my-select" class="col-sm-2 control-label">
+  <small><?php
+        echo lang('USERS_units'); ?></small></label>
   <div class="col-sm-10">
-  <select multiple="multiple" id="my-select" name="unit[]">
+  <select multiple="multiple" id="my-select" name="unit[]" <?php echo $d; ?>>
 <?php
         $u = explode(",", $unit);
         
@@ -2258,8 +2227,8 @@ echo $ct;
   
   
   <div class="form-group">
-  <label for="mess" class="col-sm-2 control-label"><?php
-        echo lang('USERS_privs'); ?></label>
+  <label for="mess" class="col-sm-2 control-label"><small><?php
+        echo lang('USERS_privs'); ?></small></label>
   <div class="col-sm-10">
   
   
@@ -2268,8 +2237,8 @@ echo $ct;
     <div class="checkbox">
     <label>
       <input type="checkbox" id="priv_add_client" <?php
-        echo $priv_add_client ?>> <?php
-        echo lang('TICKET_p_add_client'); ?>
+        echo $priv_add_client ?> <?php echo $d; ?>><small> <?php
+        echo lang('TICKET_p_add_client'); ?></small>
     </label>
   </div>
     </div>
@@ -2278,14 +2247,89 @@ echo $ct;
     <div class="checkbox">
     <label>
       <input type="checkbox" id="priv_edit_client" <?php
-        echo $priv_edit_client ?>> <?php
-        echo lang('TICKET_p_edit_client'); ?>
+        echo $priv_edit_client ?> <?php echo $d; ?>> <small><?php
+        echo lang('TICKET_p_edit_client'); ?></small>
     </label>
   </div>
     </div>
     
   </div>
     </div>
+
+<hr>
+
+
+
+<div class="radio col-sm-12">
+  <label>
+    <input type="radio" name="optionsRadios" id="optionsRadios4" value="4" <?php
+        echo $status_client ?>>
+    <strong class="text-default"><?php
+        echo lang('EXT_client'); ?></strong>
+    <p class="help-block"><small><?php
+        echo lang('EXT_client_what'); ?></small></p>
+
+
+   <div class="control-group">
+    <div class="controls">
+        <div class="form-group">
+            <label for="pidrozdil" class="col-sm-4 control-label">
+            <small><?php
+        echo lang('WORKER_unit'); ?> </small></label>
+            <div class="col-sm-8" style="">
+                <select name="pid" id="pidrozdil" data-placeholder="<?php
+        echo lang('WORKER_unit'); ?>" class="form-control input-sm">
+                    <option value="NULL"></option>
+                    <?php
+        
+        /*$qstring = "SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC";
+                    $result = mysql_query($qstring);                    
+                    while ($row = mysql_fetch_array($result,MYSQL_ASSOC)){*/
+        
+        $stmt = $dbConnection->prepare('SELECT id, name FROM units order by name COLLATE utf8_unicode_ci ASC');
+        $stmt->execute();
+        $res1 = $stmt->fetchAll();
+        foreach ($res1 as $row) {
+            
+            $se2 = "";
+            if ($unitss == $row['id']) {
+                $se2 = "selected";
+            }
+?>
+
+                        <option <?php
+            echo $se2; ?> value="<?php
+            echo $row['id'] ?>"><?php
+            echo $row['name'] ?></option>
+
+                    <?php
+        }
+?>
+
+                </select>
+            </div>
+        </div>
+
+    </div>
+</div> 
+
+
+
+  </label>
+
+
+
+</div>
+  </div>
+  </div>
+  
+  
+
+
+                                 
+
+
+
 
                   </div><!-- /.tab-pane -->
                   <div class="tab-pane" id="tab_3">

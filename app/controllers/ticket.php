@@ -596,7 +596,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             'pr' => $pr,
             'P_title' => lang('P_title') ,
             'NEW_prio' => lang('NEW_prio') ,
-            
+              'NEW_subj'=>lang('NEW_subj'),
             'prio_style_low' => $prio_style['low'],
             'prio_style_normal' => $prio_style['normal'],
             'prio_style_high' => $prio_style['high'],

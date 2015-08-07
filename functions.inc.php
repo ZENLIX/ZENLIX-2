@@ -4754,6 +4754,7 @@ if (isset($parts[1])) {return $parts[1];}
     
 }
 
+
 function get_user_val($in) {
     global $CONF;
     global $dbConnection;
@@ -6495,10 +6496,11 @@ function get_total_client_tickets_out($in) {
         $uid = $in;
     }
     
-    $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id=:uid and client_id=:cid');
+    $res = $dbConnection->prepare('SELECT count(*) from tickets where (user_init_id=:uid and client_id=:cid) OR (client_id=:cid2)');
     $res->execute(array(
         ':uid' => $uid,
-        ':cid' => $uid
+        ':cid' => $uid,
+        ':cid2' => $uid
     ));
     $count = $res->fetch(PDO::FETCH_NUM);
     
@@ -6553,10 +6555,11 @@ function get_total_client_tickets_ok($in) {
         $uid = $in;
     }
     
-    $res = $dbConnection->prepare("SELECT count(*) from tickets where user_init_id=:uid and client_id=:cid and ok_by!='0' and status='1'");
+    $res = $dbConnection->prepare("SELECT count(*) from tickets where ((user_init_id=:uid and client_id=:cid) OR (client_id=:cid2)) and ok_by!='0' and status='1'");
     $res->execute(array(
         ':uid' => $uid,
-        ':cid' => $uid
+        ':cid' => $uid,
+        ':cid2' => $uid
     ));
     
     $count = $res->fetch(PDO::FETCH_NUM);
@@ -7091,6 +7094,48 @@ function get_total_pages($menu, $id) {
         $count = $res->fetch(PDO::FETCH_NUM);
         $count = $count[0];
     }
+
+        if ($menu == "clients_main") {
+        $perpage = '10';
+        if (isset($_SESSION['hd.rustem_list_out'])) {
+            $perpage = $_SESSION['hd.rustem_list_out'];
+        }
+        
+        $stmt = $dbConnection->prepare('SELECT id from units where main_user=:u');
+        $stmt->execute(array(
+':u'=>$id
+    ));
+        $res_check = $stmt->fetch(PDO::FETCH_ASSOC);;
+
+
+            $p = get_clients_from_units($res_check['id']);
+//print_r($p);
+            foreach ($p as $key => $value) {
+                $in_query = $in_query . ' :val_' . $key . ', ';
+            }
+            
+            $in_query = substr($in_query, 0, -2);
+            foreach ($p as $key => $value) {
+                $vv[":val_" . $key] = $value;
+            }
+
+
+            foreach ($p as $key => $value) {
+                $in_query2 = $in_query2 . ' :val2_' . $key . ', ';
+            }
+            
+            $in_query2 = substr($in_query2, 0, -2);
+            foreach ($p as $key => $value) {
+                $vv2[":val2_" . $key] = $value;
+            }
+
+
+
+        $res = $dbConnection->prepare('SELECT count(*) from tickets where user_init_id IN (' . $in_query . ') OR client_id IN (' . $in_query2 . ')');
+        $res->execute(array_merge($vv, $vv2));
+        $count = $res->fetch(PDO::FETCH_NUM);
+        $count = $count[0];
+    }
     
     //get_total_tickets_out_and_success()
     if ($menu == "out") {
@@ -7345,6 +7390,34 @@ function get_total_pages($menu, $id) {
     }
     
     return $count;
+}
+
+
+function get_clients_from_units($id) {
+    global $dbConnection;
+    
+
+    
+    $stmt = $dbConnection->prepare('SELECT id FROM users where status=1 and is_client=1 and unit_desc=:id');
+    
+    $stmt->execute(array(':id'=>$id));
+    $res1 = $stmt->fetchAll();
+    
+    $users_id = array();
+    foreach ($res1 as $row) {
+        
+        //$unit_user_item = $row['unit'];
+        //$u_r = explode(",", $unit_user_item);
+        
+        //$unit_user_arr[]
+        //$u_r[]
+        //$resultss = array_intersect($unit_user_arr, $u_r);
+        //if ($resultss) {
+            
+            array_push($users_id, $row['id']);
+        //}
+    }
+    return $users_id;
 }
 
 function get_users_from_units_by_user() {

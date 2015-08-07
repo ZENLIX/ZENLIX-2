@@ -26,6 +26,14 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         ob_end_clean();
         
         ///include_once ("client.list_content.inc.php");
+
+$stmt = $dbConnection->prepare('SELECT name from units where id=:u');
+$stmt->execute(array(
+':u'=>get_user_val_by_id($_SESSION['helpdesk_user_id'], 'unit_desc')
+    ));
+$res_check = $stmt->fetch(PDO::FETCH_ASSOC);;
+       
+ $uname=$res_check['name'];
         
         
     }
@@ -67,7 +75,8 @@ if (validate_client($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
             'menu' => $_POST['menu'],
             'r' => $r,
             'get_total_pages' => get_total_pages('clients', $_SESSION['helpdesk_user_id']) ,
-            'get_last_ticket' => get_last_ticket('client', $_SESSION['helpdesk_user_id'])
+            'get_last_ticket' => get_last_ticket('client', $_SESSION['helpdesk_user_id']),
+            'unit_name'=>  $uname
         ));
     }
     catch(Exception $e) {

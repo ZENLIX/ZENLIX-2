@@ -111,7 +111,7 @@ if (isset($_POST['menu'])) {
             $priv_edit_client = false;
             if (get_user_val('priv_edit_client') == "1") {
                 $priv_edit_client = true;
-            }
+            } 
             
             array_push($list_arr, array(
                 
@@ -285,12 +285,12 @@ if (isset($_POST['menu'])) {
     }
     
     $unit_arr = array();
-    $stmt2 = $dbConnection->prepare('SELECT name FROM units order by name COLLATE utf8_unicode_ci ASC');
+    $stmt2 = $dbConnection->prepare('SELECT id, name FROM units order by name COLLATE utf8_unicode_ci ASC');
     $stmt2->execute();
     $res1 = $stmt2->fetchAll();
     foreach ($res1 as $row) {
         array_push($unit_arr, array(
-            
+            'id'=>$row['id'],
             'name' => $row['name']
         ));
     }

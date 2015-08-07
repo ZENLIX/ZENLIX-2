@@ -123,7 +123,12 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
     
     $check_admin_user_priv = false;
     if (check_admin_user_priv($user_id)) {
+$upriv=get_user_val_by_id($_SESSION['helpdesk_user_id'], 'priv');
+        $check_admin_user_priv = false;
+        if (($upriv == 2) || ($upriv == 0))
+        {
         $check_admin_user_priv = true;
+    }
     }
     
     $someStatStatus_one = false;
@@ -308,7 +313,7 @@ $tfiles_arr = array();
             'user_id'=>$user_id,
             'PORTAL_fileplace'=>lang('PORTAL_fileplace')
         ));
-    }
+    } 
     catch(Exception $e) {
         die('ERROR: ' . $e->getMessage());
     }

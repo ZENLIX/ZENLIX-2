@@ -969,6 +969,9 @@ For this there is a section of Users. Locate the user that you need and change t
 'ticket_sort_ilock'=>'Locked by me',
 'ticket_sort_lock'=>'Locked not by me',
 ''=>'',
+'users_main_unit_user'=>'Head user of organization',
+'JS_unit_lock'=>'All clients from this unit will be locked, continue?',
+'JS_unit_unlock'=>'All clients from this unit will be unlocked, continue?',
 'SLA_activate_info'=>'Activation of SLA-system',
 'NAVBAR_mailers'=>'Mail wizard',
 'STAT_MAIN_t1'=>'Ticket created by departments user',
@@ -989,7 +992,7 @@ For this there is a section of Users. Locate the user that you need and change t
 'user_auth'=>'User activation',
 'work_mail'=>'Your e-mail',
 'work_mail_ph'=>'Select your e-mail please',
-'NAVBAR_deps'=>'System departments',
+'NAVBAR_deps'=>'Clients group',
 ''=>'',
 ''=>''
  );

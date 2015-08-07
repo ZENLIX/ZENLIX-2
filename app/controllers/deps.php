@@ -26,7 +26,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     </ol>
                 </section>
                 
-                
+                 
                 <section class="content">
 
                     <!-- row -->
@@ -108,12 +108,14 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
 <td>
 
 <small><center><button id="deps_del" type="button" class="btn btn-danger btn-xs" value="<?php
-            echo $row['id']; ?>">del</button> 
+            echo $row['id']; ?>"><i class="fa fa fa-trash"></i></button> 
 
 <button id="<?php
             echo $id_action; ?>" type="button" class="btn btn-default btn-xs" value="<?php
             echo $row['id']; ?>"><?php
-            echo $icon; ?></button></center></small>
+            echo $icon; ?></button>
+
+            </center></small>
 
 </td>
         </tr>

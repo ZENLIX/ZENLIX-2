@@ -20,7 +20,7 @@
             
             
             
-            
+             
             
             <section class="content">
                     <!-- title row -->
@@ -696,7 +696,15 @@
         
        <form class="form-horizontal" role="form">
        
-
+  <div class="control-group">
+    <div class="controls">
+        <div class="form-group" id="for_msg">
+            <label for="msg" class="col-sm-2 control-label"><small>{{NEW_subj}}:</small></label>
+            <div class="col-sm-10">
+                <input class="form-control input-sm" value="{{ subj }}" id="edit_subj">
+            </div>
+        </div>
+        <div class="help-block"></div></div></div>
 
 
 <div class="control-group" id="for_prio">
@@ -743,8 +751,8 @@
         
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">{{TICKET_file_notupload_one}}</button>
-        <button type="button" id="save_edit_ticket" class="btn btn-primary">{{JS_save}}</button>
+        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">{{TICKET_file_notupload_one}}</button>
+        <button type="button" id="save_edit_ticket" class="btn btn-primary btn-sm">{{JS_save}}</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

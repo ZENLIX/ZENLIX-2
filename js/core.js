@@ -1391,12 +1391,7 @@ php:
                                                         mode: 'popup',
                                                         showbuttons: false
                                                     });
-                                                    $('#new_unit').editable({
-                                                        inputclass: 'input-sm',
-                                                        emptytext: 'пусто',
-                                                        mode: 'popup',
-                                                        showbuttons: false
-                                                    });
+                                       
                                                     $('#new_tel').editable({
                                                         inputclass: 'input-sm',
                                                         emptytext: 'пусто'
@@ -2220,14 +2215,16 @@ ids = jQuery.grep(ids, function(value) {
         });
         $('body').on('click', 'button#save_edit_ticket', function(event) {
             event.preventDefault();
-            var //s = $('#subj').val(),
+            var s = $('#edit_subj').val(),
             m = $('#msg_up').val(),
                 p = $('#prio').val(),
                 t_hash = $('#ticket_hash').val();
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=save_edit_ticket" + "&t_hash=" + t_hash + "&prio=" + encodeURIComponent(p) + "&msg=" + encodeURIComponent(m),
+                data: "mode=save_edit_ticket" + 
+                "&subj="+ s +
+                "&t_hash=" + t_hash + "&prio=" + encodeURIComponent(p) + "&msg=" + encodeURIComponent(m),
                 success: function(html) {
                     //console.log(html);
                     $('#myModal').modal('hide');
@@ -2698,7 +2695,7 @@ $.ajax({
                 $.ajax({
                     type: "POST",
                     url: ACTIONPATH,
-                    data: "mode=edit_profile_main" + "&mail=" + encodeURIComponent($("#mail").val()) + "&fio=" + encodeURIComponent($("#fio").val()) + "&lang=" + encodeURIComponent($("select#lang").val()) + "&skype=" + encodeURIComponent($("#skype").val()) + "&tel=" + encodeURIComponent($("#tel").val()) + "&adr=" + encodeURIComponent($("#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&unit=" + encodeURIComponent($("#pidrozdil").val()) + "&id=" + encodeURIComponent($("#edit_profile_main").attr('value')) + "&user_layot=" + encodeURIComponent($("#noty").val()) + "&pb=" + $("#pb").val(),
+                    data: "mode=edit_profile_main" + "&mail=" + encodeURIComponent($("#mail").val()) + "&fio=" + encodeURIComponent($("#fio").val()) + "&lang=" + encodeURIComponent($("select#lang").val()) + "&skype=" + encodeURIComponent($("#skype").val()) + "&tel=" + encodeURIComponent($("#tel").val()) + "&adr=" + encodeURIComponent($("#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&id=" + encodeURIComponent($("#edit_profile_main").attr('value')) + "&user_layot=" + encodeURIComponent($("#noty").val()) + "&pb=" + $("#pb").val(),
                     success: function(html) {
                         $("#m_info").hide().html(html).fadeIn(500);
                         setTimeout(function() {
@@ -3066,12 +3063,7 @@ php:
                                                         mode: 'popup',
                                                         showbuttons: false
                                                     });
-                                                    $('#new_unit').editable({
-                                                        inputclass: 'input-sm',
-                                                        emptytext: 'пусто',
-                                                        mode: 'popup',
-                                                        showbuttons: false
-                                                    });
+                                                
                                                     $('#new_tel').editable({
                                                         inputclass: 'input-sm',
                                                         emptytext: 'пусто'
@@ -3983,7 +3975,7 @@ console.log(to);
                     type: "POST",
                     //async: false,
                     url: ACTIONPATH,
-                    data: "mode=add_ticket" + "&type_add=add" + "&fio=" + encodeURIComponent($("#username").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&login=" + encodeURIComponent($("#new_login").text()) + "&pod=" + encodeURIComponent($("#new_unit").text()) + "&adr=" + encodeURIComponent($("#new_adr").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&mail=" + encodeURIComponent($("#new_mail").text()) + "&posada=" + encodeURIComponent($("#new_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val()) + "&deadline_time=" + deadline_time + "&" + add_from,
+                    data: "mode=add_ticket" + "&type_add=add" + "&fio=" + encodeURIComponent($("#username").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&login=" + encodeURIComponent($("#new_login").text()) + "&adr=" + encodeURIComponent($("#new_adr").text()) + "&tel=" + encodeURIComponent($("#new_tel").text()) + "&mail=" + encodeURIComponent($("#new_mail").text()) + "&posada=" + encodeURIComponent($("#new_posada").text()) + "&user_init_id=" + encodeURIComponent($("#user_init_id").val()) + "&user_do=" + encodeURIComponent(u_do) + "&subj=" + encodeURIComponent($("#subj").val()) + "&msg=" + encodeURIComponent($("#msg").val()) + "&unit_id=" + encodeURIComponent($("#to").val()) + "&prio=" + encodeURIComponent($("#prio").val()) + "&hashname=" + encodeURIComponent($("#hashname").val()) + "&deadline_time=" + deadline_time + "&" + add_from,
                     success: function(html) {
                         //window.location = "new.php?ok&h="+html;
                         window.location = MyHOSTNAME + "create?ok&h=" + html;
@@ -5493,6 +5485,76 @@ console.log(to);
         });
     }
     if (ispath('units')) {
+
+
+
+//unit_save
+
+        $('body').on('click', 'button#unit_save', function(event) {
+            event.preventDefault();
+            var u = $(this).attr('value');
+
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=unit_save" + "&id=" + u+
+                "&main_user="+ $("#main_user").val()+
+                "&name="+$("#name").val(),
+                success: function(html) {
+                    window.location = MyHOSTNAME + "units";
+                }
+            });
+
+        });
+
+        $('body').on('click', 'button#units_lock', function(event) {
+            event.preventDefault();
+            var u = $(this).attr('value');
+            bootbox.confirm(get_lang_param('JS_unit_lock'), function(result) {
+                if (result == true) {
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=units_lock" + "&id=" + u,
+                success: function(html) {
+                    window.location = MyHOSTNAME + "units";
+                }
+            });
+        }
+        });
+        });
+
+        $('body').on('click', 'button#units_unlock', function(event) {
+            event.preventDefault();
+            var u = $(this).attr('value');
+            bootbox.confirm(get_lang_param('JS_unit_unlock'), function(result) {
+                if (result == true) {
+            $.ajax({
+                type: "POST",
+                url: ACTIONPATH,
+                data: "mode=units_unlock" + "&id=" + u,
+                success: function(html) {
+                    window.location = MyHOSTNAME + "units";
+                }
+            });
+        }
+    });
+        });
+
+
+        $.fn.editable.defaults.mode = 'inline';
+
+        $('a#edit_units').each(function(i, e) {
+            $(e).editable({
+                inputclass: 'input-sm',
+                emptytext: 'пусто',
+                params: {
+                    mode: 'edit_units'
+                }
+            });
+        });
+
+
         $('body').on('click', 'button#units_del', function(event) {
             event.preventDefault();
             var ids = $(this).attr('value');
@@ -5504,6 +5566,17 @@ console.log(to);
                         data: "mode=units_del" + "&id=" + ids,
                         success: function(html) {
                             $("#content_units").html(html);
+                                    $.fn.editable.defaults.mode = 'inline';
+        
+        $('a#edit_units').each(function(i, e) {
+            $(e).editable({
+                inputclass: 'input-sm',
+                emptytext: 'пусто',
+                params: {
+                    mode: 'edit_units'
+                }
+            });
+        });
                         }
                     });
                 }
@@ -5518,6 +5591,17 @@ console.log(to);
                 success: function(html) {
                     $("#content_units").html(html);
                     $("#units_text").val('');
+                            $.fn.editable.defaults.mode = 'inline';
+        
+        $('a#edit_units').each(function(i, e) {
+            $(e).editable({
+                inputclass: 'input-sm',
+                emptytext: 'пусто',
+                params: {
+                    mode: 'edit_units'
+                }
+            });
+        });
                 }
             });
         });
@@ -6117,18 +6201,26 @@ $.ajax({
                 $('#priv_add_client').iCheck('enable');
                 $('#priv_edit_client').iCheck('enable');
                 $('#my-select').prop("disabled", false);
+                $('#pidrozdil').prop("disabled", true);
+                $('#main_unit_user').iCheck('disable');
             } else if (this.value == '1') {
                 $('#priv_add_client').iCheck('enable');
                 $('#priv_edit_client').iCheck('enable');
                 $('#my-select').prop("disabled", false);
+                $('#pidrozdil').prop("disabled", true);
+                $('#main_unit_user').iCheck('disable');
             } else if (this.value == '2') {
                 $('#priv_add_client').iCheck('enable');
                 $('#priv_edit_client').iCheck('enable');
                 $('#my-select').prop("disabled", false);
+                $('#pidrozdil').prop("disabled", true);
+                $('#main_unit_user').iCheck('disable');
             } else if (this.value == '4') {
                 $('#priv_add_client').iCheck('disable');
                 $('#priv_edit_client').iCheck('disable');
+                $('#pidrozdil').prop("disabled", false);
                 $('#my-select').prop("disabled", true);
+                $('#main_unit_user').iCheck('enable');
                 //my-select
             }
         });
@@ -6231,7 +6323,9 @@ $.ajax({
                 $.ajax({
                     type: "POST",
                     url: ACTIONPATH,
-                    data: "mode=add_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&def_unit_id=" + encodeURIComponent($("#to").val()) + "&mail_nf=" + encodeURIComponent($("#mail_nf").val()) + "&def_user_id=" + encodeURIComponent($("#users_do").val()) + "&user_to_def=" + encodeURIComponent($("#user_to_def").prop('checked')) + "&" + add_from+
+                    data: "mode=add_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) 
+                    + "&main_unit_user=" + encodeURIComponent($("#main_unit_user").prop('checked')) +
+                     "&login=" + encodeURIComponent($("#login_user").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&def_unit_id=" + encodeURIComponent($("#to").val()) + "&mail_nf=" + encodeURIComponent($("#mail_nf").val()) + "&def_user_id=" + encodeURIComponent($("#users_do").val()) + "&user_to_def=" + encodeURIComponent($("#user_to_def").prop('checked')) + "&" + add_from+
                         "&files="+ids,
                     success: function(html) {
                         //console.log(html);
@@ -6251,7 +6345,9 @@ $.ajax({
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=edit_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user2").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&status=" + encodeURIComponent($("#lock").val()) + "&idu=" + encodeURIComponent(usid) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&def_unit_id=" + encodeURIComponent($("#to").val()) + "&mail_nf=" + encodeURIComponent($("#mail_nf").val()) + "&def_user_id=" + encodeURIComponent($("#users_do").val()) + "&user_to_def=" + encodeURIComponent($("#user_to_def").prop('checked')) + "&" + add_from,
+                data: "mode=edit_user" + "&fio=" + encodeURIComponent($("#fio_user").val()) 
+                + "&main_unit_user=" + encodeURIComponent($("#main_unit_user").prop('checked'))
+                + "&login=" + encodeURIComponent($("#login_user2").val()) + "&pass=" + encodeURIComponent($("#exampleInputPassword1").val()) + "&unit=" + encodeURIComponent($("#my-select").val()) + "&priv=" + encodeURIComponent($("input[type=radio][name=optionsRadios]:checked").val()) + "&ldap_auth_key=" + encodeURIComponent($("#ldap_auth_key").prop('checked')) + "&mess=" + encodeURIComponent($("textarea#mess").val()) + "&mess_t=" + encodeURIComponent($("input#msg_title").val()) + "&push=" + encodeURIComponent($("input#push").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&lang=" + encodeURIComponent($('select#lang').val()) + "&priv_add_client=" + encodeURIComponent($("#priv_add_client").prop('checked')) + "&priv_edit_client=" + encodeURIComponent($("#priv_edit_client").prop('checked')) + "&mail=" + encodeURIComponent($("#mail").val()) + "&status=" + encodeURIComponent($("#lock").val()) + "&idu=" + encodeURIComponent(usid) + "&msg_type=" + encodeURIComponent($("input[type=radio][name=optionsRadios_msg]:checked").val()) + "&def_unit_id=" + encodeURIComponent($("#to").val()) + "&mail_nf=" + encodeURIComponent($("#mail_nf").val()) + "&def_user_id=" + encodeURIComponent($("#users_do").val()) + "&user_to_def=" + encodeURIComponent($("#user_to_def").prop('checked')) + "&" + add_from,
                 success: function(html) {
                     //alert(html);
                     window.location = MyHOSTNAME + "users?edit=" + usid + "&ok";
@@ -6365,7 +6461,7 @@ $.ajax({
             $.ajax({
                 type: "POST",
                 url: ACTIONPATH,
-                data: "mode=edit_user_approve" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user2").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&pidrozdil=" + encodeURIComponent($("#pidrozdil").val()) + "&cid=" + encodeURIComponent(usrid) + "&mail=" + encodeURIComponent($("#mail").val()),
+                data: "mode=edit_user_approve" + "&fio=" + encodeURIComponent($("#fio_user").val()) + "&login=" + encodeURIComponent($("#login_user2").val()) + "&tel=" + encodeURIComponent($("input#tel").val()) + "&skype=" + encodeURIComponent($("input#skype").val()) + "&adr=" + encodeURIComponent($("input#adr").val()) + "&posada=" + encodeURIComponent($("#posada").val()) + "&cid=" + encodeURIComponent(usrid) + "&mail=" + encodeURIComponent($("#mail").val()),
                 dataType: "json",
                 success: function(html) {
                     //$("#res").hide().html(html).fadeIn(500);

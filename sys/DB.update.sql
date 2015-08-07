@@ -339,6 +339,37 @@ PREPARE stmt FROM @sql;
 EXECUTE stmt;
 ######################################################
 
+  #`status` int(11) NOT NULL DEFAULT '1',
+  #`main_user` int(11) DEFAULT NULL,
+
+#######UPDATE perf.value####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='units' and column_name='status'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE units ADD status INT(11) NOT NULL DEFAULT 1;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
+
+
+#######UPDATE perf.value####################
+SET @sql = (SELECT IF(
+    (SELECT COUNT(*)
+        FROM INFORMATION_SCHEMA.COLUMNS WHERE
+        table_name='units' and column_name='main_user'
+    ) > 0,
+    "SELECT 0",
+    "ALTER TABLE units ADD main_user INT(11) DEFAULT NULL;"
+));
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+######################################################
+
 
 #`client_request_status` int(11) NOT NULL DEFAULT '0',
 #######UPDATE messages.client_request_status####################

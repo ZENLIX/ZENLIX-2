@@ -33,6 +33,11 @@ if (get_current_URL_name('deps')) {
         'js/bootstrap3-editable/js/bootstrap-editable.min.js'
     );
 }
+if (get_current_URL_name('units')) {
+    $page_js_res = array(
+        'js/bootstrap3-editable/js/bootstrap-editable.min.js'
+    );
+}
 if (get_current_URL_name('list')) {
     $page_js_res = array(
         'js/bootstrap-paginator.js',

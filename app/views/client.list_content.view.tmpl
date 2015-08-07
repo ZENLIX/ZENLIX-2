@@ -11,7 +11,7 @@
 
 
 
-
+ 
 
 
 {% if aha != "0" %}
@@ -26,6 +26,16 @@
                     <th><center><i class="fa fa-info-circle" data-toggle="tooltip" data-placement="bottom" title="{{t_LIST_prio}}"></i></center></th>
                     <th><center>{{t_LIST_subj}}</center></th>
                     <th><center>{{t_LIST_create}}</center></th>
+                    {% if mu_status == true %}
+                    <th><center>
+                    {{ t_LIST_init | raw }}
+                    </center></th>
+                    {% endif %}
+                    {% if mu_status == true %}
+                    <th><center>
+                    {{ t_LIST_worker | raw }}
+                    </center></th>
+                    {% endif %}
                     <th><center>{{t_LIST_ago}}</center></th>
                     <th><center>{{t_LIST_to}}</center></th>
                     <th><center>{{t_LIST_status}}</center></th>
@@ -48,6 +58,16 @@
 
 
                         <td style=" vertical-align: middle; "><small><center><time id="c" datetime="{{item.date_create}}"></time></center></small></td>
+                    {% if mu_status == true %}
+                    <td style=" vertical-align: middle; ">
+                    {{item.init_fio | raw}}
+                    </td>
+                    {% endif %}
+                    {% if mu_status == true %}
+                    <td style=" vertical-align: middle; ">
+                    {{item.client | raw}}
+                    </td>
+                    {% endif %}
                         <td style=" vertical-align: middle; "><small><center><time id="a" datetime="{{item.t_ago}}"></time></center></small></td>
                         <td style=" vertical-align: middle; ">
                             <small>{{item.to_text | raw}}</small>

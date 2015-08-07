@@ -316,10 +316,13 @@ border-color: rgba(255, 255, 255, 0.2);" />
 
                     <li {% if cur_file_name == "users" %} class="active" {% endif %}><a href="{{hostname}}users?list"><i class="fa fa-users"></i> {{NAVBAR_users}}</a></li>
 
-                    <li {% if cur_file_name == "mailers" %} class="active" {% endif %}><a href="{{hostname}}mailers"><i class="fa fa-paper-plane-o"></i> {{NAVBAR_mailers}}</a></li>
+
 
                     <li {% if cur_file_name == "deps" %} class="active" {% endif %}><a href="{{hostname}}deps"><i class="fa fa-sitemap"></i> {{NAVBAR_deps}}</a></li>
                     <li {% if cur_file_name == "units" %} class="active" {% endif %}><a href="{{hostname}}units"><i class="fa fa-building-o"></i> {{NAVBAR_units}}</a></li>
+
+                                        <li {% if cur_file_name == "mailers" %} class="active" {% endif %}><a href="{{hostname}}mailers"><i class="fa fa-paper-plane-o"></i> {{NAVBAR_mailers}}</a></li>
+                                        
                     <li {% if cur_file_name == "files" %} class="active" {% endif %}><a href="{{hostname}}files"><i class="fa fa-files-o"></i>  {{NAVBAR_files}}</a></li>
                     
                     <li {% if cur_file_name == "scheduler" %} class="active" {% endif %}><a href="{{hostname}}scheduler"><i class="fa fa-clock-o"></i>  {{cron_navbar}}</a></li>

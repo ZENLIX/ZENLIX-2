@@ -113,7 +113,7 @@
                     <option value="0"></option>
                     {% for item in unit_arr %}
 
-                        <option value="{{item.name}}">{{item.name}}</option>
+                        <option value="{{item.id}}">{{item.name}}</option>
 
                     {% endfor %}
 
@@ -370,25 +370,7 @@
 
                                 
                                 
- <div class="control-group">
-    <div class="controls">
-        <div class="form-group">
-            <label for="pidrozdil" class="col-sm-2 control-label"><small>{{WORKER_unit}}: </small></label>
-            <div class="col-sm-10" style="">
-                <select name="pid" id="pidrozdil" data-placeholder="{{WORKER_unit}}" class="chosen-select form-control input-sm">
-                    <option value="0"></option>
-                    {% for item in pos_arr22 %}
-
-                        <option {{item.se}} value="{{item.name}}">{{item.name}}</option>
-
-                    {% endfor %}
-
-                </select>
-            </div>
-        </div>
-
-    </div>
-</div>  
+ 
   
 
 <div class=""><hr></div>

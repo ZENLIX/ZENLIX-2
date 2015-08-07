@@ -680,6 +680,8 @@ DROP TABLE IF EXISTS `units`;
 CREATE TABLE `units` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(512) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT '1',
+  `main_user` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -688,8 +690,8 @@ LOCK TABLES `units` WRITE;
 
 INSERT INTO `units` (`id`, `name`)
 VALUES
-	(1,'IT-personal'),
-	(2,'Programmers');
+	(1,'Company A'),
+	(2,'Company B');
 
 /*!40000 ALTER TABLE `units` ENABLE KEYS */;
 UNLOCK TABLES;

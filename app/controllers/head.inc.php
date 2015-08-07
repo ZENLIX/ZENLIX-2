@@ -34,6 +34,13 @@ if (get_current_URL_name('deps')) {
     );
 }
 
+if (get_current_URL_name('units')) {
+    $rstyle = array(
+        'js/bootstrap3-editable/css/bootstrap-editable.css'
+    );
+}
+
+
 if (get_current_URL_name('scheduler')) {
     $rstyle = array(
         'js/bootstrap3-editable/css/bootstrap-editable.css',
