@@ -241,7 +241,7 @@ $(document).ready(function() {
                 //console.log(html);
                 if (html) {
                     $.each(html, function(i, item) {
-                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' target=\'_blank\' href=\'' + item.url + 'ticket?' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
+                        var t = '<div style=\'float: left;\'><a style=\'color: rgb(243, 235, 235); cursor: inherit;\' href=\'' + item.url + 'ticket?' + item.hash + '\'><strong>' + item.ticket + ' #' + item.name + '</strong> </a></div><div style=\'float: right; padding-right: 10px;\'><small>' + item.time + '</small></div><br><hr style=\'margin-top: 5px; margin-bottom: 8px; border:0; border-top:0px solid #E4E4E4\'><em style=\'color: rgb(252, 252, 252); cursor: inherit;\'>' + item.at + '</em>';
                         noty({
                             text: t,
                             layout: USER_noty_layot,
@@ -2780,8 +2780,10 @@ $.ajax({
                         success: function(html) {
                             //console.log(html);
                             //$("select#to").val(html)
+                            $("select#to").prop('selectedIndex', html);
                             $("select#to [value='" + html + "']").attr("selected", "selected");
                             $('select#to').trigger('chosen:updated');
+                            $('select#to').trigger("liszt:updated");
                             //$('#for_to').popover('hide');
                             $('#for_to').removeClass('has-error');
                             $('#for_to').addClass('has-success');
