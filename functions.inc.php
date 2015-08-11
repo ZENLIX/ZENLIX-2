@@ -3928,6 +3928,297 @@ function get_user_val_by_hash($id, $in) {
     return $fior[0];
 }
 
+function get_ticket_action_priv_api_arr_ref($ticked_id, $user_id) {
+    global $CONF, $dbConnection;
+    
+    $priv_res_arr = array();
+    
+    $ticket_hash = get_ticket_hash_by_id($ticked_id);
+    
+    $ticket['arch'] = get_ticket_val_by_hash('arch', $ticket_hash);
+    $ticket['status'] = get_ticket_val_by_hash('status', $ticket_hash);
+    $ticket['ok_by'] = get_ticket_val_by_hash('ok_by', $ticket_hash);
+    $ticket['lock_by'] = get_ticket_val_by_hash('lock_by', $ticket_hash);
+    $ticket['user_init_id'] = get_ticket_val_by_hash('user_init_id', $ticket_hash);
+    $ticket['user_to_id'] = get_ticket_val_by_hash('user_to_id', $ticket_hash);
+    $ticket['user_units'] = get_ticket_val_by_hash('unit_id', $ticket_hash);
+    
+    $user['priv'] = get_user_val_by_id($user_id, 'priv');
+    $user['units'] = get_user_val_by_id($user_id, 'unit');
+    
+    $haystack = explode(",", $ticket['user_to_id']);
+    $haystack_units = explode(",", $user['units']);
+    
+    if ($ticket['arch'] == 1) {
+        $st = 'arch';
+    } 
+    else if ($ticket['arch'] == 0) {
+        if ($ticket['status'] == 1) {
+            
+            //$st = 'ok';
+            if ($ticket['ok_by'] == $user_id) {
+                $st = "ok_by_me";
+            }
+            
+            if ($ticket['ok_by'] <> $user_id) {
+                $st = "ok_by_other";
+            }
+        }
+        if ($ticket['status'] == 0) {
+            if ($ticket['lock_by'] <> 0) {
+                
+                if ($ticket['lock_by'] == $user_id) {
+                    $st = "lock_by_me";
+                }
+                
+                if ($ticket['lock_by'] <> $user_id) {
+                    $st = "lock_by_other";
+                }
+            } 
+            else if ($ticket['lock_by'] == 0) {
+                $st = "free";
+            }
+        }
+    }
+    
+    //echo $st;
+    
+    $tpriv = false;
+    
+    $priv_res = "no_priv";
+    
+    //Если я инициатор
+    //Если заявка мне
+    //Если заявка моему отделу
+    
+    if ($user['priv'] == 1) {
+        
+        if ($ticket['user_init_id'] == $user_id) {
+            $tpriv = true;
+        }
+        if (in_array($ticket['user_units'], $haystack_units)) {
+            if ($ticket['user_to_id'] == 0) {
+                $tpriv = true;
+            } 
+            else if ($ticket['user_to_id'] != 0) {
+                if (in_array($user_id, $haystack)) {
+                    $tpriv = true;
+                }
+            }
+        }
+        
+        if ($tpriv == true) {
+            switch ($st) {
+                case 'arch':
+                    $priv_res = "no_priv";
+                    array_push($priv_res_arr, "no_priv");
+                    
+                    // code...
+                    break;
+
+                case 'free':
+                    $priv_res = "ref,lock";
+                    
+                    array_push($priv_res_arr, "ref");
+                    //array_push($priv_res_arr, "lock");
+                    
+                    // code...
+                    break;
+
+                case 'ok_by_me':
+                    $priv_res = "un_ok";
+                    //array_push($priv_res_arr, "un_ok");
+                    
+                    // code...
+                    break;
+
+                case 'ok_by_other':
+                    $priv_res = "no_priv";
+                    array_push($priv_res_arr, "no_priv");
+                    
+                    // code...
+                    break;
+
+                case 'lock_by_me':
+                    $priv_res = "ref,unlock,ok";
+                    
+                    array_push($priv_res_arr, "ref");
+                    //array_push($priv_res_arr, "unlock");
+                    //array_push($priv_res_arr, "ok");
+                    
+                    // code...
+                    break;
+
+                case 'lock_by_other':
+                    $priv_res = "no_priv";
+                    array_push($priv_res_arr, "no_priv");
+                    
+                    // code...
+                    break;
+
+                default:
+                    $priv_res = "no_priv";
+                    array_push($priv_res_arr, "no_priv");
+                    break;
+            }
+        } 
+        else if ($tpriv == true) {
+            $priv_res = "no_priv";
+            array_push($priv_res_arr, "no_priv");
+        }
+    }
+    
+    if ($user['priv'] == 0) {
+        
+        if ($ticket['user_init_id'] == $user_id) {
+            $tpriv = true;
+        }
+        if (in_array($ticket['user_units'], $haystack_units)) {
+            $tpriv = true;
+        }
+        
+        if ($tpriv == true) {
+            switch ($st) {
+                case 'arch':
+                    $priv_res = "no_priv";
+                    array_push($priv_res_arr, "no_priv");
+                    
+                    // code...
+                    break;
+
+                case 'free':
+                    $priv_res = "ref,lock";
+                    
+                    array_push($priv_res_arr, "ref");
+                    //array_push($priv_res_arr, "lock");
+                    
+                    // code...
+                    break;
+
+                case 'ok_by_me':
+                    $priv_res = "un_ok";
+                    //array_push($priv_res_arr, "un_ok");
+                    
+                    // code...
+                    break;
+
+                case 'ok_by_other':
+                    $priv_res = "un_ok";
+                    //array_push($priv_res_arr, "un_ok");
+                    
+                    // code...
+                    break;
+
+                case 'lock_by_me':
+                    $priv_res = "ref,unlock,ok";
+                    
+                    array_push($priv_res_arr, "ref");
+                    //array_push($priv_res_arr, "unlock");
+                    //array_push($priv_res_arr, "ok");
+                    
+                    // code...
+                    break;
+
+                case 'lock_by_other':
+                    $priv_res = "unlock";
+                    //array_push($priv_res_arr, "unlock");
+                    
+                    // code...
+                    break;
+
+                default:
+                    $priv_res = "no_priv";
+                    array_push($priv_res_arr, "no_priv");
+                    break;
+            }
+        } 
+        else if ($tpriv == true) {
+            $priv_res = "no_priv";
+            array_push($priv_res_arr, "no_priv");
+        }
+    }
+    
+    if ($user['priv'] == 2) {
+        
+        switch ($st) {
+            case 'arch':
+                $priv_res = "no_priv";
+                array_push($priv_res_arr, "no_priv");
+                
+                // code...
+                break;
+
+            case 'free':
+                $priv_res = "ref,lock";
+                
+                array_push($priv_res_arr, "ref");
+                //array_push($priv_res_arr, "lock");
+                
+                // code...
+                break;
+
+            case 'ok_by_me':
+                $priv_res = "un_ok";
+                //array_push($priv_res_arr, "un_ok");
+                
+                // code...
+                break;
+
+            case 'ok_by_other':
+                $priv_res = "un_ok";
+                //array_push($priv_res_arr, "un_ok");
+                
+                // code...
+                break;
+
+            case 'lock_by_me':
+                $priv_res = "ref,unlock,ok";
+                
+                array_push($priv_res_arr, "ref");
+                //array_push($priv_res_arr, "unlock");
+                //array_push($priv_res_arr, "ok");
+                
+                // code...
+                break;
+
+            case 'lock_by_other':
+                $priv_res = "unlock";
+                //array_push($priv_res_arr, "unlock");
+                
+                // code...
+                break;
+
+            default:
+                $priv_res = "no_priv";
+                array_push($priv_res_arr, "no_priv");
+                break;
+        }
+    }
+    
+    /*
+    foreach ($priv_res_arr as $key => $value) {
+    # code...
+    $ares[$value]=$value;
+    }
+    */
+    
+    $ares = implode(",", $priv_res_arr);
+    
+    if (in_array('ref', $priv_res_arr)) {
+        return 'true';
+    }
+        if (!in_array('ref', $priv_res_arr)) {
+        return 'false';
+    }
+
+    //return $ares;
+    
+    //echo $lo;
+    
+    
+}
+
+
 function get_ticket_action_priv_api_arr($ticked_id, $user_id) {
     global $CONF, $dbConnection;
     

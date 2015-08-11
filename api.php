@@ -508,7 +508,7 @@ $mode = $data_json->mode;
                             else if ($row['user_to_id'] != "0") {
                                 $utid_str = nameshort(name_of_user_ret_nolink($row['user_to_id']));
                             }
-                            
+                             
                             //nameshort(name_of_user_ret_nolink())
                             array_push($r['ticket'], array(
                                 'id_ticket' => $row['id'],
@@ -527,7 +527,7 @@ $mode = $data_json->mode;
                                 'status' => $st,
                                 'lock_by' => get_user_hash_by_id($row['lock_by']) ,
                                 'ok_by' => get_user_hash_by_id($row['ok_by']) ,
-                                
+                                'can_refer' => get_ticket_action_priv_api_arr_ref($row['id'], $user_id),
                                 'lock_by_fio' => nameshort(name_of_user_ret_nolink($row['lock_by'])) ,
                                 'ok_by_fio' => nameshort(name_of_user_ret_nolink($row['ok_by'])) ,
                                 'access_priv' => get_ticket_action_priv_api_arr($row['id'], $user_id) ,
