@@ -446,7 +446,7 @@ VALUES
 	(22,'pb_api','api'),
 	(23,'ldap_ip','0.0.0.0'),
 	(24,'ldap_domain','ldap.local'),
-	(25,'version','2.8'),
+	(25,'version','2.95'),
 	(26,'node_port','http://localhost:3001/'),
   (27,'time_zone','Europe/Kiev'),
   (28,'allow_register','true'),

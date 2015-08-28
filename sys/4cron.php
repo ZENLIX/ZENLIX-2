@@ -992,18 +992,47 @@ if (get_conf_param('email_gate_status') == "true") {
             //echo $message->all;
  
 
+$m_tp=$message->textPlain;
+$m_th=$message->textHtml;
+$m_ta=$message->all;
 
+
+if (base64_decode($m_tp, true)) {
+    // is valid
+    $m_tp=$message->textPlain;
+} else {
+    // not valid
+    $m_tp=$message->textPlain;
+}
+
+
+if (base64_decode($m_th, true)) {
+    // is valid
+    $m_th=$message->textHtml;
+} else {
+    // not valid
+    $m_th=$message->textHtml;
+}
+
+
+if (base64_decode($m_ta, true)) {
+    // is valid
+    $m_ta=$message->all;
+} else {
+    // not valid
+    $m_ta=$message->all;
+}
 
 
 
             $subj = strip_tags($message->subject);
-            $msg = strip_tags($message->textPlain);
+            $msg = strip_tags($m_tp);
             
 
-if (empty($message->textPlain)) {
+if (empty($m_tp)) {
     
-    if (empty($message->textHtml)) { $msg=strip_tags($message->all); }
-    else { $msg=strip_tags($message->textHtml); }
+    if (empty($m_th)) { $msg=strip_tags($m_ta); }
+    else { $msg=strip_tags($m_th); }
     
     
     

@@ -508,13 +508,17 @@ $mode = $data_json->mode;
                             else if ($row['user_to_id'] != "0") {
                                 $utid_str = nameshort(name_of_user_ret_nolink($row['user_to_id']));
                             }
-                             
+                            $msg_text=$row['msg'];
+
+                            $breaks = array("<br />","<br>","<br/>");  
+                            $msg_text = str_ireplace($breaks, "\r\n", $msg_text);
+
                             //nameshort(name_of_user_ret_nolink())
                             array_push($r['ticket'], array(
                                 'id_ticket' => $row['id'],
                                 'ticket_hash' => $row['hash_name'],
                                 'subj' => $row['subj'],
-                                'text' => $row['msg'],
+                                'text' => strip_tags($msg_text),
                                 'date_created' => $row['date_create'],
                                 'user_init_id' => get_user_hash_by_id($row['user_init_id']) ,
                                 'client_id' => get_user_hash_by_id($row['client_id']) ,
