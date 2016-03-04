@@ -358,7 +358,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
                     $sla_work = lang('SLA_not_sel');
                 } 
                 else if ($sla_work != "0") {
-                    
+                     
                     $sla_work = "<time id=\"f\" datetime=\"" . $sla_work . "\"></time>";
                 }
                 

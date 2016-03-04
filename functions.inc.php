@@ -1041,6 +1041,10 @@ function get_user_authtype($login) {
 function ldap_auth($login, $pass) {
     $ldaprdn = $login . '@' . get_conf_param('ldap_domain');
     
+if (empty($pass)) {
+    return false;
+}
+
     // ldap rdn or dn
     $ldappass = $pass;
     
@@ -6615,7 +6619,7 @@ function show_items_helper($level = 0) {
         //echo "<li id=\"list-".$row['id']."\"><div>".$row['name'];
         
         
-?>
+?> 
                                         <li id="list-<?php
         echo $row['id']; ?>">
                                             <div>

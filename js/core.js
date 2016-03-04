@@ -14,7 +14,9 @@ $(document).ready(function() {
         radioClass: 'iradio_minimal'
     });
     var socket = io.connect(NODE_URL, {
-        secure: true
+        "secure": true,
+       // "reconnection": false,
+        "reconnectionDelay": 5000
     });
     socket.emit('join', {
         uniq_id: USER_HASH

@@ -617,7 +617,7 @@ if ($_FILES['file']['name']) {
                 $list = $_POST['list'];
                 
                 echo $list;
-                
+                 
                 $orderlist = explode('&', $list);
                 
                 $n = 0;

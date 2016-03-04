@@ -13,7 +13,7 @@ if (validate_user($_SESSION['helpdesk_user_id'], $_SESSION['code'])) {
         if (isset($_GET['h'])) {
             $h_check = true;
             $h = ($_GET['h']);
-            
+             
             if (isset($_GET['edit'])) {
                 $h_check_type = "edit";
                 $hn = $h;

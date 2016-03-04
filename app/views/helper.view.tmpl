@@ -19,7 +19,7 @@
                     </ol>
                 </section>
                 
-                
+                 
                 
             <section class="content">
 
@@ -55,10 +55,10 @@
                         <select data-placeholder="{{NEW_to_unit}}" class="chosen-select form-control" id="u" name="unit_id" multiple>
                             
                         <option value="0" {{ar_n}}>{{HELP_all}}</option>
-                            {% for item in cat_id_arr %}
+                            {% for item in u_arr %}
 
                                 <option {{item.opt_sel}} value="{{item.value}}">{{item.label}}</option>
-
+ 
 {% endfor %}
 
                         </select>
