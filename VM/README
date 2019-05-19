@@ -1,0 +1,18 @@
+VM esx!
+
+Ubuntu 14.04
+
+OS:
+login: zenlix
+password: p@ssw0rd
+
+VESTACP:
+login: admin
+password: p@ssw0rd
+
+ZENLIX:
+login: system
+password: 1234
+
+1. First, go to VESTACP: http://IP:8083
+2. IP-> change Your IP from ipconfig
