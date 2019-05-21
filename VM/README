@@ -1,18 +1,23 @@
 VM esx!
+Мы так же собрали готовые образы, на основе: 
 
-Ubuntu 14.04
 
-OS:
-login: zenlix
-password: p@ssw0rd
+Linux DEBIAN
+Linux UBUNTU
+FreeBSD
+Данные образы уже включают настроенное серверное ПО со всей системой, готовой к работе.
 
-VESTACP:
-login: admin
-password: p@ssw0rd
 
-ZENLIX:
-login: system
-password: 1234
+Для Linux-дистрибутивов, установлена VESTA-хостинг панель. 
+По умолчанию приём IP на интерфейсе от DHCP-сервера.
 
-1. First, go to VESTACP: http://IP:8083
-2. IP-> change Your IP from ipconfig
+SSH: логин: zenlix, пароль: 1234
+
+
+VESTA: http://ip:8083/
+Логин: admin, пароль: 1234
+
+
+ZENLIX: http://yourdomain.com/ (должен быть прописан в Вашем файле hosts)
+
+Логин: system, пароль: 1234
